@@ -74,10 +74,23 @@ Unless noted otherwise, RDD uses DDPM, 250 actual NFE, noise filling, and the
 | RDD Unified-XL/2 | 400K | 1.0 | **7.065** | 4.332 | 130.19 | 0.717 | 0.629 |
 | RDD Unified-XL/2 | 400K | 1.5 | **3.537** | 5.166 | 275.52 | 0.868 | 0.507 |
 
+![Validated FID experiment overview](assets/results/00_fid_experiment_overview.svg)
+
+This overview separates the controlled Unified-L allocation study from the
+architecture/formulation comparison. All curves use native ImageNet, 50K
+samples, CFG 1.0, and approximately 250 NFE. The legacy FM result is shown as
+a single 400K operating point rather than an interpolated curve.
+
 ![RDD and DiT convergence](assets/results/01_convergence_rdd_vs_dit.svg)
 
 The measured 50K--500K curve shows faster convergence than fixed-resolution
 DiT. The missing RDD 450K point is left missing rather than interpolated.
+
+![Main 400K operating points](assets/results/14_400k_operating_points.svg)
+
+CFG 1.0 and CFG 1.5 are separated because guidance changes the operating
+point substantially; bars across the two panels should not be compared as a
+training-convergence result.
 
 ## Allocation and architecture ablations
 
@@ -86,14 +99,26 @@ For Unified-L/2 at 400K, the tested training schedules rank as
 outperform the tested two-stage paths: FID 8.456 for `8->16->32`, 10.643 for
 `16->32`, and 11.978 for direct `8->32`.
 
+![Unified-L allocation and topology curves](assets/results/02_unified_l_training_allocations.svg)
+
+The ranking is visible across training, rather than only at the final
+checkpoint. All six curves share the L/2 backbone and the same 50K-sample
+evaluation protocol.
+
+![Fixed versus interval-proportional sampling](assets/results/10_fixed_vs_proportional.svg)
+
+At 250K, changing from a fixed inference split to an interval-proportional
+split preserves the ordering of all four training allocations. This is a
+useful control: the allocation result is not created by one favored sampling
+split.
+
 <table>
 <tr>
-<td width="50%"><img src="assets/results/02_unified_l_training_allocations.svg" alt="Training allocation ablation"><br><b>Training allocation</b></td>
 <td width="50%"><img src="assets/results/03_unified_model_size.svg" alt="Unified model size"><br><b>Model scale</b></td>
+<td width="50%"><img src="assets/results/09_boundary_and_transition_controls.svg" alt="Boundary and transition controls"><br><b>Boundary and transition controls</b></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/results/09_boundary_and_transition_controls.svg" alt="Boundary and transition controls"><br><b>Boundary and transition controls</b></td>
-<td width="50%"><img src="assets/results/11_unified_l_full_metrics.svg" alt="Unified L full metrics"><br><b>FID, sFID, IS, and precision</b></td>
+<td colspan="2"><img src="assets/results/11_unified_l_full_metrics.svg" alt="Unified L full metrics"><br><b>FID, sFID, IS, and precision</b></td>
 </tr>
 </table>
 
@@ -139,7 +164,16 @@ from the legacy Unified-XL checkpoint.
 | Legacy RDD-FM Unified-XL v2 | 400K | Euler / 252 | 1.5 | 3.359 |
 | Legacy RDD-FM Unified-XL v2 | 400K | midpoint / 252 | 1.5 | **3.291** |
 
-![Flow-matching results](assets/results/04_flow_matching_only.svg)
+<table>
+<tr>
+<td width="50%"><img src="assets/results/04_flow_matching_only.svg" alt="Flow-matching operating points"><br><b>Available FM operating points</b></td>
+<td width="50%"><img src="assets/results/05_diffusion_vs_fm_50k.svg" alt="Diffusion versus corrected flow matching at 50K"><br><b>Matched 50K diffusion versus corrected FM</b></td>
+</tr>
+</table>
+
+The matched 50K comparison is the fair early-training result: corrected FM is
+currently behind diffusion for both tested allocations. The strong legacy
+XL/2 CFG 1.5 point is retained, but it is not evidence of faster convergence.
 
 ## Measured structural efficiency
 
