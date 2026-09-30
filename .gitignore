@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+
+# Environments and caches
+.venv/
+venv/
+.cache/
+.hf_cache/
+.gc_download/
+
+# Models, datasets, and generated samples
+checkpoints/
+checkpoints*/
+data/
+datasets/
+samples/
+samples*/
+previews/
+outputs/
+eval_results/
+results/
+results*/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.npz
+
+# Runtime artifacts
+logs/
+*.log
+*.out
+.tmp/
+.tmp_*/
+
+# Generated images are ignored by default. Curated README assets are added
+# explicitly under assets/ and docs/results/figures/.
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+
+# External repositories
+third_party/
+repos/
+related_repos/
+
+# Editors and operating systems
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.o
+*.aux
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.pdf
+*.zip

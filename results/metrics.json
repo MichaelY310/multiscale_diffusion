@@ -1,0 +1,42 @@
+{
+  "protocol": {
+    "dataset": "ImageNet-1K native directory",
+    "resolution": 256,
+    "generated_samples": 50000,
+    "reference": "ADM ImageNet-256 statistics",
+    "default_sampler": "DDPM",
+    "default_actual_nfe": 250,
+    "default_transition": "noise_filling"
+  },
+  "main_results": [
+    {"model": "DiT-XL/2", "update": 400000, "cfg": 1.0, "fid": 19.781288084245148, "sfid": 6.1638770905110505, "is": 67.58781433105469, "precision": 0.6348, "recall": 0.6221},
+    {"model": "DiT-XL/2", "update": 500000, "cfg": 1.0, "fid": 17.464, "sfid": 6.183, "is": 75.10, "precision": 0.643, "recall": 0.629},
+    {"model": "RDD Unified-L/2", "update": 400000, "allocation_fine_middle_coarse": [300, 300, 400], "cfg": 1.0, "fid": 8.456, "sfid": 4.399, "is": 118.62, "precision": 0.706, "recall": 0.624},
+    {"model": "RDD Unified-XL/2", "update": 400000, "allocation_fine_middle_coarse": [300, 300, 400], "cfg": 1.0, "fid": 7.065, "sfid": 4.332, "is": 130.19, "precision": 0.717, "recall": 0.629},
+    {"model": "RDD Unified-XL/2", "update": 400000, "allocation_fine_middle_coarse": [300, 300, 400], "cfg": 1.5, "fid": 3.537, "sfid": 5.166, "is": 275.52, "precision": 0.868, "recall": 0.507}
+  ],
+  "stage_count_ablation": [
+    {"model": "RDD Unified-L/2", "update": 400000, "stages": "8->16->32", "fid": 8.456},
+    {"model": "RDD Unified-L/2", "update": 400000, "stages": "16->32", "fid": 10.643},
+    {"model": "RDD Unified-L/2", "update": 400000, "stages": "8->32", "fid": 11.978}
+  ],
+  "solver_results": [
+    {"sampler": "DDPM", "scheduled_updates": 250, "actual_nfe": 250, "cfg": 1.5, "fid": 3.537},
+    {"sampler": "drift-aware DPM2", "scheduled_updates": 125, "actual_nfe": 244, "cfg": 1.5, "fid": 2.626},
+    {"sampler": "drift-aware DPM2", "scheduled_updates": 65, "actual_nfe": 124, "cfg": 1.5, "fid": 3.325},
+    {"sampler": "drift-aware DPM2", "scheduled_updates": 35, "actual_nfe": 64, "cfg": 1.5, "fid": 11.761}
+  ],
+  "flow_matching_results": [
+    {"model": "RDD-FM Unified-L", "semantics": "corrected", "update": 50000, "sampler": "Euler", "actual_nfe": 252, "cfg": 1.0, "fid": 66.993},
+    {"model": "RDD diffusion Unified-L", "semantics": "matched diffusion control", "update": 50000, "sampler": "DDPM", "actual_nfe": 250, "cfg": 1.0, "fid": 50.943},
+    {"model": "RDD-FM Unified-XL v2", "semantics": "legacy boundaries", "update": 400000, "sampler": "Euler", "actual_nfe": 252, "cfg": 1.0, "fid": 14.617},
+    {"model": "RDD-FM Unified-XL v2", "semantics": "legacy boundaries", "update": 400000, "sampler": "Euler", "actual_nfe": 252, "cfg": 1.5, "fid": 3.359},
+    {"model": "RDD-FM Unified-XL v2", "semantics": "legacy boundaries", "update": 400000, "sampler": "midpoint", "actual_nfe": 252, "cfg": 1.5, "fid": 3.291}
+  ],
+  "latency_h20_ms_per_image": [
+    {"model": "DiT-XL/2", "latency": 1333.4, "speedup": 1.00},
+    {"model": "RDD Unified-XL/2", "latency": 703.4, "speedup": 1.90},
+    {"model": "RDD Multistage XL+L+B", "latency": 596.6, "speedup": 2.24},
+    {"model": "RDD Unified-L/2", "latency": 520.9, "speedup": 2.56}
+  ]
+}
