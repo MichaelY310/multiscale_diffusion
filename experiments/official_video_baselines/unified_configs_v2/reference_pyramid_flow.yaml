@@ -1,0 +1,72 @@
+callbacks: {}
+method:
+  _target_: fastvideo_native_pyramid.NativePyramidMethod
+  clip_grad: 1.0
+  native_lr_schedule: constant_with_warmup
+  use_temporal_pyramid: true
+models:
+  student:
+    _target_: fastvideo_native_pyramid.NativePyramidModel
+    annotation: /scr/yuheng/bugswarm/rdd_workspace_20261005/fair_data_20261006/native_pf_v1/train.jsonl
+    cache_fingerprint: b9f8753e918273094ea1a10ddcdc4d694cd8bcb397caa44b2801680f3eb7d61c
+    empty_prompt: /scr/yuheng/bugswarm/rdd_workspace_20261005/fair_data_20261006/native_pf_v1/empty_prompt.pt
+    init_from: /scr/yuheng/bugswarm/rdd_workspace_20261005/assets_20261006/pyramid-flow-miniflux
+    recipe:
+      frame_per_unit: 1
+      gradient_checkpointing_ratio: 1.0
+      load_text_encoder: false
+      load_vae: false
+      max_temporal_length: 8
+      model_dtype: bf16
+      model_name: pyramid_flux
+      model_variant: diffusion_transformer_384p
+      sample_ratios:
+      - 1
+      - 2
+      - 1
+      scheduler_gamma: 0.3333333333333333
+      stage_range:
+      - 0
+      - 0.3333333333333333
+      - 0.6666666666666666
+      - 1
+      stages:
+      - 1
+      - 2
+      - 4
+      use_flash_attn: false
+      use_gradient_checkpointing: true
+      use_mixed_training: true
+      use_temporal_causal: true
+      video_sync_group: 1
+    source: /scr/yuheng/bugswarm/official_video_baselines_20261004/reference/Pyramid-Flow
+    trainable: true
+training:
+  checkpoint:
+    checkpoints_total_limit: 0
+    output_dir: /scr/yuheng/bugswarm/rdd_workspace_20261005/gpu_checks_20261006/reference_pyramid_flow
+    training_state_checkpointing_steps: 0
+  data:
+    data_path: /scr/yuheng/bugswarm/rdd_workspace_20261005/fair_data_20261006/native_pf_v1
+    dataloader_num_workers: 0
+    seed: 42
+    train_batch_size: 4
+  distributed:
+    num_gpus: 1
+    sp_size: 1
+    tp_size: 1
+  dit_precision: bf16
+  loop:
+    gradient_accumulation_steps: 1
+    max_train_steps: 3
+  optimizer:
+    betas:
+    - 0.9
+    - 0.999
+    learning_rate: 5.0e-05
+    lr_scheduler: constant_with_warmup
+    lr_warmup_steps: 1
+    weight_decay: 0.0001
+  tracker:
+    trackers:
+    - none

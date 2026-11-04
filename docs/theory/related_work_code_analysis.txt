@@ -1,0 +1,623 @@
+================================================================================
+RDD 相关论文代码精读分析文档
+================================================================================
+最后更新: 2026-07-25
+
+本文档汇总了 12 个已下载 repo 的代码精读结果，包含：
+- 核心实现逻辑与文件路径（含行号）
+- 与 RDD 的数学/实现差异对比
+- ImageNet 实验配置汇总
+- 训练运行命令
+
+================================================================================
+目录
+================================================================================
+1. Relay Diffusion (ICLR 2024)
+2. LapFlow (ICLR 2026)
+3. DiMR (NeurIPS 2024)
+4. DCTdiff (ICML 2025)
+5. SPEED (Stanford 2025)
+6. Pyramid-Flow (ICLR 2025)
+7. SwD - Scale-wise Distillation (Yandex 2025)
+8. LowDiff (2025)
+9. MrFlow (2025)
+10. XCube (CVPR 2024)
+11. OctFusion (SGP 2025)
+12. PDD - Pyramid Discrete Diffusion (ECCV 2024)
+13. ImageNet 实验配置汇总表
+14. 训练命令汇总
+15. RDD vs 所有方法的核心差异总表
+
+================================================================================
+1. Relay Diffusion (ICLR 2024)
+================================================================================
+Repo: /home/tiger/multiscale_diffusion/related_repos/RelayDiffusion/
+
+--- 核心方法 ---
+两阶段级联：第一阶段标准 EDM 生成 64x64，上采样到 256x256 后，
+第二阶段用"Blurring Diffusion"（DCT域模糊扩散 + Block Noise）精炼。
+
+--- 关键文件 ---
+- 模糊扩散核心: blurring.py (第 143-175 行)
+- 损失函数: training/loss.py (第 102-153 行, BlurLoss 类)
+- 网络预条件: training/networks.py (EDMPrecond)
+- 采样器: generate_imagenet.py (第 33-127 行, blur_sampler)
+- 训练循环: training/training_loop.py
+
+--- 前向过程 ---
+x_t = DCTBlur(x_0, blur_sigma(t)) + sigma(t) * (epsilon + block_scale * block_noise)
+
+其中:
+- DCTBlur: 在 4x4 patch 的 DCT 域中，按频率 |f|^2 指数衰减高频
+  alpha(f,t) = exp(-|f|^2 * blur_sigma^2/2) * (1-min_scale) + min_scale
+- blur_sigma(t) = blur_sigma_max * sin(t*pi/2)^2
+- Block Noise: 4x4 邻域循环累加的空间相关噪声 (blurring.py 第 143-158 行)
+
+--- 预测目标 ---
+网络预测未模糊的干净原图 y（非 epsilon）:
+  loss = weight * ||D(y_blurred + n, sigma) - y||^2
+通过 EDM preconditioning 间接实现 (D_x = c_skip*x + c_out*F_x)
+
+--- 采样过程 (blur_sampler) ---
+在 DCT 频域执行 Euler/Heun 步骤，同时处理噪声衰减和频率模糊衰减。
+第二阶段从 truncation_sigma=0.9 开始（非纯噪声），因为起点是有意义的上采样图像。
+
+--- 与 RDD 的核心差异 ---
+| 维度            | Relay Diffusion              | RDD                           |
+|----------------|------------------------------|-------------------------------|
+| 阶段数          | 两个独立模型级联              | 单一 Markov 链                 |
+| 前向修改        | DCT域模糊+Block Noise        | 线性 drift 修改均值            |
+| 分辨率处理      | 64→256 硬上采样+truncated采样 | 连续 drift 隐式编码            |
+| 噪声类型        | 高斯 + 空间相关 Block Noise   | 标准高斯                       |
+| 采样域          | DCT 频域                     | 像素/latent 域                 |
+| DPM-Solver兼容  | 不兼容（自定义DCT采样器）     | 兼容                           |
+| 预测目标        | 去噪图像 D(x)→x_0            | 噪声 ε̃                        |
+| 数学形式        | 非齐次 VE-SDE + 频率衰减     | VP-SDE + 连续 drift            |
+
+================================================================================
+2. LapFlow (ICLR 2026)
+================================================================================
+Repo: /home/tiger/multiscale_diffusion/related_repos/ICLR26_LapFlow_Official/
+
+--- 核心方法 ---
+Laplacian 金字塔分解 + 分段时间 Flow Matching + MoT(Mixture of Transformers)
+
+--- 关键文件 ---
+- 主训练脚本: feb12_train_ours.py (第 392-427 行)
+- Laplacian 分解: sampler/edify_image_sample.py (第 154-186 行)
+- Flow Matching 目标: sampler/ours_sample.py (第 74-168 行, generate_xt_and_u)
+- MoT 架构: models/MultiScaleDiT.py (第 48-194 行)
+- Causal Mask: models/MultiScaleDiT.py (第 156-164 行)
+- 采样: sampler/ours_sample.py (第 256-283 行)
+
+--- 前向过程（Flow Matching 线性插值路径）---
+3 级情况, time_segments = [0.33, 0.67]:
+  Scale 2 (低频基础): t ∈ [0, 0.33]
+    x_t = t * data + (1-t) * noise
+    u = data - noise
+  Scale 1 (中频): t ∈ [0.33, 0.67]
+    x_t = (t-0.33)/(1-0.33) * data + (1-t) * noise
+    u = data/(1-0.33) - noise
+  Scale 0 (高频残差): t ∈ [0.67, 1.0]
+    x_t = (t-0.67)/(1-0.67) * data + (1-t) * noise
+    u = data/(1-0.67) - noise
+
+--- 预测目标 ---
+速度场 u = dx_t/dt (velocity matching)
+训练: loss = sum_i(MSE(v_pred[i], u[i]) * loss_weight[i])
+
+--- Laplacian 金字塔构建 ---
+laplacian_data[0] = x - upsample(downsample(x))   # 高频残差
+laplacian_data[1] = downsample(x) - upsample(downsample(downsample(x)))  # 中频
+laplacian_data[2] = downsample(downsample(x))      # 低频基础
+
+--- MoT 实现 ---
+每个尺度独立的: QKV 投影、MLP、AdaLN
+共享的: Attention 计算（跨尺度交互）
+Causal mask: scale i 只能看到 scale <= i 的 token（从粗到细依赖关系）
+
+--- 与 RDD 的核心差异 ---
+| 维度            | LapFlow                      | RDD                           |
+|----------------|------------------------------|-------------------------------|
+| 框架            | ODE-based Flow Matching      | SDE-based DDPM                |
+| 前向过程        | 线性插值，分段独立            | 高斯扩散 + 连续 drift         |
+| 预测目标        | 速度场 u = dx_t/dt           | 噪声 ε̃                        |
+| 多尺度机制      | 显式 Laplacian + 独立时间段   | 连续 drift 隐式编码            |
+| 分辨率维度      | 各尺度不同空间维度            | 全程固定维度                   |
+| 采样器          | ODE solver (dopri5/euler)    | DPM-Solver                    |
+| 跨尺度依赖      | Causal attention (MoT)       | 单一 Markov 过程连续编码       |
+| 噪声分解        | 对噪声也做 Laplacian 分解    | 标准高斯                       |
+
+本质区别: LapFlow "拆开来分别处理"，RDD "在统一过程中渐变引导"。
+
+================================================================================
+3. DiMR (NeurIPS 2024)
+================================================================================
+Repo: /home/tiger/multiscale_diffusion/related_repos/DiMR/
+
+--- 核心方法 ---
+多分辨率纯架构设计（不修改扩散前向过程），单次扩散 + 多分辨率去噪网络。
+
+--- 关键文件 ---
+- MRModel 架构: libs/core/blocks.py (第 296-345 行)
+- Stage 结构: libs/core/blocks.py (第 197-293 行)
+- 训练主文件: train.py (第 38-42, 74-120 行)
+- SDE 定义: sde.py (第 89-134 行, VPSDE)
+- 多尺度目标: sde.py (第 313-334 行, multi_scale_targets)
+- DPM-Solver: dpm_solver.py
+- XL 配置: configs/DiMR-XL-2R_imagenet256.py
+- 评估: eval.py (第 85-150 行)
+- TDP 时间依赖参数: libs/core/sigmoid/module.py (第 28-60 行)
+
+--- 前向过程 ---
+完全标准的 Stable Diffusion beta schedule (VP-SDE):
+  beta = linspace(0.00085^0.5, 0.012^0.5, 1000)^2
+  x_t = sqrt(alpha_bar_t) * x_0 + sqrt(1-alpha_bar_t) * epsilon
+
+前向过程**完全不修改**！多分辨率纯粹在网络架构层面。
+
+--- 多分辨率网络工作方式 ---
+- 同一个噪声 x_t (4, 32, 32) 送入所有 Stage
+- Stage 0 (16x16): stride=2 卷积降到 16x16，39 个 Transformer blocks (dim=960)
+- Stage 1 (32x32): stride=1 保持 32x32，20 个 ConvNeXt blocks (dim=480)
+- Stage 0 特征通过 PixelShuffle 上采样传给 Stage 1
+- 每个 Stage 独立输出 epsilon 预测
+
+--- 预测目标 ---
+Epsilon-prediction (噪声预测):
+  target = multi_scale_targets(eps, levels=2, scale_correction=True)
+  - Stage 0: 2x2 均值池化降采样的 epsilon (16x16)
+  - Stage 1: 原始 epsilon (32x32)
+  损失权重: [1/4, 1] (低分辨率:高分辨率)
+
+--- 采样 ---
+DPM-Solver, predict_x0=True, 250 步
+采样时只使用最高分辨率 (Stage 1) 的输出
+
+--- 与 RDD 的核心差异 ---
+| 维度            | DiMR                         | RDD                           |
+|----------------|------------------------------|-------------------------------|
+| 前向过程修改    | 完全不修改（标准 VP-SDE）     | 添加连续 drift                 |
+| 多分辨率来源    | 纯架构（多 Stage 网络）       | 前向过程的数学修改             |
+| 预测目标        | epsilon (分多尺度)           | 修改后的 ε̃                     |
+| DPM-Solver      | 使用                         | 使用                           |
+| 训练过程        | 单一标准扩散训练              | 单一修改扩散训练               |
+| 模型类型        | Transformer + ConvNeXt 混合   | DiT                           |
+
+共同点: 都使用 DPM-Solver 采样，都是单一模型处理。
+关键区别: DiMR 让网络在多个分辨率上同时预测噪声但不改 SDE；
+          RDD 改了 SDE 本身使得扩散路径包含分辨率变化信息。
+
+================================================================================
+4. DCTdiff (ICML 2025)
+================================================================================
+Repo: /home/tiger/multiscale_diffusion/related_repos/DCTdiff/
+
+--- 核心方法 ---
+将图像转到块状 DCT 域后再做扩散，通过 SNR_scale 修正和频率加权损失处理频带差异。
+
+--- 关键文件 ---
+- DCT 预处理: datasets.py (第 361-457 行, DCT_4YCbCr 类)
+- DCT 工具: DCT_utils.py (第 21-27 行)
+- SDE + SNR_scale: sde.py (第 72-147 行, VPSDE)
+- 训练: train.py (第 78-97 行, 频率加权)
+- DPM-Solver: dpm_solver_pytorch.py (第 6-118 行)
+- ImageNet 配置: configs/imgnet64_uvit_mid_2by2.py
+
+--- 数据流水线 ---
+1. RGB → YCbCr (Y + Cb 4:2:0 + Cr 4:2:0)
+2. 分成 BxB 块 (block_sz=2)
+3. 每块独立 2D DCT
+4. Zigzag 排序 + 高频截断 (保留 low_freqs=4 个系数)
+5. 归一化到 [-1,1]
+最终 token shape: (H/B * W/B, 6 * low_freqs) = (256, 24) for 64x64
+
+--- 扩散过程（修改版 VP-SDE）---
+标准 VP-SDE + SNR_scale 修正:
+  beta_eff(t) = beta(t) + d/dt[log(1 + (S-1)*exp(-integral beta(s)ds))]
+  
+效果: 终端 SNR 被放大 S 倍 → SNR_new = S * SNR_old
+目的: DCT 低频分量信号幅度更大，防止标准 schedule 中 SNR 下降太快
+
+--- 预测目标 ---
+Epsilon-prediction + 按频率标准差重加权:
+  Y_reweight = Y_std[zigzag_order][:low_freqs]  # 各频率系数的统计标准差
+  loss = MSE(noise_pred, noise) * Y_reweight
+
+--- 与 RDD 的核心差异 ---
+| 维度            | DCTdiff                      | RDD                           |
+|----------------|------------------------------|-------------------------------|
+| 扩散空间        | DCT 系数空间                 | 像素/latent 空间              |
+| 前向过程修改    | SNR_scale 全局放大 SNR       | 添加与低分辨率相关的 drift     |
+| 频率处理        | 显式: zigzag + 截断 + 加权   | 隐式: drift 编码粗细关系       |
+| 数学等价性      | 仍是 VP-SDE，只改 beta       | 非标准 SDE，改了边际分布       |
+| 目标            | 证明"扩散=频谱自回归"        | 多分辨率引导生成               |
+
+================================================================================
+5. SPEED (Stanford 2025)
+================================================================================
+Repo: /home/tiger/multiscale_diffusion/related_repos/speed/
+
+--- 核心方法 ---
+Training-free 推理加速：频谱噪声扩展 + 最优分辨率调度 + 时间步对齐
+
+--- 关键文件 ---
+- 核心工具: utils.py (全部, 249 行)
+  - activation_time: 第 33-47 行
+  - 转换时间: 第 49-77 行
+  - kappa + align_timestep: 第 80-103 行
+  - spectral_expand_and_align: 第 195-249 行
+  - _dct_expand_np: 第 106-133 行
+  - _dwt_expand_np: 第 136-159 行
+  - _fft_expand_np: 第 162-193 行
+- FLUX 推理: latent_image_gen.py
+- WAN 视频推理: latent_video_gen.py
+- 模型配置: configs.yaml
+
+--- 三个核心组件 ---
+(a) Spectral Noise Expansion:
+    x_expanded = IDCT[ DCT(x_src) ⊕ t * epsilon_high_freq ]
+    低频保持源信号，高频填入 t 幅度的噪声
+
+(b) Optimal Resolution Schedule:
+    基于自然图像功率谱 P(w) = A * |w|^(-beta)
+    在频率 omega_i 的激活时间决定分辨率转换时刻
+
+(c) Timestep Alignment (kappa):
+    kappa(t, r) = r / (1 + (r-1)*t)
+    t_tilde = t * kappa(t, r)   # 对齐后的 flow-matching 时间
+    x_rescaled = kappa(t, r) * x_expanded
+
+--- 与 RDD 的核心差异 ---
+| 维度            | SPEED                        | RDD                           |
+|----------------|------------------------------|-------------------------------|
+| 训练需求        | 完全免训练                    | 需要从头训练                   |
+| 分辨率转换      | 推理时频谱扩展+kappa对齐     | 训练时通过 drift 建模          |
+| 理论基础        | 自然图像功率谱衰减            | VP-SDE + 额外 drift 项        |
+| 兼容性          | 可直接应用于任何预训练模型    | 需要专门训练                   |
+| 目标            | 加速推理                      | 提升生成质量                   |
+| SDE 修改        | 不改变（只在推理中分段换分辨率）| 改变 drift 函数               |
+
+================================================================================
+6. Pyramid-Flow (ICLR 2025)
+================================================================================
+Repo: /home/tiger/multiscale_diffusion/related_repos/Pyramid-Flow/
+
+--- 核心方法 ---
+将 Flow Matching 路径拆分为 3 个空间金字塔阶段，各阶段在不同分辨率工作，
+阶段间用 renoising (加块噪声) 连接。面向视频生成。
+
+--- 关键文件 ---
+- 核心管线: pyramid_dit/pyramid_dit_for_video_gen_pipeline.py
+  - 金字塔 latent 获取: 第 555-570 行
+  - 训练加噪: 第 309-347 行
+  - 推理 renoising: 第 725-787 行
+- Flow Matching 调度: diffusion_schedulers/scheduling_flow_matching.py (第 90-149 行)
+- DiT 模型: pyramid_dit/flux_modules/modeling_pyramid_flux.py
+- 训练脚本: scripts/train_pyramid_flow.sh
+
+--- 多阶段 Flow Matching ---
+stages=[1, 2, 4], stage_range=[0, 1/3, 2/3, 1]
+每阶段内: x_t = ratios * start_point + (1-ratios) * end_point
+目标: targets = start_point - end_point (rectified flow)
+
+--- Renoising 机制 (推理时阶段过渡) ---
+ori_sigma = 1 - start_sigma
+alpha = 1 / (sqrt(1 + 1/gamma) * (1 - ori_sigma) + ori_sigma)
+beta = alpha * (1 - ori_sigma) / sqrt(gamma)
+latents = alpha * upsample(latents) + beta * block_noise
+
+--- 与 RDD 的核心差异 ---
+| 维度            | Pyramid-Flow                 | RDD                           |
+|----------------|------------------------------|-------------------------------|
+| 分辨率切换      | 硬切换（阶段间上采样+renoising）| 连续漂移（无阶段边界）         |
+| 前向过程        | 修改（多阶段端点不同）        | 修改（连续 drift）             |
+| 阶段间连接      | 显式 renoising（块噪声）     | 隐式连续                       |
+| 应用场景        | 视频生成                      | 图像生成                       |
+| 数学保证        | 各阶段内独立 flow matching   | 全程统一 SDE，闭式后验         |
+| DPM-Solver      | 不使用（标准 ODE solver）    | 兼容                           |
+
+================================================================================
+7. SwD - Scale-wise Distillation (Yandex 2025)
+================================================================================
+Repo: /home/tiger/multiscale_diffusion/related_repos/swd/
+
+--- 核心方法 ---
+蒸馏框架：将 28 步采样划分为 4 个 boundary 区间，每区间对应不同分辨率。
+Teacher=原始预训练模型，Student=LoRA 微调版本。
+
+--- 关键文件 ---
+- 多尺度采样器: src/flow_matching_sampler.py (第 8-230 行)
+- 蒸馏损失: src/losses.py (第 152-379 行, generator_loss)
+- 训练: train.py
+- 带判别头的 Transformer: src/transformer_with_discriminator.py
+- 数据准备: src/utils/train_utils.py (第 105-175 行)
+- 模型初始化: src/utils/prepare_utils.py (第 75-141 行)
+
+--- Boundary + Scale 配置 ---
+boundaries = [0, 7, 14, 18, 28]  (28步总共)
+scales = [64, 80, 96, 128]       (latent 空间尺寸)
+- 步骤 0-6: 64×64 latent (512×512 像素)
+- 步骤 7-13: 80×80 latent (640×640 像素)
+- 步骤 14-17: 96×96 latent (768×768 像素)
+- 步骤 18-27: 128×128 latent (1024×1024 像素)
+
+--- 蒸馏损失组合 ---
+- DMD Loss: 分数差异梯度 (Distribution Matching Distillation)
+- GAN Loss: Transformer 判别头判断真假
+- MMD Loss: 中间特征分布距离
+
+--- 与 RDD 的核心差异 ---
+| 维度            | SwD                          | RDD                           |
+|----------------|------------------------------|-------------------------------|
+| 训练方式        | 蒸馏已有模型(仅3-4k步)       | 从零训练                       |
+| 前向过程修改    | 不修改（标准 Flow Matching）  | 修改（添加 drift）             |
+| 多尺度来源      | 推理端策略+蒸馏损失保证质量   | 训练过程中编码                 |
+| 适用性          | 任意预训练 FM 模型            | 需要专门训练                   |
+| Renoising       | 是（按 sigma 混合噪声）      | 无需（连续过程）               |
+
+================================================================================
+8. LowDiff (2025)
+================================================================================
+Repo: /home/tiger/multiscale_diffusion/related_repos/LowDiff/
+
+--- 核心方法 ---
+单一统一模型，在多个分辨率上独立进行去噪，低分辨率结果作为高分辨率的条件。
+可实现 50%-83% 吞吐量提升。
+
+--- 关键文件 ---
+- EDM 多尺度损失: edm/training/loss.py (第 84-170 行, MultiscaleEDMLoss)
+- EDM 多尺度网络: edm/training/networks.py (第 674-1063 行, MultiscaleSongUNet)
+- LightningDiT 训练: LightningDiT/train.py (第 235-257 行)
+- LightningDiT 模型: LightningDiT/models/lightningdit.py (第 457-699 行, MSLightningDiT)
+- Transport: LightningDiT/transport/path.py (第 18-136 行)
+- 推理: LightningDiT/inference.py (第 310-360 行)
+- XL 配置: LightningDiT/configs/mslightningdit_xl_vavae_f16d32.yaml
+
+--- 多分辨率训练逻辑 (LightningDiT) ---
+x_16 = x                                    # 16x16 latent (原始)
+x_8 = F.avg_pool2d(x_16, kernel_size=2)     # 8x8 latent (低分辨率)
+# 阶段1: 无条件训练 8x8
+loss8 = transport.training_losses(model, x_8, x_8, {res=0})
+# 阶段2: 以 8x8 为条件训练 16x16
+loss16 = transport.training_losses(model, x_16, x_8, {res=1})
+
+--- 网络架构 ---
+MSLightningDiT: 28层 DiT
+- 8x8 使用中间 14 层 (blocks8)
+- 16x16 使用全部 28 层 (blocks_16_l + blocks_8 + blocks_16_r)
+- 分辨率嵌入 (ResEmbedder) 加到时间步和类别嵌入
+- 条件: 低分辨率上采样后 channel concatenation
+
+--- 采样流程 ---
+1. 生成 8x8 noise, trunc_point=0.3 时截断采样
+2. 以步骤1结果为条件, 生成 16x16 完整采样
+3. VAE 解码到 256x256
+
+--- 与 RDD 的核心差异 ---
+| 维度            | LowDiff                      | RDD                           |
+|----------------|------------------------------|-------------------------------|
+| 前向过程        | 标准 FM/EDM，不修改          | VP-SDE + 连续 drift            |
+| 多尺度机制      | 条件级联（concat 低分辨率条件）| 单一 Markov 链中 drift 编码    |
+| 马尔可夫链      | 各分辨率独立扩散过程          | 单一链编码所有分辨率           |
+| 信息传递        | 加噪中间结果作显式条件        | drift 项中隐式流动             |
+| 训练方式        | 单一模型，交替训练两个分辨率  | 单一模型，统一训练             |
+
+================================================================================
+9. MrFlow (2025)
+================================================================================
+Repo: /home/tiger/multiscale_diffusion/related_repos/MrFlow/
+
+--- 核心方法 ---
+Training-free 的 4 阶段 pipeline 加速预训练 Flow Matching 模型。
+使用 Real-ESRGAN 做像素空间超分辨率桥接。
+
+--- 关键文件 ---
+- 核心工具: mrflow_utils.py (28 行, direct_sigma_schedule)
+- FLUX pipeline: flux1_mrflow.py (第 35-75 行)
+- Qwen-Image pipeline: qwen_image_mrflow.py
+
+--- 4 阶段流程 ---
+1. 低分辨率生成 (512x512, 12步)
+2. Real-ESRGAN x2 超分到 1024x1024
+3. 重编码到 latent 空间 + 注入低强度噪声
+4. 高分辨率精炼 (从 sigma=0.12, 仅 1 步)
+
+--- 与 RDD 的核心差异 ---
+完全不同的范式: MrFlow 是推理加速技巧，不改变模型训练。
+RDD 是从数学上重新定义扩散过程。
+
+================================================================================
+10. XCube (CVPR 2024)
+================================================================================
+Repo: /home/tiger/multiscale_diffusion/related_repos/XCube/
+
+--- 核心方法 ---
+两阶段 3D latent diffusion：Dense 16^3 → Sparse 128^3
+
+--- 关键文件 ---
+- 扩散模型: xcube/models/diffusion.py (第 525-528 行)
+- 稀疏 UNet: xcube/modules/diffusionmodules/openaimodel/unet_sparse.py
+- 密集 UNet: xcube/modules/diffusionmodules/openaimodel/unet_dense.py
+- 推理: inference/sample_shapenet.py (第 109-125 行)
+- 粗粒度配置: configs/train/diffusion/diffusion_16x16x16_dense.yaml
+- 细粒度配置: configs/train/diffusion/diffusion_128x128x128_sparse.yaml
+
+--- 扩散公式 ---
+连续 DDPM, v-prediction, T=1000, linear beta schedule (0.0001→0.02)
+推理: DDIM 100 步
+
+--- 与 RDD 的差异 ---
+- 独立两阶段 cascade（各自独立训练），非单一 Markov 链
+- 3D 数据域，无 ImageNet 实验
+
+================================================================================
+11. OctFusion (SGP 2025)
+================================================================================
+Repo: /home/tiger/multiscale_diffusion/related_repos/octfusion/
+
+--- 核心方法 ---
+单一模型内 LR + HR 两个 UNet 分支，通过八叉树结构连接。
+
+--- 关键文件 ---
+- 主模型: models/octfusion_model_union.py (第 112-118, 242-269 行)
+- 联合 UNet: models/networks/diffusion_networks/graph_unet_union.py (第 11-92 行)
+- HR UNet 融合 LR: models/networks/diffusion_networks/graph_unet_hr.py (第 257-262 行)
+- 配置: configs/octfusion_snet_uncond.yaml
+
+--- 扩散公式 ---
+连续高斯扩散, log-SNR 参数化:
+  LR: x0-prediction, HR: epsilon-prediction
+  noise_level = beta_linear_log_snr(times)  # times ~ Uniform(0,1)
+  noised_data = alpha * data + sigma * noise
+采样: DDIM 变体, LR 输出做 sign clipping (t<0.7)
+
+--- 与 RDD 的差异 ---
+- 分两阶段训练（先 LR 再冻结训 HR），本质仍是 cascade
+- 3D 八叉树结构，图卷积操作
+
+================================================================================
+12. PDD - Pyramid Discrete Diffusion (ECCV 2024)
+================================================================================
+Repo: /home/tiger/multiscale_diffusion/related_repos/pyramid-discrete-diffusion/
+
+--- 核心方法 ---
+离散扩散(D3PM) + 空间金字塔分阶段超分。3 阶段: 32^3→64^3→256^3
+
+--- 关键文件 ---
+- 无条件扩散: models/unconditional_diffusion/gen_Diffusion.py
+- 条件扩散: models/conditional_diffusion/con_diffusion.py (第 120-140 行)
+- 去噪网络: models/conditional_diffusion/con_denoise.py (第 286-357 行)
+- 训练: train.py (第 81-96 行)
+- 配置: configs/train_s_1.yaml, train_s_1_to_s_2.yaml, train_s_2_to_s_3.yaml
+
+--- 扩散公式 ---
+离散扩散 (D3PM / Multinomial):
+  q(x_t | x_{t-1}) = alpha_t * x_{t-1} + (1 - alpha_t) * 1/K
+  (每步以概率 1-alpha_t 替换为均匀分布)
+仅 100 步扩散, cosine beta schedule
+
+--- 与 RDD 的差异 ---
+- 离散扩散 vs 连续扩散
+- 3 个独立模型级联 vs 单一 Markov 链
+- 3D 语义标签体素 vs 2D 连续值图像
+
+================================================================================
+13. ImageNet 实验配置汇总表
+================================================================================
+
+| 方法          | 分辨率  | Batch | GPU数   | 总步数    | LR     | 模型参数量  | FID      |
+|--------------|---------|-------|---------|-----------|--------|------------|----------|
+| DiMR-XL/2R   | 256     | 1024  | 16      | 1,000,000 | 2e-4   | 505M       | 1.70     |
+| DiMR-G/2R    | 256     | 1024  | 16      | 1,000,000 | 2e-4   | 1.06B      | 1.63     |
+| Relay-Stage1 | 64      | 4096  | 8       | ~305K     | 1e-4   | ~200M      | -        |
+| Relay-Stage2 | 256     | 4096  | 8       | ~305K     | 1e-4   | ~400M      | 2.64     |
+| LapFlow(DiT-B)| 256    | 1600  | 8       | ~800epoch | 2e-4   | ~130M      | ~15      |
+| LapFlow(DiT-L)| 256    | 256*16| 16      | ~1000ep   | 1e-4   | ~460M      | ~8       |
+| DCTdiff      | 64      | 1024  | 4       | 500,000   | 3e-4   | ~120M      | -        |
+| LowDiff-XL   | 256     | 512   | -       | 1,000,000 | 2e-4   | ~675M      | -        |
+| DiT-XL/2(官方)| 256    | 256   | -       | 7,000,000 | 1e-4   | 675M       | 2.27     |
+
+注: Relay 的步数按 1250M images / 4096 batch ≈ 305K 步计算
+注: SPEED, SwD, MrFlow 为 training-free 或蒸馏方法，无 ImageNet 从零训练配置
+注: Pyramid-Flow 面向视频，无 ImageNet 配置
+
+================================================================================
+14. 训练命令汇总
+================================================================================
+
+--- DiMR (ImageNet-256, XL/2R) ---
+accelerate launch --multi_gpu --num_processes 16 --num_machines 2 --mixed_precision fp16 \
+    train.py --config=configs/DiMR-XL-2R_imagenet256.py
+
+--- DiMR 采样/评估 ---
+accelerate launch --multi_gpu --num_processes 8 --mixed_precision fp16 \
+    eval.py --config=configs/DiMR-XL-2R_imagenet256.py \
+    --nnet_path='path/to/checkpoint' --IMGsave_path=saved_images
+
+--- Relay Diffusion Stage 1 (ImageNet 64x64) ---
+torchrun --standalone --nproc_per_node=8 train.py --outdir=training-runs \
+    --data=datasets/imagenet-64x64.zip --eff-attn=True \
+    --cond=1 --batch=4096 --batch-gpu=32 --lr=1e-4 --ema=50 --dropout=0.1 \
+    --fp16=1 --ls=25 --arch=adm --precond=edm
+
+--- Relay Diffusion Stage 2 (ImageNet 256x256) ---
+torchrun --standalone --nproc_per_node=8 train.py --outdir=training-runs \
+    --data=datasets/imagenet-256x256.zip --eff-attn=True \
+    --cond=1 --batch=4096 --batch-gpu=8 --lr=1e-4 --dropout=0.1 \
+    --fp16=1 --ls=1 --arch=adm --precond=blur \
+    --up-scale=4 --block-scale=0.15 --prob-length=0.93 --blur-sigma-max=3.0
+
+--- LapFlow (ImageNet-256) ---
+accelerate launch --multi_gpu --num_processes 8 feb12_train_ours.py \
+    --exp <exp_name> \
+    --dataset imagenet_256 --datadir ./data/imagenet/train \
+    --batch_size <per_gpu_bs> --num_epoch 1200 \
+    --image_size 256 --f 8 --num_in_channels 4 --num_out_channels 4 \
+    --nf 256 --ch_mult 1 2 3 4 --attn_resolutions 16 8 4 --num_res_blocks 2 \
+    --lr 2e-4 --scale_factor 0.18215 \
+    --model_type DiT-B/2 --num_classes 1000 --label_dropout 0.1 \
+    --num_levels 2 --time_segments 0.33 0.67 \
+    --use_mot --use_mask \
+    --save_content --save_ckpt_every 50 --use_grad_checkpointing
+
+--- DCTdiff (ImageNet 64x64) ---
+accelerate launch --multi_gpu --num_processes 4 --mixed_precision fp16 \
+    train.py --config=configs/imgnet64_uvit_mid_2by2.py --workdir YOUR_DIR
+
+--- LowDiff (ImageNet-256, LightningDiT-XL) ---
+(配置文件: LightningDiT/configs/mslightningdit_xl_vavae_f16d32.yaml)
+# 训练命令需参考其 train.py 的 argparse
+
+--- SPEED (推理, FLUX.1-dev) ---
+python latent_image_gen.py \
+    --prompts "a translucent jellyfish" \
+    --transform dct --scales 0.5 1.0 --delta 0.01 --save_dir ./out_flux
+
+--- SwD (蒸馏 SD3.5-Medium) ---
+(参考 train_sd35_medium.sh, 8xA100, 3000步, LoRA rank=64)
+
+================================================================================
+15. RDD vs 所有方法的核心差异总表
+================================================================================
+
+RDD 的核心公式:
+  q(x_t|x_0) 中添加连续 drift: d̄ = UP(DOWN(x_0)) - x_0
+  前向: x_t = sqrt(ᾱ_t)*x_0 + (t/ΔT)*d̄ + sqrt(1-ᾱ_t)*ε
+  预测目标: ε̃ = ε - (t/ΔT)*d̄/sqrt(1-ᾱ_t)
+
+RDD 的 4 个确定性 novelty:
+  1. 单一 Markov forward process 中连续 drift（非级联/非离散跳变）
+  2. 闭式 posterior + DPM-Solver 兼容
+  3. 单一预测目标 ε̃（非双重预测如 f-DM）
+  4. Drift coefficient γ 自动处理跨分辨率 SNR
+
+综合对比:
+
+| 方法           | 框架       | 前向修改? | 多尺度来源      | 采样器        | 模型数 | DPM-Solver |
+|---------------|-----------|----------|----------------|--------------|--------|-----------|
+| RDD (ours)    | DDPM/SDE  | ✓ drift  | SDE drift      | DPM-Solver   | 1      | ✓         |
+| Relay         | EDM/VE-SDE| ✓ blur   | 级联           | 自定义DCT    | 2      | ✗         |
+| LapFlow       | FM/ODE    | ✓ 分段   | Laplacian分解  | ODE solver   | 1(MoT) | ✗         |
+| DiMR          | VP-SDE    | ✗        | 多尺度架构     | DPM-Solver   | 1      | ✓         |
+| DCTdiff       | VP-SDE    | ✓ SNR    | DCT空间操作    | DPM-Solver   | 1      | ✓         |
+| SPEED         | FM        | ✗        | 推理时频谱扩展  | 原始solver   | 0      | -         |
+| Pyramid-Flow  | FM        | ✓ 多阶段 | 金字塔+renoise | Euler ODE    | 1      | ✗         |
+| SwD           | FM        | ✗        | 蒸馏+推理策略   | Euler 4步    | 1+LoRA | ✗         |
+| LowDiff       | FM/EDM    | ✗        | 条件级联       | Euler ODE    | 1      | ✗         |
+| MrFlow        | FM        | ✗        | 推理+ESRGAN    | 原始solver   | 0      | -         |
+| XCube (3D)    | DDPM      | ✗        | 独立2阶段级联  | DDIM         | 2      | ✗         |
+| OctFusion(3D) | Gaussian  | ✗        | LR→HR特征融合  | DDIM变体     | 1(2分支)| ✗         |
+| PDD (3D)      | D3PM离散  | ✗        | 独立3阶段级联  | 离散采样     | 3      | ✗         |
+
+RDD 的独特优势:
+1. 唯一一个在单一 Markov 链中通过连续 drift 实现多分辨率编码的方法
+2. 唯一一个同时满足: 修改前向过程 + 保持闭式后验 + 兼容 DPM-Solver
+3. 不需要 renoising（Pyramid-Flow、SwD 都需要）
+4. 不需要多模型级联（Relay、XCube、PDD 都需要）
+5. 不需要显式频率分解（LapFlow、DCTdiff 都需要）
+6. 单一简洁的预测目标 ε̃（不像 f-DM 需要双重预测）
+
+================================================================================
+END OF DOCUMENT
+================================================================================

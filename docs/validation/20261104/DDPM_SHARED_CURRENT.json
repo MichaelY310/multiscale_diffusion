@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "loss": 3.8770017623901367,
+  "bitwise_equal": true,
+  "counts": {
+    "module_outputs": 144,
+    "activation_gradients": 144,
+    "parameter_gradients": 31
+  },
+  "scope": "Unchanged original DiTMultiRes class; two blocks,width32; full32/16/8 grids, exact1000-step linear schedule and legacy three-stage training objective; common nonzero weights/input/RNG.",
+  "source_sha256": "43364f3026c1c322295d492c5723c226fa36b1c78b144ab534396e018a2d5507"
+}

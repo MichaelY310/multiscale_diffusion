@@ -1,0 +1,29 @@
+[
+  {
+    "label": "RDD_300_300_400",
+    "stage_lengths": [300, 300, 400],
+    "ckpt_dir": "checkpoints/RDD-Multistage-300-300-400",
+    "ckpt_step": "0400000",
+    "model_8": "DiT-B/2",
+    "model_16": "DiT-L/2",
+    "model_32": "DiT-XL/2"
+  },
+  {
+    "label": "RDD_100_300_600",
+    "stage_lengths": [100, 300, 600],
+    "ckpt_dir": "checkpoints/RDD-Multistage-100-300-600",
+    "ckpt_step": "0400000",
+    "model_8": "DiT-B/2",
+    "model_16": "DiT-L/2",
+    "model_32": "DiT-XL/2"
+  },
+  {
+    "label": "RDD_100_300_600_8x8continued600K",
+    "stage_lengths": [100, 300, 600],
+    "ckpt_dir": "eval_results/mixed_checkpoints/ms100300600_8x8continued600k_16x32orig400k_808090_ddpm",
+    "ckpt_step": "mixed",
+    "model_8": "DiT-B/2",
+    "model_16": "DiT-L/2",
+    "model_32": "DiT-XL/2"
+  }
+]

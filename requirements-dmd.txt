@@ -1,0 +1,2 @@
+# Original DMD uses PIQ's VGG-backed LPIPS for the fixed teacher-pair loss.
+piq==0.8.0

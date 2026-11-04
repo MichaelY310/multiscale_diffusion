@@ -1,0 +1,49 @@
+{
+  "metadata": {
+    "num_gpus_used": 8,
+    "train_batch_size": 32,
+    "sample_batch_size": 16,
+    "warmup": 3,
+    "timed_steps": 10,
+    "tf32": true
+  },
+  "params": {
+    "Original DiT-XL/2": 675129632,
+    "Multi-Stage (XL+L+B) total": 1263363936,
+    "  XL (32x32)": 675129632,
+    "  L (16x16)": 457906208,
+    "  B (8x8)": 130328096,
+    "Unified DiTMultiRes-XL/2": 674834720,
+    "Unified DiTMultiRes-L/2": 457840672
+  },
+  "flops_training_per_step": {
+    "Original DiT-XL/2": 1036999114752,
+    "Multi-Stage 300,300,400": 1225346595840,
+    "Multi-Stage 100,300,600": 1225346595840,
+    "Decouple 300,300,400": 1225346595840,
+    "Unified XL/2": 1360466795520,
+    "Unified L/2": 923006794752
+  },
+  "flops_sampling_total": {
+    "Original DiT-XL/2 250 steps": 86416592896000,
+    "Original DiT-XL/2 1000 steps": 345666371584000,
+    "Multi-Stage 300,300,400 250 steps": 36132572938240,
+    "Multi-Stage 300,300,400 1000 steps": 122951709491200,
+    "Multi-Stage 100,300,600 250 steps": 36132572938240,
+    "Multi-Stage 100,300,600 1000 steps": 122951709491200,
+    "Decouple 300,300,400 250 steps": 36132572938240,
+    "Decouple 300,300,400 1000 steps": 122951709491200,
+    "Unified XL/2 250 steps": 39734268313600,
+    "Unified XL/2 1000 steps": 138206150656000,
+    "Unified L/2 250 steps": 26957658767360,
+    "Unified L/2 1000 steps": 93765769625600
+  },
+  "wall_clock": {
+    "Original DiT-XL/2 | sample 250 steps": {
+      "mean_ms": 21330.1,
+      "std_ms": 28.39,
+      "min_ms": 21305.38,
+      "max_ms": 21395.84
+    }
+  }
+}

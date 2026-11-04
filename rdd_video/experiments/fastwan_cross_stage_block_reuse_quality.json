@@ -1,0 +1,75 @@
+[
+  {
+    "name": "spatial421_rdd_vsa20",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest"
+  },
+  {
+    "name": "csbr_early4_s100",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 1, 2, 3],
+    "cross_stage_reuse_stages": [2]
+  },
+  {
+    "name": "csbr_early6_s075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 1, 2, 3, 4, 5],
+    "cross_stage_reuse_stages": [2],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "csbr_early6_s100",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 1, 2, 3, 4, 5],
+    "cross_stage_reuse_stages": [2]
+  },
+  {
+    "name": "csbr_uniform6_s075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 5, 10, 15, 20, 25],
+    "cross_stage_reuse_stages": [2],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "csbr_uniform6_s100",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 5, 10, 15, 20, 25],
+    "cross_stage_reuse_stages": [2]
+  },
+  {
+    "name": "csbr_early8_s075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 1, 2, 3, 4, 5, 6, 7],
+    "cross_stage_reuse_stages": [2],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "csbr_uniform8_s100",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 4, 8, 12, 16, 20, 24, 28],
+    "cross_stage_reuse_stages": [2]
+  },
+  {
+    "name": "csbr_uniform12_s100",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 3, 5, 8, 10, 13, 16, 18, 21, 23, 26, 29],
+    "cross_stage_reuse_stages": [2]
+  }
+]

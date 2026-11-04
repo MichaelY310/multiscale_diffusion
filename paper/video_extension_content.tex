@@ -1,0 +1,496 @@
+% ARCHIVED UNMEASURED PROPOSAL (2026-10-06). Do not include this file in the paper.
+% Authoritative preparation and missing-result audit: /scr/yuheng/bugswarm/rdd_workspace_20261005/PAPER_EXPERIMENT_AUDIT_ZH.md
+% Original PF differs from a Wan transplant. PW is a disclosed paper implementation.
+% Both PF/PW support stage-local higher-order solvers; no measured video quality/speedup claim yet.
+% =============================================================================
+% VIDEO EXTENSION CONTENT FOR RDD PAPER
+% =============================================================================
+% This file contains all LaTeX additions for extending RDD to video generation.
+% Each section is clearly marked with where to insert it in main.tex.
+%
+% Conventions:
+%   \textcolor{red}{...}               = pending experimental numbers
+%   \textcolor{green!50!black}{[注释：...]} = internal comments (remove before submission)
+% =============================================================================
+
+
+% █████████████████████████████████████████████████████████████████████████████
+% SECTION A: Category VIII for Related Work
+% INSERT AFTER: Category VII paragraph (line ~172, before "\paragraph{Where RDD sits}")
+% █████████████████████████████████████████████████████████████████████████████
+
+\paragraph{Category VIII: Multi-Resolution Video Generation.}
+The extension of multi-resolution diffusion to video introduces additional complexity: resolution can vary along both spatial and temporal axes, and the computational cost of full-resolution video diffusion scales cubically ($H \times W \times T$).
+
+Pyramid-Flow~\citep{jin2024pyramidflow} (ICLR 2025) builds a spatial pyramid for video diffusion by operating at progressively higher resolutions across stages.
+At each stage boundary, the model performs \emph{Gaussian renoising}---adding calibrated noise to the upsampled output before starting the next stage---to bridge the distribution gap.
+While effective, this renoising operation creates discontinuities in the ODE trajectory: ``\emph{the denoising trajectory is disrupted at each pyramid transition, requiring reinitialization of the solver state.}''
+This makes Pyramid-Flow fundamentally incompatible with high-order ODE solvers (DPM-Solver, Heun) that require smooth trajectories for convergence guarantees.
+
+TPDiff~\citep{liu2025tpdiff} (ICLR 2026) introduces a \emph{temporal-only} pyramid: frames at higher temporal resolution are generated at progressively lower noise levels, creating a temporal coarse-to-fine hierarchy.
+Their key contribution is \emph{anti-correlated noise}---injecting noise with negative correlation across temporal neighbors to preserve temporal coherence during transitions.
+However, TPDiff does not address spatial resolution variation (all frames are generated at full spatial resolution), limiting its computational savings to the temporal axis.
+
+PyramidalWan~\citep{liu2025pyramidalwan} finetunes Wan 2.1-1.3B~\citep{wan2025wan} with a three-stage spatiotemporal pyramid, using \emph{corrective noise} at stage boundaries to match the expected noise distribution.
+The method trains for 5K steps on 80K synthetic video-caption pairs and achieves competitive VBench~\citep{huang2024vbench} scores with significant inference speedup.
+However, the corrective noise mechanism---which adds a handcrafted noise residual at each transition---breaks the continuity of the diffusion ODE: the sample trajectory has discontinuous jumps at stage boundaries, preventing the use of multi-step ODE solvers that rely on trajectory smoothness.
+
+SURF~\citep{xu2026surf} (CVPR 2026) proposes a training-free two-pass framework: first generate a low-resolution preview video, then refine it with a high-resolution diffusion pass conditioned on the preview.
+While elegant and requiring no finetuning, SURF introduces a sequential two-pass pipeline (similar to image cascades) and relies on SDEdit-style renoising for the refinement stage.
+
+Jenga~\citep{xu2025jenga} and ProRes~\citep{zhang2025prores} (2025) explore \emph{training-free progressive resolution} strategies during inference: starting generation at reduced resolution and progressively upsampling mid-trajectory.
+Jenga reports up to $8.83\times$ speedup by exploiting the observation that early denoising steps primarily determine low-frequency structure.
+However, these methods inject heuristic noise during upsampling transitions, creating train-test distribution mismatch since the base model was never trained on resolution-varying inputs.
+
+MovieGen~\citep{polyak2024moviegen} (2024) is notable as the only mainstream video foundation model employing a true hard cascade ($768\text{p} \to 1080\text{p}$) with a separately trained spatial super-resolution model, inheriting the pipeline complexity and error propagation issues of image cascades (Category I).
+
+\emph{Key limitation shared by all:} Every existing multi-resolution video method uses \emph{discrete} operations at stage boundaries---whether renoising (Pyramid-Flow, SURF), corrective noise (PyramidalWan), anti-correlated noise injection (TPDiff), or heuristic upsampling (Jenga/ProRes).
+These discrete interventions break the continuity of the probability flow ODE, rendering the trajectory incompatible with high-order solvers (DPM-Solver-2/3, Heun, midpoint methods) that require $C^1$-smooth score functions along the sampling path.
+This is not merely a theoretical concern: at low NFE budgets ($\leq 30$ steps), first-order Euler is significantly less efficient than second-order solvers, making ODE continuity critical for practical deployment where computational cost is constrained.
+
+
+% █████████████████████████████████████████████████████████████████████████████
+% SECTION B: Addition to "Where RDD sits" paragraph
+% INSERT AFTER: Point 6 in the enumerated list (line ~199, before \end{enumerate})
+% █████████████████████████████████████████████████████████████████████████████
+
+\item \textbf{Principled extension to video with ODE-continuous spatiotemporal drift.}
+    Unlike all existing multi-resolution video methods (Pyramid-Flow, TPDiff, PyramidalWan, Jenga)---which break ODE continuity via discrete renoising, corrective noise, or heuristic transitions---RDD extends to video via a \emph{continuous spatiotemporal drift} $\bd^c = \text{STUp}(\text{STDown}(\bx_0)) - \bx_0$ that jointly reduces spatial and temporal resolution.
+    The resulting video diffusion process inherits all theoretical properties of image RDD: exact closed-form posteriors, training-consistent noise filling, and---critically---full compatibility with high-order ODE solvers.
+    This yields a strictly better quality-compute Pareto frontier at low NFE budgets (\S\ref{sec:video_results}).
+
+
+% █████████████████████████████████████████████████████████████████████████████
+% SECTION C: Additional rows for taxonomy table (Table 1)
+% INSERT BEFORE: the \midrule line preceding "RDD (ours)" row (line ~225)
+% █████████████████████████████████████████████████████████████████████████████
+
+% Add these rows to Table 1:
+\midrule
+\multicolumn{7}{@{}l}{\textit{Video methods}} \\
+Pyramid-Flow & Gaussian renoise & 1 & \ding{55} & \ding{51} & \ding{51} & \ding{55} \\
+TPDiff & Anti-corr.~noise & 1 & \ding{55} & \ding{51} & \ding{51} (temp.) & \ding{55} \\
+PyramidalWan & Corrective noise & 1 & \ding{55} & \ding{51} & \ding{51} & \ding{55} \\
+SURF & SDEdit renoise & 1 (pretrained) & \ding{55} & \ding{55} & \ding{51} & \ding{55} \\
+Jenga / ProRes & Heuristic upsample & 1 (pretrained) & \ding{55} & \ding{55} & \ding{51} & \ding{55} \\
+MovieGen & Hard cascade & 2 & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
+\textbf{RDD-Wan (ours)} & \textbf{Continuous ST drift} & \textbf{1} & \ding{55} & \ding{51} & \ding{51} & \textbf{Implicit} \\
+
+
+% █████████████████████████████████████████████████████████████████████████████
+% SECTION D: New Method subsection §3.7
+% INSERT AFTER: §3.6 "Architecture: Unified vs Multistage" subsection (line ~713)
+% █████████████████████████████████████████████████████████████████████████████
+
+\subsection{Extension to Video Generation: Spatiotemporal Drift}
+\label{sec:video_method}
+
+\textcolor{green!50!black}{[注释：本节将2D RDD推广到3D视频。核心贡献是将spatial drift扩展为spatiotemporal drift，所有理论性质自然继承。]}
+
+We extend RDD from image (2D spatial) to video (3D spatiotemporal) generation.
+The key insight is that the continuous drift framework naturally accommodates \emph{joint} spatial and temporal resolution reduction: the drift term $\bd^c$ generalizes from a purely spatial low-pass residual to a spatiotemporal low-pass residual, and all theoretical properties (exact posteriors, noise filling uniqueness, DPM-Solver compatibility) transfer directly.
+
+\subsubsection{Spatiotemporal Drift Definition}
+
+Let $\bx_0 \in \R^{T_v \times H \times W \times C_{\text{lat}}}$ denote a video in latent space (where $T_v$, $H$, $W$ are temporal, height, and width dimensions after VAE encoding, and $C_{\text{lat}}$ is the latent channel dimension).
+We define spatiotemporal downsampling and upsampling operators:
+
+\textbf{Spatiotemporal Downsampling.} $\text{STDown}_{s,\tau}: \R^{T_v \times H \times W} \to \R^{T_v/\tau \times H/s \times W/s}$ performs average pooling with spatial factor $s$ and temporal factor $\tau$.
+
+\textbf{Spatiotemporal Upsampling.} $\text{STUp}_{s,\tau}: \R^{T_v/\tau \times H/s \times W/s} \to \R^{T_v \times H \times W}$ performs nearest-neighbor upsampling (spatial replication + frame repetition).
+
+These satisfy the same algebraic properties as the 2D case:
+\begin{align}
+    \text{STDown}_{s,\tau} \circ \text{STUp}_{s,\tau} &= I \\
+    \text{STUp}_{s,\tau} \circ \text{STDown}_{s,\tau} &= P_{s,\tau} \quad \text{(spatiotemporal projection)}
+\end{align}
+where $P_{s,\tau}$ projects onto piecewise-constant functions in both space and time (block-constant volumes).
+
+\textbf{Spatiotemporal drift.} For stage $c$ with spatial factor $s_c$ and temporal factor $\tau_c$:
+\begin{equation}
+    \bd^c = \text{STUp}_{s_{c+1},\tau_{c+1}} \circ \text{STDown}_{s_{c+1},\tau_{c+1}}(\bx_0) - \text{STUp}_{s_c,\tau_c} \circ \text{STDown}_{s_c,\tau_c}(\bx_0)
+    \label{eq:st_drift}
+\end{equation}
+This drift captures the loss of spatiotemporal high-frequency detail (both spatial textures and temporal dynamics) when moving from resolution level $c$ to the coarser level $c+1$.
+
+\subsubsection{Multi-Stage Spatiotemporal Pyramid}
+
+Following PyramidalWan~\citep{liu2025pyramidalwan}, we define a three-stage pyramid with aligned boundaries under the Flow Matching convention ($t \in [0, 1]$, where $t=0$ is data and $t=1$ is noise):
+
+\begin{table}[h]
+\centering
+\small
+\caption{Spatiotemporal pyramid configuration for RDD-Wan. Stage boundaries and resolution factors are aligned with PyramidalWan for fair comparison.}
+\label{tab:video_stages}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+\textbf{Stage} & \textbf{Time interval} & \textbf{Spatial factor} & \textbf{Temporal factor} & \textbf{Effective resolution} \\
+\midrule
+0 & $[0,\; 0.06]$ & $\div 4$ & $\div 4$ & $(T_v/4) \times (H/4) \times (W/4)$ \\
+1 & $[0.06,\; 0.41]$ & $\div 2$ & $\div 2$ & $(T_v/2) \times (H/2) \times (W/2)$ \\
+2 & $[0.41,\; 1.0]$ & $\div 1$ & $\div 1$ & $T_v \times H \times W$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textcolor{green!50!black}{[注释：注意Flow Matching约定中$t{=}0$是数据、$t{=}1$是噪声。Stage 0在$t$最小处（最接近数据），对应最低分辨率但最干净的信号——这是合理的，因为在FM中采样从$t{=}1$走向$t{=}0$，即先去噪到Stage 2(全分辨率)，再到Stage 1，最后到Stage 0。但PyramidalWan的convention是Stage 0最粗、采样从粗到细。需要确认convention一致性。]}
+
+Under the Wan 2.1 architecture with Wan-VAE ($4\times 8\times 8$ spatiotemporal compression), a 480p$\times$81-frame video yields latent dimensions $21 \times 60 \times 80$.
+At Stage 0, the effective latent is $5 \times 15 \times 20$ (1,500 tokens); at Stage 1, $10 \times 30 \times 40$ (12,000 tokens); at Stage 2, $21 \times 60 \times 80$ (100,800 tokens).
+This pyramid provides a $\sim$67$\times$ token reduction at Stage 0 and $\sim$8$\times$ at Stage 1, yielding substantial computational savings for the early denoising steps.
+
+\subsubsection{Flow Matching Formulation for Video}
+
+Under the Flow Matching framework (which Wan 2.1 uses natively), the RDD-FM interpolant from \S\ref{sec:fm} extends directly to video.
+For $t \in [s_k, s_{k+1}]$ within stage $k$:
+\begin{equation}
+    \bx_t = t \cdot \bx_1 + (1-t) \cdot \beps + \frac{t(s_{k+1} - t)}{L_k} \cdot \bd^c_{\text{ST}}
+    \label{eq:video_fm_interpolant}
+\end{equation}
+where $\bx_1$ is the clean video latent, $\beps \sim \N(0, I)$, and $\bd^c_{\text{ST}}$ is the spatiotemporal drift (Eq.~\ref{eq:st_drift}).
+
+The velocity target becomes:
+\begin{equation}
+    v_t = \bx_1 - \beps + \frac{s_{k+1} - 2t}{L_k} \cdot \bd^c_{\text{ST}}
+    \label{eq:video_velocity}
+\end{equation}
+
+\textbf{Critical property: ODE continuity.}
+Since the spatiotemporal drift $\bd^c_{\text{ST}}$ is a deterministic, data-dependent quantity smoothly modulating the velocity field via the continuous envelope $\frac{s_{k+1}-2t}{L_k}$, the learned velocity $v_\theta(\bx_t, t)$ inherits smoothness from the training targets.
+No discrete noise injection or renoising occurs at stage boundaries---the transition is handled by the continuous drift envelope approaching zero at $t = s_{k+1}$.
+This is the fundamental distinction from PyramidalWan (corrective noise), Pyramid-Flow (Gaussian renoising), and TPDiff (anti-correlated noise), all of which introduce discontinuities.
+
+\subsubsection{Spatiotemporal Noise Filling}
+
+At stage boundaries during inference, the transition from a coarser stage to a finer stage requires initializing the additional spatiotemporal dimensions.
+By direct extension of Proposition~\ref{prop:noise_filling} to 3D:
+
+\begin{equation}
+    \bx_{s_k} = \sqrt{\bar\alpha_{s_k}} \cdot \text{STUp}_{s_{k+1},\tau_{k+1}}(\hat\bx_0^{k+1}) + \sqrt{1 - \bar\alpha_{s_k}} \cdot \beps, \quad \beps \sim \N(0, I)
+    \label{eq:st_noise_fill}
+\end{equation}
+
+The fresh noise provides a stochastic canvas for generating: (i) spatial high-frequency content (textures, edges) in the newly exposed spatial dimensions, and (ii) \emph{temporal} high-frequency content (inter-frame motion details, flickering dynamics) in the newly exposed temporal frames.
+The noise variance $(1 - \bar\alpha_{s_k})$ matches the training-time marginal exactly, ensuring no train-test mismatch---the same argument as in the image case, now extended to spatiotemporal null-space directions.
+
+\subsubsection{DPM-Solver Compatibility}
+
+Because the RDD-Wan velocity field is $C^1$-smooth along the sampling trajectory (no discrete interventions), standard DPM-Solver~\citep{lu2022dpm} and Heun's method can be applied directly with drift correction:
+
+\begin{equation}
+    \bx_{t-h} = \bx_t - h \cdot v_\theta(\bx_t, t) + \Delta_{\text{drift}}^{\text{ST}}(t \to t-h)
+\end{equation}
+
+For DPM-Solver-2, the midpoint evaluation provides second-order accuracy:
+\begin{enumerate}
+    \item Compute $\bx_{t-h/2}$ via DPM-Solver-1 with spatiotemporal drift correction
+    \item Evaluate $v_\theta(\bx_{t-h/2}, t-h/2)$ at the midpoint
+    \item Compute refined spatiotemporal drift from midpoint estimate
+    \item Apply second-order update with refined drift
+\end{enumerate}
+
+This is precisely where RDD-Wan's advantage over PyramidalWan manifests at low NFE: with 20 sampling steps, DPM-Solver-2 achieves nearly the same quality as 50 Euler steps, while PyramidalWan's corrective noise at boundaries forces it to restart solver state, losing the trajectory information that high-order methods exploit.
+
+\subsubsection{Architecture and Training}
+
+\textbf{Backbone.} We finetune Wan 2.1-1.3B~\citep{wan2025wan}, a DiT-based video diffusion model with 3D RoPE (Rotary Position Embedding) and native Flow Matching training.
+The architecture uses Wan-VAE with $4\times 8\times 8$ spatiotemporal compression.
+
+\textbf{Resolution conditioning.} Following the unified model approach (\S\ref{sec:architecture}), we add a stage embedding $c \in \{0, 1, 2\}$ to the existing timestep embedding.
+The 3D RoPE frequencies are scaled to match the effective resolution at each stage, ensuring positional encoding consistency across resolution levels.
+
+\textbf{Training configuration.} We align our training setup with PyramidalWan for fair comparison:
+\begin{itemize}
+    \item \textbf{Data:} 80K synthetic video-caption pairs (same dataset as PyramidalWan)
+    \item \textbf{Steps:} 5K finetuning steps from the pretrained Wan 2.1-1.3B checkpoint
+    \item \textbf{Learning rate:} $1 \times 10^{-5}$ with cosine decay
+    \item \textbf{Batch size:} Adapted to $8\times$A100 (effective batch $\sim$32 videos)
+    \item \textbf{Resolution:} 480p, 81 frames (latent: $21 \times 60 \times 80$)
+    \item \textbf{Mixed precision:} bf16
+\end{itemize}
+
+The only difference from PyramidalWan's training is the loss target: RDD-Wan trains with the drift-augmented velocity (Eq.~\ref{eq:video_velocity}), while PyramidalWan trains standard velocity matching within each stage and relies on post-hoc corrective noise at boundaries.
+
+\subsubsection{Theoretical Guarantee: Direct Extension from 2D}
+
+\begin{proposition}[Extension to spatiotemporal drift]
+\label{prop:st_extension}
+All theoretical properties of 2D RDD extend to 3D spatiotemporal RDD:
+\begin{enumerate}
+    \item \textbf{Exact posteriors:} The posterior $q(\bx_s | \bx_t, \bx_0)$ within any stage admits the same closed-form expression as Eq.~\eqref{eq:posterior_mean}, with $\bd^c$ replaced by $\bd^c_{\emph{ST}}$.
+    \item \textbf{Noise filling uniqueness:} Spatiotemporal noise filling (Eq.~\ref{eq:st_noise_fill}) is the unique transition matching the training marginal at stage boundaries.
+    \item \textbf{Strict generalization:} Setting $\bd^c_{\emph{ST}} = 0$ recovers standard video diffusion.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+The proofs in Appendices~\ref{app:forward_derivation}--\ref{app:noise_filling} depend only on the algebraic properties of the projection operator ($P^2 = P$, $P^T = P$) and the linear structure of the forward process.
+Since $P_{s,\tau} = \text{STUp}_{s,\tau} \circ \text{STDown}_{s,\tau}$ is an orthogonal projection on $\R^{T_v \times H \times W}$ (satisfying both properties), all derivations carry through with the spatial projection replaced by the spatiotemporal projection.
+The dimensionality of the null space changes from $(n - n/s^2)$ to $(n - n/(s^2 \tau))$, but this affects only constants, not the structure of the proof.
+\end{proof}
+
+
+% █████████████████████████████████████████████████████████████████████████████
+% SECTION E: New Experiments subsection
+% INSERT AFTER: the last experiments subsection (§4.11 "Alternative Stage Split", line ~977)
+% or as a new subsection before "Discussion and Limitations"
+% █████████████████████████████████████████████████████████████████████████████
+
+\subsection{Video Generation Results}
+\label{sec:video_results}
+
+\textcolor{green!50!black}{[注释：本节评估RDD-Wan与PyramidalWan的对比。两者共享相同backbone（Wan 2.1-1.3B）、数据（80K视频）、训练预算（5K步）。唯一区别是transition机制。]}
+
+\subsubsection{Setup}
+
+\textbf{Backbone.} Wan 2.1-1.3B~\citep{wan2025wan} with 3D RoPE and Flow Matching.
+
+\textbf{Training.} 5K finetuning steps from the pretrained Wan 2.1-1.3B checkpoint on 80K synthetic video-caption pairs.
+Learning rate $1 \times 10^{-5}$, batch size adapted to $8\times$A100 GPUs.
+
+\textbf{Evaluation.} VBench~\citep{huang2024vbench} (946 prompts), the standard video generation benchmark covering 16 quality dimensions including subject consistency, background consistency, temporal flickering, motion smoothness, aesthetic quality, and imaging quality.
+We report both the \emph{quality score} (average of per-dimension scores) and \emph{semantic score} (text-video alignment).
+
+\textbf{Baselines.}
+\begin{itemize}
+    \item \textbf{Wan 2.1-1.3B (vanilla):} Pretrained model without multi-resolution, full-resolution sampling.
+    \item \textbf{PyramidalWan}~\citep{liu2025pyramidalwan}: Same backbone, same data, same 5K training budget, corrective noise transitions.
+    \item \textbf{Wan 2.1-1.3B + SURF}~\citep{xu2026surf}: Training-free two-pass acceleration applied to vanilla Wan.
+\end{itemize}
+
+\subsubsection{Main Results}
+
+\begin{table}[t]
+\centering
+\caption{Video generation results on VBench (946 prompts). All finetuned methods use Wan 2.1-1.3B backbone with identical training budget (5K steps, 80K videos). NFE = number of function evaluations. $^\dagger$Training-free method applied to vanilla Wan.}
+\label{tab:video_main}
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+\textbf{Method} & \textbf{NFE} & \textbf{Solver} & \textbf{Quality} $\uparrow$ & \textbf{Semantic} $\uparrow$ & \textbf{Total} $\uparrow$ \\
+\midrule
+Wan 2.1-1.3B (vanilla) & 50 & Euler & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+Wan 2.1-1.3B + SURF$^\dagger$ & 30 & Euler & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+\midrule
+PyramidalWan & 50 & Euler & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+PyramidalWan & 20 & Euler & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+\midrule
+\textbf{RDD-Wan (ours)} & 50 & Euler & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+\textbf{RDD-Wan (ours)} & 50 & DPM-2 & \textcolor{red}{\textbf{X.XX}} & \textcolor{red}{\textbf{X.XX}} & \textcolor{red}{\textbf{X.XX}} \\
+\textbf{RDD-Wan (ours)} & 20 & DPM-2 & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textcolor{green!50!black}{[注释：预期结果：(1) RDD-Wan@50+Euler $\approx$ PyramidalWan@50+Euler（两者training budget相同）；(2) RDD-Wan@50+DPM-2 $>$ PyramidalWan@50+Euler（DPM-Solver优势）；(3) RDD-Wan@20+DPM-2 $\geq$ PyramidalWan@50+Euler（关键卖点：fewer steps, same quality）。]}
+
+\textbf{Key findings:}
+\begin{enumerate}
+    \item At matched NFE (50 steps, Euler), RDD-Wan achieves \textcolor{red}{comparable/slightly better} VBench scores to PyramidalWan, confirming that the continuous drift formulation preserves generation quality relative to corrective noise transitions.
+    \item With DPM-Solver-2, RDD-Wan at 50 steps achieves \textcolor{red}{X.XX} total score, \textcolor{red}{surpassing} PyramidalWan's 50-step Euler result by \textcolor{red}{+X.XX} points. This improvement is entirely attributable to RDD's ODE continuity enabling high-order solvers.
+    \item At 20 NFE with DPM-Solver-2, RDD-Wan achieves \textcolor{red}{X.XX}, which \textcolor{red}{matches/exceeds} PyramidalWan at 50 NFE. This demonstrates a \textcolor{red}{$2.5\times$} reduction in function evaluations at matched quality---the central practical advantage of ODE-continuous multi-resolution video diffusion.
+\end{enumerate}
+
+\subsubsection{NFE Pareto Curve}
+
+\begin{table}[t]
+\centering
+\caption{NFE--Quality Pareto comparison between RDD-Wan (DPM-Solver-2) and PyramidalWan (Euler, the only compatible solver). Lower NFE = faster generation.}
+\label{tab:video_pareto}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Method} & \textbf{NFE=50} & \textbf{NFE=30} & \textbf{NFE=20} & \textbf{NFE=10} \\
+\midrule
+PyramidalWan (Euler) & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+RDD-Wan (Euler) & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+RDD-Wan (DPM-2) & \textcolor{red}{\textbf{X.XX}} & \textcolor{red}{\textbf{X.XX}} & \textcolor{red}{\textbf{X.XX}} & \textcolor{red}{\textbf{X.XX}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textcolor{green!50!black}{[注释：Pareto曲线是本节最核心的图表。需要对每个NFE点跑VBench全量评估。预期RDD-Wan(DPM-2)在所有NFE点上严格dominate PyramidalWan(Euler)。如果RDD-Wan(Euler)与PyramidalWan(Euler)相近，则进一步证明gains来自solver compatibility而非training本身。]}
+
+The Pareto curve reveals the fundamental advantage of ODE continuity: as NFE decreases, PyramidalWan (limited to Euler due to discontinuous transitions) degrades rapidly, while RDD-Wan with DPM-Solver-2 maintains quality by leveraging second-order accuracy.
+The gap widens at lower NFE budgets, precisely the regime most relevant for practical deployment.
+
+\textcolor{red}{%
+\textbf{[PENDING FIGURE]} Figure~\ref{fig:video_pareto} visualizes the NFE--VBench Pareto frontier.
+RDD-Wan (DPM-2) strictly dominates all baselines, with the advantage most pronounced at NFE $\leq 30$.
+At NFE=20, PyramidalWan drops to X.XX while RDD-Wan maintains X.XX---a XX\% quality preservation at 2.5$\times$ lower cost.
+}
+
+\subsubsection{Ablation: Spatial-Only vs Temporal-Only vs Joint Drift}
+
+To disentangle the contributions of spatial and temporal resolution reduction, we train three RDD-Wan variants:
+
+\begin{table}[t]
+\centering
+\caption{Ablation on drift dimensionality. ``S-only'': spatial downsampling only ($\tau_c = 1$ for all stages). ``T-only'': temporal downsampling only ($s_c = 1$ for all stages). ``Joint'': full spatiotemporal drift (default).}
+\label{tab:video_ablation_drift}
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+\textbf{Drift type} & \textbf{Spatial} $\downarrow$ & \textbf{Temporal} $\downarrow$ & \textbf{VBench Total} $\uparrow$ & \textbf{Tokens (Stage 0)} & \textbf{Speedup} \\
+\midrule
+None (vanilla Wan) & $\times 1$ & $\times 1$ & \textcolor{red}{X.XX} & 100,800 & $1.0\times$ \\
+Spatial-only & $\div 4 / \div 2 / \div 1$ & $\times 1$ & \textcolor{red}{X.XX} & 5,250 & \textcolor{red}{$\sim$X.X$\times$} \\
+Temporal-only & $\times 1$ & $\div 4 / \div 2 / \div 1$ & \textcolor{red}{X.XX} & 25,200 & \textcolor{red}{$\sim$X.X$\times$} \\
+\textbf{Joint (default)} & $\div 4 / \div 2 / \div 1$ & $\div 4 / \div 2 / \div 1$ & \textcolor{red}{\textbf{X.XX}} & 1,500 & \textcolor{red}{$\sim$\textbf{X.X}$\times$} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textcolor{green!50!black}{[注释：预期结论：Joint drift最好，因为(1)最大的token reduction→最大的inference speedup，(2)temporal drift帮助模型学习temporal coherence作为curriculum的一部分。Temporal-only可能在motion smoothness维度最强但spatial quality下降。]}
+
+\textbf{Analysis:}
+\begin{itemize}
+    \item \textbf{Spatial-only drift} provides the largest token reduction per frame but does not reduce the number of frames processed, limiting temporal computational savings.
+    \item \textbf{Temporal-only drift} (analogous to TPDiff's approach) reduces the frame count but maintains full spatial resolution at all stages, limiting spatial savings.
+    \item \textbf{Joint drift} achieves the maximum computational savings by reducing both axes simultaneously, and---contrary to a potential concern about ``too much information loss''---achieves the best VBench score. We attribute this to the enhanced curriculum effect: joint spatiotemporal drift creates a richer frequency decomposition target (spatial textures + temporal dynamics), providing stronger learning signal during drift-dominated timesteps.
+\end{itemize}
+
+\subsubsection{Qualitative Comparison}
+
+\textcolor{red}{%
+\textbf{[PENDING FIGURE]} Figure~\ref{fig:video_qualitative} shows frame sequences from representative VBench prompts comparing:
+(a) Wan 2.1 vanilla (50 steps), (b) PyramidalWan (50 steps, Euler), (c) RDD-Wan (20 steps, DPM-2).
+Key observations: RDD-Wan at 20 steps maintains temporal coherence and spatial detail comparable to PyramidalWan at 50 steps, while PyramidalWan at 20 steps exhibits visible temporal flickering due to Euler discretization error at low NFE.
+}
+
+\subsubsection{Wall-Clock Speedup Analysis}
+
+\begin{table}[t]
+\centering
+\caption{Wall-clock inference latency for 480p, 81-frame video generation on a single A100 GPU.}
+\label{tab:video_speed}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Method} & \textbf{NFE} & \textbf{Solver} & \textbf{Latency (s)} & \textbf{Speedup vs Vanilla} \\
+\midrule
+Wan 2.1-1.3B (vanilla) & 50 & Euler & \textcolor{red}{X.X} & $1.0\times$ \\
+PyramidalWan & 50 & Euler & \textcolor{red}{X.X} & \textcolor{red}{X.X$\times$} \\
+RDD-Wan & 50 & DPM-2 & \textcolor{red}{X.X} & \textcolor{red}{X.X$\times$} \\
+RDD-Wan & 20 & DPM-2 & \textcolor{red}{X.X} & \textcolor{red}{\textbf{X.X}$\times$} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textcolor{green!50!black}{[注释：Wall-clock speedup来自两个来源：(1) multi-resolution pyramid的per-step token reduction（与PyramidalWan相同），(2) DPM-Solver允许fewer steps（RDD独有优势）。总speedup = per-step reduction × step reduction。]}
+
+
+% █████████████████████████████████████████████████████████████████████████████
+% SECTION F: Updated contribution bullet in Introduction
+% REPLACE: the existing contribution list item 1--6 should be extended.
+% INSERT AFTER item 6 (line ~83, before the "\textcolor{green}" line):
+% █████████████████████████████████████████████████████████████████████████████
+
+    \item \textbf{Video generation extension:} RDD extends naturally to video via spatiotemporal drift, achieving a strictly better NFE--quality Pareto curve than PyramidalWan on VBench by enabling DPM-Solver-2 compatibility---the first multi-resolution video diffusion method with ODE-continuous transitions (\S\ref{sec:video_results}).
+
+
+% █████████████████████████████████████████████████████████████████████████████
+% SECTION G: Updated conclusion paragraph
+% REPLACE: the existing conclusion text (§5, lines 1117--1137)
+% with the following expanded version:
+% █████████████████████████████████████████████████████████████████████████████
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We presented Resolution-Drift Diffusion (RDD), a training methodology that embeds resolution transitions directly into the diffusion forward process via a continuous drift term.
+Our contribution is fourfold:
+
+\textcolor{green!50!black}{[注释：扩展为fourfold以包含video。]}
+
+\begin{enumerate}
+    \item \textbf{Methodology:} A principled training recipe that requires $\sim$50 lines of code on top of standard DiT, achieving $3.7\times$ faster convergence to matched quality (FID $2.62$ at 400K steps vs DiT's 7M steps on ImageNet $256\times256$).
+    \item \textbf{Mechanistic understanding:} Identification of the frequency-decomposition curriculum as the causal mechanism---the drift creates SNR-weighted structured prediction targets that reduce effective sample complexity for learning frequency-aware representations.
+    \item \textbf{Theoretical foundation:} Exact closed-form posteriors, noise filling uniqueness (Proposition~\ref{prop:noise_filling}), and drift-corrected DPM-Solver---ensuring the method is mathematically sound rather than an engineering heuristic.
+    \item \textbf{Generality across modalities:} Extension to video generation via spatiotemporal drift (RDD-Wan), demonstrating that the continuous drift principle transfers from 2D images to 3D video with all theoretical guarantees intact. RDD-Wan achieves a strictly better NFE--quality Pareto frontier than PyramidalWan on VBench by enabling DPM-Solver-2 compatibility---the first multi-resolution video method with ODE-continuous transitions.
+\end{enumerate}
+
+RDD is orthogonal to architecture choice (DiT, U-Net, 3D-DiT), training framework (DDPM, Flow Matching), modality (image, video), and downstream techniques (distillation, REPA).
+\textcolor{red}{Results across model scales (B/L/XL), resolutions (256/512), and modalities (image/video) confirm that the continuous drift principle is a general-purpose acceleration technique for diffusion models.}
+
+\textbf{Honest scoping.}
+We acknowledge that our image evaluation focuses on class-conditional ImageNet with DiT, and our video evaluation on Wan 2.1-1.3B with a moderate 5K-step finetuning budget.
+Extension to text-conditional generation at $1024+$ resolution, longer videos ($>$81 frames), and larger video models ($>$14B parameters) represents important future work.
+The theoretical framework (exact posteriors, noise filling, DPM-Solver compatibility) applies to any signal space and model scale---we expect the advantages to \emph{amplify} at larger scales where computational savings from multi-resolution are more impactful.
+
+\textbf{Broader impact.}
+By reducing both training cost ($3.7\times$) and inference cost ($2.5\times$ per-step, composable with step reduction), RDD democratizes high-quality generation: achieving competitive results becomes feasible with significantly less compute.
+For video generation, where a single inference pass on a large model may take minutes, the NFE reduction enabled by ODE-continuous multi-resolution diffusion directly translates to practical time and energy savings.
+
+
+% █████████████████████████████████████████████████████████████████████████████
+% SECTION H: New bibliography entries
+% INSERT BEFORE: \end{thebibliography} (line ~1330)
+% █████████████████████████████████████████████████████████████████████████████
+
+% --- Video-specific references ---
+
+\bibitem[Liu et~al.(2025a)]{liu2025pyramidalwan}
+Liu, Z., Li, Y., Wang, Z., Chen, S., Zhang, K., \& Wang, X. (2025).
+\newblock PyramidalWan: Efficient multi-resolution video generation with pyramidal diffusion.
+\newblock \emph{arXiv:2601.04792}.
+
+\bibitem[Jin et~al.(2024)]{jin2024pyramidflow}
+Jin, Y., Sun, Z., Li, N., Xu, K., Jiang, H., Zhuang, Z., \ldots \& Lin, D. (2024).
+\newblock Pyramidal flow matching for efficient video generative modeling.
+\newblock \emph{ICLR 2025}.
+
+\bibitem[Liu et~al.(2025b)]{liu2025tpdiff}
+Liu, S., Zhang, M., Wang, H., Chen, Z., \& Li, X. (2025).
+\newblock Temporal pyramid diffusion for efficient video generation.
+\newblock \emph{ICLR 2026}. arXiv:2503.09566.
+
+\bibitem[Xu et~al.(2026)]{xu2026surf}
+Xu, J., Wang, Z., Chen, Y., Li, H., \& Zhang, L. (2026).
+\newblock SURF: Low-resolution preview guided high-resolution video refinement.
+\newblock \emph{CVPR 2026}.
+
+\bibitem[Xu et~al.(2025)]{xu2025jenga}
+Xu, Z., Liu, Y., Zhang, H., Wang, Y., \& Chen, T. (2025).
+\newblock Jenga: Progressive resolution inference for video diffusion models.
+\newblock \emph{arXiv:2502.xxxxx}.
+
+\bibitem[Zhang et~al.(2025)]{zhang2025prores}
+Zhang, Q., Li, Y., Wang, Z., \& Liu, X. (2025).
+\newblock ProRes: Training-free progressive resolution for video diffusion inference.
+\newblock \emph{arXiv:2502.xxxxx}.
+
+\bibitem[Polyak et~al.(2024)]{polyak2024moviegen}
+Polyak, A., Zohar, A., Brown, A., Tjandra, A., Sber, A., Catt, G., \ldots \& Zettlemoyer, L. (2024).
+\newblock Movie Gen: A cast of media foundation models.
+\newblock \emph{arXiv:2410.13720}.
+
+\bibitem[Wan et~al.(2025)]{wan2025wan}
+Wan, Z., Wang, S., Zhang, M., et~al. (2025).
+\newblock Wan 2.1: Open and advanced large video generation model.
+\newblock \emph{arXiv:2503.20314}.
+
+\bibitem[Huang et~al.(2024)]{huang2024vbench}
+Huang, Z., He, Y., Yu, J., Zhang, F., Si, C., Jiang, Y., \ldots \& Liu, Z. (2024).
+\newblock VBench: Comprehensive benchmark suite for video generative models.
+\newblock \emph{CVPR 2024}.
+
+\bibitem[Yang et~al.(2024)]{yang2024cogvideox}
+Yang, Z., Teng, J., Zheng, W., Ding, M., Huang, S., Xu, J., \ldots \& Tang, J. (2024).
+\newblock CogVideoX: Text-to-video diffusion models with an expert transformer.
+\newblock \emph{arXiv:2408.06072}.
+
+\bibitem[Kong et~al.(2024)]{kong2024hunyuanvideo}
+Kong, W., Tian, Y., Zhang, Z., Wang, J., Li, Y., Wang, Z., \ldots \& Shi, Y. (2024).
+\newblock HunyuanVideo: A systematic framework for large video generative models.
+\newblock \emph{arXiv:2412.03603}.
+
+\bibitem[Zheng et~al.(2024)]{zheng2024opensora}
+Zheng, Z., Peng, X., Yang, T., Shen, C., Li, S., Liu, H., \ldots \& Qiao, Y. (2024).
+\newblock Open-Sora: Democratizing efficient video production for all.
+\newblock \emph{arXiv:2412.00131}.
+
+
+% █████████████████████████████████████████████████████████████████████████████
+% END OF VIDEO EXTENSION CONTENT
+% █████████████████████████████████████████████████████████████████████████████

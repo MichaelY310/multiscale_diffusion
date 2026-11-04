@@ -1,0 +1,40 @@
+{
+  "model": "/scr/yuheng/bugswarm/FastVideo/huggingface/hub/models--Wan-AI--Wan2.1-T2V-1.3B-Diffusers/snapshots/0fad780a534b6463e45facd96134c9f345acfa5b",
+  "data": {
+    "data_path": "/scr/yuheng/bugswarm/rdd_workspace_20261005/fair_data_20261006/wan_v1/controlled_wan/train",
+    "dataloader_num_workers": 0,
+    "train_batch_size": 1,
+    "training_cfg_rate": 0.1,
+    "seed": 20261004,
+    "num_latent_t": 9,
+    "num_height": 128,
+    "num_width": 256,
+    "num_frames": 33
+  },
+  "optimizer": {
+    "learning_rate": 1e-05,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "weight_decay": 0.01,
+    "lr_scheduler": "constant_with_warmup",
+    "lr_warmup_steps": 0
+  },
+  "model_runtime": {
+    "enable_gradient_checkpointing_type": "full",
+    "weighting_scheme": "uniform",
+    "precondition_outputs": false
+  },
+  "precision": "fp32",
+  "distributed": {
+    "num_gpus": 1,
+    "sp_size": 1,
+    "tp_size": 1,
+    "hsdp_replicate_dim": 1,
+    "hsdp_shard_dim": 1
+  },
+  "global_batch": 1,
+  "steps": 3,
+  "attention": "FLASH_ATTN"
+}

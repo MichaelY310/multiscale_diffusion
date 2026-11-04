@@ -1,0 +1,24 @@
+{
+  "name": "RDD_sample_benchmark",
+  "num_warmup_batches": 1,
+  "num_measured_batches": 3,
+  "batch_size": 256,
+  "total_samples_measured": 768,
+  "mean_latency_per_sample": 1517.1172,
+  "std_latency_per_sample": 0.1986,
+  "throughput_samples_per_sec": 0.6591,
+  "total_time_sec": 1165.146,
+  "per_batch_times_ms": [
+    388418.0,
+    388323.8438,
+    388404.1562
+  ],
+  "cfg_scale": 1.5,
+  "stage_lengths": "100,300,600",
+  "num_steps": [
+    600,
+    300,
+    100
+  ],
+  "sampler": "DDPM-JumpStep (stochastic)"
+}

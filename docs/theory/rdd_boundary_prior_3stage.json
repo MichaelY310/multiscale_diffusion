@@ -1,0 +1,82 @@
+{
+  "status": "data_only_prior_not_fid_optimum",
+  "data_path": "/scr/yuheng/DevOpsBench/multiscale_diffusion/imagenet/ILSVRC/Data/CLS-LOC/train",
+  "vae_path": "/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/pretrained/stabilityai/sd-vae-ft-ema",
+  "images": 10000,
+  "posterior": "mean",
+  "snr_threshold": 1.0,
+  "threshold_sensitivity": [
+    0.5,
+    1.0,
+    2.0
+  ],
+  "bootstrap_replicates": 200,
+  "bootstrap_seed": 0,
+  "grid": 50,
+  "active_dof_fraction": {
+    "coarse_8": 0.0625,
+    "band_16_minus_8": 0.1875,
+    "band_32_minus_16": 0.75,
+    "band_32_minus_8": 0.9375
+  },
+  "projection_residual_pixel_mean_square": {
+    "coarse_8": 0.5161394076347351,
+    "band_16_minus_8": 0.0832387440085411,
+    "band_32_minus_16": 0.22044007289409637,
+    "band_32_minus_8": 0.30367881536483765
+  },
+  "projection_residual_active_coefficient_mean_square": {
+    "coarse_8": 8.258230522155761,
+    "band_16_minus_8": 0.4439399680455525,
+    "band_32_minus_16": 0.29392009719212847,
+    "band_32_minus_8": 0.3239240697224935
+  },
+  "raw_first_timestep_with_snr_below_threshold": {
+    "32_minus_16": 156,
+    "16_minus_8": 187,
+    "32_minus_8": 163
+  },
+  "boundary_uncertainty_grid": {
+    "32_minus_16": {
+      "q05": 100,
+      "median": 150,
+      "q95": 200,
+      "search_radius": 50
+    },
+    "16_minus_8": {
+      "q05": 150,
+      "median": 200,
+      "q95": 250,
+      "search_radius": 50
+    },
+    "32_minus_8": {
+      "q05": 100,
+      "median": 150,
+      "q95": 200,
+      "search_radius": 50
+    }
+  },
+  "predictor_order_valid_before_legal_projection": true,
+  "raw_grid_boundaries_three_stage": [
+    150,
+    200
+  ],
+  "legal_projection_applied": false,
+  "recommended_uncertain_boundary": "both",
+  "recommended_delta": 50,
+  "predicted_three_stage_finest_to_coarsest": [
+    150,
+    50,
+    800
+  ],
+  "conservative_three_stage_minimum_100": [
+    150,
+    100,
+    750
+  ],
+  "predicted_two_stage_finest_to_coarsest": [
+    150,
+    850
+  ],
+  "next_command": "python 2d/exp/build_rdd_boundary_plan.py --pred-three 150,50,800 --pred-two 150,850 --uncertain-boundary both --delta 50 --output eval_results/rdd_boundary_plan.json"
+}

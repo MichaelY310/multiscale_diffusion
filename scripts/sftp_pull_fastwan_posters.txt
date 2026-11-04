@@ -1,0 +1,1 @@
+reget /scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/rdd_fastwan_posters_20260908.tar.gz eval_results/rdd_fastwan_posters_20260908.tar.gz

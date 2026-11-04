@@ -1,0 +1,234 @@
+{
+  "description": "Complete speed benchmark results for RDD paper. All experiments run on NVIDIA H20 (95GB) GPUs with TF32 enabled.",
+  "training_speed": {
+    "description": "Training speed benchmark. 8 GPUs (DDP), per-GPU batch_size=32, global batch_size=256, AdamW (lr=1e-4, wd=0). 5 warmup + 20 timed steps.",
+    "hardware": "8x NVIDIA H20 (95GB)",
+    "results": {
+      "original_dit_xl2": {
+        "model": "DiT-XL/2",
+        "params": 675129632,
+        "mean_ms_per_step": 542.73,
+        "std_ms": 0.53,
+        "throughput_samples_per_sec": 59.0,
+        "peak_memory_gb": 27.71,
+        "flops_per_step": 1036999114752,
+        "time_ratio_vs_original": 1.0,
+        "flops_ratio_vs_original": 1.0,
+        "estimated_hours_400k_steps": 60.3,
+        "estimated_hours_450k_steps": 67.8,
+        "all_times_ms": [542.05, 541.93, 542.01, 542.1, 542.03, 542.46, 542.29, 542.57, 542.95, 543.09, 542.98, 543.23, 543.03, 543.9, 542.73, 543.45, 542.91, 543.21, 542.85, 542.9]
+      },
+      "multistage_300_300_400": {
+        "model": "DiT-XL/2 (32x32) + DiT-L/2 (16x16) + DiT-B/2 (8x8)",
+        "stage_lengths": [300, 300, 400],
+        "params_total": 1263363936,
+        "params_breakdown": {"XL_32x32": 675129632, "L_16x16": 457906208, "B_8x8": 130328096},
+        "mean_ms_per_step": 665.26,
+        "std_ms": 0.9,
+        "throughput_samples_per_sec": 48.1,
+        "peak_memory_gb": 36.49,
+        "flops_per_step": 1225346595840,
+        "time_ratio_vs_original": 1.226,
+        "flops_ratio_vs_original": 1.182,
+        "equivalent_original_steps_at_400k": 490400,
+        "equivalent_original_steps_at_450k": 551700,
+        "estimated_hours_400k_steps": 73.9,
+        "estimated_hours_450k_steps": 83.2,
+        "all_times_ms": [665.6, 665.99, 664.52, 666.16, 665.66, 665.45, 665.75, 666.06, 665.26, 664.06, 664.93, 663.73, 664.79, 664.87, 665.36, 664.3, 663.8, 667.52, 666.16, 665.22]
+      },
+      "multistage_100_300_600": {
+        "model": "DiT-XL/2 (32x32) + DiT-L/2 (16x16) + DiT-B/2 (8x8)",
+        "stage_lengths": [100, 300, 600],
+        "params_total": 1263363936,
+        "params_breakdown": {"XL_32x32": 675129632, "L_16x16": 457906208, "B_8x8": 130328096},
+        "mean_ms_per_step": 668.39,
+        "std_ms": 0.48,
+        "throughput_samples_per_sec": 47.9,
+        "peak_memory_gb": 36.49,
+        "flops_per_step": 1225346595840,
+        "time_ratio_vs_original": 1.232,
+        "flops_ratio_vs_original": 1.182,
+        "equivalent_original_steps_at_400k": 492800,
+        "equivalent_original_steps_at_450k": 554400,
+        "estimated_hours_400k_steps": 74.3,
+        "estimated_hours_450k_steps": 83.5,
+        "all_times_ms": [667.53, 668.79, 668.55, 668.96, 668.43, 667.83, 668.89, 668.43, 668.07, 668.28, 668.0, 668.77, 667.41, 667.73, 668.41, 668.37, 669.04, 669.01, 668.41, 668.85]
+      },
+      "unified_xl2": {
+        "model": "DiTMultiRes-XL/2 (single model, all resolutions)",
+        "stage_lengths": [300, 300, 400],
+        "params": 674834720,
+        "mean_ms_per_step": 682.82,
+        "std_ms": 3.45,
+        "throughput_samples_per_sec": 46.9,
+        "peak_memory_gb": 38.8,
+        "flops_per_step": 1360466795520,
+        "time_ratio_vs_original": 1.258,
+        "flops_ratio_vs_original": 1.312,
+        "equivalent_original_steps_at_400k": 503200,
+        "equivalent_original_steps_at_450k": 566100,
+        "estimated_hours_400k_steps": 75.9,
+        "estimated_hours_450k_steps": 85.4,
+        "all_times_ms": [683.12, 681.72, 680.86, 681.69, 681.19, 680.88, 681.46, 682.89, 682.86, 696.8, 681.73, 680.71, 682.92, 681.71, 682.05, 682.89, 685.29, 681.23, 684.43, 679.9]
+      },
+      "unified_l2": {
+        "model": "DiTMultiRes-L/2 (single model, all resolutions)",
+        "stage_lengths": [300, 300, 400],
+        "params": 457840672,
+        "mean_ms_per_step": 488.18,
+        "std_ms": 1.43,
+        "throughput_samples_per_sec": 65.5,
+        "peak_memory_gb": 29.06,
+        "flops_per_step": 923006794752,
+        "time_ratio_vs_original": 0.899,
+        "flops_ratio_vs_original": 0.89,
+        "equivalent_original_steps_at_400k": 359600,
+        "equivalent_original_steps_at_450k": 404550,
+        "estimated_hours_400k_steps": 54.2,
+        "estimated_hours_450k_steps": 61.0,
+        "all_times_ms": [487.93, 491.85, 488.56, 487.39, 487.2, 487.38, 488.75, 488.9, 487.77, 486.19, 486.09, 487.62, 487.74, 487.83, 486.53, 491.07, 487.45, 489.34, 488.4, 489.58]
+      }
+    },
+    "notes": "Decouple model has identical architecture to Multi-Stage 300,300,400 (same XL+L+B), so training speed is the same. Not separately benchmarked."
+  },
+  "sampling_speed_1000_steps": {
+    "description": "Sampling speed benchmark with 1000 total denoising steps. Single GPU, batch_size=256, CFG=1.5, 1 warmup + 3 measured batches. Sampler: DDPM-JumpStep (stochastic) for RDD models, DDPM for Original.",
+    "hardware": "1x NVIDIA H20 (95GB)",
+    "results": {
+      "original_dit_xl2": {
+        "model": "DiT-XL/2",
+        "num_sampling_steps": 1000,
+        "cfg_scale": 1.5,
+        "mean_latency_ms_per_sample": 9917.31,
+        "std_latency_ms": 0.36,
+        "throughput_samples_per_sec": 0.1008,
+        "total_time_3_batches_sec": 7616.49,
+        "per_batch_times_ms": [2538879.0, 2538889.75, 2538725.0],
+        "sampling_flops_total": 345666371584000,
+        "speedup_vs_original": 1.0
+      },
+      "multistage_300_300_400": {
+        "model": "DiT-XL/2 + DiT-L/2 + DiT-B/2",
+        "stage_config": "32x32: 300 steps (XL), 16x16: 300 steps (L), 8x8: 400 steps (B)",
+        "num_steps_per_model": [400, 300, 300],
+        "num_sampling_steps": 1000,
+        "cfg_scale": 1.5,
+        "mean_latency_ms_per_sample": 3468.09,
+        "std_latency_ms": 6.14,
+        "throughput_samples_per_sec": 0.2883,
+        "total_time_3_batches_sec": 2663.49,
+        "per_batch_times_ms": [886019.125, 888651.5625, 888823.75],
+        "sampling_flops_total": 122951709491200,
+        "speedup_vs_original": 2.860
+      },
+      "multistage_100_300_600": {
+        "model": "DiT-XL/2 + DiT-L/2 + DiT-B/2",
+        "stage_config": "32x32: 100 steps (XL), 16x16: 300 steps (L), 8x8: 600 steps (B)",
+        "num_steps_per_model": [600, 300, 100],
+        "num_sampling_steps": 1000,
+        "cfg_scale": 1.5,
+        "mean_latency_ms_per_sample": 1517.12,
+        "std_latency_ms": 0.20,
+        "throughput_samples_per_sec": 0.6591,
+        "total_time_3_batches_sec": 1165.15,
+        "per_batch_times_ms": [388418.0, 388323.8438, 388404.1562],
+        "sampling_flops_total": 122951709491200,
+        "speedup_vs_original": 6.537
+      },
+      "decouple_300_300_400": {
+        "model": "DiT-XL/2 + DiT-L/2 + DiT-B/2 (decoupled heads)",
+        "stage_config": "32x32: 300 steps (XL), 16x16: 300 steps (L), 8x8: 400 steps (B)",
+        "num_steps_per_model": [400, 300, 300],
+        "num_sampling_steps": 1000,
+        "cfg_scale": 1.5,
+        "mean_latency_ms_per_sample": 3468.13,
+        "std_latency_ms": 9.65,
+        "throughput_samples_per_sec": 0.2883,
+        "total_time_3_batches_sec": 2663.52,
+        "per_batch_times_ms": [884993.0625, 889396.0625, 889133.6875],
+        "sampling_flops_total": 122951709491200,
+        "speedup_vs_original": 2.860
+      },
+      "unified_xl2": {
+        "model": "DiTMultiRes-XL/2 (single model, all resolutions)",
+        "stage_config": "32x32: 300 steps, 16x16: 300 steps, 8x8: 400 steps",
+        "num_steps_per_model": [400, 300, 300],
+        "num_sampling_steps": 1000,
+        "cfg_scale": 1.5,
+        "mean_latency_ms_per_sample": 3906.03,
+        "std_latency_ms": 0.46,
+        "throughput_samples_per_sec": 0.256,
+        "total_time_3_batches_sec": 2999.83,
+        "per_batch_times_ms": [999877.6875, 1000077.8125, 999872.75],
+        "sampling_flops_total": 138206150656000,
+        "speedup_vs_original": 2.539
+      },
+      "unified_l2": {
+        "model": "DiTMultiRes-L/2 (single model, all resolutions)",
+        "stage_config": "32x32: 300 steps, 16x16: 300 steps, 8x8: 400 steps",
+        "num_steps_per_model": [400, 300, 300],
+        "num_sampling_steps": 1000,
+        "cfg_scale": 1.5,
+        "mean_latency_ms_per_sample": 2723.73,
+        "std_latency_ms": 0.09,
+        "throughput_samples_per_sec": 0.3671,
+        "total_time_3_batches_sec": 2091.83,
+        "per_batch_times_ms": [697249.9375, 697279.625, 697296.3125],
+        "sampling_flops_total": 93765769625600,
+        "speedup_vs_original": 3.641
+      }
+    }
+  },
+  "sampling_speed_250_steps": {
+    "description": "250-step sampling speed was NOT benchmarked with wall-clock measurements. Only theoretical FLOPs are available.",
+    "status": "NOT_MEASURED",
+    "theoretical_flops_only": {
+      "Original DiT-XL/2": 86416592896000,
+      "Multi-Stage 300,300,400 (steps: 90,80,80)": 36132572938240,
+      "Multi-Stage 100,300,600 (steps: 90,80,80)": 36132572938240,
+      "Decouple 300,300,400 (steps: 90,80,80)": 36132572938240,
+      "Unified XL/2 (steps: 90,80,80)": 39734268313600,
+      "Unified L/2 (steps: 90,80,80)": 26957658767360
+    },
+    "notes": "250-step config uses 90 steps for 32x32, 80 for 16x16, 80 for 8x8 (coarsest-to-finest). Wall-clock benchmark was planned (in benchmark_paper.py) but not yet executed."
+  },
+  "flops_summary": {
+    "training_flops_per_step": {
+      "unit": "FLOPs",
+      "formula": "6 * params * seq_len (seq_len=256 for 32x32 in latent space, sum over all stages)",
+      "Original DiT-XL/2": 1036999114752,
+      "Multi-Stage (all configs)": 1225346595840,
+      "Decouple 300,300,400": 1225346595840,
+      "Unified XL/2": 1360466795520,
+      "Unified L/2": 923006794752
+    },
+    "sampling_flops_total_per_image": {
+      "unit": "FLOPs",
+      "formula": "2 * params * seq_len * num_steps (sum over all stages, x2 for CFG)",
+      "1000_steps": {
+        "Original DiT-XL/2": 345666371584000,
+        "Multi-Stage 300,300,400": 122951709491200,
+        "Multi-Stage 100,300,600": 122951709491200,
+        "Decouple 300,300,400": 122951709491200,
+        "Unified XL/2": 138206150656000,
+        "Unified L/2": 93765769625600
+      },
+      "250_steps": {
+        "Original DiT-XL/2": 86416592896000,
+        "Multi-Stage (90,80,80)": 36132572938240,
+        "Decouple (90,80,80)": 36132572938240,
+        "Unified XL/2 (90,80,80)": 39734268313600,
+        "Unified L/2 (90,80,80)": 26957658767360
+      }
+    }
+  },
+  "parameters_summary": {
+    "Original DiT-XL/2": 675129632,
+    "Multi-Stage total (XL+L+B)": 1263363936,
+    "  DiT-XL/2 (32x32 stage)": 675129632,
+    "  DiT-L/2 (16x16 stage)": 457906208,
+    "  DiT-B/2 (8x8 stage)": 130328096,
+    "Unified DiTMultiRes-XL/2": 674834720,
+    "Unified DiTMultiRes-L/2": 457840672
+  }
+}

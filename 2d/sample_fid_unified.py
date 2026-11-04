@@ -454,7 +454,7 @@ def _load_unified_model(ckpt_path, arch, resolutions, device, dtype=torch.float3
 
 
 def _redraw_upsample(pred_xstart, t, diffusion, target_size):
-    """Canonical noise filling: upsample clean x0, then draw full IID noise.
+    """Fresh boundary: upsample clean x0, then draw full IID noise.
 
     The private function name is retained for backward compatibility with old
     experiments that called the same operation ``redraw``.
@@ -506,13 +506,13 @@ def _noise_filling_upsample(
     target_size,
     sigma_h=0.0,
 ):
-    """Historical innovation-preserving coupling (not canonical noise filling).
+    """Legacy stage-initial-noise coupling (not recovered-noise filling).
 
     The isometric lift keeps the already sampled coarse innovation.  A fresh
     Gaussian contributes only its component orthogonal to block-constant
-    tensors.  At ``sigma_h == 0`` the combined fine noise is still exactly
-    standard Gaussian, so canonical noise filling and innovation preserving
-    have identical one-stage marginals but different cross-stage couplings.
+    tensors. At ``sigma_h == 0``, an IID standard Gaussian coarse innovation
+    independent of the fresh draw gives standard Gaussian fine noise. This
+    assumption does not automatically hold for a model-recovered residual.
 
     ``sigma_h > 0`` retains the historical optional extra null-space variance.
     """
@@ -606,14 +606,23 @@ def _do_upsample(
     coarse_noise=None,
     fdm_rescale_probe="none",
     fdm_dimension_ratio=1.0,
+    previous_state=None,
+    previous_diffusion=None,
 ):
-    """Dispatch to the correct upsample method."""
+    """Canonical names: fresh discards noise; noise_filling recovers old noise.
+
+    Historical DDPM ``noise_filling`` meant fresh. Old configs must explicitly
+    use ``fresh`` or ``legacy_ddpm_noise_filling``; filenames are not semantics.
+    ``legacy_initial_noise`` retains the older stage-initial draw ablation.
+    """
+    upsample_mode = {"refresh": "fresh", "legacy_ddpm_noise_filling": "fresh",
+                     "coupled": "noise_filling"}.get(upsample_mode, upsample_mode)
     fdm_rescale_probe = validate_fdm_rescaling(fdm_rescale_probe)
     if fdm_rescale_probe != "none":
-        if upsample_mode not in ("noise_filling", "constant", "redraw"):
+        if upsample_mode not in ("fresh", "constant", "redraw"):
             raise ValueError(
                 "fdm_rescale_probe is intentionally supported only with canonical "
-                "noise_filling; combining inference probes would be ambiguous"
+                "fresh; combining inference probes would be ambiguous"
             )
         return _fdm_rescaled_upsample_probe(
             pred_xstart,
@@ -623,7 +632,7 @@ def _do_upsample(
             fdm_rescale_probe,
             fdm_dimension_ratio,
         )
-    if upsample_mode in ("innovation_preserving", "noise_filling_preserve"):
+    if upsample_mode in ("legacy_initial_noise", "innovation_preserving", "noise_filling_preserve"):
         return _noise_filling_upsample(
             pred_xstart,
             coarse_noise,
@@ -632,9 +641,22 @@ def _do_upsample(
             target_size,
             sigma_h=sigma_h,
         )
-    elif upsample_mode in ("noise_filling", "constant", "redraw"):
-        # Canonical project-wide meaning.  "constant" and "redraw" remain
-        # deprecated aliases so old experiment JSON files reproduce exactly.
+    elif upsample_mode == "noise_filling":
+        if previous_state is None or previous_diffusion is None:
+            raise ValueError("noise_filling requires the old noisy endpoint and its diffusion; use fresh to discard old noise")
+        old_t = torch.zeros(len(pred_xstart), device=pred_xstart.device, dtype=torch.long)
+        old_alpha = _extract_into_tensor(previous_diffusion.sqrt_alphas_cumprod, old_t, pred_xstart.shape)
+        old_sigma = _extract_into_tensor(previous_diffusion.sqrt_one_minus_alphas_cumprod, old_t, pred_xstart.shape)
+        if torch.any(old_sigma <= 0):
+            raise ValueError("Cannot recover noise at a zero-noise endpoint")
+        # jump_step / DPM leave their terminal state at local index zero.
+        # Their stage endpoint has zero resolution drift (global time T_c).
+        if previous_diffusion.timestep_map[0] != previous_diffusion.T_c:
+            raise ValueError("noise_filling requires the stage's zero-drift endpoint")
+        recovered = (previous_state-old_alpha*pred_xstart)/old_sigma
+        return _noise_filling_upsample(pred_xstart, recovered, t, diffusion, target_size, sigma_h=sigma_h)
+    elif upsample_mode in ("fresh", "constant", "redraw"):
+        # Explicit fresh aliases; historical JSON templates are migrated separately.
         return _redraw_upsample(pred_xstart, t, diffusion, target_size)
     elif upsample_mode == "bilinear":
         return _bilinear_upsample(pred_xstart, t, diffusion, target_size)
@@ -720,6 +742,8 @@ def _sample_batch_multistage(n, diffusions, models, resolutions_sampling_order,
                 resolution,
                 upsample_mode,
                 coarse_noise=stage_noise,
+                previous_state=samples,
+                previous_diffusion=diffusions[stage_index-1],
             )
             if use_cfg:
                 stage_input = torch.cat([stage_input, stage_input], dim=0)
@@ -867,6 +891,8 @@ def _sample_batch_unified(n, diffusions, resolutions, model, num_classes, use_cf
                 coarse_noise=stage_noise,
                 fdm_rescale_probe=fdm_rescale_probe,
                 fdm_dimension_ratio=spatial_dimension_ratio(resolutions[0], res),
+                previous_state=samples,
+                previous_diffusion=diffusions[sampling_order[stage_idx-1]],
             )
             if use_cfg:
                 init = torch.cat([init, init], dim=0)
@@ -939,7 +965,9 @@ def run_experiment(exp: Dict[str, Any], vae, rank: int, world_size: int,
     num_steps_list = [int(x) for x in exp["num_steps"].split(",")]
     sampler = exp.get("sampler", "ddpm")
     cfg_scale_raw = exp.get("cfg_scale", 1.0)
-    upsample_mode = exp.get("upsample_mode", "noise_filling")
+    upsample_mode = exp.get("upsample_mode", "noise_filling" if model_type == "fm_unified" else "fresh")
+    if model_type != 'fm_unified' and upsample_mode == 'noise_filling' and exp.get('boundary_semantics') != 'recovered_v2':
+        raise ValueError("Historical DDPM JSON noise_filling meant fresh. To reproduce it set upsample_mode=fresh. For recovered endpoint noise set boundary_semantics=recovered_v2 explicitly.")
     fdm_rescale_probe = validate_fdm_rescaling(
         exp.get("fdm_rescale_probe", "none")
     )

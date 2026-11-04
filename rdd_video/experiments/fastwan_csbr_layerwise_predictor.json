@@ -1,0 +1,67 @@
+[
+  {
+    "name": "rdd_vsa20_baseline",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest"
+  },
+  {
+    "name": "uniform6_global075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 5, 10, 15, 20, 25],
+    "cross_stage_reuse_stages": [2],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "top6_layer_scalar",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 1, 2, 15, 17, 29],
+    "cross_stage_reuse_stages": [2],
+    "cross_stage_reuse_layer_coefficients": {
+      "0": [0.9075157983788277, 0.0, 0.0],
+      "1": [0.8949248708141785, 0.0, 0.0],
+      "2": [0.6505481385451436, 0.0, 0.0],
+      "15": [0.7425458693879119, 0.0, 0.0],
+      "17": [0.5982979109965043, 0.0, 0.0],
+      "29": [0.715755309112325, 0.0, 0.0]
+    }
+  },
+  {
+    "name": "top6_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 1, 2, 15, 17, 29],
+    "cross_stage_reuse_stages": [2],
+    "cross_stage_reuse_layer_coefficients": {
+      "0": [0.9488689012588153, -0.22346659376257014, 0.0],
+      "1": [0.8827349044446051, 0.029831719555583513, 0.0],
+      "2": [0.6680603068215367, -0.0323164722011356, 0.0],
+      "15": [0.8345573679577453, -0.2009985190954166, 0.0],
+      "17": [0.6492839314655097, -0.12059449065009321, 0.0],
+      "29": [0.7122723547676469, -0.1241434985399135, 0.0]
+    }
+  },
+  {
+    "name": "top8_multiscale_high",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 1, 2, 15, 17, 19, 20, 29],
+    "cross_stage_reuse_stages": [2],
+    "cross_stage_reuse_layer_coefficients": {
+      "0": [0.9488689012588153, -0.22346659376257014, -0.04794645244779006],
+      "1": [0.8827349044446051, 0.029831719555583513, 0.007562903779511098],
+      "2": [0.6680603068215367, -0.0323164722011356, -0.015624362540900893],
+      "15": [0.8345573679577453, -0.2009985190954166, -0.09505301724756518],
+      "17": [0.6492839314655097, -0.12059449065009321, 0.08597462304629308],
+      "19": [0.6335784407563999, -0.1168061733402458, -0.4082447947471242],
+      "20": [0.620206218209192, -0.08413378269257081, -0.08536387416256917],
+      "29": [0.7122723547676469, -0.1241434985399135, -0.09728114245352908]
+    }
+  }
+]

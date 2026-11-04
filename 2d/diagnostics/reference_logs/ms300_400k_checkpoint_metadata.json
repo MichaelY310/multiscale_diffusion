@@ -1,0 +1,26 @@
+{
+  "checkpoint": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0400000.pt",
+  "audit_method": "torch.load(..., map_location='cpu', weights_only=False, mmap=True)",
+  "checkpoint_keys": [
+    "model",
+    "ema",
+    "opt",
+    "args",
+    "resolution",
+    "c",
+    "T_c",
+    "T_c_plus_1"
+  ],
+  "relevant_args": {
+    "stage_lengths": "300,300,400",
+    "global_batch_size": 256,
+    "resume_32": "checkpoints_32x32/0380000.pt",
+    "resume_16": "checkpoints_16x16/0380000.pt",
+    "resume_8": "checkpoints_8x8/0380000.pt",
+    "data_source": "imagenet"
+  },
+  "resolution": "8x8",
+  "T_c": 600,
+  "T_c_plus_1": 1000,
+  "conclusion": "The evaluated file is 0400000.pt and was produced by resuming 0380000.pt; the historical evaluator output directory containing '380k' is mislabeled. Treat the result as 400K."
+}

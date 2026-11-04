@@ -1,0 +1,13 @@
+[
+  {"name":"fixed_vsa20","stage_factors":"1,1;1,1;1,1","attention_mode":"vsa"},
+  {"name":"spatial221_native","stage_factors":"2,1;2,1;1,1","attention_mode":"c2f_route_only","boundary_executor":"torch_nearest"},
+  {"name":"spatial221_q32","stage_factors":"2,1;2,1;1,1","attention_mode":"c2f_route_only","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"},
+  {"name":"spatial421_native","stage_factors":"4,1;2,1;1,1","attention_mode":"c2f_route_only","boundary_executor":"torch_nearest"},
+  {"name":"spatial421_q32","stage_factors":"4,1;2,1;1,1","attention_mode":"c2f_route_only","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"},
+  {"name":"spatial441_native_reuse2","stage_factors":"4,1;4,1;1,1","attention_mode":"c2f_route_only","reuse_every":2,"reuse_scope":"projected","boundary_executor":"torch_nearest"},
+  {"name":"spatial441_q32_reuse2","stage_factors":"4,1;4,1;1,1","attention_mode":"c2f_route_only","reuse_every":2,"reuse_scope":"projected","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"},
+  {"name":"st421_native","stage_factors":"4,4;2,2;1,1","attention_mode":"c2f_route_only","boundary_executor":"torch_nearest"},
+  {"name":"st421_q32","stage_factors":"4,4;2,2;1,1","attention_mode":"c2f_route_only","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"},
+  {"name":"st441_native_reuse2","stage_factors":"4,4;4,4;1,1","attention_mode":"c2f_route_only","reuse_every":2,"reuse_scope":"projected","boundary_executor":"torch_nearest"},
+  {"name":"st441_q32_reuse2","stage_factors":"4,4;4,4;1,1","attention_mode":"c2f_route_only","reuse_every":2,"reuse_scope":"projected","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"}
+]

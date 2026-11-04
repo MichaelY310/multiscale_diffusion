@@ -1,0 +1,48 @@
+[
+  {
+    "name": "spatial421_rdd_vsa20",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest"
+  },
+  {
+    "name": "xsr_self_u12_s075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_branch_reuse": "self",
+    "cross_stage_branch_reuse_layers": [0,3,5,8,10,13,16,18,21,23,26,29],
+    "cross_stage_branch_reuse_stages": [2],
+    "cross_stage_branch_reuse_scale": 0.75
+  },
+  {
+    "name": "xsr_mlp_u12_s075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_branch_reuse": "mlp",
+    "cross_stage_branch_reuse_layers": [0,3,5,8,10,13,16,18,21,23,26,29],
+    "cross_stage_branch_reuse_stages": [2],
+    "cross_stage_branch_reuse_scale": 0.75
+  },
+  {
+    "name": "xsr_self_mlp_u6_s075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_branch_reuse": "self_mlp",
+    "cross_stage_branch_reuse_layers": [0,5,10,15,20,25],
+    "cross_stage_branch_reuse_stages": [2],
+    "cross_stage_branch_reuse_scale": 0.75
+  },
+  {
+    "name": "xsr_self_mlp_u8_s075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_branch_reuse": "self_mlp",
+    "cross_stage_branch_reuse_layers": [0,4,8,12,16,20,24,28],
+    "cross_stage_branch_reuse_stages": [2],
+    "cross_stage_branch_reuse_scale": 0.75
+  }
+]

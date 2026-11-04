@@ -1,0 +1,564 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{amsthm}
+\newtheorem{definition}{Definition}
+
+\geometry{margin=2.5cm}
+
+\title{\textbf{RDD-Video: Resolution-Drift Diffusion for Spatiotemporal Multi-Resolution Video Generation}\\[0.5em]\large Technical Proposal}
+\author{Research Notes}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We propose RDD-Video, an extension of the Resolution-Drift Diffusion (RDD) framework from 2D image generation to video generation. The core innovation is a \textbf{spatiotemporal drift} that simultaneously encodes spatial resolution progression and temporal frame-rate progression within a single continuous Markov process. Unlike existing multi-resolution video methods (Pyramid-Flow, TPDiff) that require explicit renoising at stage boundaries, RDD-Video maintains mathematical continuity via its drift mechanism, enabling compatibility with high-order ODE solvers (DPM-Solver) and achieving $10$--$20\times$ fewer function evaluations than SDE-based methods. This document provides a complete technical proposal including architecture design, mathematical formulation, training strategy, sampling algorithm, and experiment plan.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+%=============================================================================
+\section{Related Work: Multi-Resolution Video Generation}
+%=============================================================================
+
+\subsection{Pyramid-Flow (ICLR 2025)}
+
+\textbf{Core idea:} Divides the Flow Matching trajectory into 3 spatial pyramid stages operating at $\frac{1}{4}\times$, $\frac{1}{2}\times$, and $1\times$ spatial resolution. Each stage uses rectified flow with start/end points defined by upsampled latents + noise. Stage transitions use \emph{renoising}: adding block noise to match the distribution of the next stage's starting point.
+
+\textbf{Key formulas:}
+\begin{align}
+x_t &= \text{ratio} \cdot \text{start\_point} + (1-\text{ratio}) \cdot \text{end\_point} \\
+\text{target} &= \text{start\_point} - \text{end\_point} \quad \text{(rectified flow velocity)}
+\end{align}
+Stage transition (renoising):
+\begin{equation}
+\text{latents}_\text{new} = \alpha \cdot \text{Up}(\text{latents}_\text{old}) + \beta \cdot \text{block\_noise}
+\end{equation}
+where $\alpha, \beta$ are functions of a hyperparameter $\gamma$ controlling noise strength.
+
+\textbf{Architecture:} Single DiT (FLUX-based), 768p video at 24 FPS up to 10s. Uses temporal AR with causal attention.
+
+\textbf{Limitations:}
+\begin{itemize}[nosep]
+\item Explicit renoising at stage boundaries causes information loss
+\item Each stage is an independent flow $\to$ no global mathematical unification
+\item Incompatible with DPM-Solver (cannot cross stage boundaries with high-order steps)
+\item AR temporal generation limits inference speed
+\end{itemize}
+
+\textbf{Code:} \texttt{github.com/jy0205/Pyramid-Flow} --- key file: \texttt{pyramid\_dit\_for\_video\_gen\_pipeline.py}. The \texttt{add\_pyramid\_noise()} function (L300--349) implements the multi-stage flow matching training: for each stage $i_s$, it constructs start/end points via spatial upsampling + noise mixing, then linearly interpolates to get $x_t$.
+
+\subsection{TPDiff --- Temporal Pyramid Diffusion (ICLR 2026)}
+
+\textbf{Core idea:} Progressively increases \emph{frame rate} (temporal resolution) along the diffusion process. Early high-noise stages use $\frac{1}{4}$ frame rate; only the final stage operates at full frame rate. Uses \emph{stage-wise diffusion} training with data-noise alignment.
+
+\textbf{Key formulas:}
+Stage-wise endpoints:
+\begin{align}
+\hat{x}_{s_k} &= \gamma_{s_k} \text{Up}(\text{Down}(x_0, 2^{k+1}), 2) + \sigma_{s_k} \epsilon \\
+\hat{x}_{e_k} &= \gamma_{e_k} \text{Down}(x_0, 2^k) + \sigma_{e_k} \epsilon
+\end{align}
+where Down/Up are \emph{temporal} downsampling/upsampling.
+
+Stage-wise noise (derived from ODE decomposition):
+\begin{equation}
+\epsilon_k = \frac{\hat{x}_{e_k}/\gamma_{e_k} - \hat{x}_{s_k}/\gamma_{s_k}}{\sigma_{e_k}/\gamma_{e_k} - \sigma_{s_k}/\gamma_{s_k}}
+\end{equation}
+
+Inference renoising:
+\begin{equation}
+\hat{x}_{s_{k-1}} = \frac{\sqrt{2}\gamma_{s_k}}{\sigma_{s_k} + \sqrt{2}\gamma_{s_k}} \text{Up}(\hat{x}_{e_k}) + \frac{\sqrt{2}\sigma_t}{2} n', \quad n' \sim \mathcal{N}(0, \Sigma')
+\end{equation}
+with anti-correlated noise $\Sigma' = \begin{pmatrix}1 & -1 \\ -1 & 1\end{pmatrix}$ (block structure).
+
+\textbf{Key innovation:} Data-noise alignment via Hungarian algorithm minimizes $\text{dist}(x, \epsilon)$ within a batch, making the ODE path approximately deterministic $\to$ 2$\times$ faster training.
+
+\textbf{Results:} 50\% training cost reduction, 1.5$\times$ inference speedup on both DDIM and Flow Matching.
+
+\textbf{Limitations:}
+\begin{itemize}[nosep]
+\item Still requires renoising between temporal stages
+\item Only addresses temporal dimension; spatial is fixed
+\item Incompatible with DPM-Solver across stage boundaries
+\end{itemize}
+
+\textbf{Code:} Not publicly available. Method described in arXiv:2503.09566.
+
+\subsection{Open-Sora Plan (2025)}
+
+\textbf{Core components:}
+\begin{itemize}[nosep]
+\item \textbf{WF-VAE}: Wavelet-Flow VAE with 4$\times$8$\times$8 compression (temporal$\times$spatial)
+\item \textbf{Skiparse Denoiser}: 3D DiT + Skiparse Attention + 3D RoPE, 2.7B params
+\item \textbf{Progressive training}: Image $\to$ low-res video $\to$ high-res video
+\end{itemize}
+
+\textbf{Skiparse Attention:} Reduces $O(N^2)$ to $O(N^2/k)$ via sparse token grouping (sparse ratio $k=4$). Alternates between Single Skip (every $k$-th token) and Group Skip (contiguous groups).
+
+\textbf{Relevance to RDD-Video:} Skiparse can serve as the backbone attention mechanism for RDD-Video's DiT, naturally supporting variable sequence lengths across resolution stages.
+
+\subsection{CogVideoX (2024)}
+
+Uses \textbf{progressive training} (low-res $\to$ high-res) and 3D Full Attention with Expert AdaLN. Key insight: joint image-video training with 3D Causal VAE (4$\times$8$\times$8 compression).
+
+\subsection{Matryoshka Diffusion Models (ICLR 2024)}
+
+Joint multi-resolution diffusion in extended space with NestedUNet. Demonstrates text-to-video on WebVid at 16 frames. Uses resolution-dependent shifted cosine noise schedule.
+
+\subsection{Jenga / ProRes (2025)}
+
+Training-free progressive resolution strategy for inference: starts denoising at low spatial resolution, upsamples as denoising proceeds. Achieves 8.83$\times$ speedup on VBench with only 0.01\% quality drop.
+
+%=============================================================================
+\section{RDD 2D: Core Method Recap}
+%=============================================================================
+
+\subsection{Forward Process with Drift}
+\begin{equation}
+q(x_t | x_0) = \mathcal{N}\left(\sqrt{\bar\alpha_t} \cdot x_0 + \sqrt{\bar\alpha_t} \cdot \kappa(t) \cdot d, \; (1-\bar\alpha_t)\mathbf{I}\right)
+\end{equation}
+where:
+\begin{itemize}[nosep]
+\item $d = \text{Up}(\text{Down}(x_0)) - x_0$ is the drift vector (negative high-frequency residual)
+\item $\kappa(t) \in [0,1]$ is a piecewise linear schedule within each stage
+\item Stages defined by \texttt{stage\_lengths}, e.g., $[300, 300, 400]$ for total 1000 steps
+\end{itemize}
+
+\subsection{Key Properties}
+\begin{enumerate}[nosep]
+\item \textbf{Single Markov chain}: No stage boundaries, drift varies continuously
+\item \textbf{Closed-form posterior}: $q(x_{t-1}|x_t, x_0)$ is Gaussian with drift correction
+\item \textbf{Single prediction target}: $\tilde\varepsilon = \varepsilon + \sqrt{\bar\alpha_t/(1-\bar\alpha_t)} \cdot \kappa(t) \cdot d$
+\item \textbf{DPM-Solver compatible}: $x_{t-1} = \text{dpm\_step}(x_t) + \sqrt{\bar\alpha_{t-1}} \cdot (\kappa(t-1) - \kappa(t)) \cdot d$
+\item \textbf{Frequency-adaptive SNR}: Low-freq SNR unchanged, high-freq SNR decays by $(1-\kappa(t))^2$
+\end{enumerate}
+
+\subsection{Sampling (2D)}
+\begin{enumerate}[nosep]
+\item Stage 1 (8$\times$8): DDPM/DPM-Solver from pure noise to 8$\times$8 latent
+\item Stage transition: $x_\text{next} = \sqrt{\bar\alpha_{t_\text{start}}} \cdot \text{Up}(\hat{x}_0) + \sqrt{1-\bar\alpha_{t_\text{start}}} \cdot \varepsilon$ (noise filling)
+\item Stage 2 (16$\times$16): Continue denoising from $t_\text{start}$
+\item Stage transition + Stage 3 (32$\times$32): Continue to completion
+\end{enumerate}
+
+%=============================================================================
+\section{RDD-Video: Spatiotemporal Drift Design}
+%=============================================================================
+
+\subsection{Core Principle: Spatiotemporal Drift}
+
+The key insight is that video has two dimensions of resolution: \textbf{spatial} (pixel resolution) and \textbf{temporal} (frame rate). RDD's drift mechanism naturally extends to both:
+
+\begin{definition}[Spatiotemporal Drift]
+For a video latent $x_0 \in \mathbb{R}^{C \times T \times H \times W}$, define the spatiotemporal drift:
+\begin{equation}
+d = \text{STUp}(\text{STDown}(x_0)) - x_0
+\end{equation}
+where:
+\begin{align}
+\text{STDown}(x_0) &= \text{TemporalDown}_{\tau}(\text{SpatialDown}_s(x_0)) \in \mathbb{R}^{C \times T/\tau \times H/s \times W/s} \\
+\text{STUp}(\cdot) &= \text{TemporalUp}_{\tau}(\text{SpatialUp}_s(\cdot)) \in \mathbb{R}^{C \times T \times H \times W}
+\end{align}
+with $s$ the spatial downsampling factor and $\tau$ the temporal downsampling factor.
+\end{definition}
+
+This drift captures \emph{both} spatial high-frequency detail and temporal high-frequency motion simultaneously.
+
+\subsection{Multi-Stage Spatiotemporal Resolution Pyramid}
+
+We define $K$ stages with progressively increasing spatiotemporal resolution:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{cccccc}
+\toprule
+Stage $k$ & Spatial Res & Temporal Res & Spatial Factor & Temporal Factor & Timestep Range \\
+\midrule
+1 (coarsest) & $H/4 \times W/4$ & $T/4$ frames & $s=4$ & $\tau=4$ & $[0, T_1)$ \\
+2 & $H/2 \times W/2$ & $T/2$ frames & $s=2$ & $\tau=2$ & $[T_1, T_2)$ \\
+3 (finest) & $H \times W$ & $T$ frames & $s=1$ & $\tau=1$ & $[T_2, T_3)$ \\
+\bottomrule
+\end{tabular}
+\caption{3-stage spatiotemporal pyramid. Example: \texttt{stage\_lengths} = [250, 350, 400] for 1000 total steps.}
+\end{table}
+
+\subsection{Hierarchical Drift Definition}
+
+For the $K$-stage pyramid, we define a \textbf{cumulative drift} at each stage boundary:
+
+\textbf{Stage $k$ drift vector:}
+\begin{equation}
+d_k = \text{STUp}_{k \to k+1}(\text{STDown}_{k+1 \to k}(x_0^{(k+1)})) - x_0^{(k+1)}
+\end{equation}
+where $x_0^{(k+1)}$ is the full-resolution clean latent at stage $k+1$'s resolution.
+
+\textbf{Unified single-chain forward process:}
+\begin{equation}
+q(x_t | x_0) = \mathcal{N}\left(\sqrt{\bar\alpha_t} \cdot x_0^{(k)} + \sqrt{\bar\alpha_t} \cdot \kappa_k(t) \cdot d_k, \; (1-\bar\alpha_t)\mathbf{I}\right)
+\end{equation}
+where $k$ is the stage active at timestep $t$ (determined by stage boundaries), and $x_0^{(k)}$ is the target latent at stage $k$'s resolution.
+
+\subsection{Temporal Drift Specifics}
+
+\textbf{Temporal downsampling options:}
+\begin{itemize}[nosep]
+\item Average pooling along temporal axis (analogous to spatial avg-pool)
+\item Stride-$\tau$ subsampling (select every $\tau$-th frame)
+\item Temporal low-pass filter (Gaussian blur along time) --- \emph{recommended}
+\end{itemize}
+
+\textbf{Temporal upsampling for noise filling:}
+\begin{itemize}[nosep]
+\item Nearest-neighbor repetition (simplest, used by TPDiff)
+\item Linear interpolation between adjacent frames
+\item Slerp interpolation in latent space
+\end{itemize}
+
+The temporal drift $d_\text{temporal} = \text{TemporalUp}(\text{TemporalDown}(x_0)) - x_0$ captures inter-frame high-frequency motion (fast movements, temporal edges).
+
+\subsection{Mathematical Properties Preserved}
+
+\begin{enumerate}[nosep]
+\item \textbf{Single Markov chain}: The spatiotemporal drift is still a deterministic function of $x_0$, so the forward process remains a valid Gaussian perturbation kernel.
+\item \textbf{Closed-form posterior}: Since $d$ is fixed given $x_0$, the posterior $q(x_{t-1}|x_t,x_0)$ remains tractable:
+\begin{equation}
+\text{posterior\_mean} = \text{standard\_posterior\_mean} + \text{coef\_drift}(t) \cdot d
+\end{equation}
+\item \textbf{DPM-Solver compatibility}: The correction step becomes:
+\begin{equation}
+x_{t-1} = \text{dpm\_step}(x_t) + \sqrt{\bar\alpha_{t-1}} \cdot (\kappa(t-1) - \kappa(t)) \cdot d
+\end{equation}
+This works identically in the video setting since $d$ is a 3D tensor.
+\item \textbf{Frequency-adaptive SNR (spatiotemporal)}:
+\begin{equation}
+\text{SNR}_\text{RDD}(f_s, f_t, t) = \frac{\bar\alpha_t \cdot [(1-\kappa(t)) + \kappa(t) \cdot \text{LP}(f_s, f_t)]^2}{1-\bar\alpha_t}
+\end{equation}
+where $\text{LP}(f_s, f_t)$ is the spatiotemporal low-pass filter response. High spatial \emph{and} high temporal frequencies get additional SNR decay.
+\end{enumerate}
+
+%=============================================================================
+\section{Architecture Design}
+%=============================================================================
+
+\subsection{Overall Architecture}
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{
+\textbf{RDD-Video Architecture:}\\[0.3em]
+Video $\xrightarrow{\text{3D VAE}}$ Latent $z_0 \in \mathbb{R}^{C \times T' \times H' \times W'}$ $\xrightarrow{\text{RDD Forward + ST Drift}}$ Noisy latent $z_t$ $\xrightarrow{\text{3D DiT}}$ Predicted $\tilde\varepsilon$ $\xrightarrow{\text{RDD Reverse}}$ Clean latent $\hat{z}_0$ $\xrightarrow{\text{3D VAE Decoder}}$ Video
+}}
+\end{center}
+
+\subsection{3D VAE (Encoder/Decoder)}
+
+Use an existing high-quality video VAE:
+\begin{itemize}[nosep]
+\item \textbf{Option A}: WF-VAE (Open-Sora Plan) --- compression $4\times8\times8$, wavelet-based
+\item \textbf{Option B}: CogVideoX 3D Causal VAE --- compression $4\times8\times8$
+\item \textbf{Option C}: SD3-based VAE + temporal extension (Pyramid-Flow approach)
+\end{itemize}
+
+All options yield latents of shape $C \times T/4 \times H/8 \times W/8$ (e.g., 24 frames $\to$ 6 temporal tokens for a 2-second clip at 12 FPS).
+
+\subsection{3D DiT Backbone}
+
+\textbf{Unified model} approach (single DiT handles all resolutions):
+
+\begin{itemize}[nosep]
+\item \textbf{Base}: DiT-XL/2 architecture extended to 3D
+\item \textbf{Attention}: Skiparse Attention (from Open-Sora Plan) with sparse ratio $k=4$
+  \begin{itemize}[nosep]
+  \item First/last 2 layers: Full 3D attention
+  \item Middle layers: Skiparse (alternating Single Skip and Group Skip)
+  \end{itemize}
+\item \textbf{Position encoding}: 3D RoPE (Rotary Position Embedding)
+  \begin{itemize}[nosep]
+  \item Supports variable sequence lengths across stages
+  \item Each spatial/temporal position gets independent frequency encoding
+  \end{itemize}
+\item \textbf{Conditioning}: AdaLN-Zero with class/text embedding
+\item \textbf{Patch embedding}: $2\times2\times1$ spatial patches (temporal is handled by VAE compression)
+\end{itemize}
+
+\textbf{Key design choice --- Unified vs. Multistage:}
+Based on 2D RDD experiments showing Unified achieves the best FID, we adopt the \textbf{unified} approach: a single 3D DiT-XL handles all spatiotemporal resolutions. The 3D RoPE naturally adapts to different token counts per stage.
+
+\subsection{Model Size Estimates}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcc}
+\toprule
+Component & Parameters & Notes \\
+\midrule
+3D VAE & $\sim$200M & Frozen (pretrained) \\
+3D DiT-XL & $\sim$700M & Trainable \\
+Text Encoder (T5-XXL) & $\sim$4.7B & Frozen \\
+\midrule
+Total trainable & $\sim$700M & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%=============================================================================
+\section{Training Strategy}
+%=============================================================================
+
+\subsection{Multi-Stage Training Objective}
+
+At each training step, for each stage $k$:
+\begin{enumerate}[nosep]
+\item Obtain full-resolution video latent $z_0$ from VAE
+\item Compute spatiotemporal downsampled latent $z_0^{(k)}$ at stage $k$'s resolution
+\item Compute drift $d_k$ at stage $k$
+\item Sample $t \sim \text{Uniform}[T_k, T_{k+1})$
+\item Compute $\kappa_k(t) = (t - T_k)/(T_{k+1} - T_k)$
+\item Add noise with drift: $z_t = \sqrt{\bar\alpha_t} (z_0^{(k)} + \kappa_k(t) \cdot d_k) + \sqrt{1-\bar\alpha_t} \cdot \varepsilon$
+\item Predict $\tilde\varepsilon_\theta(z_t, t)$ with the 3D DiT
+\item Compute loss: $\|\tilde\varepsilon_\theta - (\varepsilon + \sqrt{\bar\alpha_t/(1-\bar\alpha_t)} \cdot \kappa_k(t) \cdot d_k)\|^2$
+\end{enumerate}
+
+\textbf{Total loss:} Sum over all stages with equal weight (same as 2D RDD Unified).
+
+\subsection{Progressive Training Schedule}
+
+Following CogVideoX and Open-Sora Plan's success:
+\begin{enumerate}[nosep]
+\item \textbf{Phase 1} (Image pretraining): Train 2D RDD on images (single frame, spatial-only drift). Initialize from DiT-XL ImageNet checkpoint.
+\item \textbf{Phase 2} (Low-res video): Extend to short, low-resolution videos (16 frames, 256$\times$256). Add temporal layers and temporal drift.
+\item \textbf{Phase 3} (High-res video): Scale to full resolution (64+ frames, 512$\times$512 or 768p). Activate all spatiotemporal stages.
+\end{enumerate}
+
+\subsection{Data-Noise Alignment (from TPDiff)}
+
+Incorporate TPDiff's key innovation: use Hungarian algorithm to align noise samples with training data within each mini-batch:
+\begin{algorithmic}
+\STATE \texttt{assign\_mat} $\leftarrow$ \texttt{scipy.optimize.linear\_sum\_assignment(dist(x, $\epsilon$))}
+\STATE $\epsilon' \leftarrow \epsilon$[\texttt{assign\_mat}]
+\end{algorithmic}
+This reduces variance in the ODE path estimation, accelerating convergence by $\sim$2$\times$.
+
+\subsection{Training Hyperparameters}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\toprule
+Hyperparameter & Value \\
+\midrule
+Optimizer & AdamW ($\beta_1=0.9, \beta_2=0.999$) \\
+Learning rate & $1\times10^{-4}$ \\
+Batch size (global) & 256 (via gradient accumulation) \\
+EMA decay & 0.9999 \\
+Diffusion steps & 1000 \\
+Stage lengths (3 stages) & [250, 350, 400] \\
+Resolutions (spatial latent) & [8, 16, 32] (in VAE latent space) \\
+Temporal resolutions & [$T/4$, $T/2$, $T$] frames \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%=============================================================================
+\section{Sampling Strategy}
+%=============================================================================
+
+\subsection{RDD-Video Sampling Algorithm}
+
+\begin{algorithm}[h]
+\caption{RDD-Video Sampling (3 stages)}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Text prompt $c$, CFG scale $w$, stage boundaries $[T_1, T_2, T_3]$
+\STATE \textbf{Output:} Generated video $v$
+\STATE
+\STATE \textcolor{blue}{// Stage 1: Coarsest spatiotemporal resolution}
+\STATE $z_{T_1} \sim \mathcal{N}(0, I)$ with shape $C \times T/4 \times H/4 \times W/4$
+\STATE $\hat{z}_0^{(1)} \leftarrow \text{DPM-Solver}(z_{T_1}, \text{steps}=T_1, \text{model}=\theta)$
+\STATE
+\STATE \textcolor{blue}{// Stage transition 1$\to$2: Spatiotemporal noise filling}
+\STATE $z_0^\text{up} \leftarrow \text{STUp}_{1\to2}(\hat{z}_0^{(1)})$ \quad // Upsample to $C \times T/2 \times H/2 \times W/2$
+\STATE $z_{T_2-T_1} \leftarrow \sqrt{\bar\alpha_{t_\text{start}}} \cdot z_0^\text{up} + \sqrt{1-\bar\alpha_{t_\text{start}}} \cdot \varepsilon$ \quad // Noise filling
+\STATE
+\STATE \textcolor{blue}{// Stage 2: Mid resolution}
+\STATE $\hat{z}_0^{(2)} \leftarrow \text{DPM-Solver}(z_{T_2-T_1}, \text{steps from } T_2-T_1 \text{ to } 0, \text{model}=\theta)$
+\STATE
+\STATE \textcolor{blue}{// Stage transition 2$\to$3: Spatiotemporal noise filling}
+\STATE $z_0^\text{up} \leftarrow \text{STUp}_{2\to3}(\hat{z}_0^{(2)})$ \quad // Upsample to $C \times T \times H \times W$
+\STATE $z_{T_3-T_2} \leftarrow \sqrt{\bar\alpha_{t_\text{start}}} \cdot z_0^\text{up} + \sqrt{1-\bar\alpha_{t_\text{start}}} \cdot \varepsilon$ \quad // Noise filling
+\STATE
+\STATE \textcolor{blue}{// Stage 3: Full resolution}
+\STATE $\hat{z}_0^{(3)} \leftarrow \text{DPM-Solver}(z_{T_3-T_2}, \text{steps from } T_3-T_2 \text{ to } 0, \text{model}=\theta)$
+\STATE
+\STATE $v \leftarrow \text{VAE.decode}(\hat{z}_0^{(3)})$
+\STATE \textbf{return} $v$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{DPM-Solver with Spatiotemporal Drift Correction}
+
+At each DPM-Solver step within a stage, apply the drift correction:
+\begin{equation}
+z_{t-1} = \text{dpm\_step}(z_t, \tilde\varepsilon_\theta) + \sqrt{\bar\alpha_{t-1}} \cdot (\kappa(t-1) - \kappa(t)) \cdot d
+\end{equation}
+
+During sampling, $d$ is estimated from the current prediction:
+\begin{equation}
+\hat{d} = \text{STUp}(\text{STDown}(\hat{z}_0)) - \hat{z}_0, \quad \hat{z}_0 = \frac{z_t - \sqrt{1-\bar\alpha_t} \cdot \tilde\varepsilon_\theta}{\sqrt{\bar\alpha_t}} - \kappa(t) \cdot \hat{d}
+\end{equation}
+This is solved iteratively (converges in 1--2 iterations in practice for 2D RDD).
+
+\subsection{Noise Filling at Stage Transitions}
+
+The ``constant upsample'' (noise filling) strategy that proved best in 2D RDD:
+\begin{equation}
+z_\text{next} = \sqrt{\bar\alpha_{t_\text{start}}} \cdot \text{STUp}(\hat{z}_0^{(k)}) + \sqrt{1-\bar\alpha_{t_\text{start}}} \cdot \varepsilon
+\end{equation}
+where $t_\text{start}$ is determined by the stage boundary. This is equivalent to treating the upsampled result as if it were the clean signal and forward-diffusing to the appropriate noise level.
+
+\subsection{Classifier-Free Guidance}
+
+Stage-dependent CFG (inspired by FreCaS):
+\begin{itemize}[nosep]
+\item Stage 1 (coarse structure): $w_1 = 7.0$ (strong guidance for global composition)
+\item Stage 2 (mid detail): $w_2 = 4.0$
+\item Stage 3 (fine detail): $w_3 = 2.0$ (weak guidance to preserve diversity/detail)
+\end{itemize}
+
+\subsection{Step Allocation}
+
+Total steps budget: 80 (with DPM-Solver-2):
+\begin{itemize}[nosep]
+\item Stage 1: 20 steps (coarse, small tensor)
+\item Stage 2: 30 steps (medium)
+\item Stage 3: 30 steps (fine, largest tensor)
+\end{itemize}
+
+Computation is dominated by Stage 3 (full resolution), but RDD's drift ensures Stage 3 starts from a high-quality low-frequency estimate, requiring fewer refinement steps.
+
+%=============================================================================
+\section{Advantages over Existing Methods}
+%=============================================================================
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l|X|X|X|X}
+\toprule
+Property & \textbf{RDD-Video} & Pyramid-Flow & TPDiff & Cascade \\
+\midrule
+Single Markov chain & \checkmark & $\times$ & $\times$ & $\times$ \\
+DPM-Solver compatible & \checkmark & $\times$ & $\times$ & $\times$ \\
+No renoising needed & \checkmark & $\times$ & $\times$ & N/A \\
+Single prediction target & \checkmark & \checkmark & \checkmark & $\times$ \\
+Joint spatial+temporal pyramid & \checkmark & Partial & Temporal only & $\times$ \\
+Closed-form posterior & \checkmark & $\times$ & $\times$ & $\times$ \\
+Steps to generate (estimate) & 60--80 & 60 (per stage) & 45 & 200+ \\
+\bottomrule
+\end{tabularx}
+\caption{Comparison of RDD-Video with existing multi-resolution video methods.}
+\end{table}
+
+\textbf{Key differentiators:}
+\begin{enumerate}[nosep]
+\item \textbf{Mathematical unification}: All stages are part of one continuous diffusion process; no artificial boundaries.
+\item \textbf{DPM-Solver}: Can use 2nd/3rd order solvers across the entire trajectory $\to$ 60--80 total steps vs. 180+ for Pyramid-Flow.
+\item \textbf{No information loss}: Drift \emph{continuously preserves} low-frequency spatiotemporal structure; renoising \emph{discards and re-injects}.
+\item \textbf{Temporal coherence}: The temporal drift ensures low-frequency temporal structure (slow motion, global scene flow) is protected throughout denoising.
+\end{enumerate}
+
+%=============================================================================
+\section{Experiment Design}
+%=============================================================================
+
+\subsection{Phase 1: Proof of Concept (2D$\to$Short Video)}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+Experiment & Description & Metric \\
+\midrule
+E1.1 & RDD-Video 16 frames, 256$\times$256, UCF-101 & FVD, IS \\
+E1.2 & Ablation: spatial-only vs. temporal-only vs. joint drift & FVD \\
+E1.3 & Ablation: noise filling vs. renoising at transitions & FVD, temporal consistency \\
+E1.4 & DPM-Solver 20/40/80 steps vs. DDPM 250 steps & FVD vs. NFE \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Phase 2: Scaling Up}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+Experiment & Description & Metric \\
+\midrule
+E2.1 & 512$\times$512, 48 frames, text-conditioned & VBench \\
+E2.2 & Compare with vanilla DiT video baseline & VBench, FVD \\
+E2.3 & Training efficiency: GPU-hours to reach target FVD & GPU-hours \\
+E2.4 & Data-noise alignment ablation & Convergence speed \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Phase 3: Full Evaluation}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+Experiment & Description & Metric \\
+\midrule
+E3.1 & 768p, 5--10s video, comparison with Pyramid-Flow & VBench, human eval \\
+E3.2 & Inference speed benchmark & Time per video, NFE \\
+E3.3 & Long video generation (30s+) via sliding window & Temporal consistency \\
+E3.4 & Image-to-video (I2V) extension & Quality, motion \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Key Ablations}
+
+\begin{enumerate}[nosep]
+\item \textbf{Stage lengths}: [250,350,400] vs. [200,300,500] vs. [333,333,334]
+\item \textbf{Temporal downsampling method}: avg-pool vs. stride vs. Gaussian blur
+\item \textbf{Number of stages}: 2 vs. 3 vs. 4
+\item \textbf{CFG schedule}: Constant vs. stage-dependent vs. timestep-linear
+\item \textbf{Data-noise alignment}: With vs. without Hungarian matching
+\end{enumerate}
+
+%=============================================================================
+\section{Implementation Roadmap}
+%=============================================================================
+
+\begin{enumerate}[nosep]
+\item \textbf{Week 1--2}: Implement spatiotemporal drift in \texttt{gaussian\_diffusion\_with\_drift.py}; extend to 5D tensors $(B,C,T,H,W)$
+\item \textbf{Week 2--3}: Adapt DiTMultiRes to 3D with Skiparse Attention and 3D RoPE
+\item \textbf{Week 3--4}: Training pipeline: data loading (video dataset), progressive training, gradient accumulation
+\item \textbf{Week 4--5}: Sampling pipeline: DPM-Solver with spatiotemporal drift correction, noise filling transitions
+\item \textbf{Week 5--6}: Phase 1 experiments on UCF-101 / WebVid subset
+\item \textbf{Week 6--8}: Scale up, evaluate on VBench, prepare paper figures
+\end{enumerate}
+
+%=============================================================================
+\section{Conclusion}
+%=============================================================================
+
+RDD-Video extends the Resolution-Drift Diffusion framework to video generation by introducing a \textbf{spatiotemporal drift} that simultaneously encodes spatial and temporal multi-resolution information. The mathematical properties of RDD --- single Markov chain, closed-form posterior, DPM-Solver compatibility --- are fully preserved in the video setting. Compared to Pyramid-Flow and TPDiff which require explicit renoising and are limited to first-order ODE solvers, RDD-Video achieves theoretical advantages in sampling efficiency (fewer NFE), training stability (single prediction target), and generation quality (continuous information preservation without renoising loss).
+
+The proposed approach combines the best ideas from the video generation literature: Skiparse Attention for computation efficiency (Open-Sora), progressive training (CogVideoX), data-noise alignment for faster convergence (TPDiff), and frequency-adaptive SNR (RDD's core innovation). This positions RDD-Video as a principled and efficient framework for high-quality video generation.
+
+\end{document}

@@ -1,0 +1,168 @@
+The user wants me to explain the RDD (Resolution-Drift Diffusion) method to someone who is at the implementation stage but needs help understanding the specific math. I need to be very concrete and practical, explaining exactly what to compute at each step.
+
+Let me re-read the method to make sure I explain it precisely.
+好的，我来给一个面向实现的详细讲解。
+
+---
+
+## RDD 实现指南（T₀=0, T₁=300, T₂=600, T₃=1000, s=2）
+
+### 整体流程概览
+
+你要生成一张 256×256 的图像。整个过程分 3 个阶段，从低分辨率到高分辨率：
+
+```
+阶段2 (64×64):  从纯噪声 → 去噪400步 → 得到64×64图像
+阶段1 (128×128): 从上采样+噪声 → 去噪300步 → 得到128×128图像  
+阶段0 (256×256): 从上采样+噪声 → 去噪300步 → 得到256×256图像
+```
+
+---
+
+### 1. 预计算（训练前一次性算好）
+
+**噪声调度**：和标准 DDPM 一样，用 linear schedule：
+```
+β_t: 0.0001 → 0.002，共1000步
+α_t = 1 - β_t
+ᾱ_t = α_1 × α_2 × ... × α_t
+```
+
+**分辨率调度**：
+```
+T = [0, 300, 600, 1000]
+C = 3 个分辨率层级
+s = 2（下采样倍率）
+```
+
+---
+
+### 2. 训练：每个 batch 做什么
+
+```python
+for each image x0 in batch:  # x0: [3, 256, 256]
+    
+    # Step 1: 随机选一个分辨率层级 c 和时间步 t
+    c = random.choice([0, 1, 2])
+    t = random.randint(1, T[c+1] - T[c])  # 该层级内的步数，1-based
+    
+    # Step 2: 下采样到对应分辨率
+    x0_c = avg_pool(x0, kernel_size=2**c)  # c=0→256, c=1→128, c=2→64
+    
+    # Step 3: 计算 drift
+    x0_c_plus1 = avg_pool(x0_c, kernel_size=2)  # 再下一级
+    UP_x0_c_plus1 = nearest_neighbor_upsample(x0_c_plus1, scale_factor=2)
+    drift = UP_x0_c_plus1 - x0_c  # 这就是 d^c
+    
+    # Step 4: 采样噪声
+    epsilon = randn_like(x0_c)
+    
+    # Step 5: 构造 noisy input
+    # 关键公式：x_t = sqrt(ᾱ_t) * x0_c + (t/(T[c+1]-T[c])) * sqrt(ᾱ_t) * drift + sqrt(1-ᾱ_t) * epsilon
+    global_t = T[c] + t  # 全局时间步，例如 c=0, t=150 → global_t=150
+    alpha_bar_t = alpha_bar[global_t]
+    
+    x_noisy = (sqrt(alpha_bar_t) * x0_c 
+               + (t / (T[c+1] - T[c])) * sqrt(alpha_bar_t) * drift 
+               + sqrt(1 - alpha_bar_t) * epsilon)
+    
+    # Step 6: 计算有效噪声（模型要预测的目标）
+    # ε̃ = ε + [sqrt(ᾱ_t) / sqrt(1-ᾱ_t)] * [t / (T[c+1]-T[c])] * drift
+    effective_epsilon = epsilon + (sqrt(alpha_bar_t) / sqrt(1 - alpha_bar_t)) * (t / (T[c+1] - T[c])) * drift
+    
+    # Step 7: 训练模型预测 effective_epsilon
+    pred = model(x_noisy, global_t, c)  # 模型输入：noisy图像、全局时间步、分辨率层级
+    loss = MSE(pred, effective_epsilon)
+```
+
+**关键理解**：模型以为自己在做标准 DDPM（预测噪声），但实际上噪声里混入了 drift 信息。模型不需要知道 drift 的存在，它只需要学会预测 `effective_epsilon`。
+
+---
+
+### 3. 采样（推理）
+
+```python
+# 从最低分辨率开始
+x = randn(1, 3, 64, 64)  # 纯噪声，64×64
+
+for c in [2, 1, 0]:  # 从低到高
+    
+    T_start = T[c]      # 该层级的起始全局时间步
+    T_end = T[c+1]      # 该层级的结束全局时间步
+    num_steps = T_end - T_start  # 400, 300, 300
+    
+    # 如果不是最低层，需要从上一层上采样并加噪声
+    if c < 2:
+        x = nearest_neighbor_upsample(x, scale_factor=2)  # 上采样
+        # 加一点噪声（可选，也可以直接开始去噪）
+        x = x + sigma * randn_like(x)  # sigma 可以是小值
+    
+    # 在该分辨率层级去噪
+    for i in range(num_steps, 0, -1):
+        t = T_start + i  # 当前全局时间步
+        s = t - 1        # 目标全局时间步
+        
+        # 1. 用模型预测 effective_epsilon
+        eps_pred = model(x, t, c)
+        
+        # 2. 从 effective_epsilon 反推 x0_c
+        # x_noisy = sqrt(ᾱ_t) * x0 + sqrt(1-ᾱ_t) * ε̃
+        # 所以 x0 = (x_noisy - sqrt(1-ᾱ_t) * ε̃) / sqrt(ᾱ_t)
+        x0_pred = (x - sqrt(1 - alpha_bar[t]) * eps_pred) / sqrt(alpha_bar[t])
+        
+        # 3. 计算 drift（需要从 x0_pred 估计）
+        # 这里有个问题：采样时我们没有真实的 x0，只有预测的 x0_pred
+        # 所以 drift 也要从 x0_pred 估计：
+        x0_pred_down = avg_pool(x0_pred, kernel_size=2)
+        x0_pred_down_up = nearest_neighbor_upsample(x0_pred_down, scale_factor=2)
+        drift_pred = x0_pred_down_up - x0_pred
+        
+        # 4. 计算 posterior 的均值和方差
+        # 方差（和 DDPM 一样）：
+        # Σ = [(ᾱ_s - ᾱ_t)(1 - ᾱ_s)] / [ᾱ_s(1 - ᾱ_t)]
+        sigma_sq = (alpha_bar[s] - alpha_bar[t]) * (1 - alpha_bar[s]) / (alpha_bar[s] * (1 - alpha_bar[t]))
+        
+        # 均值（三项）：
+        # 第一项：标准去噪项
+        term1 = (1 - alpha_bar[s]) / (1 - alpha_bar[t]) * sqrt(alpha_bar[t] / alpha_bar[s]) * x
+        
+        # 第二项：x0 预测项
+        term2 = (alpha_bar[s] - alpha_bar[t]) / (1 - alpha_bar[t]) * (1 / sqrt(alpha_bar[s])) * x0_pred
+        
+        # 第三项：drift 修正项
+        # γ = [sqrt(ᾱ_s) / (T[c+1]-T[c])] * [s_local*(ᾱ_s-ᾱ_t)/(ᾱ_s*(1-ᾱ_t)) - (t-s)*ᾱ_t/(ᾱ_s*(1-ᾱ_t))]
+        # 其中 s_local = s - T[c], t_local = t - T[c]
+        s_local = s - T_start
+        t_local = t - T_start
+        gamma = (sqrt(alpha_bar[s]) / (T_end - T_start)) * (
+            s_local * (alpha_bar[s] - alpha_bar[t]) / (alpha_bar[s] * (1 - alpha_bar[t]))
+            - (t_local - s_local) * alpha_bar[t] / (alpha_bar[s] * (1 - alpha_bar[t]))
+        )
+        term3 = gamma * drift_pred
+        
+        mu = term1 + term2 + term3
+        
+        # 5. 采样下一步
+        x = mu + sqrt(sigma_sq) * randn_like(x) if s > T_start else mu
+
+# x 就是最终的 256×256 图像
+```
+
+---
+
+### 4. 几个容易踩坑的地方
+
+**1. 时间步索引**：`alpha_bar[t]` 中的 `t` 是**全局时间步**（0-1000），不是层级内的局部时间步。但 drift 系数里的 `t/(T[c+1]-T[c])` 用的是**局部时间步**。
+
+**2. 采样时的 drift 估计**：训练时 drift 是从真实 x0 算的，采样时没有真实 x0，只能用模型预测的 x0_pred 来估计 drift。这是近似，但实践上效果还行。如果发现效果不好，可以考虑：
+- 用 EMA 的 x0_pred（更稳定）
+- 或者在 drift 项上用较小的权重
+
+**3. 分辨率层级条件**：模型需要知道当前在哪个分辨率层级。实现方式：
+- 方式 A：把 `c` 作为额外输入 concat 到时间步 embedding
+- 方式 B：把 `c` 编码成 embedding，加到时间步 embedding 上
+- 方式 C：不同层级用不同的模型（不推荐，失去了单模型的意义）
+
+**4. 最低层级（c=2）没有 drift**：因为 `x0^{c+1}` 不存在。实际上你可以在代码里让 c=2 时 drift=0，此时 gamma=0，posterior 退化为标准 DDPM。
+
+**5. 上采样后的噪声**：从 c=2 到 c=1（64→128）时，上采样后加多少噪声？一种简单做法是加对应时间步的噪声量（即 `sqrt(1-ᾱ_{T_end}) * epsilon`），让上采样后的分布和前向过程的终端分布匹配。

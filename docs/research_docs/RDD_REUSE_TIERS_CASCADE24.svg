@@ -1,0 +1,239 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="318" viewBox="0 0 1080 318">
+<rect width="1080" height="318" fill="#ffffff"/>
+<defs><marker id="arrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0 0 L5 2.5 L0 5" fill="#b06010"/></marker></defs>
+<g font-family="Arial,Microsoft YaHei,sans-serif" fill="#15202b">
+<text x="18" y="28" font-size="20">B：低 → 中 → 高，两次各复用24层</text>
+<text x="18" y="54" font-size="14">蓝色 = 真正执行整个 block；橙色 = 跳过整个 block，加入上一阶段同层更新的上采样。</text>
+<text x="18" y="114" font-size="15">低分辨率</text>
+<rect x="140" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="153" y="113" text-anchor="middle" font-size="12">0</text>
+<rect x="170" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="183" y="113" text-anchor="middle" font-size="12">1</text>
+<rect x="200" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="213" y="113" text-anchor="middle" font-size="12">2</text>
+<rect x="230" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="243" y="113" text-anchor="middle" font-size="12">3</text>
+<rect x="260" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="273" y="113" text-anchor="middle" font-size="12">4</text>
+<rect x="290" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="303" y="113" text-anchor="middle" font-size="12">5</text>
+<rect x="320" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="333" y="113" text-anchor="middle" font-size="12">6</text>
+<rect x="350" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="363" y="113" text-anchor="middle" font-size="12">7</text>
+<rect x="380" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="393" y="113" text-anchor="middle" font-size="12">8</text>
+<rect x="410" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="423" y="113" text-anchor="middle" font-size="12">9</text>
+<rect x="440" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="453" y="113" text-anchor="middle" font-size="12">10</text>
+<rect x="470" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="483" y="113" text-anchor="middle" font-size="12">11</text>
+<rect x="500" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="513" y="113" text-anchor="middle" font-size="12">12</text>
+<rect x="530" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="543" y="113" text-anchor="middle" font-size="12">13</text>
+<rect x="560" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="573" y="113" text-anchor="middle" font-size="12">14</text>
+<rect x="590" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="603" y="113" text-anchor="middle" font-size="12">15</text>
+<rect x="620" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="633" y="113" text-anchor="middle" font-size="12">16</text>
+<rect x="650" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="663" y="113" text-anchor="middle" font-size="12">17</text>
+<rect x="680" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="693" y="113" text-anchor="middle" font-size="12">18</text>
+<rect x="710" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="723" y="113" text-anchor="middle" font-size="12">19</text>
+<rect x="740" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="753" y="113" text-anchor="middle" font-size="12">20</text>
+<rect x="770" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="783" y="113" text-anchor="middle" font-size="12">21</text>
+<rect x="800" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="813" y="113" text-anchor="middle" font-size="12">22</text>
+<rect x="830" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="843" y="113" text-anchor="middle" font-size="12">23</text>
+<rect x="860" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="873" y="113" text-anchor="middle" font-size="12">24</text>
+<rect x="890" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="903" y="113" text-anchor="middle" font-size="12">25</text>
+<rect x="920" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="933" y="113" text-anchor="middle" font-size="12">26</text>
+<rect x="950" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="963" y="113" text-anchor="middle" font-size="12">27</text>
+<rect x="980" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="993" y="113" text-anchor="middle" font-size="12">28</text>
+<rect x="1010" y="92" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="1023" y="113" text-anchor="middle" font-size="12">29</text>
+<text x="18" y="189" font-size="15">中间分辨率</text>
+<rect x="140" y="167" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="153" y="188" text-anchor="middle" font-size="12">0</text>
+<rect x="170" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="183" y="188" text-anchor="middle" font-size="12">1</text>
+<path d="M183 124 L183 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="200" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="213" y="188" text-anchor="middle" font-size="12">2</text>
+<path d="M213 124 L213 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="230" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="243" y="188" text-anchor="middle" font-size="12">3</text>
+<path d="M243 124 L243 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="260" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="273" y="188" text-anchor="middle" font-size="12">4</text>
+<path d="M273 124 L273 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="290" y="167" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="303" y="188" text-anchor="middle" font-size="12">5</text>
+<rect x="320" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="333" y="188" text-anchor="middle" font-size="12">6</text>
+<path d="M333 124 L333 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="350" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="363" y="188" text-anchor="middle" font-size="12">7</text>
+<path d="M363 124 L363 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="380" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="393" y="188" text-anchor="middle" font-size="12">8</text>
+<path d="M393 124 L393 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="410" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="423" y="188" text-anchor="middle" font-size="12">9</text>
+<path d="M423 124 L423 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="440" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="453" y="188" text-anchor="middle" font-size="12">10</text>
+<path d="M453 124 L453 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="470" y="167" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="483" y="188" text-anchor="middle" font-size="12">11</text>
+<rect x="500" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="513" y="188" text-anchor="middle" font-size="12">12</text>
+<path d="M513 124 L513 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="530" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="543" y="188" text-anchor="middle" font-size="12">13</text>
+<path d="M543 124 L543 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="560" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="573" y="188" text-anchor="middle" font-size="12">14</text>
+<path d="M573 124 L573 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="590" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="603" y="188" text-anchor="middle" font-size="12">15</text>
+<path d="M603 124 L603 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="620" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="633" y="188" text-anchor="middle" font-size="12">16</text>
+<path d="M633 124 L633 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="650" y="167" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="663" y="188" text-anchor="middle" font-size="12">17</text>
+<rect x="680" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="693" y="188" text-anchor="middle" font-size="12">18</text>
+<path d="M693 124 L693 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="710" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="723" y="188" text-anchor="middle" font-size="12">19</text>
+<path d="M723 124 L723 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="740" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="753" y="188" text-anchor="middle" font-size="12">20</text>
+<path d="M753 124 L753 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="770" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="783" y="188" text-anchor="middle" font-size="12">21</text>
+<path d="M783 124 L783 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="800" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="813" y="188" text-anchor="middle" font-size="12">22</text>
+<path d="M813 124 L813 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="830" y="167" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="843" y="188" text-anchor="middle" font-size="12">23</text>
+<rect x="860" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="873" y="188" text-anchor="middle" font-size="12">24</text>
+<path d="M873 124 L873 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="890" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="903" y="188" text-anchor="middle" font-size="12">25</text>
+<path d="M903 124 L903 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="920" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="933" y="188" text-anchor="middle" font-size="12">26</text>
+<path d="M933 124 L933 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="950" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="963" y="188" text-anchor="middle" font-size="12">27</text>
+<path d="M963 124 L963 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="980" y="167" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="993" y="188" text-anchor="middle" font-size="12">28</text>
+<path d="M993 124 L993 163" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="1010" y="167" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="1023" y="188" text-anchor="middle" font-size="12">29</text>
+<text x="18" y="264" font-size="15">最终分辨率</text>
+<rect x="140" y="242" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="153" y="263" text-anchor="middle" font-size="12">0</text>
+<rect x="170" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="183" y="263" text-anchor="middle" font-size="12">1</text>
+<path d="M183 199 L183 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="200" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="213" y="263" text-anchor="middle" font-size="12">2</text>
+<path d="M213 199 L213 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="230" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="243" y="263" text-anchor="middle" font-size="12">3</text>
+<path d="M243 199 L243 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="260" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="273" y="263" text-anchor="middle" font-size="12">4</text>
+<path d="M273 199 L273 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="290" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="303" y="263" text-anchor="middle" font-size="12">5</text>
+<path d="M303 199 L303 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="320" y="242" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="333" y="263" text-anchor="middle" font-size="12">6</text>
+<rect x="350" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="363" y="263" text-anchor="middle" font-size="12">7</text>
+<path d="M363 199 L363 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="380" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="393" y="263" text-anchor="middle" font-size="12">8</text>
+<path d="M393 199 L393 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="410" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="423" y="263" text-anchor="middle" font-size="12">9</text>
+<path d="M423 199 L423 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="440" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="453" y="263" text-anchor="middle" font-size="12">10</text>
+<path d="M453 199 L453 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="470" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="483" y="263" text-anchor="middle" font-size="12">11</text>
+<path d="M483 199 L483 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="500" y="242" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="513" y="263" text-anchor="middle" font-size="12">12</text>
+<rect x="530" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="543" y="263" text-anchor="middle" font-size="12">13</text>
+<path d="M543 199 L543 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="560" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="573" y="263" text-anchor="middle" font-size="12">14</text>
+<path d="M573 199 L573 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="590" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="603" y="263" text-anchor="middle" font-size="12">15</text>
+<path d="M603 199 L603 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="620" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="633" y="263" text-anchor="middle" font-size="12">16</text>
+<path d="M633 199 L633 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="650" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="663" y="263" text-anchor="middle" font-size="12">17</text>
+<path d="M663 199 L663 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="680" y="242" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="693" y="263" text-anchor="middle" font-size="12">18</text>
+<rect x="710" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="723" y="263" text-anchor="middle" font-size="12">19</text>
+<path d="M723 199 L723 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="740" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="753" y="263" text-anchor="middle" font-size="12">20</text>
+<path d="M753 199 L753 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="770" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="783" y="263" text-anchor="middle" font-size="12">21</text>
+<path d="M783 199 L783 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="800" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="813" y="263" text-anchor="middle" font-size="12">22</text>
+<path d="M813 199 L813 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="830" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="843" y="263" text-anchor="middle" font-size="12">23</text>
+<path d="M843 199 L843 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="860" y="242" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="873" y="263" text-anchor="middle" font-size="12">24</text>
+<rect x="890" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="903" y="263" text-anchor="middle" font-size="12">25</text>
+<path d="M903 199 L903 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="920" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="933" y="263" text-anchor="middle" font-size="12">26</text>
+<path d="M933 199 L933 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="950" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="963" y="263" text-anchor="middle" font-size="12">27</text>
+<path d="M963 199 L963 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="980" y="242" width="26" height="30" rx="3" fill="#ffe0af"/>
+<text x="993" y="263" text-anchor="middle" font-size="12">28</text>
+<path d="M993 199 L993 238" stroke="#b06010" fill="none" marker-end="url(#arrow)"/>
+<rect x="1010" y="242" width="26" height="30" rx="3" fill="#b9dafa"/>
+<text x="1023" y="263" text-anchor="middle" font-size="12">29</text>
+<text x="18" y="310" font-size="13">数字是实际 block 编号（0–29）。箭头搬运的是 Δh，不是把当前高分辨率 h 整个覆盖。</text>
+</g></svg>

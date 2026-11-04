@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560" viewBox="0 0 900 560">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Arial,sans-serif;fill:#111827}.axis{font-size:14px}.small{font-size:13px}.title{font-size:21px;font-weight:600}.grid{stroke:#d1d5db;stroke-width:1}.frame{stroke:#374151;stroke-width:1.2;fill:none}</style>
+<text class="title" x="88" y="31">Unified DiT-L/2: stage-allocation FID convergence</text>
+<text class="small" x="88" y="49">DDPM-250 · steps [8,16,32]=80/80/90 · CFG 1.0 · noise filling · 50K samples</text>
+<line class="grid" x1="88" x2="872" y1="482.00" y2="482.00"/>
+<text class="axis" x="76" y="487.00" text-anchor="end">0</text>
+<line class="grid" x1="88" x2="872" y1="420.86" y2="420.86"/>
+<text class="axis" x="76" y="425.86" text-anchor="end">10</text>
+<line class="grid" x1="88" x2="872" y1="359.71" y2="359.71"/>
+<text class="axis" x="76" y="364.71" text-anchor="end">20</text>
+<line class="grid" x1="88" x2="872" y1="298.57" y2="298.57"/>
+<text class="axis" x="76" y="303.57" text-anchor="end">30</text>
+<line class="grid" x1="88" x2="872" y1="237.43" y2="237.43"/>
+<text class="axis" x="76" y="242.43" text-anchor="end">40</text>
+<line class="grid" x1="88" x2="872" y1="176.29" y2="176.29"/>
+<text class="axis" x="76" y="181.29" text-anchor="end">50</text>
+<line class="grid" x1="88" x2="872" y1="115.14" y2="115.14"/>
+<text class="axis" x="76" y="120.14" text-anchor="end">60</text>
+<line class="grid" x1="88" x2="872" y1="54.00" y2="54.00"/>
+<text class="axis" x="76" y="59.00" text-anchor="end">70</text>
+<text class="axis" x="88.00" y="509" text-anchor="middle">50K</text>
+<text class="axis" x="284.00" y="509" text-anchor="middle">100K</text>
+<text class="axis" x="480.00" y="509" text-anchor="middle">150K</text>
+<text class="axis" x="676.00" y="509" text-anchor="middle">200K</text>
+<text class="axis" x="872.00" y="509" text-anchor="middle">250K</text>
+<rect class="frame" x="88" y="54" width="784" height="428"/>
+<text class="axis" x="480.0" y="538" text-anchor="middle">Training updates</text>
+<text class="axis" transform="translate(24 268.0) rotate(-90)" text-anchor="middle">FID (lower is better)</text>
+<line x1="508" x2="533" y1="29" y2="29" stroke="#2563eb" stroke-width="3"/>
+<text class="small" x="539" y="34">300/300/400</text>
+<polyline points="88.00,170.52 284.00,340.23 480.00,383.57 676.00,403.49 872.00,413.39" fill="none" stroke="#2563eb" stroke-width="3"/>
+<circle cx="88.00" cy="170.52" r="4.5" fill="white" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="284.00" cy="340.23" r="4.5" fill="white" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="480.00" cy="383.57" r="4.5" fill="white" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="676.00" cy="403.49" r="4.5" fill="white" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="872.00" cy="413.39" r="4.5" fill="white" stroke="#2563eb" stroke-width="2.5"/>
+<text class="small" x="880.00" y="405.39">11.22</text>
+<line x1="648" x2="673" y1="29" y2="29" stroke="#dc2626" stroke-width="3"/>
+<text class="small" x="679" y="34">100/300/600</text>
+<polyline points="88.00,137.25 284.00,300.02 480.00,348.87 676.00,371.21 872.00,385.53" fill="none" stroke="#dc2626" stroke-width="3"/>
+<circle cx="88.00" cy="137.25" r="4.5" fill="white" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="284.00" cy="300.02" r="4.5" fill="white" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="480.00" cy="348.87" r="4.5" fill="white" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="676.00" cy="371.21" r="4.5" fill="white" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="872.00" cy="385.53" r="4.5" fill="white" stroke="#dc2626" stroke-width="2.5"/>
+<text class="small" x="880.00" y="377.53">15.78</text>
+<line x1="788" x2="813" y1="29" y2="29" stroke="#d97706" stroke-width="3"/>
+<text class="small" x="819" y="34">600/300/100</text>
+<polyline points="88.00,61.11 284.00,260.91 480.00,312.89 676.00,342.17 872.00,358.95" fill="none" stroke="#d97706" stroke-width="3"/>
+<circle cx="88.00" cy="61.11" r="4.5" fill="white" stroke="#d97706" stroke-width="2.5"/>
+<circle cx="284.00" cy="260.91" r="4.5" fill="white" stroke="#d97706" stroke-width="2.5"/>
+<circle cx="480.00" cy="312.89" r="4.5" fill="white" stroke="#d97706" stroke-width="2.5"/>
+<circle cx="676.00" cy="342.17" r="4.5" fill="white" stroke="#d97706" stroke-width="2.5"/>
+<circle cx="872.00" cy="358.95" r="4.5" fill="white" stroke="#d97706" stroke-width="2.5"/>
+<text class="small" x="880.00" y="350.95">20.12</text>
+</svg>

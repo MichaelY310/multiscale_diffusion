@@ -1,0 +1,742 @@
+================================================================================
+        RDD 相关工作综合调研 — 多分辨率/渐进式扩散生成（2D/3D/Video）
+================================================================================
+
+整理时间: 2026-07-25
+目的: 全面梳理与 RDD 方法相关的所有论文，包括2D图像、3D生成、视频生成三个方向
+      分析每篇论文的精确方法、与RDD的相似点和差异、是否开源、实验配置
+
+================================================================================
+ A. 核心竞品（直接修改前向扩散/flow过程 + 多分辨率 + 2D图像生成）
+================================================================================
+
+--------------------------------------------------------------------------------
+A1. f-DM: A Multi-stage Diffusion Model via Progressive Signal Transformation
+--------------------------------------------------------------------------------
+作者: Jiatao Gu et al. (Apple)
+发表: ICLR 2023
+链接: https://arxiv.org/abs/2210.04955
+GitHub: 未开源
+代码: 无公开代码
+
+核心方法:
+  前向过程: q(z_t | x_0) = N(α_t · x_t, σ_t² I)
+  其中 x_t = 插值(f^{k-1}(x_0), f^k(x_0)) 在 t ∈ [τ_k, τ_{k+1}]
+  - f^k 是第k次信号变换（下采样/模糊/VAE编码）
+  - 均值在相邻变换结果之间线性插值
+  - 双重预测: 同时预测 x_θ 和 δ_θ（退化残差）
+  - Noise Rescaling: 跨阶段 SNR 匹配
+
+与RDD的关系: ★★★ 最直接前身
+相似之处:
+  - 都修改了forward process的均值来编码分辨率信息
+  - 都是coarse-to-fine的多阶段设计
+  - 都在DDPM框架内（f-DM支持VP/VE）
+核心差异:
+  1. f-DM是分段多阶段（多个变换f^k之间插值），RDD是单一drift向量
+  2. f-DM维度可变（可以真的下采样），RDD保持固定维度
+  3. f-DM不兼容DPM-Solver（非Markov前向），RDD有闭式posterior
+  4. f-DM需要noise rescaling + noise resampling，RDD的drift自动处理SNR
+  5. f-DM双重预测目标，RDD单一目标ε̃
+
+ImageNet实验:
+  - ImageNet 256×256: FID=6.8 (无CFG, VQVAE变体), FID=8.2 (下采样变体)
+  - 采样: DDIM
+  - 训练配置: 未明确报告步数/GPU
+
+--------------------------------------------------------------------------------
+A2. Relay Diffusion: Unifying Diffusion Process Across Resolutions
+--------------------------------------------------------------------------------
+作者: Jiacheng Teng et al. (Tsinghua)
+发表: ICLR 2024 Spotlight
+链接: https://arxiv.org/abs/2309.03350
+GitHub: https://github.com/THUDM/RelayDiffusion
+代码: ✅ 开源
+
+核心方法:
+  - 两个独立模型: 低分辨率模型 + 高分辨率模型
+  - Blurring Diffusion: q(u_t|u_0) = N(D_t·u_0, σ_t²I), D_t=e^{Λt} (频率衰减)
+  - Block Noise: 将噪声在s×s块内取均值，产生低频相关噪声
+  - Relay点: 低分辨率结果通过block noise转为等效高分辨率起始状态
+  - DCT频域分析证明跨分辨率SNR不匹配
+
+与RDD的关系: ★★★ 关键对比对象
+相似之处:
+  - 都识别了跨分辨率SNR问题并解决
+  - 都利用了频域分析
+核心差异:
+  1. Relay是两个独立模型级联，RDD是单模型
+  2. Relay修改了扩散核（各向异性blurring），RDD修改均值（加drift）保持各向同性噪声
+  3. Relay的跨分辨率通过block noise做离散跳跃，RDD用drift做连续过渡
+  4. Relay需要训两个模型
+
+ImageNet实验:
+  - ImageNet 256×256: FID=1.87 (有CFG), sFID=3.97
+  - 训练: 64× A100-40G, 第一阶段~10天, 第二阶段~12.5天
+  - Batch size: 2048
+  - 采样: 250步 DDPM
+
+--------------------------------------------------------------------------------
+A3. DFM: Decomposable Flow Matching (改进式渐进生成)
+--------------------------------------------------------------------------------
+作者: Moayed Haji-Ali et al. (Snap Research + Rice University)
+发表: NeurIPS 2025
+链接: https://arxiv.org/abs/2506.19839
+GitHub: https://github.com/snap-research/dfm (待确认)
+项目页: https://snap-research.github.io/dfm/
+
+核心方法:
+  - Laplacian金字塔分解: X → {X_1(低频), X_2(高频残差), ..., X_S}
+  - 每个尺度独立Flow Matching: X_s^{t_s} = t_s·X_s^1 + (1-t_s)·X_s^0
+  - 各尺度有独立时间步t_1, t_2, ..., t_S
+  - 共享模型G预测所有尺度的velocity field
+  - 训练: L = Σ_s M_s ||G(P_{t_1,...,t_S}) - v_s||²
+  - 采样: 渐进式（先完成粗尺度，再激活细尺度）
+
+与RDD的关系: ★★★ 最新竞争者(NeurIPS 2025!)
+相似之处:
+  - 都是DiT backbone + 多尺度 + coarse-to-fine
+  - 都旨在减少高分辨率计算
+核心差异:
+  1. DFM各尺度概率路径完全独立（多时间轴），RDD是单一Markov过程（单时间轴）
+  2. DFM用Laplacian分解（频域），RDD用空间下采样
+  3. DFM是Flow Matching框架，RDD是DDPM框架
+  4. DFM无drift机制——标准线性插值noise→data
+  5. DFM各尺度间无内建的概率耦合（仅架构层面共享网络）
+  6. RDD保留了低→高频的条件依赖，DFM各层独立生成
+
+ImageNet实验:
+  - ImageNet 512×512: FDD比基线好35.2%
+  - 相同训练计算下比基线好26.4%
+  - 训练: 未报告绝对GPU时数，强调"相对加速"
+
+--------------------------------------------------------------------------------
+A4. LapFlow: Laplacian Multi-scale Flow Matching
+--------------------------------------------------------------------------------
+作者: Zhao et al.
+发表: ICLR 2026 (投稿中)
+链接: https://arxiv.org/abs/2602.19461
+GitHub: https://github.com/sjtuytc/ICLR26_LapFlow_Official
+代码: ✅ 开源
+
+核心方法:
+  - Laplacian金字塔在latent space分解
+  - Mixture-of-Transformers (MoT) + 因果注意力
+  - 因果注意力mask: 每个尺度只能attend到更粗的尺度（信息单向流: coarse→fine）
+  - 各尺度有独立的schedule: α_t^(k) = (t-T_{k+1})/(1-T_{k+1})
+  - 渐进激活: 粗尺度先启动，细尺度后启动
+
+与RDD的关系: ★★★
+相似之处:
+  - 多尺度 + DiT系架构 + coarse-to-fine
+  - 因果注意力保证低频→高频信息流（类似RDD的drift依赖）
+核心差异:
+  1. 各尺度独立概率路径（无drift）
+  2. 架构创新(MoT)而非forward process修改
+  3. Flow Matching框架
+  4. 所有尺度部分并行（RDD完全串行）
+
+ImageNet实验:
+  - ImageNet 256×256: XL/2 FID=14.38 (无CFG, 600K步), B/2 FID=36.50 (600K步)
+  - ImageNet 512×512: FID=4.04 (3 scales: 64→32→16)
+  - 训练: 8 GPUs, 600K+ 步
+  - Batch size: 未明确
+
+--------------------------------------------------------------------------------
+A5. Pyramidal Flow Matching for Efficient Video Generative Modeling
+--------------------------------------------------------------------------------
+作者: Yang Jin et al. (北大 + 快手)
+发表: ICLR 2025
+链接: https://arxiv.org/abs/2410.05954
+GitHub: https://github.com/jy0205/Pyramid-Flow
+代码: ✅ 开源
+
+核心方法:
+  - 将[0,1]分为K个时间窗口[s_k, e_k]，每段用不同空间分辨率
+  - 第k窗口: x̂_t = t'·Down(x_1, 2^k) + (1-t')·Up(Down(x_0, 2^{k+1}))
+  - Renoising规则: x̂_{s_k} = (1+s_k)/2·Up(x̂_{e_{k+1}}) + √3(1-s_k)/2·n'
+    n'具有特殊块状协方差（γ=-1/3）
+  - 时间金字塔: 历史帧以递减分辨率作为条件（减少token数）
+  - 单一DiT统一优化所有阶段
+
+与RDD的关系: ★★★ 重要参考+扩展方向
+相似之处:
+  - 低分辨率省计算的核心思想
+  - flow目标包含分辨率提升（类似drift方向）
+核心差异:
+  1. Flow Matching框架（非DDPM）
+  2. 分段piecewise flow（多stage拼接），RDD是单一连续过程
+  3. 分辨率在stages间变化（维度跳变），RDD固定分辨率
+  4. Renoising是离散跳跃操作，不是连续drift
+  5. 主要面向视频
+
+实验: 768p 24fps 10秒视频生成，仅开源数据训练
+
+--------------------------------------------------------------------------------
+A6. MDM: Matryoshka Diffusion Models
+--------------------------------------------------------------------------------
+作者: Jiatao Gu et al. (Apple, f-DM同一作者组)
+发表: ICLR 2024
+链接: https://arxiv.org/abs/2310.15111
+GitHub: 未开源
+
+核心方法:
+  - 联合多分辨率去噪（同一timestep，所有分辨率同时处理）
+  - NestedUNet: 低分辨率参数完全嵌套在高分辨率参数内
+  - 多分辨率损失: 对所有分辨率同时监督
+  - 渐进训练: 先训低分辨率，逐步加入高分辨率
+
+与RDD的关系: ★★☆
+相似之处:
+  - 多分辨率单模型
+核心差异:
+  1. 所有分辨率同时去噪（同一timestep），RDD是顺序的
+  2. 不省推理计算（每步都处理所有分辨率）
+  3. NestedUNet架构，非DiT
+  4. 不修改forward process
+
+ImageNet实验:
+  - ImageNet 256×256: FID=3.51 (有CFG)
+  - 渐进训练: 64×64 warmup 200K → 逐步增加分辨率
+
+--------------------------------------------------------------------------------
+A7. Simple Diffusion: End-to-end Diffusion for High Resolution Images
+--------------------------------------------------------------------------------
+作者: Emiel Hoogeboom, Jonathan Heek, Tim Salimans (Google Brain)
+发表: ICML 2023
+链接: https://arxiv.org/abs/2301.11093
+GitHub: 无官方代码
+
+核心方法:
+  - 证明标准扩散可以端到端训练高分辨率
+  - Noise schedule shifting: 根据分辨率调整SNR曲线 (shift factor)
+  - Multi-scale loss: U-Net中间层也预测信号
+  - U-ViT架构
+  - 不做多阶段/级联
+
+与RDD的关系: ★★☆
+相似之处:
+  - 认识到分辨率与SNR的关系
+  - 为RDD的动机提供理论支撑
+核心差异:
+  1. 不做多阶段，全程同一分辨率
+  2. 不省推理计算
+  3. 通过schedule shifting解决SNR问题，非drift
+
+ImageNet实验:
+  - ImageNet 256×256: FID=3.71 (U-Net), 2.77 (U-ViT 2B), 均无CFG
+  - ImageNet 512×512: FID=4.28 (U-Net), 3.54 (U-ViT 2B)
+  - 训练: 64×TPUv2 2M步 / 128×TPUv4 500K步
+  - Batch size: 512 / 2048
+
+
+================================================================================
+ B. 2025年新发现的高相关论文（修改扩散过程或核心训练机制）
+================================================================================
+
+--------------------------------------------------------------------------------
+B1. SPEED: Spectral Progressive Diffusion
+--------------------------------------------------------------------------------
+作者: Howard Xiao, Brian Chao, Lior Yariv, Gordon Wetzstein (Stanford)
+发表: arXiv 2025.05
+链接: https://arxiv.org/abs/2605.18736
+GitHub: https://github.com/howardhx/speed
+项目页: https://howardxiao.ca/speed/
+
+核心方法:
+  - 基于"扩散是频谱自回归"的性质
+  - 在去噪过程中，仅在高频内容开始从噪声中浮现的时间步扩展分辨率
+  - 早期步骤保持低分辨率token空间
+  - 使用DCT频谱基进行分辨率扩展
+  - **无需训练**，适用于任何预训练flow model
+
+与RDD的关系: ★★★ 核心动机相同！
+相似之处:
+  - 核心洞察完全一致: 不同时间步需要不同分辨率
+  - 都利用频谱自回归性质
+  - 都旨在减少高频阶段前的冗余计算
+核心差异:
+  1. SPEED是training-free推理加速方案，RDD修改了训练过程
+  2. SPEED对预训练模型做推理优化，RDD需要从头训练
+  3. SPEED没有drift——直接在采样时切换分辨率+添加噪声
+  4. RDD有严格的概率论基础（闭式posterior），SPEED更empirical
+
+实验: WAN 2.1等模型上>2×加速
+
+--------------------------------------------------------------------------------
+B2. SwD: Scale-wise Distillation of Diffusion Models
+--------------------------------------------------------------------------------
+作者: Nikita Starodubcev et al. (Yandex Research)
+发表: arXiv 2025.03
+链接: https://arxiv.org/abs/2503.16397
+GitHub: https://github.com/yandex-research/swd
+代码: ✅ 开源
+
+核心方法:
+  - 蒸馏框架中嵌入渐进分辨率
+  - 早期去噪步骤在低分辨率执行，后期升到全分辨率
+  - 与DMD2等蒸馏方法集成
+  - 利用频谱自回归性质选择分辨率切换点
+
+与RDD的关系: ★★★
+相似之处:
+  - 核心思想: 不同时间步不同分辨率
+  - 频谱自回归动机
+核心差异:
+  1. SwD是蒸馏框架（需要teacher模型），RDD是直接训练
+  2. SwD不修改forward process本身
+  3. RDD的drift是在forward process中编码的，SwD是在采样/蒸馏策略中实现
+
+实验: 主要在text-to-image模型上验证加速
+
+--------------------------------------------------------------------------------
+B3. MSF: Efficient Diffusion Model via Multi-Scale Latent Factorization
+--------------------------------------------------------------------------------
+作者: H. Xu et al.
+发表: arXiv 2025.01
+链接: https://arxiv.org/abs/2501.13349
+GitHub: 未确认
+
+核心方法:
+  - 将全分辨率图像生成分解为多尺度、基于残差的渐进层次
+  - 学习一个基础低分辨率分量 + 多个残差高分辨率分量
+  - 在latent space中构建多尺度因子分解
+
+与RDD的关系: ★★★ 非常接近！
+相似之处:
+  - 多尺度残差分解 + 渐进生成
+  - 在latent space操作
+  - 基础分量(低频) + 残差(高频) 的分解方式
+核心差异:
+  1. MSF是latent space的因子分解，RDD是pixel space的drift
+  2. MSF可能各尺度有独立的生成过程
+  3. RDD保持单一Markov forward process
+
+ImageNet实验:
+  - ImageNet 256×256: FID=2.08
+  - ImageNet 512×512: FID=2.47
+  - **注意: 这是非常强的结果！**
+
+--------------------------------------------------------------------------------
+B4. DiMR: Alleviating Distortion in Image Generation via Multi-Resolution Diffusion
+--------------------------------------------------------------------------------
+作者: Ju He et al.
+发表: NeurIPS 2024
+链接: https://arxiv.org/abs/2406.09416
+GitHub: https://github.com/qihao067/DiMR
+代码: ✅ 开源
+
+核心方法:
+  - 单模型内部使用Multi-Resolution Network
+  - 从低分辨率到高分辨率逐步精化特征
+  - Time-Dependent Layer Normalization (TD-LN)
+  - DiMR-XL 仅505M参数超越所有现有模型
+
+与RDD的关系: ★★★ 重要对比
+相似之处:
+  - 模型内部多分辨率特征级联
+  - DiT系架构
+核心差异:
+  1. DiMR是架构创新（不修改forward process），RDD是process创新
+  2. DiMR每步都处理所有分辨率（不省步数），RDD省高分辨率步数
+  3. DiMR用于解决生成失真，RDD用于加速
+
+ImageNet实验:
+  - ImageNet 256×256: DiMR-XL FID非常好（超越DiT-XL/2）
+  - 参数量: 505M
+  - 训练: 需要确认具体步数
+
+--------------------------------------------------------------------------------
+B5. DCTdiff: Image Generative Modeling in the DCT Space
+--------------------------------------------------------------------------------
+作者: (未确认)
+发表: ICML 2025
+链接: https://arxiv.org/abs/2412.15032
+GitHub: https://github.com/forever208/DCTdiff
+代码: ✅ 开源
+
+核心方法:
+  - 在DCT（离散余弦变换）空间中端到端扩散建模
+  - 理论证明"图像扩散 = 频谱自回归"
+  - 无需latent space即可scale到512×512
+  - 提供了diffusion ↔ AR模型的理论桥梁
+
+与RDD的关系: ★★★ 理论基础
+相似之处:
+  - 为RDD的动机提供了理论支撑: 扩散在频域确实是从低频到高频
+  - 频率-分辨率的等价关系
+核心差异:
+  1. DCTdiff在频率空间操作（整个过程在DCT域），RDD在空间域
+  2. DCTdiff不是多阶段/多分辨率生成
+  3. 两者可以互补: DCTdiff的理论 + RDD的实践
+
+ImageNet实验:
+  - 512×512直接生成（无VAE）
+  - 具体FID需要确认
+
+--------------------------------------------------------------------------------
+B6. RPD: Residual Prior Diffusion
+--------------------------------------------------------------------------------
+作者: Kutsuna et al.
+发表: arXiv 2024.12
+链接: https://arxiv.org/abs/2512.21593
+GitHub: 未确认
+
+核心方法:
+  - 两阶段: (1)粗先验模型捕获大尺度结构 (2)扩散模型在粗→细的残差上训练
+  - 扩散目标不是完整数据分布，而是条件化于粗先验的残差分布
+  - 形式化为显式概率模型
+
+与RDD的关系: ★★★ 概念高度相似！
+相似之处:
+  - 粗-细分解融入概率框架
+  - 扩散建模"从粗到细的变化"而非完整数据
+  - RDD的drift d̄ = UP(DOWN(x))-x 本质上就是粗→细的残差！
+核心差异:
+  1. RPD是两阶段pipeline（先独立生成粗结果），RDD是单一forward process
+  2. RPD扩散的目标是残差本身，RDD扩散的目标仍是完整图像（drift只修改均值）
+  3. RDD保持与标准DDPM的兼容性（DPM-Solver），RPD可能不行
+
+--------------------------------------------------------------------------------
+B7. LowDiff: Efficient Diffusion Sampling with Low-Resolution Condition
+--------------------------------------------------------------------------------
+作者: Jiuyi Xu, Yang Sui et al.
+发表: arXiv 2025.09
+链接: https://arxiv.org/abs/2509.15342
+GitHub: https://github.com/jiuyixu25/LowDiff
+代码: ✅ 开源
+
+核心方法:
+  - 统一模型从低分辨率逐步精化到目标分辨率
+  - 级联式: 低分辨率条件指导高分辨率生成
+  - 单一模型处理多分辨率
+  - Truncation augmentation确保鲁棒性
+
+与RDD的关系: ★★☆
+相似之处:
+  - 低→高分辨率渐进生成
+  - 统一模型
+核心差异:
+  1. LowDiff是条件化级联（每步以低分辨率输出为条件），不修改forward process
+  2. RDD的drift是连续的均值偏移
+
+--------------------------------------------------------------------------------
+B8. MrFlow: Multi-Resolution Flow Matching (Training-Free)
+--------------------------------------------------------------------------------
+作者: Xingyu Zheng et al.
+发表: arXiv 2025.07
+链接: https://arxiv.org/abs/2607.01642
+GitHub: https://github.com/Xingyu-Zheng/MrFlow
+代码: ✅ 开源
+
+核心方法:
+  - 三阶段: (1)低分辨率快速生成 (2)GAN超分 (3)重编码+高分辨率细化
+  - 无需训练，10×加速
+  - 利用低分辨率的二次方token减少
+
+与RDD的关系: ★★☆
+相似之处:
+  - 多分辨率加速的目标一致
+核心差异:
+  1. MrFlow完全是inference-time trick
+  2. 需要额外的GAN超分模型
+  3. 不修改训练/forward process
+
+实验: FLUX.1-dev, Qwen-Image上10×加速
+
+--------------------------------------------------------------------------------
+B9. PyramidalWan: Making Pretrained Video Model Pyramidal
+--------------------------------------------------------------------------------
+作者: Denis Korzhenkov et al. (Qualcomm AI Research)
+发表: CVPR 2026
+链接: https://arxiv.org/abs/2601.04792
+GitHub: 待确认
+
+核心方法:
+  - 对预训练Wan2.1做金字塔化改造
+  - 三阶段时空联合降采样: 81×448×832 → 41×224×416 → 21×112×208
+  - 帧数、高度、宽度三维同时2×降采样
+  - 3D Renoising (时间+空间去关联)
+  - 像素空间先下采样再过VAE (优于latent空间下采样)
+  - 低成本微调(~3%训练量)
+  - 结合步骤蒸馏: 2-2-1步schedule → 89×加速
+
+与RDD的关系: ★★☆ (视频方向的重要参考)
+相似之处:
+  - 多阶段多分辨率
+  - 利用频谱自回归性质
+核心差异:
+  1. 视频方向，时空联合降采样
+  2. 对预训练模型微调，非从头训练
+  3. 使用renoising（离散跳跃），非连续drift
+
+实验: 计算量从25184 TFLOPs → 282 TFLOPs (89×加速)
+
+
+================================================================================
+ C. 3D多分辨率生成论文
+================================================================================
+
+--------------------------------------------------------------------------------
+C1. XCube: Large-Scale 3D Generative Modeling using Sparse Voxel Hierarchies
+--------------------------------------------------------------------------------
+作者: Xuanchi Ren et al. (NVIDIA)
+发表: CVPR 2024
+链接: https://arxiv.org/abs/2312.03806
+GitHub: https://github.com/nv-tlabs/XCube
+代码: ✅ 开源
+
+核心方法:
+  - 分层稀疏体素潜扩散模型(hierarchical voxel latent diffusion)
+  - 粗到细逐步生成更高分辨率体素网格
+  - 每层级独立的VAE + 独立的扩散模型
+  - 基于VDB数据结构，有效分辨率可达1024³
+  - 级联式多层级: 粗层级→条件化→细层级
+
+与RDD的关系: ★★☆
+相似之处:
+  - 多层级粗到细扩散
+  - 上一层输出作为下一层条件
+核心差异:
+  1. 3D领域，稀疏体素表示
+  2. 多个独立模型级联，非单一forward process
+  3. 不修改扩散过程本身
+
+数据集: ShapeNet, Objaverse, 大规模户外场景
+
+--------------------------------------------------------------------------------
+C2. OctFusion: Octree-based Diffusion Models for 3D Shape Generation
+--------------------------------------------------------------------------------
+作者: Xiong Wei et al. (北京大学)
+发表: CGF/SGP 2025
+链接: https://arxiv.org/abs/2408.14732
+GitHub: https://github.com/isl-org/octfusion (Intel ISL)
+代码: ✅ 开源
+
+核心方法:
+  - 八叉树(Octree)潜表示 + 统一多尺度扩散模型
+  - 单一U-Net在多个八叉树层级上同时去噪
+  - 结合隐式神经表示与显式空间结构
+  - 有效分辨率达1024³
+  - 4090单卡2.5秒生成
+
+与RDD的关系: ★★☆
+相似之处:
+  - 统一多尺度扩散（概念上类似MDM）
+  - 单一模型处理多分辨率
+核心差异:
+  1. 3D领域，八叉树表示
+  2. 所有层级同时去噪（类似MDM），不省计算
+  3. 不修改forward process均值
+
+数据集: ShapeNet, Objaverse
+
+--------------------------------------------------------------------------------
+C3. PDD: Pyramid Discrete Diffusion for Fine 3D Large Scene Generation
+--------------------------------------------------------------------------------
+作者: Yuheng Liu et al. (西南交通大学, 利兹大学, NVIDIA)
+发表: ECCV 2024 Oral
+链接: https://arxiv.org/abs/2311.12085
+GitHub: https://github.com/Yuheng-SWJTU/pyramid-discrete-diffusion
+代码: ✅ 开源
+
+核心方法:
+  - 金字塔离散扩散: 先生成小规模场景，逐步增加规模+细节
+  - 每个尺度级别训练独立的离散扩散模型
+  - 上一尺度输出作为当前尺度条件
+  - 无需外部引导条件
+
+与RDD的关系: ★★☆
+相似之处:
+  - 金字塔/多尺度设计
+  - 粗到细渐进生成
+核心差异:
+  1. 离散扩散（非连续），3D场景
+  2. 多个独立模型
+  3. 不修改扩散过程本身
+
+数据集: KITTI, nuScenes (3D户外场景)
+
+--------------------------------------------------------------------------------
+C4. ShapeShifter: 3D Variations Using Multiscale and Sparse Point-Voxel Diffusion
+--------------------------------------------------------------------------------
+作者: Nissim Maruani (Inria), Wang Yifan (Adobe)
+发表: CVPR 2025
+链接: https://arxiv.org/abs/2502.02187
+GitHub: 待确认
+
+核心方法:
+  - 从单个3D示例学习生成变体
+  - 稀疏体素多尺度表示: 5层级从粗到细扩散
+  - 最粗层约0.5秒，四个细层总计<1.5秒
+  - 细→粗通过平均池化提取特征
+
+与RDD的关系: ★☆☆ (3D方向参考)
+
+--------------------------------------------------------------------------------
+C5. WaLa: Wavelet Latent Diffusion (Autodesk)
+--------------------------------------------------------------------------------
+作者: Autodesk AI Lab
+发表: 2024
+链接: https://arxiv.org/abs/2411.08017
+
+核心方法:
+  - 小波变换将256³ SDF压缩为12³×4潜编码(2427×压缩)
+  - 小波的多尺度分解天然编码不同频率/分辨率
+  - ~10亿参数扩散模型
+  - 标准扩散过程，多分辨率信息通过小波表示编码
+
+与RDD的关系: ★☆☆
+  - 小波分解作为另一种多尺度表示方式
+  - 不修改扩散过程本身
+
+--------------------------------------------------------------------------------
+C6. ResGen: Residual Diffusion Model for Point Cloud Generation
+--------------------------------------------------------------------------------
+发表: 2024
+链接: https://openreview.net/forum?id=v1gaXJDCbf
+
+核心方法:
+  - 先生成粗3D结构
+  - 残差扩散模型(Residual Diffusion)将粗→细
+  - 扩散目标是粗→细的残差
+
+与RDD的关系: ★★☆ 概念相似！
+相似之处:
+  - RDD的drift d̄ = UP(DOWN(x))-x 就是负的高频残差
+  - 都将粗-细关系编码进扩散过程
+核心差异:
+  1. ResGen对残差本身做扩散，RDD对完整信号做扩散(drift只修改均值)
+  2. 3D点云 vs 2D图像
+  3. ResGen是两阶段，RDD是单一forward process
+
+
+================================================================================
+ D. 2D推理加速/架构创新（中等相关）
+================================================================================
+
+--------------------------------------------------------------------------------
+D1. Hourglass Diffusion Transformer (HDiT)
+--------------------------------------------------------------------------------
+发表: ICML 2024
+链接: https://arxiv.org/abs/2401.11605
+方法: 沙漏形Transformer，像素空间直接训1024×1024，计算量线性增长
+修改forward process: ❌
+与RDD相关度: ★★☆ (多尺度架构参考)
+
+--------------------------------------------------------------------------------
+D2. DemoFusion
+--------------------------------------------------------------------------------
+发表: CVPR 2024
+链接: https://arxiv.org/abs/2311.16973
+GitHub: https://github.com/PRIS-CV/DemoFusion
+方法: Progressive Upscaling + Skip Residual + Dilated Sampling，无需训练
+修改forward process: ❌
+与RDD相关度: ★☆☆ (推理时渐进上采样参考)
+
+--------------------------------------------------------------------------------
+D3. ScaleCrafter
+--------------------------------------------------------------------------------
+发表: ICLR 2024
+链接: https://arxiv.org/abs/2310.07702
+GitHub: https://github.com/yingqinghe/scalecrafter
+方法: 动态调整卷积感受野+dispersed convolution实现4096×4096，无需训练
+修改forward process: ❌
+与RDD相关度: ★☆☆
+
+--------------------------------------------------------------------------------
+D4. Self-Cascade: A Self-Cascade Diffusion Model for Higher-Resolution Adaptation
+--------------------------------------------------------------------------------
+发表: ECCV 2024
+链接: https://arxiv.org/abs/2402.10491
+GitHub: https://github.com/GuoLanqing/Self-Cascade
+方法: pivot guided noise reschedule + 可训练time-aware feature upsampler
+修改forward process: ⚠️ 部分（noise reschedule）
+与RDD相关度: ★★☆ (noise reschedule与RDD的SNR处理有关)
+
+--------------------------------------------------------------------------------
+D5. PiT: Progressive Diffusion Transformer
+--------------------------------------------------------------------------------
+发表: arXiv 2025
+链接: https://arxiv.org/abs/2505.13219
+方法: 渐进式token处理，Progressive Coverage Channel Allocation (PCCA)
+修改forward process: ✅ 架构级渐进分辨率
+与RDD相关度: ★★☆
+
+--------------------------------------------------------------------------------
+D6. Patch Diffusion
+--------------------------------------------------------------------------------
+发表: NeurIPS 2023
+链接: https://arxiv.org/abs/2304.12526
+GitHub: https://github.com/tinyloop/Patch-Diffusion
+方法: patch级条件score function，patch位置作为坐标通道，随机patch size
+修改forward process: ⚠️ 部分
+与RDD相关度: ★★☆
+
+--------------------------------------------------------------------------------
+D7. ZoomLDM: Latent Diffusion for Multi-scale Image Generation
+--------------------------------------------------------------------------------
+发表: CVPR 2025
+链接: https://github.com/cvlab-stonybrook/ZoomLDM
+方法: 单模型在不同zoom层级生成，magnification-aware conditioning
+修改forward process: ✅ 统一多尺度扩散
+与RDD相关度: ★★☆ (统一多尺度生成参考)
+
+--------------------------------------------------------------------------------
+D8. SD3: Scaling Rectified Flow Transformers
+--------------------------------------------------------------------------------
+发表: 2024
+链接: https://arxiv.org/abs/2403.03206
+方法: rectified flow + MMDiT，发现"同一t在不同分辨率上SNR不同"
+修改forward process: ⚠️ (混合尺度训练)
+与RDD相关度: ★★☆ (指出了核心问题但用训练trick绕过)
+
+
+================================================================================
+ E. 论文开源状态汇总（可下载代码的论文）
+================================================================================
+
+| 论文 | GitHub | 状态 |
+|------|--------|------|
+| Relay Diffusion | https://github.com/THUDM/RelayDiffusion | ✅ 开源 |
+| LapFlow | https://github.com/sjtuytc/ICLR26_LapFlow_Official | ✅ 开源 |
+| Pyramid Flow | https://github.com/jy0205/Pyramid-Flow | ✅ 开源 |
+| SPEED | https://github.com/howardhx/speed | ✅ 开源 |
+| SwD | https://github.com/yandex-research/swd | ✅ 开源 |
+| DiMR | https://github.com/qihao067/DiMR | ✅ 开源 |
+| DCTdiff | https://github.com/forever208/DCTdiff | ✅ 开源 |
+| LowDiff | https://github.com/jiuyixu25/LowDiff | ✅ 开源 |
+| MrFlow | https://github.com/Xingyu-Zheng/MrFlow | ✅ 开源 |
+| XCube | https://github.com/nv-tlabs/XCube | ✅ 开源 |
+| OctFusion | https://github.com/isl-org/octfusion | ✅ 开源 |
+| PDD | https://github.com/Yuheng-SWJTU/pyramid-discrete-diffusion | ✅ 开源 |
+| DemoFusion | https://github.com/PRIS-CV/DemoFusion | ✅ 开源 |
+| ScaleCrafter | https://github.com/yingqinghe/scalecrafter | ✅ 开源 |
+| Self-Cascade | https://github.com/GuoLanqing/Self-Cascade | ✅ 开源 |
+| Patch Diffusion | https://github.com/tinyloop/Patch-Diffusion | ✅ 开源 |
+| f-DM | 无 | ❌ 未开源 |
+| DFM | 待确认 | ❓ |
+| MDM | 无 | ❌ 未开源 |
+
+================================================================================
+ F. 待下载的开源代码列表（按与RDD相关度排序）
+================================================================================
+
+最高优先级（核心竞品）:
+1. Relay Diffusion — https://github.com/THUDM/RelayDiffusion
+2. LapFlow — https://github.com/sjtuytc/ICLR26_LapFlow_Official
+3. Pyramid Flow — https://github.com/jy0205/Pyramid-Flow
+4. DiMR — https://github.com/qihao067/DiMR
+5. DCTdiff — https://github.com/forever208/DCTdiff
+
+高优先级:
+6. SPEED — https://github.com/howardhx/speed
+7. SwD — https://github.com/yandex-research/swd
+8. LowDiff — https://github.com/jiuyixu25/LowDiff
+9. MrFlow — https://github.com/Xingyu-Zheng/MrFlow
+
+3D方向:
+10. XCube — https://github.com/nv-tlabs/XCube
+11. OctFusion — https://github.com/isl-org/octfusion
+12. PDD — https://github.com/Yuheng-SWJTU/pyramid-discrete-diffusion
+

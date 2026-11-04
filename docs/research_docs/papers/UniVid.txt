@@ -1,0 +1,729 @@
+UniVid: Pyramid Diffusion Model for High Quality
+Video Generation
+Xinyu Xiao, Binbin Yang, Tingtian Li, Yipeng Yu, Sen Lei
+Abstract—Diffusion-based text-to-video generation (T2V) or
+image-to-video (I2V) generation have emerged as a prominent
+research focus. However, there exists a challenge in integrating
+the two generative paradigms into a unified model. In this
+paper, we present a unified video generation model (Univid)
+with hybrid conditions of the text prompt and reference image.
+Given these two available controls, our model can extract objects’
+appearance and their motion descriptions from textual prompts,
+while obtaining texture details and structural information from
+image clues to guide the video generation process. Specifically, we
+scale up the pre-trained text-to-image diffusion model for gener-
+ating temporally coherent frames via introducing our temporal-
+pyramid cross-frame spatial-temporal attention modules and
+convolutions. To support bimodal control, we introduce a dual-
+stream cross-attention mechanism, whose attention scores can
+be freely re-weighted for interpolation of between single and
+two modalities controls during inference. Extensive experiments
+showcase that our Univid achieves superior temporal coherence
+on T2V, I2V and (T+I)2V tasks.
+Index Terms—Diffusion Model, Video Generation, spatial-
+temporal attention
+I. INTRODUCTION
+In recent studies [1]–[4], researchers have endeavored to
+replicate such success in video generation by training a text-
+to-video (T2V) diffusion model. Text prompts are friendly
+interface for image synthesis, but for videos, using a reference
+image as a prompt can be even handier for users. In this work,
+we seek to develop a unified video generation model that
+harnesses the power of both text and image prompts, granting
+users the flexibility to render a video using images, text, or
+even a combination of both modalities as the control, i.e., T2V,
+I2V and (T+I)2V.
+Most recent works [2], [4] turned the T2I diffusion model
+into a video generator by inserting a 1D temporal layer
+after each spatial module or turning spatial attention to full
+attention. Based on the U-Net backbone in Stable Diffu-
+sion [5], in this work, we introduce a pyramid spatial-temporal
+attention module to improve dynamics modeling and capture
+motion clues by exploring inter-frame region relationships
+with dynamic visual tempo. As illustrated in fig. 1, 3D
+spatial-temporal attention can fully model the motion clue of
+the moving panda by learning the correlations of the panda
+in different frames while 1D temporal attention falls short
+because only per-pixel temporal dependency is considered.
+To this end, we present Univid, a unified video diffusion
+model which generates high quality videos by using a flexible
+combination of descriptive sentences and reference images
+as hybrid controls. For the temporal extension, we draw
+inspiration from the success of modeling motion dynamics
+STPAttn-1
+STPAttn-2
+STPAttn-4
+STPAttn-8
+(a) Spatial-Temporal Pyramid Attention
+TempAttn
+TempAttn
+TempAttn
+TempAttn
+STPConv-1
+STPConv-2
+STPConv-4
+STPConv-8
+(c) Temporal Attention
+(b) Spatial-Temporal Pyramid Convolution
+Fig. 1.
+An illustration of our proposed pyramid spatial-temporal attention
+(PSTAttn-f), pyramid spatial-temporal convolution (PSTConv-f) and temporal
+attention, where f ∈{1, 2, 4, 8} indicates the downsampling factors in the U-
+Net layers. The red patches in frames denotes the queries of attention, and
+the blue ones denotes the keys / values of attention. (We also visualize the
+receptive field of PSTConv-f in a similar manner.)
+with multi-level visual tempo in video understanding [6], [7],
+and propose to incorporate pyramid spatial-temporal attention
+and convolution modules into the basic blocks of our diffusion
+U-Net. By adapting spatial pyramid architecture [8]–[10] to
+a temporal dimension, our pyramid spatial-temporal attention
+progressively learns the motion clues across frames in a tempo-
+rally coarse-to-fine manner. Specifically, in the middle blocks
+of the U-Net, we perform dense spatial-temporal semantic
+alignments among the high-level frame features while sparse
+alignments in external blocks.
+To effectively encode appearance details from images and
+semantic descriptions from text for guidance in generation,
+we propose extending the regular cross-attention module in
+Stable Diffusion into a dual-stream cross-attention module.
+Similar to the text branch, we encode the reference image
+using CLIP [11] image encoder and perform the visual cross-
+attention between the input feature and the sequence of visual
+patch embeddings. The visual and textual cross-attention op-
+erate in a two-path manner, and we fuse their results as the
+arXiv:2603.13739v1  [cs.CV]  14 Mar 2026
+
+---PAGE BREAK---
+output feature.
+To sum up, our main contributions are listed as follows:
+• We develop a high-quality video generation model,
+namely UniVid which can receives the flexible combina-
+tional controls from text prompts and reference images.
+• We propose to empower the pre-trained text-to-image
+diffusion model with the ability of temporal motion mod-
+eling by incorporating pyramid spatial-temporal attention
+and convolution modules into the 2D image generation
+backbone.
+• We propose a dual-stream cross-attention for aligning the
+semantics of the video features and the user-provided text
+prompts and reference images, in a two-path manner.
+• Zero-shot generative evaluations on UCF-101 and MSR-
+VTT demonstrates that UniVId achieves better generative
+performance than existing methods.
+II. PRELIMINARIES
+Diffusion model [5], [12]–[14] is a class of likelihood-based
+generative models, consisting of a diffusion process and a
+denoising process. Formally, a data sample x0 ∼q(x0) is
+progressively blurred by a sequence of Gaussian noises:
+q(xt|xt−1) = N(xt; √αtxt−1, (1 −αt)I),
+(1)
+where {αt}T
+t=1 are the noise magnitudes. According to the
+properties of Markov chain and Gaussian noise, xT will
+approximately follow a standard Gaussian distribution N(0, I)
+if the chain length T is large. The generative process is
+then defined by reversely denoising from a standard Gaussian
+noise, i.e., xT ∼N(0, I). Denoising diffusion probabilistic
+models [12] revealed that training a diffusion model can be
+reduced to learning to estimate the noise ϵ added to x0 for
+each timestep t:
+LDM(θ) = Et,x0,ϵ∼N(0,I)
+
+∥ϵθ(xt, t) −ϵ∥2
+,
+(2)
+where ϵθ(xt, t) is a noise predictor implemented as a U-
+Net [15] with parameters θ.
+Latent Diffusion Model [5] is a variant of Diffusion Models,
+which performs the diffusion process in the compressed latent
+space of VAE [16] rather than the original pixel space. Taking
+Stable Diffusion [5] as an example, the training loss for the
+text-to-image latent diffusion model can be formulated as:
+LLDM(θ) = Et,z0,ϵ∼N (0,I)
+
+∥ϵθ(zt, Ct, t) −ϵ∥2
+,
+(3)
+where z0 = E(x0) is the encoded latent for x0, zt is its noisy
+version in timestep t, ϵθ(zt, Ct, t) is a noise predictor with text
+condition Ct.
+III. METHOD
+In this section, we will present how we propose a cascaded
+latent diffusion model, i.e., Univid, for controllable high-
+quality video generation, which allows for dual-stream control
+from both textual descriptions and reference images. The
+overall framework of UidVid is illustrated in fig. 2. The key
+module of UidVid is a base latent video diffusion model, which
+learns to generate a frame sequences according to the input
+text and optional image prompts.
+A. Video Generation with Dual-Stream Controls
+In this paper, we aim to leverage the off-the-shelf Text-to-
+Image (T2I) Latent Diffusion Model, e.g., Stable Diffusion [5]
+as a content prior and extend it into a flexible video generator
+that can be jointly controlled by textual prompts and reference
+images. The U-Net architecture in Stable Diffusion is built by
+stacking multiple basic blocks, with each block consisting of
+2D Convolution, Self-Attention and Cross-Attention modules:
+SDBlock = Conv2D ◦SelfAttn ◦CrossAttn.
+(4)
+The SDBlock updates features by leveraging the pixel correla-
+tions within each frame and establishing alignments between
+pixels and input texts. However, it is not directly applicable
+for generating consecutive frames with motion-aware content
+correlation, as it lacks the necessary spatial-temporal modeling
+capability. Hence, our primary objective is to extend the spatial
+SDBlock to a spatial-temporal version, namely STBlock that
+can capture temporal information, thereby enabling cross-
+frame semantic alignment and supporting dual-modal input
+control. The formulation of our STBlcok can be described as
+follows:
+STBlock = PSTConv ◦SelfAttn ◦PSTAttn ◦
+CrossAttnDual ◦TemAttn,
+(5)
+where SelfAttn is the self-attention module, PSTConv and
+PSTAttn are pyramid spatial-temporal convolution and at-
+tention, CrossAttnDual extends the CrossAttn in Stable
+Diffusion for dual-stream guidance of both text and image
+prompts and TemAttn is the temporal attention layer.
+1) Pyramid Spatial-Temporal Modules: The SelfAttn and
+Conv2D in SDBlock independently update the spatial features
+within each frame without explicitly considering their seman-
+tic correlations, which often leads to appearance inconsis-
+tencies across different frames. To enhance the cross-frame
+consistency and incorporate motion modeling, we introduce
+a spatial-temporal attention module, namely PSTAttn and
+extend the Conv2D modules to PSTConv via stacking a 1D
+temporal convolution after each 2D convolution.
+Taking inspiration from the success of modeling motion
+dynamics with multi-level visual tempo in video understand-
+ing [6], [7], [17], [18], we propose to perform a dynamic
+tempo modulation in our PSTAttn and PSTConv for capturing
+the complex motion structures inside videos. By adapting the
+spirit of spatial-pyramid [8]–[10] to our temporal structures,
+our pyramid spatial-temporal modules progressively learns
+the motion clues across frames in a temporally coarse-to-
+fine manner. As illustrated in fig. 1, we achieve dense cross-
+frame semantic correlations in the middle blocks (with lower
+resolutions) of the U-Net while sparse correlations in external
+layers. Specifically, note that the encoded latent of the input
+video, z = E(x) ∈RF ×C×H×W will be downsampled in
+the U-Net using factors f ∈{1, 2, 4, 8}.1 We refer to the
+modules that process the downsampled features with resolution
+1Here we use f = 1 to denotes the features before the first downsampling
+operation or after the last upsampling operation.
+
+---PAGE BREAK---
+STBlock
+Down-sampling
+STBlock
+Down-sampling
+STBlock
+Down-sampling
+STBlock
+Up-sampling
+STBlock
+Up-sampling
+STBlock
+Up-sampling
+STBlock
+ 𝜏!
+ 𝜏"
+image prompt 𝒞!
+“A panda is eating
+bamboo on a rock”
+text prompt 𝒞"
+𝑧!
+𝑧!#$
+STBlock
+PSTConv
+SelfAttn
+PSTAttn
+CrossAttnDual
+TemAttn
+𝐸!
+𝐸"
+input
+output
+𝐸"
+𝐸!
+Fig. 2. An overview of UniVid. For the latent zt, a text prompt Ct and an image prompt Cv are used as hybrid condition to guide the denoising (generation)
+process. Specifically, we use a CLIP text encoder τt and an CLIP image encoder τv to obtain the linguistic token embedding Et and visual patch embedding
+Ev, respectively. The U-Net architecture of UniVid is built by stacking multiple basic STBlocks, with each block consisting of pyramid spatial-temporal
+convolution (PSTConv), self-attention (SelfAttn), pyramid spatial-temporal attention (PSTAttn), dual-stream cross-attention (CrossAttn) and temporal
+attention (TemAttn). Best viewed in color.
+H
+f × W
+f
+as PSTAttn-f and PSTConv-f (a larger f indicates
+the module is closer to the middle layer). In PSTAttn-f, each
+frame selectively attends to a sub-sequence of frames sampled
+with a dynamic temporal step-size rf, by exploring the pixel-
+to-pixel correlations across frames. To achieve this, we evenly
+divide the temporal interval [1, 2, ..., F] into nf = F
+rf segments,
+and then sample nf reference frames from each segment to
+form the reference-frame set Γ. Formally, it can be defined as
+Attention(Q, K, V ) = Softmax( QKT
+√
+d ) · V with:
+Q = W Qzvi, K = W KzΓ, V = W V zΓ,
+(6)
+where zvi denotes the feature of frame vi, zΓ denotes the
+concatenated features of sampled reference frames Γ, the pro-
+jection matrices W Q, W K, W V are learnable. In PSTConv-f,
+we stack a 1D temporal convolution with dynamic kernel size
+kf after each 2D convolution. In the context of both PSTAttn-
+f and PSTConv-f, our pyramid spatial-temporal mechanism
+for tempo modulation is characterized by an increase in both
+rf and kf as the value f increases in the U-Net layers. This
+means that we progressively refine each frame’s motion-aware
+features as by selecting more reference frames and allowing
+for a broader spatial-temporal correlation perception field.
+2) Dual-Stream Cross-Attention: While text prompt has
+shown to be a flexible user interface in video synthesis, how to
+generate a video with appearance similar to the user-provided
+reference image remains a problem of immense practical
+importance. In this paper, we aim to incorporate both controls
+from text descriptions and reference images into our Univid,
+where the input textual and visual information complement
+each other to provide a detailed video description. Our core
+idea to introduce the visual control into the vanilla CrossAttn
+ 𝜏!
+“A panda is eating
+bamboo on a rock”
+ 𝜏"
+…
+…
+input feature
+output feature
+…
+…
+Cross Attention
+Cross Attention
+Fig. 3.
+An illustration of our proposed dual-stream cross-attention
+(CrossAttnDual). We use the CLIP text encoder τt to obtain linguistic token
+embeddings Et for text prompt Ct. For the image prompt Cv, we use the
+counterpart CLIP image encoder τv to obtain the visual patch embeddings
+Ev. Then we perform a two-path cross-attention between the input feature
+and these bimodal embeddings. The output feature is obtained by fusing the
+dual-stream results with coefficient λt and λv.
+module, resulting in a dual-stream cross-attention module,
+namely CrossAttnDual.
+To alleviate the challenge of cross-modal alignment, we em-
+ploy the paired text τt and image encoder τv from CLIP [11]
+as feature extractors for the text prompt Ct and image prompt
+Cv. Given a sequence of linguistic token embeddings Et =
+τt(Ct) = [e1
+t, e2
+t, ..., eNt
+t ] and a sequence of visual patch em-
+beddings Ev = τv(Cv) = [e1
+v, e2
+v, ..., eNv
+v ], where Nt and Nv
+are the numbers of linguistic tokens and visual patch tokens,
+our dual-stream cross-attention module can be formulated as:
+z′
+vi = λt Attention(Q, Kt, Vt) + λv Attention(Q, Kv, Vv)
+= λt Softmax(QKT
+t
+√
+d
+)Vt + λv Softmax(QKT
+v
+√
+d
+)Vv,
+(7)
+
+---PAGE BREAK---
+where Q = W Qzvi, Kt = W KtEt, Vt = W VtEt, Kv =
+W KvEv, Vv = W VvEv, W Q, W Kt, W Vt, W Kv, W Vv are the
+projection matrices, zvi is the feature of frame vi and z′
+vi is
+the output feature. In contrast to a similar technique [19] that
+only used the global image token, we utilize all patch tokens
+from the image encoder because we aim to precisely align
+the appearance information of each frame with the reference
+image in a fine-grained manner.
+Since our CrossAttnDual align each frame’s semantics with
+the input prompts independently, we additionally introduce a
+temporal attention layer TemAttn to propagate the semantic
+information across all frames. This temporal attention layer
+acts as a self-attention mechanism, operating specifically over
+the temporal axis, which is formulated as follows (using
+einops [20] notation):
+z′ ←rearrange(z, b t c h w →(b h w) f c)
+z′ ←TemAttn(z′)
+z′ ←rearrange(z′, (b h w) f c →b t c h w),
+(8)
+where the b,t,c,h,w denotes the dimensions of batch,
+time, channel, height and weight.
+IV. EXPERIMENTS
+In this section, we will present our training datasets, training
+strategies and implementation details. Then we both qualita-
+tively and quantitatively evaluate our Univid by comparing to
+existing approaches on the zero-shot video generation setting.
+A. Experimental Setups
+Datasets To train our models, we adapt two publicly available
+datasets, namely Laion, and Pandas-70M. The full-version of
+Laion dataset contains 5 billion image-text pairs. Since our
+model inherits 2D parameters from SD backbone and to save
+training time, we only select 600 million data points with
+high aesthetic scores which is annotated in laion website2. The
+Pandas-70M [21] dataset contains 70 million video-text pairs.
+We select 6M higher-quality samples [22] from Pandas-70M
+data for our model training.
+Evaluation Metrics
+For UCF-101, Frechet Video Distance
+(FVD) and Inception Score (IS) [23] are applied to assess the
+quality and diversity of our generate videos. For MSR-VTT,
+Frechet Inception Distance (FID) [24], CLIP-FID and CLIP-
+SIM [25] scores are used to evaluate our model.
+Implementation Details We use the publicly available Stable
+Diffusion 2.1 [5] as our base T2I model and OpenCLIP [26]
+as our image encoder τv. In implementing a joint fine-tuning
+strategy that leverages both image and video data, we adopted
+a distinct training process for the temporal and spatial layers.
+For image inputs, we exclusively updated the spatial layer. In
+contrast, for video inputs, updates were made to both layers.
+To train our (T+I)2V model, we employ a training strategy
+from T2V to (T+I)2V. To accommodate the resolution of the
+dataset, we set the output size of the videos to 24 x 576 x
+320. We first train our model by only text prompt condition
+on Pandas-70M and laion datasets. In this stage, we train our
+based T2V model which is extended from SD 2.1. Then, we
+2https://laion.ai/blog/laion-aesthetics/
+TABLE I
+ZERO-SHOT TEXT TO VIDEO GENERATION ON UCF-101 AND MSR-VTT.
+Method
+UCF-101
+MSR-VTT
+IS (↑)
+FVD (↓)
+CLIP-SIM (↓)
+FID (↓)
+CogVideo [27]
+25.27
+701.59
+0.2631
+-
+Make-A-Video [2]
+33.00
+367.23
+0.3049
+-
+MagicVideo [28]
+-
+655
+-
+36.50
+Latent-Shift [29]
+-
+360.04
+0.2773
+-
+Video LDM [30]
+33.45
+550.61
+0.2929
+-
+VideoFactory [31]
+-
+410.00
+0.3005
+-
+PYoCo [3]
+47.76
+355.19
+-
+22.14
+Show-1 [32]
+35.42
+394
+0.3072
+-
+VideoPoet [33]
+38.44
+355
+0.3049
+-
+Univid
+43.23
+352.77
+0.3008
+22.06
+TABLE II
+ZERO-SHOT TEXT WITH IMAGE AND AND IMAGE-ONLY TO VIDEO
+GENERATION ON UCF-101 AND MSR-VTT.
+Method
+Task
+UCF-101
+MSR-VTT
+IS (↑)
+FVD (↓)
+CLIP-FID (↓)
+FID (↓)
+PYoCo [3]
+T2V
+47.76
+355.19
+9.73
+22.14
+EMU [34]
+I2V
+42.7
+606.2
+-
+-
+SVD [35]
+I2V
+-
+242
+-
+-
+DynamiCrafter [36]
+(T+I)2V
+-
+429.23
+-
+-
+Univid
+I2V
+44.51
+255.33
+9.91
+21.54
+Univid
+(T+I)2V
+44.98
+239.57
+9.52
+21.17
+integrate T2V, I2V and (T+I)2V etc. tasks to train the adapters
+and the corresponding cross-attention modules. Finally, we
+finetune the model with text and image joint conditions, update
+the parameters of the full U-Net backbone, allow for further
+alignment and joint optimization of the condition guidance
+between text and image.
+B. Main Results
+1) Quantitative Comparisons: We quantitatively compare
+our method against Make-A-Video [2], CogVideo [27], and
+several concurrent works [28], [30], [31], [33], [36]. Table I
+shows that our method outperforms all the baselines on the
+UCF-101 dataset and improves the zero-shot FVD from 701.59
+to 352.77. It indicates that the videos generated by our
+method possess high quality, and the Inception Score (IS) has
+reached an advanced level, demonstrating that the diversity of
+our generated videos is sufficient. Meanwhile, our approach
+demonstrates superior performance across various metrics on
+the MSR-VTT dataset, particularly achieving state-of-the-art
+results in the FID metric [25]. This not only validates the
+effectiveness of our method in text-to-video (T2V) tasks but
+also indicates that the diversity of the videos generated by our
+model is sufficiently high.
+In Table II, on I2V and (T+I)2V tasks, it can be seen that
+our baseline model achieves a new state-of-the-art FID score
+of 21.17, while using ensemble models further improves both
+CLIP-FID and FID scores. Compared to other I2V or (T+I)2V
+methods, our approach demonstrates significant performance
+improvements in zero-shot testing on both the MSR-VTT and
+UCF-101 datasets. This enhancement indicates that a unified
+framework and training methodology not only preserves but
+
+---PAGE BREAK---
+T2V: A cottage by a bonfire on a snowy night
+I2V
+T+I2V: A cottage by a bonfire on a snowy night
+T2V: Bee is flying around flowers
+T+I2V: A tall man with broad shoulders and a friendly smile
+Fig. 4. The illstration displays examples generated from three tasks: T2V, I2V, and (T+I)2V. The top two rows present the T2V results, the middle two rows
+show the I2V results, and the final two rows illustrate the (T+I)2V results. The highlighted images in red correspond to the reference images.
+also enhances the model’s performance, leading to improved
+results in instruction following, generation quality, and di-
+versity of video generation. This finding is of considerable
+importance.
+2) Visualized Analysis: We present the qualitative visualiza-
+tions of our Univid on three tasks of T2V, I2V and (T+I)2V
+in fig. 4. In the first case of fig. 4, our Univid is capable of
+generating a coherent process of ”A cottage by a bonfire on
+a snowy night” and keeping the irrelevant bonfire beating. In
+the middle two rows of fig. 4, a reference image is inputted
+to generate a video, and the generated video can effectively
+maintain the original structure of the image while exhibiting
+realistic motion. In the bottom two rows of fig. 4, text and
+image are combined to guide the generation of videos, the
+generated videos not only retain the informational content of
+the images but also effectively adhere to the motion directives
+provided by the text.
+V. CONCLUSION
+In this paper, we propose an unified video generation model
+(Univid), which combines multiple tasks of T2V, I2V and
+(T+I)2V in a single framework. To support these tasks, a dual-
+stream cross-attention mechanism is designed to enable text
+and images to simultaneously guide video generation through
+re-weighted control scores. Moreover, the original spatial
+attention and convolution modules have been transformed into
+pyramid spatial-temporal modules to enhance our model’s
+spatial-temporal modeling capability, thereby achieving im-
+proved continuous high quality video. The experimental results
+and visualizations indicate that our method performs well
+across multiple tasks, particularly excelling in maintaining
+semantic and temporal consistency. These demonstrate the
+effectiveness of our unified video generation framework.
+REFERENCES
+[1] Jonathan Ho, William Chan, Chitwan Saharia, Jay Whang, Ruiqi Gao,
+Alexey Gritsenko, Diederik P Kingma, Ben Poole, Mohammad Norouzi,
+
+---PAGE BREAK---
+David J Fleet, et al., “Imagen video: High definition video generation
+with diffusion models,” arXiv preprint arXiv:2210.02303, 2022.
+[2] Uriel Singer, Adam Polyak, Thomas Hayes, Xi Yin, Jie An, Songyang
+Zhang, Qiyuan Hu, Harry Yang, Oron Ashual, Oran Gafni, et al., “Make-
+a-video: Text-to-video generation without text-video data,”
+in The
+Eleventh International Conference on Learning Representations, 2022.
+[3] Songwei Ge, Seungjun Nah, Guilin Liu, Tyler Poon, Andrew Tao, Bryan
+Catanzaro, David Jacobs, Jia-Bin Huang, Ming-Yu Liu, and Yogesh
+Balaji, “Preserve your own correlation: A noise prior for video diffusion
+models,” in Proceedings of the IEEE/CVF International Conference on
+Computer Vision, 2023, pp. 22930–22941.
+[4] Andreas Blattmann, Robin Rombach, Huan Ling, Tim Dockhorn, Se-
+ung Wook Kim, Sanja Fidler, and Karsten Kreis, “Align your latents:
+High-resolution video synthesis with latent diffusion models,”
+in
+Proceedings of the IEEE/CVF Conference on Computer Vision and
+Pattern Recognition, 2023, pp. 22563–22575.
+[5] Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser,
+and Bj¨orn Ommer, “High-resolution image synthesis with latent diffu-
+sion models,” in CVPR, 2022, pp. 10684–10695.
+[6] Ceyuan Yang, Yinghao Xu, Jianping Shi, Bo Dai, and Bolei Zhou,
+“Temporal pyramid network for action recognition,” in Proceedings of
+the IEEE/CVF conference on computer vision and pattern recognition,
+2020, pp. 591–600.
+[7] Chen-Lin Zhang, Jianxin Wu, and Yin Li, “Actionformer: Localizing
+moments of actions with transformers,”
+in European Conference on
+Computer Vision. Springer, 2022, pp. 492–510.
+[8] Tatsuya Harada, Yoshitaka Ushiku, Yuya Yamashita, and Yasuo Ku-
+niyoshi, “Discriminative spatial pyramid,” in CVPR 2011. IEEE, 2011,
+pp. 1617–1624.
+[9] Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun, “Spatial
+pyramid pooling in deep convolutional networks for visual recognition,”
+IEEE transactions on pattern analysis and machine intelligence, vol. 37,
+no. 9, pp. 1904–1916, 2015.
+[10] Anna Bosch, Andrew Zisserman, and Xavier Munoz,
+“Representing
+shape with a spatial pyramid kernel,” in Proceedings of the 6th ACM
+international conference on Image and video retrieval, 2007, pp. 401–
+408.
+[11] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel
+Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin,
+Jack Clark, et al., “Learning transferable visual models from natural
+language supervision,” in International conference on machine learning.
+PMLR, 2021, pp. 8748–8763.
+[12] Jonathan Ho, Ajay Jain, and Pieter Abbeel,
+“Denoising diffusion
+probabilistic models,” NeurIPS, vol. 33, pp. 6840–6851, 2020.
+[13] Aditya Ramesh, Prafulla Dhariwal, Alex Nichol, Casey Chu, and Mark
+Chen, “Hierarchical text-conditional image generation with clip latents,”
+arXiv preprint arXiv:2204.06125, 2022.
+[14] Chitwan Saharia, William Chan, Saurabh Saxena, Lala Li, Jay Whang,
+Emily L Denton, Kamyar Ghasemipour, Raphael Gontijo Lopes, Burcu
+Karagol Ayan, Tim Salimans, et al.,
+“Photorealistic text-to-image
+diffusion models with deep language understanding,”
+Advances in
+Neural Information Processing Systems, vol. 35, pp. 36479–36494, 2022.
+[15] Olaf Ronneberger, Philipp Fischer, and Thomas Brox,
+“U-net: Con-
+volutional networks for biomedical image segmentation,” in Medical
+Image Computing and Computer-Assisted Intervention–MICCAI 2015:
+18th International Conference, Munich, Germany, October 5-9, 2015,
+Proceedings, Part III 18. Springer, 2015, pp. 234–241.
+[16] Diederik P Kingma and Max Welling,
+“Auto-encoding variational
+bayes,” arXiv preprint arXiv:1312.6114, 2013.
+[17] Christoph Feichtenhofer, Haoqi Fan, Jitendra Malik, and Kaiming He,
+“Slowfast networks for video recognition,”
+in Proceedings of the
+IEEE/CVF international conference on computer vision, 2019, pp. 6202–
+6211.
+[18] Bolei Zhou, Alex Andonian, Aude Oliva, and Antonio Torralba, “Tem-
+poral relational reasoning in videos,” in Proceedings of the European
+conference on computer vision (ECCV), 2018, pp. 803–818.
+[19] Hu Ye, Jun Zhang, Sibo Liu, Xiao Han, and Wei Yang, “Ip-adapter: Text
+compatible image prompt adapter for text-to-image diffusion models,”
+arXiv preprint arXiv:2308.06721, 2023.
+[20] Alex Rogozhnikov, “Einops: Clear and reliable tensor manipulations
+with einstein-like notation,” in International Conference on Learning
+Representations, 2021.
+[21] Tsai-Shien Chen, Aliaksandr Siarohin, Willi Menapace, Ekaterina
+Deyneka, Hsiang-wei Chao, Byung Eun Jeon, Yuwei Fang, Hsin-Ying
+Lee, Jian Ren, Ming-Hsuan Yang, et al., “Panda-70m: Captioning 70m
+videos with multiple cross-modality teachers,” in Proceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern Recognition,
+2024, pp. 13320–13331.
+[22] PKU-Yuan Lab and Tuzhan AI etc., “Open-sora-plan,” Apr. 2024.
+[23] Jonathan Ho, Tim Salimans, Alexey Gritsenko, William Chan, Mo-
+hammad Norouzi, and David J Fleet,
+“Video diffusion models,”
+arXiv:2204.03458, 2022.
+[24] Gaurav Parmar, Richard Zhang, and Jun-Yan Zhu, “On aliased resizing
+and surprising subtleties in gan evaluation,”
+in Proceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern Recognition,
+2022, pp. 11410–11420.
+[25] Tuomas Kynk¨a¨anniemi, Tero Karras, Miika Aittala, Timo Aila, and
+Jaakko Lehtinen,
+“The role of imagenet classes in fr´echet inception
+distance,” in ICLR, 2023.
+[26] Gabriel Ilharco, Mitchell Wortsman, Ross Wightman, Cade Gordon,
+Nicholas Carlini, Rohan Taori, Achal Dave, Vaishaal Shankar, Hongseok
+Namkoong, John Miller, Hannaneh Hajishirzi, Ali Farhadi, and Ludwig
+Schmidt, “Openclip,” July 2021, If you use this software, please cite it
+as below.
+[27] Wenyi Hong, Ming Ding, Wendi Zheng, Xinghan Liu, and Jie Tang,
+“Cogvideo: Large-scale pretraining for text-to-video generation via
+transformers,” arXiv preprint arXiv:2205.15868, 2022.
+[28] Daquan Zhou, Weimin Wang, Hanshu Yan, Weiwei Lv, Yizhe Zhu,
+and Jiashi Feng, “Magicvideo: Efficient video generation with latent
+diffusion models,” arXiv preprint arXiv:2211.11018, 2022.
+[29] Jie An, Songyang Zhang, Harry Yang, Sonal Gupta, Jia-Bin Huang,
+Jiebo Luo, and Xi Yin, “Latent-shift: Latent diffusion with temporal shift
+for efficient text-to-video generation,” arXiv preprint arXiv:2304.08477,
+2023.
+[30] Andreas Blattmann, Robin Rombach, Huan Ling, Tim Dockhorn, Se-
+ung Wook Kim, Sanja Fidler, and Karsten Kreis, “Align your latents:
+High-resolution video synthesis with latent diffusion models,” in CVPR,
+2023.
+[31] Wenjing Wang, Huan Yang, Zixi Tuo, Huiguo He, Junchen Zhu, Jianlong
+Fu, and Jiaying Liu, “Videofactory: Swap attention in spatiotemporal dif-
+fusions for text-to-video generation,” arXiv preprint arXiv:2305.10874,
+2023.
+[32] David Junhao Zhang, Jay Zhangjie Wu, Jia-Wei Liu, Rui Zhao, Lingmin
+Ran, Yuchao Gu, Difei Gao, and Mike Zheng Shou, “Show-1: Marrying
+pixel and latent diffusion models for text-to-video generation,” Interna-
+tional Journal of Computer Vision, pp. 1–15, 2024.
+[33] Dan Kondratyuk, Lijun Yu, Xiuye Gu, Jos´e Lezama, Jonathan Huang,
+Grant Schindler, Rachel Hornung, Vighnesh Birodkar, Jimmy Yan,
+Ming-Chang Chiu, et al., “Videopoet: A large language model for zero-
+shot video generation,” arXiv preprint arXiv:2312.14125, 2023.
+[34] Rohit Girdhar, Mannat Singh, Andrew Brown, Quentin Duval, Samaneh
+Azadi, Sai Saketh Rambhatla, Akbar Shah, Xi Yin, Devi Parikh, and
+Ishan Misra,
+“Emu video: Factorizing text-to-video generation by
+explicit image conditioning,” CoRR, vol. abs/2311.10709, 2023.
+[35] Andreas Blattmann, Tim Dockhorn, Sumith Kulal, Daniel Mendelevitch,
+Maciej Kilian, Dominik Lorenz, Yam Levi, Zion English, Vikram Voleti,
+Adam Letts, et al., “Stable video diffusion: Scaling latent video diffusion
+models to large datasets,” arXiv preprint arXiv:2311.15127, 2023.
+[36] Jinbo Xing, Menghan Xia, Yong Zhang, Haoxin Chen, Xintao
+Wang, Tien-Tsin Wong, and Ying Shan,
+“Dynamicrafter: Animating
+open-domain images with video diffusion priors,”
+arXiv preprint
+arXiv:2310.12190, 2023.
+
+---PAGE BREAK---

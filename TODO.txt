@@ -1,0 +1,416 @@
+================================================================================
+                    RDD 论文实验计划 (按优先级/耗时排列)
+================================================================================
+
+注：标记 [运行中] 的实验已经在跑，只需等待/监控
+    标记 [就绪] 的实验脚本已写好，可直接启动
+    标记 [需开发] 的需要写代码/脚本
+
+================================================================================
+ A. 短期任务（1-2天内可完成）
+================================================================================
+
+A1. [运行中] ImageNet256 各实验继续训练，等待收敛
+    - 100,300,600 (当前 step ~320k, 目标 500k+)
+    - 300,300,400 (当前 step ~640k, 已接近收敛)
+    - Decouple (当前 step ~475k, 目标 500k+)
+    - Unified XL/2 (当前 step ~180k, 目标 400k+)
+    - Unified L/2 (当前 step ~225k, 目标 400k+)
+    动作：监控 loss，到达目标步数后停止
+
+A2. [就绪] ImageNet512 Unified 训练
+    - 脚本：train_RDD_imagenet512_unified_100_200_300_400.sh
+    - 配置：DiT-XL/2, 4阶段 (64,32,16,8), micro-batch=64/128
+    - 预计训练时间：3-5天达到可看效果 (50k步)
+    动作：已启动，监控 OOM/loss
+
+A3. [就绪] 50k FID 评估（已有 checkpoint）
+    步骤：
+    1. 对已收敛的 300,300,400 (640k步) 跑完整 50k 评估
+    2. 用 evaluator 计算 FID/IS/Precision/Recall
+    3. 对比 Original DiT-XL/2 (400k步) baseline
+    脚本：RDD_sample_evaluation_400000.sh (部分已跑完)
+    动作：检查哪些实验已完成50k，未完成的重启
+
+A4. [就绪] Speed Benchmark 补充
+    已完成：RDD各配置 + Unified + LDM + Original DiT (250步)
+    待补充：
+    - Original DiT 1000步 (公平对比，命令已给)
+    - 汇总成表格写入论文
+    动作：跑完1000步benchmark后整理数据
+
+A5. [需开发] FLOPs 精确计算
+    步骤：
+    1. 用 fvcore/thop 统计每个模型的 per-step FLOPs
+    2. 计算 RDD 总 FLOPs = sum(每stage FLOPs × 该stage步数 × 2_for_CFG)
+    3. 对比 DiT-XL/2 × 250步 × 2_for_CFG
+    4. 输出表格：Model | Steps | Per-step GFLOPs | Total GFLOPs | Wall-time
+    预计耗时：写脚本 + 跑一遍 = 半天
+
+================================================================================
+ B. 中期任务（3-7天）
+================================================================================
+
+B1. [运行中] 等待 Unified 模型收敛 + FID 评估
+    - Unified XL/2 需要训练到 ~400k 步才能公平对比
+    - Unified L/2 同上
+    - 收敛后跑 50k FID 评估
+    预计：训练 3-5 天 + 评估 1 天
+
+B2. [需开发] Step Allocation Ablation 完整实验
+    已有结果：
+    - 300,300,400 (最成熟，640k步)
+    - 100,300,600 (320k步，还在训)
+    还需要：
+    - 用已跑完的 400k/450k checkpoint 做不同采样步数配比
+      (已有脚本：evaluation3.sh 的 40/40/170, 60/60/130 等)
+    - 整理成 ablation table
+    动作：确认 evaluation3 结果，计算 FID
+
+B3. [需开发] Decouple 模式修复 + 评估
+    问题：采样时存在 double-drift bug（锐度过高）
+    步骤：
+    1. 修复 gaussian_diffusion_with_drift.py 中 p_mean_variance 的 d_pred 处理
+    2. 用修复后的代码重新采样 preview 确认视觉效果
+    3. 跑 50k FID 评估
+    4. 对比：Decouple vs 标准 RDD（同步数，同 checkpoint 步数）
+    预计：修 bug 半天 + 采样评估 1-2 天
+
+B4. [需开发] Upsampling Method Ablation
+    对比方案（采样时 stage 之间的 upsample 方式）：
+    - Posterior sampling (当前默认)
+    - Bilinear interpolation
+    - Noise filling (nearest-neighbor)
+    部分已跑：evaluation2.sh (bilinear), evaluation4.sh (noise_filling)
+    动作：整理已有结果，补充缺失实验，做 ablation table
+
+================================================================================
+ C. 长期任务（1-2周+）
+================================================================================
+
+C1. [需开发] ImageNet512 完整实验
+    步骤：
+    1. Unified 训练到收敛 (~200k-400k步)
+    2. 多模型版训练（train_RDD_imagenet512.sh，如需要）
+    3. 50k FID 评估
+    4. 对比 DiT-XL/2 512 baseline
+    5. 速度 benchmark (512分辨率)
+    关键点：证明 RDD 在高分辨率上优势更大（FLOPs 节省更显著）
+
+C2. [需开发] RDD + Distillation
+    思路：RDD 减少每步 FLOPs，Distillation 减少步数，两者正交可叠加
+    步骤：
+    1. 选一个收敛好的 RDD teacher (如 300,300,400 @ 640k)
+    2. Progressive Distillation: 1000步→500步→250步→125步
+    3. 评估每个 distilled 版本的 FID
+    4. 最终对比：RDD-distilled (125步) vs DiT-distilled (125步) vs DiT (250步)
+    难度：需实现 distillation 训练循环
+    预计：1-2 周
+
+C3. [需开发] 视频生成 (Open-Sora / STDiT)
+    思路：RDD 的多尺度策略天然适合视频（时空多尺度）
+    步骤：
+    1. Fork Open-Sora，理解 STDiT 架构
+    2. 设计视频版 RDD：时间维度也做多尺度（低帧率→高帧率）
+    3. 实现并训练小规模 demo (如 16帧 256×256)
+    4. 评估 FVD
+    难度：最高，但对论文影响力帮助最大
+    预计：2-4 周
+
+================================================================================
+ D. 当前各实验 Checkpoint 状态汇总
+================================================================================
+
+实验                          | 最新 Step | 目标 Step | 状态
+------------------------------|-----------|-----------|----------
+RDD 100,300,600 (3模型)       | ~320k     | 500k      | 训练中
+RDD 300,300,400 (3模型)       | ~640k     | 700k      | 接近收敛
+RDD Decouple (3模型)          | ~475k     | 500k      | 训练中
+Unified XL/2 (300,300,400)   | ~180k     | 400k      | 训练中
+Unified L/2 (300,300,400)    | ~225k     | 400k      | 训练中
+Unified XL/2 ImageNet512     | ~0        | 200k+     | 刚启动
+Original DiT-XL/2 (baseline) | 400k      | -         | 已完成
+LDM Original (baseline)      | epoch 30  | -         | 已完成
+
+================================================================================
+ E. 论文表格/图表清单
+================================================================================
+
+Table 1: Main Results — FID/IS comparison
+    - RDD (各配置) vs DiT-XL/2 vs LDM, ImageNet256
+    - 需要：A3 完成
+
+Table 2: Speed & FLOPs
+    - Wall-time / Total GFLOPs / Per-step GFLOPs
+    - 需要：A4 + A5 完成
+
+Table 3: Step Allocation Ablation
+    - 不同 (T_32, T_16, T_8) 分配对 FID 的影响
+    - 需要：B2 完成
+
+Table 4: Upsampling Method Ablation
+    - Posterior vs Bilinear vs Noise-filling
+    - 需要：B4 完成
+
+Table 5: Unified vs Multi-model
+    - 同配置下 Unified 和分离模型的 FID/Speed 对比
+    - 需要：B1 完成
+
+Table 6 (可选): ImageNet512 Results
+    - 高分辨率证明 RDD 优势放大
+    - 需要：C1 完成
+
+Figure: FID vs Wall-time 曲线
+    - 横轴 wall-time，纵轴 FID
+    - 包含 DiT各步数 + RDD各配置 + Distilled版本
+    - 需要：A3 + A4 完成
+
+================================================================================
+ F. 执行顺序建议（按时间线）
+================================================================================
+
+Week 1 (本周):
+  □ 监控运行中的训练实验
+  □ 完成 FLOPs 计算脚本 (A5)
+  □ 完成 Speed Benchmark 1000步 (A4)
+  □ 检查 50k evaluation 完成度，重启 hang 的任务 (A3)
+  □ 修复 Decouple double-drift bug (B3)
+
+Week 2:
+  □ 收集已收敛实验的 FID 数据
+  □ 整理 Step Allocation Ablation (B2)
+  □ 整理 Upsampling Ablation (B4)
+  □ ImageNet512 初步结果（如果训练进度 ok）
+
+Week 3+:
+  □ Unified 模型收敛 → FID 评估 (B1)
+  □ ImageNet512 完整评估 (C1)
+  □ Distillation 实验 (C2，如果时间允许)
+  □ 视频生成方向探索 (C3，长期)
+
+
+
+
+
+
+1 + 4 variant实验均已结束
+imagenet256 RDD DiT 700000
+imagenet256 RDD DIT unified L2
+imagenet256 RDD DIT unified
+imagenet256 RDD DIT 100 300 600 running
+imagenet256 RDD DIT decouple  
+
+/mnt/bn/yangyuan-search-agent-rl-hl/mlx/users/yangyuan.335/RDD/RDD-DiT_ImageNet256_300_300_400/001-imagenet256-multiscale/checkpoints_16x16/0700000.pt
+/mnt/bn/yangyuan-search-agent-rl-hl/mlx/users/yangyuan.335/RDD/RDD-DiT_ImageNet256_Unified_300_300_400_L2/003-imagenet256-unified/checkpoints/0400000.pt
+/mnt/bn/yangyuan-search-agent-rl-hl/mlx/users/yangyuan.335/RDD/RDD-DiT_ImageNet256_Unified_300_300_400/004-imagenet256-unified/checkpoints/0350000.pt
+/mnt/bn/yangyuan-search-agent-rl-hl/mlx/users/yangyuan.335/RDD/RDD-DiT_ImageNet256_100_300_600_resumed/006-imagenet256-multiscale/checkpoints_32x32/0405000.pt
+/mnt/bn/yangyuan-search-agent-rl-hl/mlx/users/yangyuan.335/RDD/RDD-DiT_ImageNet256/079-imagenet256-multiscale-decouple/checkpoints_32x32/0515000.pt
+
+采样配置：
+1000step：cfg15/1，ddpm
+250step：80-80-80，cfg15/125/1，ddpm
+100300600模型有额外的 150-75-25，cfg15/125/1 配置
+
+实验目的：
+    1. 对比unified，decouple，multistage模型
+    2. 对比100300600和300300400训练步数分配
+
+
+
+
+512实验进行中
+imagenet512 RDD DiT unified 512 
+/mnt/bn/yangyuan-search-agent-rl-hl/mlx/users/yangyuan.335/RDD/RDD-DiT_ImageNet512_Unified_100_200_300_400/004-imagenet512-unified/checkpoints/0015000.pt
+
+
+================================================================================
+ G. f-DM 对标实验清单（确保 novelty + 回应审稿人）
+================================================================================
+
+背景：f-DM (ICLR 2023) 是最相似的 prior work。不需要直接复现对比（backbone
+不同，U-Net vs DiT），但需要覆盖他们验证过的关键维度，证明 RDD 在这些维度
+上也 work 或更好。
+
+---------------------------------------------------------------------------------
+G1. [已有/整理] Resolution Schedule Ablation（对标 f-DM 的 Stage Schedule 消融）
+---------------------------------------------------------------------------------
+    f-DM 做了什么：线性 vs 余弦 stage schedule，证明分配不同影响显著
+    你已有的：300-300-400 / 100-300-600 / 各种采样步数配比
+    还需要：
+    - 整理成一个干净的 ablation table（训练步数分配 + 采样步数分配）
+    - 强调这是 RDD 的 drift coefficient 自动处理的，不需要手动调 SNR
+    状态：数据已有，需整理
+
+---------------------------------------------------------------------------------
+G2. [需验证] Drift Coefficient 消融（对标 f-DM 的 Noise Rescaling 消融）
+---------------------------------------------------------------------------------
+    f-DM 做了什么：去掉 noise rescaling → FID 从 10.8 恶化到 14.5（+35%）
+    你需要做的：证明 gamma_{s,t}^c 的作用
+    实验设计：
+    - 用已收敛的 300,300,400 模型 (700k)
+    - 采样时设 gamma = 0（去掉 drift correction）vs 正常 gamma
+    - 对比 FID
+    预期：去掉 gamma 后 FID 应明显变差，证明 drift correction 是必要的
+    工作量：只需改采样代码一行 + 跑一次评估，半天
+
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │ 原理详解：为什么这个消融对标 f-DM 的 Noise Rescaling                    │
+    └─────────────────────────────────────────────────────────────────────┘
+
+    核心问题：不同分辨率图片在同一个 timestep 下的 SNR 不同。
+
+    直觉：假设 256×256 图和下采样的 64×64 版本加同样方差 σ²I 的噪声：
+    - 64×64 的每个像素是原图 4×4=16 个像素的均值
+    - 噪声均值后方差 = σ²/16，即 SNR 放大了 16 倍
+    - 所以同一个 α̅_t，低分辨率的"有效 SNR"比高分辨率高
+
+    f-DM 的处理方式：
+    - 在阶段边界做分辨率切换时，显式 rescale 噪声保证 SNR 连续
+    - SNR_new = d_k · SNR_old，其中 d_k = M_{k-1}/M_k 是维度变化比
+    - 如果不做：阶段边界 SNR 突变 → 模型收到 OOD 输入 → 质量下降
+    - 消融结果：去掉 rescaling，FID 从 10.8 → 14.5（恶化 35%）
+
+    RDD 为什么不需要显式 rescaling：
+    - RDD 的 drift d̄^c = UP(DOWN(x_0)) - x_0 是连续地抹掉高频
+    - 前向过程：q(x̄_t^c | x̄_0^c) = N(√ᾱ_t · x̄_0^c + (t/ΔT)√ᾱ_t · d̄^c, (1-ᾱ_t)I)
+    - 到 stage 结束时，均值已变为 √ᾱ_{T_{c+1}} · U(x_0^{c+1})（纯低频）
+    - 关键：drift 的存在使 SNR 变化已被编码在训练目标 ε̃ 里
+    - 模型训练时看到的就是含 drift 的噪声图
+    - 采样时用 γ_{s,t}^c 做 drift correction → 自动保证 SNR 一致性
+
+    实验目的：
+    - 正常采样（保留 γ_{s,t}^c · d̂^c）→ 正常 FID
+    - 去掉 drift correction（强制 γ = 0）→ 预期 FID 明显恶化
+    - 如果恶化了 → 证明 drift coefficient 隐式解决了跨分辨率 SNR 匹配
+    - 论文叙事：比 f-DM 更优雅，不需要手动计算 rescaling factor
+
+---------------------------------------------------------------------------------
+G3. [需做] DPM-Solver 加速（f-DM 无法做到的独特优势）
+---------------------------------------------------------------------------------
+    f-DM 做了什么：只支持 DDPM/DDIM 采样，不兼容高阶 solver
+    你需要做的：证明 RDD + DPM-Solver 在少步数下仍然好
+    实验设计：
+    - 300,300,400 模型，用 DPM-Solver-1 和 DPM-Solver-2
+    - 总步数：15-15-20 / 10-10-15 / 5-5-10（极少步）
+    - 对比同步数下 DDPM vs DPM-1 vs DPM-2 的 FID
+    - 画 FID vs Total Steps 曲线
+    预期：DPM-2 在少步时应显著优于 DDPM
+    工作量：采样脚本已支持 dpm1/dpm2，只需跑评估，1天
+    **这是你论文最强的差异化卖点之一**
+
+---------------------------------------------------------------------------------
+G4. [运行中] ImageNet 512（f-DM 没做过的分辨率）
+---------------------------------------------------------------------------------
+    f-DM 做了什么：只做了 256×256
+    你需要做的：证明 RDD 在更高分辨率上优势更大
+    实验设计：
+    - Unified XL/2, 4阶段 (64,32,16,8)
+    - 对比 DiT-XL/2 @ 512 baseline
+    - 重点报告 speedup ratio（理论上 512 比 256 加速更多）
+    状态：已启动训练
+    **这是 f-DM 完全没覆盖的领域，强差异化**
+
+---------------------------------------------------------------------------------
+G5. [已有/补充] Upsampling Method（对标 f-DM 的 Noise Resampling）
+---------------------------------------------------------------------------------
+    f-DM 做了什么：复杂的 noise resampling + 预采样全尺寸噪声
+    你已有的：bilinear / constant / noise_filling 对比
+    你的优势：constant upsample 就够了，不需要 f-DM 那么复杂的操作
+    还需要：
+    - 确认 ablation table 完整（已有大部分数据）
+    - 论文里写清楚：RDD 的 constant upsample 已经是最优的跨阶段衔接
+    状态：数据大部分已有
+
+---------------------------------------------------------------------------------
+G6. [需做] 语义分层可视化（对标 f-DM 的 "fixing low-res noise" 实验）
+---------------------------------------------------------------------------------
+    f-DM 做了什么：固定最低分辨率的噪声，只改高分辨率噪声 → 保持身份/姿势
+    你需要做的：同样的定性实验
+    实验设计：
+    - 用 300,300,400 模型
+    - 固定 32×32 stage 的初始噪声（即固定 z_T^{C-1}）
+    - 随机采样 16×16 和 8×8 stage 的噪声
+    - 生成 4-8 张图，展示低频一致性 + 高频多样性
+    工作量：改采样脚本 + 生成可视化，半天
+    **审稿人几乎一定会期望看到这个**
+
+---------------------------------------------------------------------------------
+G7. [可选] 条件生成零样本迁移（对标 f-DM 的超分/去模糊）
+---------------------------------------------------------------------------------
+    f-DM 做了什么：预训练 f-DM 直接做 4× 超分辨率（无需额外训练）
+    你可以做的：
+    - 给定低分辨率图，固定 32×32 stage 输出为该图
+    - 让 16×16 和 8×8 stage 正常去噪
+    - 展示 RDD 的零样本超分辨率能力
+    优先级：低（如果时间不够可以不做，但做了是加分项）
+
+================================================================================
+ H. 实验优先级排序（综合 f-DM 对标 + 原有计划）
+================================================================================
+
+最高优先级（必须有，否则可能被 reject）：
+  1. G2 Drift Coefficient 消融 — 证明核心技术贡献有效
+  2. G3 DPM-Solver 少步数 — 最强差异化卖点
+  3. G6 语义分层可视化 — 审稿人期望看到
+  4. G1 Resolution Schedule 整理 — 数据已有只需整理
+
+高优先级（强烈建议有）：
+  5. G4 ImageNet 512 — 差异化 + 证明 scalability
+  6. G5 Upsampling 整理 — 数据已有
+  7. B3 Decouple bug 修复 + 评估
+
+中优先级（加分项）：
+  8. A5 FLOPs 精确计算
+  9. G7 零样本超分
+  10. C2 Distillation
+
+
+
+
+
+
+imagenet256 RDD DiT采样
+400000sample
+80-80-90，bilinear，ddpm/dpm1/dpm2，cfg15/125/1
+80-80-90，constant，ddpm/dpm1/dpm2，cfg15/125/1 (还差cfg1.5 dpm1 / dpm2)
+100-100-50，bilinear，ddpm/dpm1/dpm2，cfg15/125/1
+100-100-50，constant，ddpm/dpm1/dpm2，cfg15/125/1
+
+20-30-200，constant，ddpm
+40-40-170，constant，ddpm (报错 50002)
+60-60-130，constant，ddpm (报错 49972)
+25-75-150，constant，ddpm
+50-50-150，constant，ddpm
+
+300-300-400，constant，ddpm，cfg15/125/1
+
+
+
+
+
+新增实验1
+500000sample
+250，ddpm/dpm1/dpm2，cfg1
+250，ddpm/dpm1/dpm2，cfg15
+250，ddpm，cfg125/1.5
+50/100，ddpm/dpm2，cfg1
+
+4variance新增
+30-30-40 / 15-15-20，ddpm/dpm1/dpm2，cfg1
+实验目的：
+    1. 画出sample step / FiD曲线
+    2. 验证dpm是否会在少step情况下有效
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "spatial421_online_vsa20",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "route_density": 0.2,
+    "boundary_executor": "torch_nearest"
+  },
+  {
+    "name": "spatial421_c2f_requested20_actual25",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "c2f_route_only",
+    "route_density": 0.2,
+    "boundary_executor": "torch_nearest"
+  },
+  {
+    "name": "spatial421_c2f_requested18p75_actual_near20",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "c2f_route_only",
+    "route_density": 0.1875,
+    "boundary_executor": "torch_nearest"
+  }
+]

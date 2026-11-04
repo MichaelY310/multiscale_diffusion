@@ -1,0 +1,249 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Noise Filling as Bayesian Posterior:\\A Mathematical Justification for Cross-Resolution Transitions in RDD}
+\author{Working Draft}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove that the ``noise filling'' operation used in Resolution-Drift Diffusion (RDD) for cross-resolution transitions is not a heuristic but the exact Bayesian posterior under the natural assumption that the RDD forward drift has absorbed all high-frequency information. This provides a principled mathematical foundation for what was previously considered an engineering choice.
+\end{abstract}
+
+\section{Setup and Notation}
+
+\begin{definition}[Resolution Operators]
+Let $s \geq 2$ be the downsampling stride. Define:
+\begin{itemize}
+    \item $D \in \mathbb{R}^{m \times n}$ ($m = n/s^2$): average pooling. Each row averages over an $s \times s$ block.
+    \item $U \in \mathbb{R}^{n \times m}$: nearest-neighbor upsampling. Each column replicates a value $s^2$ times.
+\end{itemize}
+\end{definition}
+
+\begin{proposition}[Operator Properties]\label{prop:ops}
+The following hold:
+\begin{enumerate}
+    \item $DU = I_m$ (downsampling after upsampling is identity)
+    \item $UD$ is idempotent: $(UD)^2 = U(DU)D = UD$
+    \item $P := I_n - UD$ is an orthogonal projection onto the null space of $D$
+    \item $P^2 = P$, $PU = 0$, $DP = 0$
+    \item $D^T D \neq UD$ in general. Specifically, $(D^TD)_{ij} = \frac{1}{s^2}$ if $i,j$ are in the same patch, and $(D^TD)^2 = \frac{1}{s^2}D^TD \neq D^TD$ for $s > 1$.
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}[Critical Error in Prior Work]
+The original paper.txt derivation incorrectly used $D^TD$ as if it were idempotent and set $B = b(I_n - D^TD)$ as the prior covariance. This is mathematically incorrect for $s > 1$. The correct null-space projection is $P = I_n - UD$.
+\end{remark}
+
+\begin{definition}[The Transition Problem]
+After denoising at resolution level $c$ to obtain $\hat{x}_0^c \in \mathbb{R}^m$, we need to construct $x_{T_c}^{c-1} \in \mathbb{R}^n$ at the finer resolution level $c-1$ at timestep $T_c$. Define:
+\begin{equation}
+    a := \sqrt{\bar{\alpha}_{T_c}}, \quad b := 1 - \bar{\alpha}_{T_c}, \quad \text{so } a^2 + b = 1.
+\end{equation}
+\end{definition}
+
+\section{Orthogonal Decomposition}
+
+\begin{proposition}[Frequency Decomposition of Noisy Images]\label{prop:decomp}
+For any $x_0^{c-1}$ satisfying $Dx_0^{c-1} = x_0^c$, the noisy version $x_{T_c}^{c-1} = a \cdot x_0^{c-1} + \sqrt{b} \cdot \epsilon$ (with $\epsilon \sim \mathcal{N}(0, I_n)$) decomposes as:
+\begin{align}
+    \underbrace{D \cdot x_{T_c}^{c-1}}_{\text{low-freq}} &= a \cdot x_0^c + \sqrt{b} \cdot D\epsilon, \label{eq:rowspace}\\
+    \underbrace{P \cdot x_{T_c}^{c-1}}_{\text{high-freq}} &= a \cdot Px_0^{c-1} + \sqrt{b} \cdot P\epsilon. \label{eq:nullspace}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Apply $D$ and $P$ to $x_{T_c}^{c-1} = ax_0^{c-1} + \sqrt{b}\epsilon$:
+\begin{align*}
+    Dx_{T_c}^{c-1} &= aDx_0^{c-1} + \sqrt{b}D\epsilon = ax_0^c + \sqrt{b}D\epsilon, \\
+    Px_{T_c}^{c-1} &= aPx_0^{c-1} + \sqrt{b}P\epsilon.
+\end{align*}
+The row-space component is fully determined by the coarse prediction $x_0^c$ (plus noise). The null-space component depends on the unknown high-frequency content $Px_0^{c-1}$.
+\end{proof}
+
+\section{The Prior on High-Frequency Content}
+
+The key question is: what do we know about $Px_0^{c-1}$?
+
+\begin{assumption}[Zero High-Frequency Prior]\label{assm:zero}
+$Px_0^{c-1} = 0$, i.e., the clean high-resolution image is piecewise constant within each $s \times s$ block.
+\end{assumption}
+
+\begin{assumption}[Unit-Variance High-Frequency Prior]\label{assm:unit}
+$Px_0^{c-1} \sim \mathcal{N}(0, \sigma_h^2 P)$ with $\sigma_h = 1$, i.e., high-frequency content has the same variance as the overall signal.
+\end{assumption}
+
+\begin{theorem}[Noise Filling is Exact Under Assumption~\ref{assm:zero}]\label{thm:main}
+Under Assumption~\ref{assm:zero}, the conditional distribution $q(x_{T_c}^{c-1} \mid x_0^c)$ is:
+\begin{equation}
+    q(x_{T_c}^{c-1} \mid x_0^c) = \mathcal{N}\!\left(a \cdot U x_0^c,\; b \cdot I_n\right).
+\end{equation}
+This is exactly the noise filling formula: $x_{T_c}^{c-1} = a \cdot U\hat{x}_0^c + \sqrt{b} \cdot \epsilon$.
+\end{theorem}
+
+\begin{proof}
+Under Assumption~\ref{assm:zero}, $x_0^{c-1} = UDx_0^{c-1} + Px_0^{c-1} = Ux_0^c + 0 = Ux_0^c$.
+
+Therefore:
+\begin{align*}
+    x_{T_c}^{c-1} &= a \cdot x_0^{c-1} + \sqrt{b} \cdot \epsilon \\
+    &= a \cdot Ux_0^c + \sqrt{b} \cdot \epsilon,
+\end{align*}
+which has distribution $\mathcal{N}(aUx_0^c, bI_n)$. This is precisely noise filling. \qed
+\end{proof}
+
+\begin{proposition}[Under Assumption~\ref{assm:unit}, Noise is Excessive]\label{prop:excess}
+Under Assumption~\ref{assm:unit}, the null-space variance of $x_{T_c}^{c-1}$ is:
+\begin{equation}
+    \mathrm{Var}(Px_{T_c}^{c-1}) = a^2 \sigma_h^2 P + b \cdot P = (a^2 + b)P = P,
+\end{equation}
+which corresponds to variance 1 in the null space---significantly larger than $b \approx 0.03$ from noise filling.
+\end{proposition}
+
+\begin{remark}
+Assumption~\ref{assm:unit} gives $\sim 33\times$ more variance in the null space than noise filling. This would overwhelm the fine-level model which was trained expecting noise level $\sqrt{b}$ at $t = T_c$.
+\end{remark}
+
+\section{Why Assumption~\ref{assm:zero} is Correct for RDD}
+
+This section proves that RDD's drift mechanism makes Assumption~\ref{assm:zero} the natural and correct choice.
+
+\begin{theorem}[RDD Drift Absorbs High-Frequency]\label{thm:drift}
+In the RDD forward process with drift $\bar{d}^c = \mathrm{UP}(\mathrm{DOWN}(x_0^c)) - x_0^c$, the marginal at the stage boundary $T_{c+1}$ satisfies:
+\begin{equation}
+    q(\bar{x}_{T_{c+1}}^c \mid x_0^c) = \mathcal{N}\!\left(\sqrt{\bar{\alpha}_{T_{c+1}}} \cdot \mathrm{UP}(x_0^{c+1}),\; (1 - \bar{\alpha}_{T_{c+1}})I\right).
+\end{equation}
+The signal mean is $\sqrt{\bar{\alpha}_{T_{c+1}}} \cdot \mathrm{UP}(x_0^{c+1})$, which is piecewise constant---it has \textbf{zero null-space content}.
+\end{theorem}
+
+\begin{proof}
+From the RDD forward marginal (proven in the main paper):
+\begin{equation*}
+    q(\bar{x}_{T_c+t}^c \mid x_0^c) = \mathcal{N}\!\left(\sqrt{\bar{\alpha}_{T_c+t}} x_0^c + \frac{t}{\Delta T}\sqrt{\bar{\alpha}_{T_c+t}} \bar{d}^c,\; (1-\bar{\alpha}_{T_c+t})I\right).
+\end{equation*}
+At $t = \Delta T = T_{c+1} - T_c$:
+\begin{align*}
+    \text{Mean} &= \sqrt{\bar{\alpha}_{T_{c+1}}}(x_0^c + \bar{d}^c) \\
+    &= \sqrt{\bar{\alpha}_{T_{c+1}}}(x_0^c + \mathrm{UP}(\mathrm{DOWN}(x_0^c)) - x_0^c) \\
+    &= \sqrt{\bar{\alpha}_{T_{c+1}}} \cdot \mathrm{UP}(\mathrm{DOWN}(x_0^c)) \\
+    &= \sqrt{\bar{\alpha}_{T_{c+1}}} \cdot \mathrm{UP}(x_0^{c+1}).
+\end{align*}
+Since $\mathrm{UP}(x_0^{c+1}) = UD \cdot x_0^c$, we have $P \cdot \mathrm{UP}(x_0^{c+1}) = P \cdot UD \cdot x_0^c = 0$. The signal mean has zero projection onto the null space.
+\end{proof}
+
+\begin{corollary}[RDD Forward Eliminates High-Frequency from Signal]\label{cor:elimination}
+The drift $\bar{d}^c$ is designed so that by the stage boundary, the signal component of $\bar{x}_{T_{c+1}}^c$ lies entirely in the row space of $D$. All high-frequency information originally present in $x_0^c$ has been continuously transferred from the signal into the noise throughout the interval $[T_c, T_{c+1}]$.
+\end{corollary}
+
+\begin{theorem}[Noise Filling is the Correct Transition for RDD]\label{thm:correct}
+When transitioning from resolution level $c$ to level $c-1$ in RDD:
+\begin{enumerate}
+    \item The denoised prediction $\hat{x}_0^c$ at level $c$ will be used as the coarse signal $x_0^{c+1}$ for level $c-1$
+    \item The fine-level model at $c-1$ was trained with the RDD forward process, which means at its first timestep ($t = T_c$ locally), the signal mean is $\sqrt{\bar{\alpha}_{T_c}} \cdot U\hat{x}_0^c$
+    \item The expected noise variance at this timestep is $(1-\bar{\alpha}_{T_c})I = bI$
+    \item Therefore, the correct initialization is: $x_{T_c}^{c-1} = a \cdot U\hat{x}_0^c + \sqrt{b} \cdot \epsilon$
+\end{enumerate}
+This is noise filling. It is exact because the RDD forward process has, by construction, driven $Px_0^{c-1} \to 0$ via the drift term.
+\end{theorem}
+
+\begin{remark}[Physical Intuition]
+The drift $\bar{d}^c = \mathrm{UP}(\mathrm{DOWN}(x_0)) - x_0$ points from the current resolution toward a piecewise-constant version. Over the stage interval, this drift progressively ``bleeds'' high-frequency energy from the signal into the noise floor. By the boundary, the signal is smooth (piecewise constant), and all fine details have been absorbed into the isotropic noise. Noise filling respects this by starting the fine level with a smooth signal plus full isotropic noise.
+\end{remark}
+
+\section{Connection to the Continuous-Time SDE}
+
+\begin{proposition}[SDE Marginal at Stage Boundary]\label{prop:sde}
+The RDD probability flow SDE:
+\begin{equation}
+    d\bar{x}_t = \left[f(t)\bar{x}_t + a(t)\right]dt + g(t)dW_t, \quad a(t) = \frac{\alpha(t)}{\Delta T}\bar{d}^c
+\end{equation}
+has marginal at $t = T_{c+1}$:
+\begin{equation}
+    \bar{x}_{T_{c+1}} \sim \mathcal{N}\!\left(\alpha(T_{c+1}) \cdot \mathrm{UP}(x_0^{c+1}),\; \sigma^2(T_{c+1}) \cdot I\right)
+\end{equation}
+where $\alpha(t) = \sqrt{\bar{\alpha}_t}$ and $\sigma^2(t) = 1 - \bar{\alpha}_t$. This matches noise filling exactly.
+\end{proposition}
+
+\section{Formal Bayesian Posterior Formulation}
+
+We now present the same result in formal Bayesian language.
+
+\begin{definition}[Bayesian Setup]
+\begin{itemize}
+    \item \textbf{Observation model}: $x_0^c = D \cdot x_0^{c-1}$ (exact constraint)
+    \item \textbf{Prior on} $x_0^{c-1}$: $p(x_0^{c-1} \mid x_0^c) = \mathcal{N}(Ux_0^c, \sigma_h^2 P)$ for some $\sigma_h \geq 0$
+    \item \textbf{Forward process}: $q(x_{T_c}^{c-1} \mid x_0^{c-1}) = \mathcal{N}(a \cdot x_0^{c-1}, b \cdot I_n)$
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[Closed-Form Posterior]\label{thm:bayes}
+The predictive distribution $q(x_{T_c}^{c-1} \mid x_0^c)$ under the above model is:
+\begin{equation}
+    q(x_{T_c}^{c-1} \mid x_0^c) = \mathcal{N}\!\left(a \cdot Ux_0^c,\; (b + a^2\sigma_h^2)P + b \cdot UD\right).
+\end{equation}
+Setting $\sigma_h = 0$ (Assumption~\ref{assm:zero}) gives covariance $b \cdot (P + UD) = b \cdot I_n$, recovering noise filling.
+\end{theorem}
+
+\begin{proof}
+By the law of total expectation and variance:
+\begin{align}
+    \mathbb{E}[x_{T_c}^{c-1} \mid x_0^c] &= a \cdot \mathbb{E}[x_0^{c-1} \mid x_0^c] = a \cdot Ux_0^c. \\
+    \mathrm{Cov}(x_{T_c}^{c-1} \mid x_0^c) &= a^2 \cdot \mathrm{Cov}(x_0^{c-1} \mid x_0^c) + b \cdot I_n \\
+    &= a^2 \sigma_h^2 P + b \cdot I_n \\
+    &= a^2\sigma_h^2 P + b(P + UD) \\
+    &= (a^2\sigma_h^2 + b)P + b \cdot UD.
+\end{align}
+For $\sigma_h = 0$: $\mathrm{Cov} = bP + bUD = b(P + UD) = bI_n$. \qed
+\end{proof}
+
+\begin{corollary}[Noise Filling Covariance is Isotropic]
+Unlike the incorrect derivation in the original paper (which gave a singular covariance $b(I - D^TD)$), the correct posterior under Assumption~\ref{assm:zero} gives isotropic covariance $bI_n$. This is physically correct: at the stage boundary, the model expects standard isotropic noise at level $\sqrt{b}$.
+\end{corollary}
+
+\section{Comparison with Alternative Methods}
+
+\begin{center}
+\begin{tabular}{l|c|c|c}
+\hline
+\textbf{Method} & \textbf{Row-space var} & \textbf{Null-space var} & \textbf{Principled?} \\
+\hline
+Noise filling (ours) & $b$ & $b$ & \checkmark (Bayesian, $\sigma_h=0$) \\
+Posterior ($\sigma_h=1$) & $b$ & $1$ & \checkmark (Bayesian, $\sigma_h=1$) \\
+Bilinear + noise & $b$ & $b$ & $\times$ (bilinear $\neq$ UP) \\
+Block noise (Relay) & varies & varies & $\times$ (frequency heuristic) \\
+Conditioning aug. (CDM) & $b'$ & $b'$ & $\times$ (separate augmentation) \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{remark}[Why $\sigma_h = 0$ and Not $\sigma_h = 1$]
+Although real images have non-zero high-frequency content ($\sigma_h \approx 1$), the RDD forward process has \emph{already absorbed} this high-frequency into noise via the drift. The fine-level model is trained to recover high-frequency details during its denoising phase---it doesn't need them injected at initialization. Setting $\sigma_h = 0$ correctly reflects the state at the stage boundary: the signal is smooth, the model will recover details.
+\end{remark}
+
+\section{Summary of Results}
+
+\begin{enumerate}
+    \item \textbf{Theorem~\ref{thm:main}}: Noise filling equals the exact Bayesian posterior under $\sigma_h = 0$.
+    \item \textbf{Theorem~\ref{thm:drift}}: RDD's drift mechanism eliminates high-frequency from the signal by the stage boundary, making $\sigma_h = 0$ the natural prior.
+    \item \textbf{Theorem~\ref{thm:correct}}: Combining (1) and (2), noise filling is the unique correct transition for RDD.
+    \item \textbf{Theorem~\ref{thm:bayes}}: Full parametric family indexed by $\sigma_h$; noise filling is the $\sigma_h = 0$ member.
+    \item \textbf{Proposition~\ref{prop:excess}}: $\sigma_h = 1$ gives $33\times$ excess variance, explaining why ``posterior upsample'' performed worse in experiments.
+\end{enumerate}
+
+\textbf{Key novelty}: This is the first principled Bayesian derivation of cross-resolution transitions in multi-resolution diffusion. Existing methods (CDM conditioning augmentation, f-DM interpolation, Relay Diffusion block noise) are all heuristic.
+
+\end{document}

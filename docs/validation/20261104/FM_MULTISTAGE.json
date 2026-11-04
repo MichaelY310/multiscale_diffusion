@@ -1,0 +1,241 @@
+{
+  "status": "passed",
+  "training": {
+    "updates": [
+      {
+        "step": 0,
+        "all_byte_exact": true
+      },
+      {
+        "step": 1,
+        "all_byte_exact": true
+      },
+      {
+        "step": 2,
+        "all_byte_exact": true
+      },
+      {
+        "step": 3,
+        "all_byte_exact": true
+      }
+    ],
+    "totals": {
+      "forward_input": {
+        "pairs": 744,
+        "exact": 744,
+        "byte_exact": 744,
+        "within_tolerance": 744,
+        "max_abs": 0.0,
+        "nonzero_native": 744,
+        "nonzero_unified": 744
+      },
+      "forward_output": {
+        "pairs": 684,
+        "exact": 684,
+        "byte_exact": 684,
+        "within_tolerance": 684,
+        "max_abs": 0.0,
+        "nonzero_native": 684,
+        "nonzero_unified": 684
+      },
+      "activation_gradient": {
+        "pairs": 684,
+        "exact": 684,
+        "byte_exact": 684,
+        "within_tolerance": 684,
+        "max_abs": 0.0,
+        "nonzero_native": 684,
+        "nonzero_unified": 684
+      },
+      "parameter_gradient": {
+        "pairs": 372,
+        "exact": 372,
+        "byte_exact": 372,
+        "within_tolerance": 372,
+        "max_abs": 0.0,
+        "nonzero_native": 372,
+        "nonzero_unified": 372
+      }
+    },
+    "three_sequential_optimizers_vs_joint_optimizer_byte_exact": true
+  },
+  "sampling": [
+    {
+      "boundary": "fresh",
+      "solver": "euler",
+      "cfg": 1.0,
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "nfe": 252,
+      "layer_pairs": 29988,
+      "all_byte_exact": true,
+      "latent_sha256": "9bf832f95cdad7e63a318af2bf2e19fd0cbb8714d3d49c583716d097e1c6c871",
+      "trace_sha256": "a0ee8d16152e59190efe284dae57166b7120cbd6ff0182773b42c7c13ec1d92a"
+    },
+    {
+      "boundary": "fresh",
+      "solver": "euler",
+      "cfg": 1.5,
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "nfe": 252,
+      "layer_pairs": 29988,
+      "all_byte_exact": true,
+      "latent_sha256": "66e1ad9899b87be13e6fc2918f11048e4f420c7a5278bf8e1e38f80586d7e564",
+      "trace_sha256": "d3292cbd45aabef7dd2ab3a12aaa56af9cb770636c51db99e3795fe68759ec57"
+    },
+    {
+      "boundary": "fresh",
+      "solver": "midpoint",
+      "cfg": 1.0,
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "nfe": 252,
+      "layer_pairs": 29988,
+      "all_byte_exact": true,
+      "latent_sha256": "b40dd2639f7acae16486f1bfc483c6229cc9eaeb77d83eaaadd51681aa22ef6f",
+      "trace_sha256": "b0ac5df6f350438a397efab88e875d805e50618d45f96b8a616a5f94866752ef"
+    },
+    {
+      "boundary": "fresh",
+      "solver": "midpoint",
+      "cfg": 1.5,
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "nfe": 252,
+      "layer_pairs": 29988,
+      "all_byte_exact": true,
+      "latent_sha256": "0d7c1635ce974668f4e7298c7a9856553a550c1d6efdd6512cb69527683f595f",
+      "trace_sha256": "5d69c30ca35e1ad68284b395a88ad2acaa899c75609353f21fe7b75708110e0b"
+    },
+    {
+      "boundary": "noise_filling",
+      "solver": "euler",
+      "cfg": 1.0,
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "nfe": 252,
+      "layer_pairs": 29988,
+      "all_byte_exact": true,
+      "latent_sha256": "a46254812ef16cf051f210c74214ef9e26c3e731300d704c1dae713e2228ce3c",
+      "trace_sha256": "d8057282a5a11cd26d3604bd9ed5413a6932baf29bb7f4e6a15d3c3ea7c0976c"
+    },
+    {
+      "boundary": "noise_filling",
+      "solver": "euler",
+      "cfg": 1.5,
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "nfe": 252,
+      "layer_pairs": 29988,
+      "all_byte_exact": true,
+      "latent_sha256": "57461420c57fdb582de8bec180bfd5863d5f27bae3ae04251c03207c1f5bb34d",
+      "trace_sha256": "9b50b7385ffe86562f3f0276293dce704aec62035050fcababe94e8606a51379"
+    },
+    {
+      "boundary": "noise_filling",
+      "solver": "midpoint",
+      "cfg": 1.0,
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "nfe": 252,
+      "layer_pairs": 29988,
+      "all_byte_exact": true,
+      "latent_sha256": "de196bfe601f1972e3708c09baae4974a3e9c116f7b03e72bd6422e73658423f",
+      "trace_sha256": "badaedcc02057cc8a6b2dab849453c235f68f68d8c91149cac1c60b9523b4e23"
+    },
+    {
+      "boundary": "noise_filling",
+      "solver": "midpoint",
+      "cfg": 1.5,
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "nfe": 252,
+      "layer_pairs": 29988,
+      "all_byte_exact": true,
+      "latent_sha256": "2acdce6d87452ff2a9bb814293866b90d392258530e74cb515d91048d941ef3f",
+      "trace_sha256": "2e1a9a91bda25a4260dd6316124f8cee7e72f10be1574d191794eb120bf4b331"
+    }
+  ],
+  "import": {
+    "square_string_resolution": true,
+    "argparse_clock_metadata": true,
+    "actual_sample_cli_byte_exact": true,
+    "rejections": [
+      "Checkpoint resolution must be a square grid",
+      "Checkpoint resolution metadata disagrees with mapping 8",
+      "Checkpoint FM stage-length metadata differs from requested clock"
+    ],
+    "cleanup": [
+      {
+        "file": "8.pt",
+        "bytes": 343839,
+        "sha256": "6f8e49362b0b01806258609ab82d0687bb6339a43029aa80d602e610615fab80",
+        "removed": true
+      },
+      {
+        "file": "sample.pt",
+        "bytes": 17890,
+        "sha256": "16043aeba09e2fddc44e3b07e694afb781e0a299017c69d61193195e2a5bbf15",
+        "removed": true
+      },
+      {
+        "file": "bad.pt",
+        "bytes": 344043,
+        "sha256": "9060fc8c6a4e82c777ca0d0e318ab9ff7cc3285c76d39609ce2c2c47946cca25",
+        "removed": true
+      },
+      {
+        "file": "bundle.pt",
+        "bytes": 1080895,
+        "sha256": "c5dc53c7bb423f1a327c144910e1c02e8a5b89253c4d21d7d0f2b108a9dd0948",
+        "removed": true
+      },
+      {
+        "file": "32.pt",
+        "bytes": 374661,
+        "sha256": "e7d3f79be8e6e838d385ce0aff02fab56d7d54b336777ff0f54348de3af83144",
+        "removed": true
+      },
+      {
+        "file": "16.pt",
+        "bytes": 350085,
+        "sha256": "16e2873b8be05a2f804a6361bac793589650b5ec00ffff4487790123d73fa432",
+        "removed": true
+      }
+    ]
+  },
+  "scope": "CPU random width32 depth2 per-stage DiT, full32/16/8 grids. Original sequential independent-model training versus unified summed loss, original stage sampling backend and independent stage loops. No formal historical FM-multistage FID was found.",
+  "sources": {
+    "unified_multires/tools/validate_rdd_fm_multistage_20261104.py": "e2b8640978eaa3d4dc991f5349ebcaae3386fb15594bcf9ae19d9263da4c34f5",
+    "unified_multires/umdiff/rdd_fm_native.py": "8c9d7e36ccbe42c3ad1d424bf8e9f8d2f51e6fe5782304832a2472c2f9d574ed",
+    "unified_multires/umdiff/rdd_multistage.py": "0dc0556e1d477f699273b4914c7d8fc90ab968b6b63be7ef1081458b4968dcd9",
+    "unified_multires/tools/import_legacy_rdd_multistage.py": "d9e038c0159e3aca5abb7f7d6690571756fd1808a2e734ba8b13542d510a888d",
+    "multiscale_diffusion/2d/train_RDD_FM_imagenet256.py": "5a2ef29423e0fca4ec304980458b69392904b7f48594f8650d8792e38beaa18f"
+  },
+  "cuda_initialized": false
+}

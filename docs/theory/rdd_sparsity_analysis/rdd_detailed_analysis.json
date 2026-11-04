@@ -1,0 +1,149 @@
+{
+  "shapenet_car_32": {
+    "stages": [
+      {
+        "stage": 1,
+        "resolution": 4,
+        "total_voxels": 64,
+        "occupied": 64,
+        "exposed": 64,
+        "waste": 0,
+        "waste_ratio": 0.0
+      },
+      {
+        "stage": 2,
+        "resolution": 8,
+        "total_voxels": 512,
+        "occupied": 512,
+        "exposed": 512,
+        "waste": 0,
+        "waste_ratio": 0.0
+      },
+      {
+        "stage": 3,
+        "resolution": 16,
+        "total_voxels": 4096,
+        "occupied": 4013,
+        "exposed": 4096,
+        "waste": 83,
+        "waste_ratio": 0.020263671875
+      },
+      {
+        "stage": 4,
+        "resolution": 32,
+        "total_voxels": 32768,
+        "occupied": 12907,
+        "exposed": 32104,
+        "waste": 19197,
+        "waste_ratio": 0.5979628706703215
+      }
+    ],
+    "full_space_cost": 131072,
+    "multires_cost": 37440,
+    "rdd_cost": 36776,
+    "speedup_vs_fullspace": 3.5640635196867523,
+    "speedup_vs_multires": 1.0180552534261476,
+    "speedup_multires_only": 3.500854700854701,
+    "with_dpm_solver": 7.128127039373505
+  },
+  "shapenet_car_64": {
+    "stages": [
+      {
+        "stage": 1,
+        "resolution": 4,
+        "total_voxels": 64,
+        "occupied": 64,
+        "exposed": 64,
+        "waste": 0,
+        "waste_ratio": 0.0
+      },
+      {
+        "stage": 2,
+        "resolution": 8,
+        "total_voxels": 512,
+        "occupied": 512,
+        "exposed": 512,
+        "waste": 0,
+        "waste_ratio": 0.0
+      },
+      {
+        "stage": 3,
+        "resolution": 16,
+        "total_voxels": 4096,
+        "occupied": 4013,
+        "exposed": 4096,
+        "waste": 83,
+        "waste_ratio": 0.020263671875
+      },
+      {
+        "stage": 4,
+        "resolution": 32,
+        "total_voxels": 32768,
+        "occupied": 12907,
+        "exposed": 32104,
+        "waste": 19197,
+        "waste_ratio": 0.5979628706703215
+      },
+      {
+        "stage": 5,
+        "resolution": 64,
+        "total_voxels": 262144,
+        "occupied": 15891,
+        "exposed": 103256,
+        "waste": 87365,
+        "waste_ratio": 0.8461009529712559
+      }
+    ],
+    "full_space_cost": 1310720,
+    "multires_cost": 299584,
+    "rdd_cost": 140032,
+    "speedup_vs_fullspace": 9.360146252285192,
+    "speedup_vs_multires": 2.139396709323583,
+    "speedup_multires_only": 4.3751335184789575,
+    "with_dpm_solver": 18.720292504570384
+  },
+  "opacity_analysis": [
+    {
+      "threshold": 0.01,
+      "empty": 0,
+      "occupied": 32768,
+      "occ_ratio": 1.0
+    },
+    {
+      "threshold": 0.05,
+      "empty": 1,
+      "occupied": 32767,
+      "occ_ratio": 0.999969482421875
+    },
+    {
+      "threshold": 0.1,
+      "empty": 1,
+      "occupied": 32767,
+      "occ_ratio": 0.999969482421875
+    },
+    {
+      "threshold": 0.2,
+      "empty": 13,
+      "occupied": 32755,
+      "occ_ratio": 0.999603271484375
+    },
+    {
+      "threshold": 0.3,
+      "empty": 354,
+      "occupied": 32414,
+      "occ_ratio": 0.98919677734375
+    },
+    {
+      "threshold": 0.4,
+      "empty": 2861,
+      "occupied": 29907,
+      "occ_ratio": 0.912689208984375
+    },
+    {
+      "threshold": 0.5,
+      "empty": 9107,
+      "occupied": 23661,
+      "occ_ratio": 0.722076416015625
+    }
+  ]
+}

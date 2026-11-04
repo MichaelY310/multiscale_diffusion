@@ -1,0 +1,116 @@
+{
+  "status": "passed",
+  "updates": 4,
+  "microbatches_per_update": 2,
+  "images_per_update": 4,
+  "grids": [
+    32,
+    16,
+    8
+  ],
+  "widths": [
+    64,
+    48,
+    32
+  ],
+  "depths": [
+    3,
+    2,
+    2
+  ],
+  "totals": {
+    "forward_input": {
+      "pairs": 1656,
+      "exact": 1656,
+      "byte_exact": 1656,
+      "within_tolerance": 1656,
+      "max_abs": 0.0,
+      "nonzero_native": 1656,
+      "nonzero_unified": 1656
+    },
+    "forward_output": {
+      "pairs": 1528,
+      "exact": 1528,
+      "byte_exact": 1528,
+      "within_tolerance": 1528,
+      "max_abs": 0.0,
+      "nonzero_native": 1528,
+      "nonzero_unified": 1528
+    },
+    "activation_gradient": {
+      "pairs": 1528,
+      "exact": 1528,
+      "byte_exact": 1528,
+      "within_tolerance": 1528,
+      "max_abs": 0.0,
+      "nonzero_native": 1528,
+      "nonzero_unified": 1528
+    },
+    "parameter_gradient": {
+      "pairs": 412,
+      "exact": 412,
+      "byte_exact": 412,
+      "within_tolerance": 412,
+      "max_abs": 0.0,
+      "nonzero_native": 412,
+      "nonzero_unified": 412
+    }
+  },
+  "losses": [
+    [
+      3.921740770339966,
+      3.8325283527374268
+    ],
+    [
+      3.7896804809570312,
+      3.872532606124878
+    ],
+    [
+      3.7864558696746826,
+      3.8186044692993164
+    ],
+    [
+      3.979578971862793,
+      3.8432276248931885
+    ]
+  ],
+  "optimizer": "Three original per-stage AdamW optimizers vs one unified AdamW over disjoint children; every per-parameter optimizer state byte-identical",
+  "exact_resume": true,
+  "strict_legacy_ema_import": true,
+  "temporary_payload_cleanup": [
+    {
+      "filename": "resume.pt",
+      "bytes": 9287187,
+      "sha256": "193328fbda876b1eb335e7b7ab7282aadd543400da8dbf8086a0ce8ed580ea9c",
+      "removed": true
+    },
+    {
+      "filename": "8.pt",
+      "bytes": 343711,
+      "sha256": "a5ff466b696432f8221fdd5275709d3aa75864c4b4d0cf30ada3261cc5586e3e",
+      "removed": true
+    },
+    {
+      "filename": "32.pt",
+      "bytes": 1359989,
+      "sha256": "4e0896483919029e08dec8ccbdec8f8727fd42507d11318dfe795a4729a6e2bc",
+      "removed": true
+    },
+    {
+      "filename": "16.pt",
+      "bytes": 639493,
+      "sha256": "74bf24bc4fd7e2115a8e71533125831726076498425e364e9512e7ad2ad8c401",
+      "removed": true
+    }
+  ],
+  "source_sha256": {
+    "unified_multires/tools/validate_rdd_multistage_training_20261104.py": "49d07fc45b3eec5697b854f2568896eb3890c3a00629c0db1427d6fe1bc9fd95",
+    "unified_multires/umdiff/rdd_multistage.py": "0dc0556e1d477f699273b4914c7d8fc90ab968b6b63be7ef1081458b4968dcd9",
+    "unified_multires/umdiff/engine.py": "888b29e943c9ae3c40c11e6b2b1dc10573582934c634a5a467aa032878d4310f",
+    "unified_multires/umdiff/training.py": "285f2693b058d3cfe1b5ab861c2dcb10d8c6537d2d1250517485dffc1dcfd4fd",
+    "multiscale_diffusion/DiT/models.py": "6de21912477b471f603427023ddeecf83b62206854fc3bade4d61d43e70b9d78",
+    "multiscale_diffusion/2d/train_RDD_imagenet256.py": "c6af70ffc917d402f237d89213b86665fb25ea7770b69022c3e9abea698ca7bf"
+  },
+  "scope": "Original fixed-grid DiT per resolution, independent original RDD losses, separate stage backward calls vs unified stage-sum graph; all module activations/activation gradients/parameter gradients, optimizer, EMA and RNG. CPU FP32 random nonzero models, synthetic latents; no historical dataloader/multirank/real-checkpoint-quality claim.",
+  "cuda_initialized": false
+}

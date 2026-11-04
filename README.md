@@ -6,6 +6,13 @@ high noise and progressively moves to the full latent resolution. The method
 changes the probability path and stage transitions while keeping the DiT
 backbone almost unchanged.
 
+**November 2026 source update:** `main` now contains the legacy project's
+image DDPM/FM, independent-stage models, video/3D research code, tests and
+experiment launchers. These research branches are folders in this repository;
+they are not all certified production recipes. See the
+[repository contents and validation scope](docs/REPOSITORY_CONTENTS_ZH.md).
+The separate `unified_multires/umdiff` comparison framework is not this repository.
+
 This repository contains the validated ImageNet-256 implementation and the
 experiments summarized below. All formal image metrics use the native
 ImageNet directory loader, 50,000 generated images, and ADM reference
@@ -30,7 +37,7 @@ are excluded.
 
 Unified-L/2 at 400K updates, trained with the 300/300/400
 fine/middle/coarse allocation and sampled with DDPM 80/80/90, CFG 1.5, and
-noise-filling transitions. The images are selected by fixed sample index, not
+fresh-noise transitions. The images are selected by fixed sample index, not
 by visual ranking.
 
 ## Method
@@ -55,7 +62,7 @@ The implementation adds three components to DiT:
 
 1. A resolution embedding shared by all stages.
 2. A training target that includes the known resolution-drift contribution.
-3. A noise-filling boundary transition that upsamples the clean prediction
+3. A fresh-noise boundary transition that upsamples the clean prediction
    and initializes the finer-stage marginal with Gaussian noise.
 
 The default latent trajectory is `8x8 -> 16x16 -> 32x32`. Unified models reuse
@@ -63,8 +70,16 @@ one DiT across all stages; multistage models use one network per stage.
 
 ## Main ImageNet-256 results
 
-Unless noted otherwise, RDD uses DDPM, 250 actual NFE, noise filling, and the
+Unless noted otherwise, RDD uses DDPM, 250 actual NFE, fresh noise, and the
 300/300/400 fine/middle/coarse allocation.
+
+Historical DDPM reports called this option `noise_filling`; its actual behavior
+was fresh IID noise. Current `fresh` / `refresh` discards the old residual,
+whereas `noise_filling` recovers it from the previous noisy state and clean
+prediction, preserves its normalized lift and fills the new subspace.
+Old result values and figure labels are historical; this naming correction
+does not assign their scores to the new recovered-residual DDPM variant.
+See [the boundary naming guide](docs/BOUNDARY_NAMES_20261104_ZH.md).
 
 | Model | Update | CFG | FID | sFID | IS | Precision | Recall |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -126,7 +141,7 @@ split.
 
 Within the tested fixed 250-NFE budget, allocating more updates to the final
 32x32 stage improves FID. CFG improves fidelity and precision at the expected
-cost in recall. Noise filling substantially outperforms the tested bilinear
+cost in recall. Fresh-noise initialization outperforms the tested bilinear
 boundary initialization.
 
 | Sampler | Scheduled updates | Actual NFE | CFG | FID |
@@ -155,6 +170,11 @@ shows that aggressive reduction is not yet reliable.
 RDD-FM uses a separately derived velocity target on the same coarse-to-fine
 path. Corrected Unified-L runs are still early and are reported separately
 from the legacy Unified-XL checkpoint.
+
+The FM results below use recovered-residual `noise_filling`. Steps are listed
+in generation order, **coarse → middle → fine**: Euler `80/80/90` and midpoint
+`40/40/45` both require 252 model evaluations including boundary predictions.
+The old FM `dpm2` alias means midpoint RK2, not the DDPM DPM-Solver above.
 
 | Model | Update | Solver / actual NFE | CFG | FID |
 |---|---:|---|---:|---:|
@@ -245,6 +265,11 @@ evaluation logs are archived in the
 | `diffusion/` | Diffusion, drift, flow-matching, and transition equations |
 | `guided-diffusion/` | ADM metric implementation |
 | `configs/` | Portable sampling configurations |
+| `rdd_video/` | Wan/video, distillation and acceleration research code |
+| `RDD_DiT_3D/` | 3D and sparse-latent research implementations |
+| `experiments/`, `2d/exp/`, `scripts/` | Experiment configurations and historical launchers |
+| `tests/` | Component tests; optional research integrations need their own dependencies |
+| `docs/validation/20261104/` | CPU old/unified training and sampling parity evidence |
 | `results/metrics.json` | Machine-readable summary of reported values |
 | `assets/results/` | Curated plots used in this README |
 

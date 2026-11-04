@@ -1,0 +1,947 @@
+% RDD Related Work Survey
+% Compile: pdflatex -interaction=nonstopmode RDD_survey.tex (run twice for TOC)
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{geometry}
+\geometry{margin=2.2cm}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{caption}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red!70!black},
+    numbers=left, numberstyle=\tiny\color{gray},
+    frame=single, breaklines=true, tabsize=4,
+    showstringspaces=false, language=Python, captionpos=b
+}
+\lstdefinestyle{flowchart}{
+    basicstyle=\ttfamily\footnotesize, frame=single, numbers=none,
+    breaklines=false, language={}, keywordstyle={},
+    commentstyle={}, stringstyle={}, backgroundcolor=\color{gray!5}
+}
+
+\newcommand{\alphabar}{\bar{\alpha}}
+
+\title{\huge RDD (Resolution Drift Diffusion)\\[0.4em]
+\Large Comprehensive Related Work Survey\\[0.2em]
+\normalsize Mathematical Derivations, Code, Flowcharts, and Ablation Studies}
+\author{Research Notes}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+%=================================================================
+\section{RDD Core Method}
+%=================================================================
+
+\subsection{Motivation and Novelty}
+
+RDD modifies the DDPM forward process by introducing a continuous \textbf{drift term} encoding multi-resolution information. \textbf{4 Key Novelties:}
+\begin{enumerate}
+    \item Single Markov chain (no cascading)
+    \item Continuous drift (SDE-compatible)
+    \item DPM-Solver compatible (with correction term)
+    \item No renoising between stages
+\end{enumerate}
+
+\subsection{Forward SDE}
+
+Standard DDPM:
+\begin{equation}
+    dx = -\tfrac{1}{2}\beta(t)\, x\, dt + \sqrt{\beta(t)}\, dW
+\end{equation}
+
+\textbf{RDD modified forward:}
+\begin{equation}
+    \boxed{dx = \left[-\tfrac{1}{2}\beta(t)\, x + \gamma \cdot f(x_0, t)\right] dt + \sqrt{\beta(t)}\, dW}
+\end{equation}
+where:
+\begin{equation}
+    f(x_0, t) = \sqrt{\alphabar_t}\, \kappa(t)\, \mathbf{d}, \quad \mathbf{d} = \mathrm{UP}(\mathrm{DOWN}(x_0)) - x_0
+\end{equation}
+
+\subsection{Marginal Distribution}
+
+\begin{equation}
+    \boxed{q(x_t | x_0) = \mathcal{N}\!\left(\sqrt{\alphabar_t}\, x_0 + \sqrt{\alphabar_t}\, \kappa(t)\, \mathbf{d},\; (1-\alphabar_t)\,\mathbf{I}\right)}
+\end{equation}
+
+Mean rewrite:
+\begin{equation}
+    \mu_t = \sqrt{\alphabar_t}\left[(1-\kappa(t))\, x_0 + \kappa(t)\, \mathrm{UP}(\mathrm{DOWN}(x_0))\right]
+\end{equation}
+
+\subsection{$\kappa(t)$ Schedule}
+
+Within stage $c$ (boundaries $T_c, T_{c+1}$):
+\begin{equation}
+    \kappa(t) = \frac{t_{\mathrm{global}} - T_c}{T_{c+1} - T_c} \in [0,1]
+\end{equation}
+
+\subsection{Training: Modified Noise Target}
+
+\begin{equation}
+    \boxed{\tilde{\epsilon} = \epsilon + \sqrt{\frac{\alphabar_t}{1-\alphabar_t}}\, \kappa(t)\, \mathbf{d}}
+\end{equation}
+
+Loss: $\mathcal{L} = \mathbb{E}_{x_0,\epsilon,t}\bigl[\|\tilde{\epsilon} - \epsilon_\theta(x_t, t)\|^2\bigr]$
+
+Noisy sample:
+\begin{equation}
+    x_t = \sqrt{\alphabar_t}\, x_0 + \sqrt{\alphabar_t}\, \kappa(t)\, \mathbf{d} + \sqrt{1-\alphabar_t}\, \epsilon
+\end{equation}
+
+\subsection{Sampling: DPM-Solver Correction}
+
+\begin{equation}
+    \boxed{x_{t-1} = \mathrm{standard\_dpm\_step}(x_t) + \sqrt{\alphabar_{t-1}}\bigl(\kappa(t{-}1) - \kappa(t)\bigr)\, \mathbf{d}}
+\end{equation}
+
+\subsection{Frequency-Domain SNR}
+
+\begin{equation}
+    \boxed{\mathrm{SNR}_{\mathrm{RDD}}(f,t) = \frac{\alphabar_t\,\bigl[(1-\kappa(t)) + \kappa(t)\,\mathrm{LP}(f)\bigr]^2}{1-\alphabar_t}}
+\end{equation}
+
+\begin{itemize}
+    \item High freq ($\mathrm{LP}(f)\approx 0$): SNR $\propto (1-\kappa)^2$ --- reduced, generated later
+    \item Low freq ($\mathrm{LP}(f)\approx 1$): SNR $\approx \alphabar_t/(1-\alphabar_t)$ --- standard
+\end{itemize}
+
+\subsection{Core Training Code}
+
+\begin{lstlisting}[caption={RDD q\_sample with drift}]
+def q_sample(self, x_start, t, noise=None):
+    if noise is None:
+        noise = torch.randn_like(x_start)
+    sqrt_ab = _extract(self.sqrt_alphas_cumprod, t, x_start.shape)
+    sqrt_1_ab = _extract(self.sqrt_one_minus_alphas_cumprod, t, x_start.shape)
+    sample = sqrt_ab * x_start + sqrt_1_ab * noise
+    if self.use_drift:
+        x_low = F.interpolate(
+            F.interpolate(x_start, scale_factor=0.5, mode='bilinear'),
+            scale_factor=2.0, mode='bilinear')
+        drift = x_low - x_start  # d = blur(x) - x
+        kappa = self._get_kappa(t)
+        sample = sample + sqrt_ab * kappa * drift
+    return sample
+
+def training_losses(self, x_start, t):
+    noise = torch.randn_like(x_start)
+    x_t = self.q_sample(x_start, t, noise)
+    if self.use_drift:
+        drift = self._compute_drift(x_start)
+        kappa = self._get_kappa(t)
+        sqrt_ab = _extract(self.sqrt_alphas_cumprod, t, x_start.shape)
+        sqrt_1_ab = _extract(self.sqrt_one_minus_alphas_cumprod, t, x_start.shape)
+        target = noise + (sqrt_ab / sqrt_1_ab) * kappa * drift
+    else:
+        target = noise
+    pred = self.model(x_t, t)
+    return F.mse_loss(pred, target)
+\end{lstlisting}
+
+\subsection{Sampling Flowchart}
+
+\begin{lstlisting}[style=flowchart, caption={RDD Multi-Stage Sampling}]
++=============================================================+
+|          RDD Multi-Stage Sampling Pipeline                   |
++=============================================================+
+|                                                              |
+|  Stage 2 (coarsest, 32x32):                                 |
+|  +-------------------------------------------------------+  |
+|  | x_T ~ N(0,I) at 32x32                                 |  |
+|  | DPM-Solver + drift correction: t=T -> t=T2            |  |
+|  | x_{t-1} = dpm_step(x_t) + sqrt_a*(k_{t-1}-k_t)*d     |  |
+|  | kappa: 1 -> 0                                         |  |
+|  +-------------------------------------------------------+  |
+|                       |                                      |
+|                       v                                      |
+|  [noise_filling_upsample: 32->64]                            |
+|  x_0_hat = predict_x0(x_{T2})                               |
+|  x_{T1} = sqrt_a_{T1}*UP(x_0_hat) + sqrt(1-a_{T1})*eps     |
+|                       |                                      |
+|                       v                                      |
+|  Stage 1 (64x64): t=T1 -> t=T0, kappa: 1->0                |
+|                       |                                      |
+|                       v                                      |
+|  [noise_filling_upsample: 64->256]                           |
+|                       |                                      |
+|                       v                                      |
+|  Stage 0 (finest, 256x256): t=T0 -> t=0                     |
+|  Output: x_0 (final high-res image)                         |
++=============================================================+
+\end{lstlisting}
+
+%=================================================================
+\newpage
+\section{Relay Diffusion (ICLR 2024)}
+%=================================================================
+
+\subsection{Core Idea}
+Two-model cascade: (1) Blurring diffusion in DCT domain for low-frequency, (2) Standard diffusion for high-frequency. Key: relay at intermediate noise level (no clean-image conditioning).
+
+\subsection{Blurring Diffusion}
+
+Each DCT frequency $k$ has its own schedule:
+\begin{equation}
+    q(z_t^{(k)} | z_0^{(k)}) = \mathcal{N}\bigl(\sqrt{\alphabar_t^{(k)}}\, z_0^{(k)},\; (1-\alphabar_t^{(k)})\,\mathbf{I}\bigr)
+\end{equation}
+\begin{equation}
+    \alphabar_t^{(k)} = \alphabar_t \cdot e^{-\lambda \|k\|^2 t}
+\end{equation}
+
+High frequencies destroyed faster $\Rightarrow$ generated later.
+
+\subsection{Block Noise}
+
+\begin{equation}
+    \epsilon_{\mathrm{block}} = \mathrm{Repeat}\bigl(\mathcal{N}(0, I_{H/b \times W/b}),\; b \times b\bigr)
+\end{equation}
+
+PSD: $\mathrm{PSD}(\epsilon_{\mathrm{block}}) \propto \mathrm{sinc}^2(f \cdot b)$ --- concentrated at low frequencies.
+
+\subsection{Code}
+
+\begin{lstlisting}[caption={Relay: Block Noise and DCT Schedule}]
+def generate_block_noise(shape, block_size=4):
+    B, C, H, W = shape
+    small = torch.randn(B, C, H//block_size, W//block_size)
+    return small.repeat_interleave(block_size, 2).repeat_interleave(block_size, 3)
+
+def dct_schedule(t, freq_idx, lam=0.1):
+    alpha_bar = cosine_alpha_bar(t)
+    return alpha_bar * torch.exp(-lam * freq_idx**2 * t)
+\end{lstlisting}
+
+\subsection{Pipeline Flowchart}
+
+\begin{lstlisting}[style=flowchart, caption={Relay Diffusion Pipeline}]
++=============================================================+
+|          Relay Diffusion Two-Stage Pipeline                   |
++=============================================================+
+|                                                              |
+|  STAGE 1: Blurring Diffusion (Low-Freq Model)               |
+|  +-------------------------------------------------------+  |
+|  | x_T ~ N(0,I) with block noise                         |  |
+|  | Freq-dependent schedule: high-freq destroyed fast      |  |
+|  | Sampling: t=T -> t=t_relay                            |  |
+|  | Output: x_{t_relay} (low-freq clean, high-freq noisy) |  |
+|  +-------------------------------------------------------+  |
+|                       |                                      |
+|        [RELAY: direct handoff at t_relay]                     |
+|        [NO renoising, NO extra processing]                   |
+|                       |                                      |
+|                       v                                      |
+|  STAGE 2: Standard Diffusion (High-Freq Model)              |
+|  +-------------------------------------------------------+  |
+|  | Input: x_{t_relay} from Stage 1                        |  |
+|  | Standard noise schedule                                |  |
+|  | Sampling: t=t_relay -> t=0                            |  |
+|  | Output: x_0 (full clean image)                         |  |
+|  +-------------------------------------------------------+  |
++=============================================================+
+\end{lstlisting}
+
+\subsection{Results and Ablation}
+
+\begin{table}[H]
+\centering
+\caption{Relay Diffusion on ImageNet 256}
+\begin{tabular}{lcc}
+\toprule
+Config & FID$\downarrow$ & Note \\
+\midrule
+ADM baseline & 2.07 & -- \\
+Relay (block=4, $t_r$=0.5T) & \textbf{1.87} & Best \\
+\midrule
+Block size=1 (i.i.d.) & 2.15 & No spatial correlation \\
+Block size=2 & 1.98 & -- \\
+Block size=4 & \textbf{1.87} & Default \\
+Block size=8 & 1.95 & Too coarse \\
+\midrule
+$t_{\mathrm{relay}}$=0.3T & 2.05 & Too early \\
+$t_{\mathrm{relay}}$=0.5T & \textbf{1.87} & Optimal \\
+$t_{\mathrm{relay}}$=0.7T & 1.93 & Too late \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{vs.\ RDD}
+
+\begin{itemize}
+    \item Relay: 2 models, DCT domain, explicit block noise
+    \item RDD: 1 model, pixel domain, implicit frequency control via drift
+    \item \textbf{RDD can adopt}: Block noise in noise\_filling (P1 task)
+\end{itemize}
+
+%=================================================================
+\newpage
+\section{LapFlow (ICLR 2026)}
+%=================================================================
+
+\subsection{Core Idea}
+Laplacian pyramid decomposition + segmented Flow Matching + Mixture of Transformers (MoT).
+
+\subsection{Laplacian Pyramid}
+
+\begin{equation}
+    x = L_0 + L_1 + \ldots + L_K, \quad L_k = G_k - \mathrm{UP}(G_{k+1}), \quad L_K = G_K
+\end{equation}
+
+\subsection{Segmented Flow Matching}
+
+Time divided: $t \in [t_k, t_{k+1}] \Rightarrow$ generate $L_k$. Velocity:
+\begin{equation}
+    v_\theta(x_t, t) = \frac{L_k - \epsilon_k}{t_{k+1} - t_k}
+\end{equation}
+
+\subsection{Code}
+
+\begin{lstlisting}[caption={LapFlow: Decomposition and Causal Mask}]
+def laplacian_decompose(image, levels=3):
+    pyramid = []
+    current = image
+    for i in range(levels - 1):
+        down = F.interpolate(current, scale_factor=0.5, mode='bilinear')
+        up = F.interpolate(down, scale_factor=2.0, mode='bilinear')
+        pyramid.append(current - up)  # high-freq band
+        current = down
+    pyramid.append(current)  # lowest freq
+    return pyramid[::-1]  # [low, ..., high]
+
+def build_causal_mask(num_seg, seq_per_seg):
+    total = num_seg * seq_per_seg
+    mask = torch.zeros(total, total)
+    for i in range(num_seg):
+        for j in range(i + 1):
+            rs, re = i*seq_per_seg, (i+1)*seq_per_seg
+            cs, ce = j*seq_per_seg, (j+1)*seq_per_seg
+            mask[rs:re, cs:ce] = 1.0
+    return mask
+\end{lstlisting}
+
+\subsection{Training Flowchart}
+
+\begin{lstlisting}[style=flowchart, caption={LapFlow Training}]
++=============================================================+
+|              LapFlow Training Pipeline                        |
++=============================================================+
+|  Image x                                                     |
+|    |-> Laplacian Decompose -> {L_K(low),...,L_0(high)}       |
+|    |-> Sample t ~ U[0,1], determine segment k               |
+|    |-> x_t = (1-t_local)*noise + t_local*L_k                |
+|    |-> MoT forward (expert k, causal mask)                   |
+|    |-> Loss = ||v_pred - (L_k - noise)/(t_{k+1}-t_k)||^2    |
++=============================================================+
+|  Segment k attends to segments {0,...,k} (causal)            |
+|  MoT routes to expert k based on timestep                    |
++=============================================================+
+\end{lstlisting}
+
+\subsection{Results and Ablation}
+
+\begin{table}[H]
+\centering
+\caption{LapFlow Results and Ablations}
+\begin{tabular}{lcc}
+\toprule
+Config & FID & Note \\
+\midrule
+DiT-XL/2 & 2.27 & Baseline \\
+LapFlow-XL & \textbf{1.89} & 3 segments \\
+\midrule
+1 segment (standard FM) & 2.27 & No improvement \\
+2 segments & 2.05 & -- \\
+3 segments & \textbf{1.89} & Default \\
+4 segments & 1.92 & Diminishing returns \\
+\midrule
+Without MoT & 2.08 & Shared expert \\
+With MoT & \textbf{1.89} & Per-segment expert \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{vs.\ RDD}
+
+Structural isomorphism: LapFlow \texttt{time\_segments} $\leftrightarrow$ RDD \texttt{stage\_lengths}. Key difference: LapFlow uses discrete segments + FM; RDD uses continuous drift + DDPM.
+
+%=================================================================
+\newpage
+\section{DiMR (NeurIPS 2024)}
+%=================================================================
+
+\subsection{Core Idea}
+Pure architecture modification (no forward process change). Multi-resolution branches + Time-Dependent Processing (TDP). \textbf{FID = 1.70} (SOTA class-conditional ImageNet 256).
+
+\subsection{Formulation}
+
+Standard VP forward (unchanged):
+$q(x_t|x_0) = \mathcal{N}(\sqrt{\alphabar_t}\,x_0, (1-\alphabar_t)\mathbf{I})$
+
+Multi-scale loss:
+\begin{equation}
+    \mathcal{L}_{\mathrm{DiMR}} = \sum_{s \in \{1,2,4\}} w_s \|\epsilon - \epsilon_\theta^{(s)}(x_t, t)\|^2
+\end{equation}
+
+TDP routing:
+\begin{equation}
+    \mathrm{TDP}(x,t) = \begin{cases} \mathrm{FullRes}(x) & t < t_{\mathrm{thresh}} \\ \mathrm{MultiRes}(x) & t \geq t_{\mathrm{thresh}} \end{cases}
+\end{equation}
+
+\subsection{Code}
+
+\begin{lstlisting}[caption={DiMR: Multi-Scale Targets and TDP}]
+class DiMR(nn.Module):
+    def __init__(self, base, resolutions=[1,2,4]):
+        super().__init__()
+        self.branches = nn.ModuleDict({
+            f'res_{s}': ResolutionBranch(base.dim // s) for s in resolutions})
+        self.tdp_thresh = 0.5
+
+    def forward(self, x_t, t):
+        feats = self.base.encode(x_t, t)
+        outputs = {}
+        for s in self.resolutions:
+            if t.mean() > self.tdp_thresh and s == 1:
+                continue  # skip full-res at high noise
+            outputs[s] = self.branches[f'res_{s}'](feats, t)
+        return outputs
+
+class TDP(nn.Module):
+    def __init__(self, dim, n_branch=3):
+        super().__init__()
+        self.branches = nn.ModuleList([nn.Sequential(
+            nn.LayerNorm(dim), nn.Linear(dim, dim),
+            nn.GELU(), nn.Linear(dim, dim)) for _ in range(n_branch)])
+        self.gate = nn.Linear(1, n_branch)
+
+    def forward(self, x, t):
+        w = F.softmax(self.gate(t.unsqueeze(-1)), dim=-1)
+        return sum(wi * br(x) for wi, br in zip(w.unbind(-1), self.branches))
+\end{lstlisting}
+
+\subsection{Architecture Flowchart}
+
+\begin{lstlisting}[style=flowchart, caption={DiMR Architecture}]
++=============================================================+
+|                    DiMR Architecture                          |
++=============================================================+
+|  x_t(256x256), t, class c                                   |
+|    |-> Patch Embed -> tokens                                 |
+|    |-> DiT Blocks with TDP:                                  |
+|    |     if t > thresh: LOW-RES branch (4x down tokens)      |
+|    |     else: FULL-RES branch (all tokens)                  |
+|    |-> Multi-Res Prediction Heads:                           |
+|    |     Head_1x: eps at 256x256 (w1)                        |
+|    |     Head_2x: eps at 128x128 (w2)                        |
+|    |     Head_4x: eps at 64x64   (w4)                        |
+|    |-> Loss = w1*L_1x + w2*L_2x + w4*L_4x                   |
+|    |   (Inference: only Head_1x output)                      |
++=============================================================+
+\end{lstlisting}
+
+\subsection{Results and Ablation}
+
+\begin{table}[H]
+\centering
+\caption{DiMR Results and Ablations on ImageNet 256}
+\begin{tabular}{lcc}
+\toprule
+Config & FID & Note \\
+\midrule
+DiT-XL/2 & 2.27 & Baseline \\
++ Multi-res (2 scales) & 1.95 & -- \\
++ Multi-res (3 scales) & 1.82 & -- \\
++ TDP & \textbf{1.70} & Full DiMR \\
+\midrule
+$w_1:w_2:w_4 = 1:0:0$ & 2.27 & No multi-res \\
+$w_1:w_2:w_4 = 1:0.5:0.25$ & \textbf{1.70} & Best \\
+$w_1:w_2:w_4 = 1:1:1$ & 1.85 & Over-weighted \\
+\midrule
+TDP thresh=0.3 & 1.78 & -- \\
+TDP thresh=0.5 & \textbf{1.70} & Default \\
+TDP thresh=0.7 & 1.75 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{vs.\ RDD}
+
+\textbf{Orthogonal and complementary}: DiMR modifies architecture, RDD modifies process. Can combine: DiMR arch + RDD drift = expected double benefit.
+
+%=================================================================
+\newpage
+\section{DCTdiff (ICML 2025)}
+%=================================================================
+
+\subsection{Core Idea}
+Diffusion entirely in DCT space with frequency-dependent SNR scaling.
+
+\subsection{Formulation}
+
+Pipeline: $x \xrightarrow{\mathrm{DCT}} z \xrightarrow{/\sigma_f} \hat{z}$ (normalize per freq)
+
+Frequency-dependent schedule:
+\begin{equation}
+    \mathrm{SNR}_{\mathrm{eff}}(f,t) = \mathrm{SNR}_{\mathrm{base}}(t) \cdot \mathrm{scale}(f)
+\end{equation}
+\begin{equation}
+    \alphabar_t^{(f)} = \frac{\mathrm{scale}(f) \cdot \alphabar_t}{1 + (\mathrm{scale}(f)-1)\cdot \alphabar_t}
+\end{equation}
+
+Typical scales: $s_{\mathrm{low}}=4.0$, $s_{\mathrm{mid}}=1.0$, $s_{\mathrm{high}}=0.5$.
+
+\subsection{Code}
+
+\begin{lstlisting}[caption={DCTdiff: Pipeline}]
+from torch_dct import dct_2d, idct_2d
+
+class DCTDiffusion:
+    def __init__(self, snr_scales=[4.0, 2.0, 1.0, 0.5]):
+        self.snr_scales = torch.tensor(snr_scales)
+
+    def q_sample_dct(self, z_0, t, noise=None):
+        if noise is None: noise = torch.randn_like(z_0)
+        ab = cosine_alpha_bar(t)
+        group = self.get_freq_group(z_0.shape[-2:])
+        scale = self.snr_scales[group]
+        ab_eff = scale * ab / (1 + (scale - 1) * ab)
+        return torch.sqrt(ab_eff)*z_0 + torch.sqrt(1-ab_eff)*noise
+\end{lstlisting}
+
+\subsection{Flowchart}
+
+\begin{lstlisting}[style=flowchart, caption={DCTdiff Pipeline}]
++=============================================================+
+|  [Train] Image -> DCT -> Normalize -> freq-dep noise -> DiT |
+|  [Infer] z_T ~ N(0,I) -> DPM-Solver(freq schedule)         |
+|          -> Denormalize -> IDCT -> Image                     |
++=============================================================+
+|  Low-freq:  SNR_eff = 4.0 * base (denoised early)           |
+|  High-freq: SNR_eff = 0.5 * base (denoised late)            |
++=============================================================+
+\end{lstlisting}
+
+\subsection{vs.\ RDD}
+
+Same goal (frequency-adaptive SNR). DCTdiff: explicit in DCT space. RDD: implicit in pixel space via drift. RDD advantage: no domain transform needed.
+
+%=================================================================
+\newpage
+\section{SPEED (Stanford 2025)}
+%=================================================================
+
+\subsection{Core Idea}
+\textbf{Training-free} frequency-progressive sampling. Each frequency has an ``activation time''.
+
+\subsection{Activation Time}
+
+\begin{equation}
+    \boxed{t^*(\omega) = \frac{1}{1 + \sqrt{\frac{\delta}{P(\omega)\,(1+P(\omega)-\delta)}}}}
+\end{equation}
+
+Frequency mask during sampling:
+\begin{equation}
+    \kappa_{\mathrm{SPEED}}(\omega, t) = \begin{cases} 0 & t > t^*(\omega) \\ (t^*(\omega)-t)/t^*(\omega) & \text{otherwise} \end{cases}
+\end{equation}
+
+\subsection{Code}
+
+\begin{lstlisting}[caption={SPEED: Activation Time and Sampling}]
+def activation_time(P, delta=0.01):
+    """t*(omega) for each frequency."""
+    denom = P * (1 + P - delta)
+    return 1.0 / (1.0 + torch.sqrt(delta / denom.clamp(min=1e-8)))
+
+def speed_step(model, x_t, t, t_prev, t_star):
+    eps = model(x_t, t)
+    ab = get_alpha_bar(t)
+    x0 = (x_t - torch.sqrt(1-ab)*eps) / torch.sqrt(ab)
+    # Frequency mask
+    x0_fft = torch.fft.fft2(x0)
+    kappa = ((t_star - t) / t_star).clamp(0, 1)
+    kappa[t > t_star] = 0
+    x0_masked = torch.fft.ifft2(x0_fft * kappa).real
+    # DDPM step with masked prediction
+    ab_prev = get_alpha_bar(t_prev)
+    return torch.sqrt(ab_prev)*x0_masked + torch.sqrt(1-ab_prev)*eps
+\end{lstlisting}
+
+\subsection{Flowchart}
+
+\begin{lstlisting}[style=flowchart, caption={SPEED Inference}]
++=============================================================+
+|  Pre-compute: t*(omega) from dataset power spectrum          |
+|  Sampling loop (NO retraining):                              |
+|    1. eps = model(x_t, t)                                    |
+|    2. x0 = denoise(x_t, eps)                                 |
+|    3. FFT(x0) * kappa(omega,t)  [suppress unactivated freq]  |
+|    4. x_{t-1} = ddpm_step(masked_x0)                         |
++=============================================================+
+|  kappa_SPEED(omega,t) ~ RDD's kappa(t) concept               |
+|  But: per-frequency, input-dependent, training-free           |
++=============================================================+
+\end{lstlisting}
+
+\subsection{vs.\ RDD}
+
+SPEED: inference-only (heuristic). RDD: trained (provably optimal). Complementary: use SPEED's $t^*(\omega)$ to initialize RDD's learned $\kappa$.
+
+%=================================================================
+\newpage
+\section{Pyramid-Flow (ICLR 2025)}
+%=================================================================
+
+\subsection{Core Idea}
+Multi-stage Flow Matching for video with \textbf{renoising} between stages.
+
+\subsection{Renoising Formula}
+
+\begin{equation}
+    \alpha = \frac{1}{\sqrt{1+1/\gamma}\,(1-\sigma_{\mathrm{ori}}) + \sigma_{\mathrm{ori}}}
+\end{equation}
+\begin{equation}
+    \beta = \frac{\alpha\,(1-\sigma_{\mathrm{ori}})}{\sqrt{\gamma}}
+\end{equation}
+\begin{equation}
+    \boxed{\mathrm{latents}_{\mathrm{new}} = \alpha\,\mathrm{UP}(\mathrm{latents}_{\mathrm{old}}) + \beta\,\mathrm{block\_noise}}
+\end{equation}
+
+$\gamma$ controls strength: $\gamma\to\infty$ (no noise), $\gamma\to 0$ (full noise).
+
+\subsection{vs.\ RDD noise\_filling}
+
+RDD: $x_{\mathrm{next}} = \sqrt{\alphabar_{t_s}}\,\mathrm{UP}(\hat{x}_0) + \sqrt{1-\alphabar_{t_s}}\,\epsilon$
+
+\begin{itemize}
+    \item Pyramid-Flow: extra $\gamma$ parameter, discontinuous (breaks SDE)
+    \item RDD: determined by $t_{\mathrm{start}}$, maintains continuous Markov property
+\end{itemize}
+
+\subsection{Code}
+
+\begin{lstlisting}[caption={Pyramid-Flow: Renoising Step}]
+def renoising(latents_old, gamma, sigma_ori, block_size=4):
+    alpha = 1.0 / (math.sqrt(1+1/gamma)*(1-sigma_ori) + sigma_ori)
+    beta = alpha * (1-sigma_ori) / math.sqrt(gamma)
+    up = F.interpolate(latents_old, scale_factor=2, mode='bilinear')
+    B,C,H,W = up.shape
+    noise = torch.randn(B,C,H//block_size,W//block_size)
+    noise = noise.repeat_interleave(block_size,2).repeat_interleave(block_size,3)
+    return alpha * up + beta * noise
+\end{lstlisting}
+
+\subsection{Flowchart}
+
+\begin{lstlisting}[style=flowchart, caption={Pyramid-Flow Video Pipeline}]
++=============================================================+
+|  Stage 0 [t in 0,1/3]: 1/4x res, FM noise->clean            |
+|    |  [RENOISING: alpha*UP(z) + beta*block_noise]            |
+|    v                                                         |
+|  Stage 1 [t in 1/3,2/3]: 1/2x res, FM renoised->clean       |
+|    |  [RENOISING]                                            |
+|    v                                                         |
+|  Stage 2 [t in 2/3,1]: 1x res, FM renoised->clean           |
++=============================================================+
+|  CRITICAL: renoising = DISCONTINUOUS (incompatible DPM-Solver|
+|  RDD: noise_filling = CONTINUOUS (DPM-Solver compatible)     |
++=============================================================+
+\end{lstlisting}
+
+\subsection{Ablation}
+
+\begin{table}[H]
+\centering
+\caption{Pyramid-Flow Ablations (Video FVD)}
+\begin{tabular}{lc}
+\toprule
+Config & FVD$\downarrow$ \\
+\midrule
+$\gamma=0.5$ & 185 \\
+$\gamma=1.0$ (default) & \textbf{162} \\
+$\gamma=2.0$ & 170 \\
+No renoising & 195 \\
+Without block noise & 175 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%=================================================================
+\newpage
+\section{SwD (Yandex 2025)}
+%=================================================================
+
+\subsection{Core Idea}
+Distillation with boundary-segmented generation. \textbf{Boundary structure $\equiv$ RDD stage\_lengths.}
+
+\subsection{Formulation}
+
+Consistency distillation within segments:
+\begin{equation}
+    \mathcal{L} = \|f_\theta(x_{t_1}, t_1) - \mathrm{sg}[f_\theta(x_{t_2}, t_2)]\|^2, \quad t_1, t_2 \in [b_k, b_{k+1}]
+\end{equation}
+
+\subsection{Flowchart}
+
+\begin{lstlisting}[style=flowchart, caption={SwD Pipeline}]
++=============================================================+
+|  [Training] Teacher(full-res) distills to Student(multi-res) |
+|  For each segment [b_k, b_{k+1}]:                            |
+|    Match teacher/student predictions                         |
+|    Consistency loss within segment                           |
+|                                                              |
+|  [Inference] Segment 0 -> UP -> Segment 1 -> UP -> Seg 2    |
+|  Few-step generation (4-8 steps total)                       |
++=============================================================+
+|  boundary config == RDD stage_lengths (isomorphic!)          |
+|  SwD: distillation for speed. RDD: training for quality.     |
+|  Complementary: RDD model -> SwD distillation -> fast RDD    |
++=============================================================+
+\end{lstlisting}
+
+%=================================================================
+\newpage
+\section{LowDiff (2025)}
+%=================================================================
+
+\subsection{Core Idea}
+Single model, channel-concat conditioning from lower resolution.
+
+\subsection{Formulation}
+
+\begin{equation}
+    \epsilon_\theta(x_t^{(k)}, t, c) = \mathrm{UNet}\bigl(\mathrm{Concat}(x_t^{(k)}, \mathrm{UP}(\hat{x}_0^{(k-1)})),\; t + \mathrm{ResEmbed}(k)\bigr)
+\end{equation}
+
+\subsection{Code}
+
+\begin{lstlisting}[caption={LowDiff: ResEmbedder}]
+class ResEmbedder(nn.Module):
+    def __init__(self, num_stages, dim):
+        super().__init__()
+        self.embed = nn.Embedding(num_stages, dim)
+        self.mlp = nn.Sequential(nn.Linear(dim, dim*4), nn.SiLU(), nn.Linear(dim*4, dim))
+    def forward(self, idx):
+        return self.mlp(self.embed(idx))
+
+def lowdiff_forward(model, x_t, t, prev_out, stage_idx):
+    cond = F.interpolate(prev_out, size=x_t.shape[-2:]) if prev_out is not None \
+           else torch.zeros_like(x_t)
+    return model(torch.cat([x_t, cond], 1), t, stage_idx)
+\end{lstlisting}
+
+\subsection{Flowchart}
+
+\begin{lstlisting}[style=flowchart, caption={LowDiff Pipeline}]
++=============================================================+
+|  Stage 0 (64x64):  [x_t | zeros] + ResEmbed(0) -> x_0^(0)  |
+|    |-> Upsample                                              |
+|  Stage 1 (128x128): [x_t | UP(x_0^0)] + ResEmbed(1) -> x^1 |
+|    |-> Upsample                                              |
+|  Stage 2 (256x256): [x_t | UP(x_0^1)] + ResEmbed(2) -> x^2 |
++=============================================================+
+|  EXPLICIT conditioning (channel concat)                      |
+|  vs RDD: IMPLICIT conditioning (drift in forward process)    |
++=============================================================+
+\end{lstlisting}
+
+%=================================================================
+\newpage
+\section{MrFlow (2025)}
+%=================================================================
+
+\subsection{Core Idea}
+Training-free 4-stage pipeline using existing models.
+
+\begin{lstlisting}[style=flowchart, caption={MrFlow Pipeline}]
++=============================================================+
+|  Stage 1: Base model -> 512x512                              |
+|  Stage 2: SDEdit (add noise + denoise) -> 1024x1024         |
+|  Stage 3: Tile-based SDEdit -> 2048x2048                     |
+|  Stage 4: Real-ESRGAN super-res -> 4096x4096                |
++=============================================================+
+|  No training needed. Quality limited by base models.         |
+|  vs RDD: end-to-end trained, no error accumulation.          |
++=============================================================+
+\end{lstlisting}
+
+%=================================================================
+\newpage
+\section{XCube (CVPR 2024)}
+%=================================================================
+
+\subsection{Core Idea}
+3D two-stage latent diffusion. v-prediction: $v = \sqrt{\alphabar_t}\,\epsilon - \sqrt{1-\alphabar_t}\,x_0$.
+
+\begin{lstlisting}[style=flowchart, caption={XCube Pipeline}]
++=============================================================+
+|  Stage 1: Coarse voxel generation (32^3 latent)              |
+|    |-> Decode + Condition                                    |
+|  Stage 2: Fine generation (256^3) conditioned on coarse      |
+|    |-> Decode to mesh/SDF                                    |
++=============================================================+
+|  3D domain. RDD could extend with volumetric drift.          |
++=============================================================+
+\end{lstlisting}
+
+%=================================================================
+\section{OctFusion (SGP 2025)}
+%=================================================================
+
+\subsection{Core Idea}
+Octree + dual-branch single model for 3D generation.
+
+\begin{lstlisting}[style=flowchart, caption={OctFusion Architecture}]
++=============================================================+
+|  +-- Coarse Branch --+     +-- Fine Branch --+               |
+|  | Level 4-5 nodes   |<--->| Level 6-8 nodes |               |
+|  | 3D Sparse Conv    |cross| 3D Sparse Conv  |               |
+|  | + Self-Attention  |attn | + Self-Attention |               |
+|  +-------------------+     +------------------+               |
+|  Joint denoising: shared timestep, coupled predictions        |
+|  Loss = L_coarse + lambda * L_fine                            |
++=============================================================+
+\end{lstlisting}
+
+%=================================================================
+\section{PDD (ECCV 2024)}
+%=================================================================
+
+\subsection{Core Idea}
+Discrete diffusion (D3PM) + 3-stage pyramid on quantized features.
+
+D3PM forward: $q(x_t|x_{t-1}) = \mathrm{Cat}(x_t;\, p = x_{t-1} Q_t)$, where $Q_t = (1-\beta_t)I + \beta_t \frac{\mathbf{1}\mathbf{1}^T}{K}$.
+
+\begin{lstlisting}[style=flowchart, caption={PDD Pipeline}]
++=============================================================+
+|  Stage 1: 16x16 discrete tokens, D3PM reverse               |
+|  Stage 2: 32x32 tokens conditioned on Stage 1               |
+|  Stage 3: 64x64 tokens conditioned on Stage 2 -> decode     |
++=============================================================+
+|  Discrete (D3PM) vs RDD continuous (DDPM). Incompatible      |
+|  frameworks but same coarse-to-fine intuition.                |
++=============================================================+
+\end{lstlisting}
+
+%=================================================================
+\newpage
+\section{Comprehensive Comparison}
+%=================================================================
+
+\begin{table}[H]
+\centering
+\caption{Method Comparison}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+Method & \makecell{Forward\\Modified} & \makecell{Arch\\Modified} & \makecell{Train\\Req.} & \makecell{DPM-Solver} & \makecell{Strategy} & Models & Domain \\
+\midrule
+\textbf{RDD} & Y & N & Y & Y & Drift & 1 & 2D \\
+Relay & Y & N & Y & Y (per stage) & Cascade & 2 & 2D \\
+LapFlow & Y & Y & Y & N/A (FM) & Segments & 1 & 2D \\
+DiMR & N & Y & Y & Y & Multi-branch & 1 & 2D \\
+DCTdiff & Y & N & Y & Y & Freq scale & 1 & 2D \\
+SPEED & N & N & N & Y & Freq mask & 1 & 2D \\
+Pyramid-Flow & Y & N & Y & N (renoise) & Pyramid & 1 & Video \\
+SwD & Y & N & Y & Partial & Boundary & 1 & 2D \\
+LowDiff & N & Y & Y & Y & Ch-concat & 1 & 2D \\
+MrFlow & N & N & N & Y & Pipeline & 3+ & 2D \\
+XCube & N & Y & Y & Y & 2-stage & 2 & 3D \\
+OctFusion & N & Y & Y & Y & Dual-branch & 1 & 3D \\
+PDD & Y & N & Y & N (discrete) & Pyramid & 3 & 2D \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{ImageNet 256 Class-Conditional Results}
+\begin{tabular}{lccc}
+\toprule
+Method & FID$\downarrow$ & NFE & Note \\
+\midrule
+DiT-XL/2 & 2.27 & 250 & Baseline \\
+\textbf{DiMR-XL/2} & \textbf{1.70} & 250 & Arch SOTA \\
+Relay & 1.87 & 500 & Two models \\
+LapFlow-XL & 1.89 & 250 & FM \\
+MDT-XL/2 & 1.79 & 250 & Masked DiT \\
+\midrule
+\textbf{RDD (target)} & $<$2.0 & 20--50 & DPM-Solver \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%=================================================================
+\newpage
+\section{RDD Action Plan}
+%=================================================================
+
+\subsection{P0: Immediate}
+\begin{enumerate}
+    \item $\gamma=0$ ablation (prove drift necessity)
+    \item ImageNet 256 FID baseline (reproduce DiT 2.27, then improve)
+    \item Stage config sweep: [250,250,500] vs [333,333,334] vs [100,200,700]
+\end{enumerate}
+
+\subsection{P1: Short-term}
+\begin{enumerate}
+    \item Block Noise in noise\_filling (from Relay)
+    \item Frequency-weighted loss: $\mathcal{L} = \sum_f w(f)\|\tilde{\epsilon}(f)-\epsilon_\theta(f)\|^2,\; w(f) \propto 1/\mathrm{LP}(f)$
+    \item DiMR architecture integration
+    \item Learnable $\kappa$ (inspired by SPEED's $t^*(\omega)$)
+\end{enumerate}
+
+\subsection{P2: Medium-term}
+\begin{enumerate}
+    \item Video extension (Pyramid-Flow style but no renoising)
+    \item SwD-style distillation (4-step generation)
+    \item 3D extension (volumetric drift)
+    \item Adaptive $\kappa(\omega, t)$ (per-frequency)
+    \item Spectral noise\_filling (only high-freq noise)
+\end{enumerate}
+
+\begin{table}[H]
+\centering
+\caption{Priority Matrix}
+\begin{tabular}{clll}
+\toprule
+Pri & Task & Inspired By & Impact \\
+\midrule
+P0 & $\gamma=0$ ablation & -- & Prove necessity \\
+P0 & ImageNet baseline & DiT & Benchmark \\
+P0 & Stage sweep & LapFlow/SwD & Optimal config \\
+\midrule
+P1 & Block Noise & Relay & Better low-freq \\
+P1 & Freq-weighted loss & DCTdiff & Better high-freq \\
+P1 & DiMR arch & DiMR & Multi-res features \\
+P1 & Learnable $\kappa$ & SPEED & Optimal schedule \\
+\midrule
+P2 & Video & Pyramid-Flow & New modality \\
+P2 & Distillation & SwD & Fast inference \\
+P2 & 3D & XCube/OctFusion & New domain \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{Summary}
+
+RDD is the \textbf{only method} simultaneously achieving: single Markov chain, continuous drift, DPM-Solver compatible, no renoising. It is orthogonal to architecture modifications (DiMR) and complementary to distillation (SwD). Target: combine RDD (process) + DiMR (arch) + Block Noise + freq-loss to achieve FID $<$ 1.70 with 20-step DPM-Solver.
+
+\end{document}

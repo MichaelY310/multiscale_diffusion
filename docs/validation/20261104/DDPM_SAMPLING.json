@@ -1,0 +1,2105 @@
+{
+  "status": "passed",
+  "device": "cpu",
+  "cuda_initialized": false,
+  "elapsed_seconds": 116.09644651412964,
+  "cases": [
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_fresh_cfg1",
+      "solver": "ddpm",
+      "boundary": "fresh",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "a50e81974df0a28796484777b2b75b2e8751ed5916964230ad3385968685d1ae",
+      "final_float_rgb_sha256": "0e24380d61a3fc14017910d5b4077656a2ad988366148e917ac4c3449a68fdd3",
+      "trace_sha256": [
+        "cf8f7d8aba0dd9e233f652651a02378dfeafb7b3cdb255ae19ce94486733f820",
+        "6eaae037fa303517b2d5e1c9b7b9b6035e252a50c0108ba521748b889fcbc4eb",
+        "f218e86bf27bf1e0cdc0c25927ca148bc8a63b44016dbd6068b044c2eaa0e8cb",
+        "ace7365a4b4d8f870afbee087cd38c602493ec629cd07222e9297cd73f39a45f",
+        "a50e81974df0a28796484777b2b75b2e8751ed5916964230ad3385968685d1ae"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_noise_filling_cfg1",
+      "solver": "ddpm",
+      "boundary": "noise_filling",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "4d0600213b45e560f8c101450480d8daae35ef2bd36773e9fe6deaea463321ad",
+      "final_float_rgb_sha256": "d8807057cb494ed80a3f7877c4669c9195c5c4cbe380db90d64a245fcfa82821",
+      "trace_sha256": [
+        "cf8f7d8aba0dd9e233f652651a02378dfeafb7b3cdb255ae19ce94486733f820",
+        "e2a41d1909bb8a51e7648a0c886a6335d397680de008761e1f5faec7f0b5b79d",
+        "6d3a2ef9e63b5f9d9a85c6f1994bed39bf5c6dad76bb1669568baec6cc1bef63",
+        "e9c560a3dc9db5355e57d9a89124c9a14e55bc2c8cb16b258fa918df0f0fe3ac",
+        "4d0600213b45e560f8c101450480d8daae35ef2bd36773e9fe6deaea463321ad"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_fresh_cfg1.5",
+      "solver": "ddpm",
+      "boundary": "fresh",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "a2c0a3677fc8e968897a548c08136e0609ad87d96e7bfbf0ddfb9207d7d74e70",
+      "final_float_rgb_sha256": "fefb9b4ab4ecf513c436d7c7688e3d1dc302ec5f1a042b06c92a90495f93bc02",
+      "trace_sha256": [
+        "409a4641ac4af0d4277df0d34cf3bfe4faf13b5d332ee55fe03261198beeeec5",
+        "416d445c9eaaeadf2410a641856ebfc08706e98c3279e0ac49ef4fcae0479d80",
+        "ef659bb2f456ffc84c6feb1584b8d33f33c289bbba6eb14835b7d1f80596c482",
+        "2a9063e71a52f71d1855608c96d318e0cd0466586ed5268bdac4610c74d4d69a",
+        "a2c0a3677fc8e968897a548c08136e0609ad87d96e7bfbf0ddfb9207d7d74e70"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_noise_filling_cfg1.5",
+      "solver": "ddpm",
+      "boundary": "noise_filling",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "6a1f588f548bcc77d800e9fef96bb36ce5811f8ee2b4fea777217cb1529e2cb5",
+      "final_float_rgb_sha256": "bed3f7abbc7c45c54616a7d8154ced7d5a6cb316e2751d9c10bffa70d84a7bda",
+      "trace_sha256": [
+        "409a4641ac4af0d4277df0d34cf3bfe4faf13b5d332ee55fe03261198beeeec5",
+        "423ab5c5659f2252ad3c5280508663f9af7389094310e9c915b66e2f179a4513",
+        "8eec76702d75333b4bf6a05e4c70bc0b1f605ee8602f0ff5fbdb444faa5c7de6",
+        "fda23aef620824f30181f980a8ab14e8ddbad91fbe690db66b2f466a7dcd278a",
+        "6a1f588f548bcc77d800e9fef96bb36ce5811f8ee2b4fea777217cb1529e2cb5"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "dpm1_fresh_cfg1",
+      "solver": "dpm1",
+      "boundary": "fresh",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "14ffdde2f6d54c8c07f96ca31b92e6b91f643caa8480ec91fe0911697b6ec193",
+      "final_float_rgb_sha256": "3efbd42cdc7f0bca25a6f1e0e85de98958721cca8c55402625230fe9c39f46b2",
+      "trace_sha256": [
+        "387bbb950f941efa4b3a039b2ebe3461e3004f0c0e1b72a6f0ee762ccfc23e3b",
+        "41d630fa8e8964c2385f13243e14f447541971438b7fd7887b1038b068b47c06",
+        "6ef4d2efb5acd23a81c48640a712bcef5ead3ec616ee6dcf3aa060168d87b1e6",
+        "d97e305d52edc51a2766c8e6a7c5147754849ce2ea66d59fd1f0fd720ddb29ce",
+        "14ffdde2f6d54c8c07f96ca31b92e6b91f643caa8480ec91fe0911697b6ec193"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "dpm1_noise_filling_cfg1",
+      "solver": "dpm1",
+      "boundary": "noise_filling",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "8883234e0da8a8932a80398d0e33ca213106d1c7ce0f28844028c84d8a06cd93",
+      "final_float_rgb_sha256": "09751164b8c4a5789c7b0708c265ef246de65c76efd2e2b3af38fa42302bd1bd",
+      "trace_sha256": [
+        "387bbb950f941efa4b3a039b2ebe3461e3004f0c0e1b72a6f0ee762ccfc23e3b",
+        "15ca997cd252583a30da5b7b60245262089f50eb39e3df8193fb18d582a3cf1e",
+        "0db1120468bb1546d3f9c568231fecfd167e2cddd9a1d6a504c08293938ddda4",
+        "d8546961ad072e92484a31cc896243af48a788033ef2518ebdfec5887e7b6ee8",
+        "8883234e0da8a8932a80398d0e33ca213106d1c7ce0f28844028c84d8a06cd93"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "dpm1_fresh_cfg1.5",
+      "solver": "dpm1",
+      "boundary": "fresh",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "d256dbbc27831c3252e19578cf839a3a1137a0bfae999c1df5bdb8633bd7a4e0",
+      "final_float_rgb_sha256": "43980caac532cfcce8ec5a6d07e8380f37499427aaadfb1f662e64c3b4d949b0",
+      "trace_sha256": [
+        "fb3f0945fe8923f020213fd06f372eb61ab591cdf17ed7c17ce07b5af8037148",
+        "73edf065ba5327612f812845eb3cb1c7b0ea6131eadee5a3323dc5bf7d87202b",
+        "f5a627ee768b74140630dd0c0d10b6d81cc1c491462782fdc7ab124592a34c79",
+        "943574bfbcd47c909f14d94c93dc1cde3ce1e63826b13ad6a4d8a482f8179573",
+        "d256dbbc27831c3252e19578cf839a3a1137a0bfae999c1df5bdb8633bd7a4e0"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "dpm1_noise_filling_cfg1.5",
+      "solver": "dpm1",
+      "boundary": "noise_filling",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "a7eaa76a86c137fea5882d892c09676847bd50fbe5728bc24c4a25a3b8bf0e4d",
+      "final_float_rgb_sha256": "e5e71c8de48addeae573d0975a6c36804599d8efc55c2719af4710e1fefe9676",
+      "trace_sha256": [
+        "fb3f0945fe8923f020213fd06f372eb61ab591cdf17ed7c17ce07b5af8037148",
+        "2403b16f696b947e4b91be5d2bc81af9b67f80aaadf134a58db919b569e27909",
+        "576303ce7fc53f21fc755675bca471ddec21340e32096e0e596949697571bc5d",
+        "2abfeb4bd77c7563b02c1bcb20787366893d41202e9639a642b13115c09421b9",
+        "a7eaa76a86c137fea5882d892c09676847bd50fbe5728bc24c4a25a3b8bf0e4d"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "dpm2_fresh_cfg1",
+      "solver": "dpm2",
+      "boundary": "fresh",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 494,
+      "compared_tensor_pairs": 1992,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "6c6e5e3b9f4c81e1e4c7b844545973175da42a6b46af0331a9d0ea0cad5f93d2",
+      "final_float_rgb_sha256": "b6c7365bbd9eccec04471b54869ea9f5502e3f3b7c57345bb033bac41586a1d6",
+      "trace_sha256": [
+        "960004456c22900ba68769586c76bbcb6fd5525494f08ee8b6c0330cbf8aaef4",
+        "b6dca6e26413ec2ffc5207a39be8f5fb30146a2c695239779d6158b2443a2e92",
+        "fc6a1fde57c46c68da63e6d93f8a63b47a4c9a91447816a278638612a041b8e9",
+        "a3cba5cca1904a97f4df85c0c51316bbc2244b4fdb55a909e02e3bced1eca478",
+        "6c6e5e3b9f4c81e1e4c7b844545973175da42a6b46af0331a9d0ea0cad5f93d2"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "dpm2_noise_filling_cfg1",
+      "solver": "dpm2",
+      "boundary": "noise_filling",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 494,
+      "compared_tensor_pairs": 1992,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "36a92a3a1490ba05a087cddf71b3e4a02b06d0c132d555f9548ed07bf859d2ec",
+      "final_float_rgb_sha256": "1c9d02676f231c764691822a08f9fee3a0fd3e3c15d27b4e83a34cf31fada14b",
+      "trace_sha256": [
+        "960004456c22900ba68769586c76bbcb6fd5525494f08ee8b6c0330cbf8aaef4",
+        "c234bf78a2db11acb7bd9a93fbd7bc47d9028808b8a50ce2d898d0fcbcfdf3e2",
+        "291d60fc680fb45add51c7c8bad2c74385cbbc6b404d18bae3c4827cf708a1aa",
+        "8b7e848a319a293c9e846fa74284aafd0d568a6fa6bde12582666ac5fa335806",
+        "36a92a3a1490ba05a087cddf71b3e4a02b06d0c132d555f9548ed07bf859d2ec"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "dpm2_fresh_cfg1.5",
+      "solver": "dpm2",
+      "boundary": "fresh",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 494,
+      "compared_tensor_pairs": 1992,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "eafb2626bc26af967129d08f0f2e9148a4f484c85432bc70bc1321b61764c002",
+      "final_float_rgb_sha256": "3b773a720dc9ad350130197d39c5c44d927216d64923dd987059e55688d5fc05",
+      "trace_sha256": [
+        "6aede85dbd83f3b60518770e3ea5f1d0389f19890b786c4393711266046ae5c0",
+        "f742e78f9a52adf22f130c164f430045edd4c8c37ccd00934db3cc9ab237c7dc",
+        "04cbceda239a0fa67c7663c006f64aab9ac084bf069758a2255dc4f8692fcf7e",
+        "df8f9615f10b2726e065ddf35c894c6e625a8a299029fdd8ca1b10ce47b477c2",
+        "eafb2626bc26af967129d08f0f2e9148a4f484c85432bc70bc1321b61764c002"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "dpm2_noise_filling_cfg1.5",
+      "solver": "dpm2",
+      "boundary": "noise_filling",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 494,
+      "compared_tensor_pairs": 1992,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "bee6866a2a22f3552b73150d0a2b5ff6c2571073af34dfb4fda8f27957e5d956",
+      "final_float_rgb_sha256": "bd9a1a1b9ee4407fbd2e9fc3046f7010e2c084e61e00b833babdfa11d54fc037",
+      "trace_sha256": [
+        "6aede85dbd83f3b60518770e3ea5f1d0389f19890b786c4393711266046ae5c0",
+        "e827e61012772ee5cdfffdf0acbdf71146a5cdfd1fe222394a1aafde8b4d95c9",
+        "6557377a8d57515f21364c2a686aaacdf5423fc583bdc8b651a87ef649ebcac9",
+        "7731fd401288892b3b99faa758c179cc9d9e225eac7ff4632eb9a914c0c24902",
+        "bee6866a2a22f3552b73150d0a2b5ff6c2571073af34dfb4fda8f27957e5d956"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_fresh_cfg1_allocation400_300_300",
+      "solver": "ddpm",
+      "boundary": "fresh",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        400,
+        300,
+        300
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "1d281c75015c3b2ccf2e5e2d07a73aae1db12b37f862c20942901dd91afb3097",
+      "final_float_rgb_sha256": "60fecc8d0534006ccb58f14503c7fa3d33b8688fc9617a8febeb8e186ba94986",
+      "trace_sha256": [
+        "ed91d2275025520bae2a6abcd257c762a45326c6e0c839f538eabe851bf80169",
+        "45fbf9382eb88714ed73468402ca1ac31b4ebd4a59b91a74ca6d94f44ca2fee2",
+        "cde4116accc9ade07b278d87f2f58530704db4548864d31ee1563decece825c1",
+        "cc63b777eae2ab4899e71d23856d1505dfda48a4d493dbfc9c9865d4681fa933",
+        "1d281c75015c3b2ccf2e5e2d07a73aae1db12b37f862c20942901dd91afb3097"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_noise_filling_cfg1_allocation400_300_300",
+      "solver": "ddpm",
+      "boundary": "noise_filling",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        400,
+        300,
+        300
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "1a07461362790c5cb1cd588a16da167dcd65e137908398aa00a3603633939aaa",
+      "final_float_rgb_sha256": "4df6c00f9bd53957fc19d14db562669635403fb9b879319288897cdcc662e20e",
+      "trace_sha256": [
+        "ed91d2275025520bae2a6abcd257c762a45326c6e0c839f538eabe851bf80169",
+        "eb85af203111b57980759367fc70a58cf37583106a1558dc67b0538272e02526",
+        "4cc30724b3b489acafc2e5037364fb680224fd14045351f0cc952d58e4fa5210",
+        "5052adfb9eab13f9dfddbc1ab23f7bd7f37b83f4231641e80bfd90f46b953b4b",
+        "1a07461362790c5cb1cd588a16da167dcd65e137908398aa00a3603633939aaa"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_fresh_cfg1_allocation100_300_600",
+      "solver": "ddpm",
+      "boundary": "fresh",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        100,
+        300,
+        600
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "bacb078989110faf07535d434090fd681863fa5dd133636247d5dcb5ed6b562d",
+      "final_float_rgb_sha256": "43bc0a374badf58a4d7b306791d02d37c80ac265e63e2221322552719a111f9f",
+      "trace_sha256": [
+        "3cb3800818dd2eef706c4d59591204171555e46271a315167be280afb13bde7f",
+        "d85308cdd285cf50cd31cdca54a5387da02a2b8d7cb81554d6880630e228d36d",
+        "d95360243d30fe64226c819478b2ce7925709af88ea968b242c97117c16f5604",
+        "41462b97d4f741c0386dfd1976e3045e9a273ce4efb27b3f6bf2be6fa1185f7b",
+        "bacb078989110faf07535d434090fd681863fa5dd133636247d5dcb5ed6b562d"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_noise_filling_cfg1_allocation100_300_600",
+      "solver": "ddpm",
+      "boundary": "noise_filling",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        100,
+        300,
+        600
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "492bf8fe802dd4357779ff55280d857dfce2d94f129fc869777a607e4687273b",
+      "final_float_rgb_sha256": "95469ae50ba9596c6dc1cd02a72539c121c8a20bfdc77c5734e749678f3b35aa",
+      "trace_sha256": [
+        "3cb3800818dd2eef706c4d59591204171555e46271a315167be280afb13bde7f",
+        "1044c8b983fb6714bf9b75fc75077a0f43233dad30065590200a63ed37a5d78d",
+        "b4b3d6839e6ae303c03a6eb306f4492c8d4b45b78232f8e7fee599c6603597ea",
+        "428803befa9ad7da7024632dbc400d593636ff211c30643ff124fea1e13335fb",
+        "492bf8fe802dd4357779ff55280d857dfce2d94f129fc869777a607e4687273b"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_fresh_cfg1_allocation600_300_100",
+      "solver": "ddpm",
+      "boundary": "fresh",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        600,
+        300,
+        100
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "9569bcde12ca388809425ab63e95bd359bd473afc6b6b77026a60d91e7bc2cb8",
+      "final_float_rgb_sha256": "a077cb2c205e32fc0e994731010249693fbd49e139ccf77291c0375da9fdb766",
+      "trace_sha256": [
+        "562006503856327f550c248de507b6c08bd8a6ab7cbf50cad0e920f9ac1fb17b",
+        "92104dc9844b67a7daf45a4744b57616c430e5b75fb2c0f97936e4552812cae8",
+        "875a50c5c59a76da329a229467ee93810186c868f4ac5d9fe8df43107ea005d4",
+        "038e92b366db4f57e89c568b1a520bb4339a3ad53f1cf5ee4199fecb9339686d",
+        "9569bcde12ca388809425ab63e95bd359bd473afc6b6b77026a60d91e7bc2cb8"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_noise_filling_cfg1_allocation600_300_100",
+      "solver": "ddpm",
+      "boundary": "noise_filling",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        600,
+        300,
+        100
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "d004e529476a4eae63287aae1c91f8913cb4682a5586729daa014cf41ecbc13a",
+      "final_float_rgb_sha256": "6733e81dd36c2159f2aac629c6429274fc78ae591877a0f51b44598b3433d2af",
+      "trace_sha256": [
+        "562006503856327f550c248de507b6c08bd8a6ab7cbf50cad0e920f9ac1fb17b",
+        "7ba963618b708fb8c2cd40c64b1ce30003e7f8cb43e1b0c82bcbc8a8edd04b0f",
+        "a0508c3c5979aa9fcf24ce572939f6633ac2fd543157891f3b59f8e00ed41612",
+        "e60971e2ec5b33cf965dc64926f6ea411b0d5640b6c1ffa8628862838f5b0360",
+        "d004e529476a4eae63287aae1c91f8913cb4682a5586729daa014cf41ecbc13a"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_fresh_cfg1_two_stage16_32",
+      "solver": "ddpm",
+      "boundary": "fresh",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        125,
+        125
+      ],
+      "stage_lengths_fine_to_coarse": [
+        500,
+        500
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1012,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "fa8c1fc2ff15e92c2d77f23d64c6617a9ed3a54a86bf92aefb5ac6f65f84453e",
+      "final_float_rgb_sha256": "a1a851d218796334df713f7c1fa34b472a7b7ee2764f1f43fe4f7259622d13ff",
+      "trace_sha256": [
+        "81c881944c910b2ee17ad68aea6095f2d6810239dd91032beabc1d3f59c161df",
+        "a1250aa91060df3983d146e0e72bd41ac0f3bf3aac18248ea7a653fa9822cd67",
+        "fa8c1fc2ff15e92c2d77f23d64c6617a9ed3a54a86bf92aefb5ac6f65f84453e"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_noise_filling_cfg1_two_stage16_32",
+      "solver": "ddpm",
+      "boundary": "noise_filling",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        125,
+        125
+      ],
+      "stage_lengths_fine_to_coarse": [
+        500,
+        500
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1012,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "a581080f3951a15bb8d18ae8e43e05780bd65aa6667ffacd7ec0bb1061b62b4e",
+      "final_float_rgb_sha256": "2de5ba0dcecb7c0c03b9a40f3afb2973b4c7842ea61d773b9935743c9a0b9e75",
+      "trace_sha256": [
+        "81c881944c910b2ee17ad68aea6095f2d6810239dd91032beabc1d3f59c161df",
+        "2737aa2fe95f4c492d91c691994b678d8c9c52f5f01463802be74b47b372c53d",
+        "a581080f3951a15bb8d18ae8e43e05780bd65aa6667ffacd7ec0bb1061b62b4e"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_fresh_cfg1_two_stage8_32",
+      "solver": "ddpm",
+      "boundary": "fresh",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        125,
+        125
+      ],
+      "stage_lengths_fine_to_coarse": [
+        500,
+        500
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1012,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "79489b12b255e898fda45ba9e8fe7b297af8ad488ec77621696f86520c0fc864",
+      "final_float_rgb_sha256": "f5f43cca0564c9ca3449e23bad33ed40d7840837000bdc3f64a65817075e40c2",
+      "trace_sha256": [
+        "ce7ddac32ae9cc2d284ba9e938a6498ca0b3a0d62c0d01f9f16974af9ea520c7",
+        "c78330ed78f97df14440d397228e4fb59e2de4b04181da963a8fb78a9145772c",
+        "79489b12b255e898fda45ba9e8fe7b297af8ad488ec77621696f86520c0fc864"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_noise_filling_cfg1_two_stage8_32",
+      "solver": "ddpm",
+      "boundary": "noise_filling",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        125,
+        125
+      ],
+      "stage_lengths_fine_to_coarse": [
+        500,
+        500
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1012,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "dc7b3eafa552cf0bc4a126217dc3410eaa3f8f5f632d283da50ed6d67a8ddc52",
+      "final_float_rgb_sha256": "92ab829f89cb8c32a3226acf51ffdd515e82119c4f4174b9a168090b07013bbd",
+      "trace_sha256": [
+        "ce7ddac32ae9cc2d284ba9e938a6498ca0b3a0d62c0d01f9f16974af9ea520c7",
+        "966717573fd04f4a1ba92eb99f00d124fdb4e2de4510764cb1f5f0d0d24ff210",
+        "dc7b3eafa552cf0bc4a126217dc3410eaa3f8f5f632d283da50ed6d67a8ddc52"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "dpm2_fresh_cfg1.5_historical244NFE",
+      "solver": "dpm2",
+      "boundary": "fresh",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 244,
+      "compared_tensor_pairs": 992,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "1ecb864697cd764e7fb0b32cd114a7100a72c87a6005164f40e2ca07fa9adb14",
+      "final_float_rgb_sha256": "57586eeb478664337e9f48d0d9ac78af2978b61ff55e0156c93a89e979f0be57",
+      "trace_sha256": [
+        "e90e452c0a32fe523fa6cd361fb8e3cc740cf5dda99a32ff1e70855cac0ae9fb",
+        "6eb29b2be482b578b458bf4d50d2a51eab8b0aee807e2391d468f34982b23f27",
+        "5c0198ed69b3f8dae40cc183e6ed9887c28a93eb3d275926c14ce101cc9110f2",
+        "58b67c9314427130763e5cb77372c5013d7daa81de2242f7ae3dd4bc40c231aa",
+        "1ecb864697cd764e7fb0b32cd114a7100a72c87a6005164f40e2ca07fa9adb14"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "dpm2_noise_filling_cfg1.5_historical244NFE",
+      "solver": "dpm2",
+      "boundary": "noise_filling",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 244,
+      "compared_tensor_pairs": 992,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "b471d132e2998de0a4cbf54a02c187931098e2cbc0461413d610e3ec91073c10",
+      "final_float_rgb_sha256": "dc3da6eb554ab35e350f7fa461f4c6f9ea39b8b4bd42447fcc30fcbdfe80bea7",
+      "trace_sha256": [
+        "e90e452c0a32fe523fa6cd361fb8e3cc740cf5dda99a32ff1e70855cac0ae9fb",
+        "61c140293b37857aa34921abf8300b9717bac6c2c0230758561f32a21bdaa902",
+        "1fcfd48738afa2e725f22e3b9eb88e2e58ef625881941c7f7a6c1a8b65e3a235",
+        "5ad89fa44f4931b9e69f8ad6567384695931b263f4506877bf591746bf0747d9",
+        "b471d132e2998de0a4cbf54a02c187931098e2cbc0461413d610e3ec91073c10"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_fresh_cfg1_budget35",
+      "solver": "ddpm",
+      "boundary": "fresh",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        10,
+        10,
+        15
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 35,
+      "compared_tensor_pairs": 156,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "7e8001fcfb230fdfd6175acb1929982ba0032a7c069e8e63be02981b0893b6d7",
+      "final_float_rgb_sha256": "303ca6b7153236d1e4d40464fb3b146cdcba233728614042e145aeff99d8c980",
+      "trace_sha256": [
+        "6b3989775f60205bb1e032874e6f5cfa333ed8b4b3a42001a95d83dce104a9a8",
+        "c27711685cf01bf1baadf82143032a196869b208b67039311bf4bd595b9b05a5",
+        "1aa9109afa685f527c0418dea510ae4bfb110ef4a307f4284d91677153495939",
+        "f0c198e26003aec7e8f7838ba7bc23068c1789bc952fa469ec0e83a379ec9bae",
+        "7e8001fcfb230fdfd6175acb1929982ba0032a7c069e8e63be02981b0893b6d7"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_noise_filling_cfg1_budget35",
+      "solver": "ddpm",
+      "boundary": "noise_filling",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        10,
+        10,
+        15
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 35,
+      "compared_tensor_pairs": 156,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "59215d11fbfa61743efddf9953d59260f6063dab96b34c42f34b1d07d3b02012",
+      "final_float_rgb_sha256": "9648730ee80523420c24abe1dda31c4b35d518240b048810b9257047e2be0ebc",
+      "trace_sha256": [
+        "6b3989775f60205bb1e032874e6f5cfa333ed8b4b3a42001a95d83dce104a9a8",
+        "28a1bd76f6c04c7a0ff5710be942f7c6e9f2b0951ea66531f8dbf8fbc844d8d9",
+        "4cce605922463dc9b79ede92d4aad7e16fc7b575afb8fc0afaa18f4854fe1c80",
+        "38e98c3cd655e24e389778a51fed5b3d86e5581e62492219d5b4dc377f4e4e6c",
+        "59215d11fbfa61743efddf9953d59260f6063dab96b34c42f34b1d07d3b02012"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_fresh_cfg1_proportional150_75_25",
+      "solver": "ddpm",
+      "boundary": "fresh",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        150,
+        75,
+        25
+      ],
+      "stage_lengths_fine_to_coarse": [
+        100,
+        300,
+        600
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "88f23575cfd7f8d5208542371c123be33211e0fe45fa36f930a586a6edff1928",
+      "final_float_rgb_sha256": "420f5b2cec924d2ea5cd60e486db6381e479d31cbaad4867c30b5837f75ffb6a",
+      "trace_sha256": [
+        "ad5cc0b94dd114247b0149e908e8d253fff4c279b2357cb5da7f35ac0029627b",
+        "f72d2eee95ff01557ea19c73e62d66be531235b8f8d1bfe4225ce4a5464ceff5",
+        "0d36bc27540a8135b71a10d5284de2afde3f1dfee2f718d68cd5d467a96a4987",
+        "8c8946aa5a592b64863b570ca6e4ecc86742395b9f8269b96df4537dd3f61922",
+        "88f23575cfd7f8d5208542371c123be33211e0fe45fa36f930a586a6edff1928"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_noise_filling_cfg1_proportional150_75_25",
+      "solver": "ddpm",
+      "boundary": "noise_filling",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        150,
+        75,
+        25
+      ],
+      "stage_lengths_fine_to_coarse": [
+        100,
+        300,
+        600
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "0de741755f214ba5bb358cc85b0437feb4986562e7143232d577bad0b1824611",
+      "final_float_rgb_sha256": "fdb72f1d83689598ed046dfcd7f23ccaed6192a7951e1b250e0b0e5b62cc98dd",
+      "trace_sha256": [
+        "ad5cc0b94dd114247b0149e908e8d253fff4c279b2357cb5da7f35ac0029627b",
+        "7ba2fca0a89562c7a9ef8e805b3421d6d29a84babd1e5c6084a7a85e3bb0b8f8",
+        "0a5540a9311440fc105cfc1f4f748d289e5137090fd8a133d7777dc271ef4d16",
+        "e50cb4055faf90b3d78130b1dc0c2b941747825c67ea945e420f010e11694d77",
+        "0de741755f214ba5bb358cc85b0437feb4986562e7143232d577bad0b1824611"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_bilinear_cfg1.5_bilinear",
+      "solver": "ddpm",
+      "boundary": "bilinear",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "2588d746c928a8adfb2839f9c7c5b3d5b72de3b7d96db2659bb15aa89c0a35a5",
+      "final_float_rgb_sha256": "9f90426f09c4779656bf2b1b23b5895d3845cb37308f4927af97f8ce4037eedd",
+      "trace_sha256": [
+        "409a4641ac4af0d4277df0d34cf3bfe4faf13b5d332ee55fe03261198beeeec5",
+        "140c55feab0dbf93f709197f634098d81fd85a855e41f3cdf4c1569fa2fcc8b0",
+        "9ee264ea184809c12c4be8737e84907ce6bc75a9bea5bcbb7ea9af33adada9df",
+        "7da479df8bcf499c4fa3dc93ff1fd78b4c5a464d18bafe33bfd6be7f80c7c0f2",
+        "2588d746c928a8adfb2839f9c7c5b3d5b72de3b7d96db2659bb15aa89c0a35a5"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "dpm1_bilinear_cfg1.5_bilinear",
+      "solver": "dpm1",
+      "boundary": "bilinear",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "454a9d38d75a8d611a414d0f638464a6131be1c917cfe5daa2dc16b5a209011a",
+      "final_float_rgb_sha256": "0102e904c8dac80c036b3fab385d30e3928a3a4494e2d6c89ee024b3126e33b9",
+      "trace_sha256": [
+        "fb3f0945fe8923f020213fd06f372eb61ab591cdf17ed7c17ce07b5af8037148",
+        "64b4919c1ec341a0782783e0c63f7338762e11d24d0ef1e00dbfbfc48ea6540c",
+        "7176346603cd928420b5fc5070a8f862a205be95f2ca726e06714e66f27dfd3a",
+        "298c5e6c09f7684eca48cfa5e2e05673c9efbe96b8d0b77b5e635535bb889741",
+        "454a9d38d75a8d611a414d0f638464a6131be1c917cfe5daa2dc16b5a209011a"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": false,
+      "name": "ddpm_legacy_initial_noise_cfg1_legacy_initial",
+      "solver": "ddpm",
+      "boundary": "legacy_initial_noise",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "aa25d4378764f3879a059c95171e43578c18b9fbc7ddf440fd50b4954f6792c6",
+      "final_float_rgb_sha256": "5811d51a08ffeb3b8e474a283bb90b8b98e075139cb8b2f38e34fd5204dc2bc7",
+      "trace_sha256": [
+        "cf8f7d8aba0dd9e233f652651a02378dfeafb7b3cdb255ae19ce94486733f820",
+        "420e8c3d98256864d49e57ee2289d8107a19b31de57b0f007f38bae8db34242f",
+        "6c490e67be780fd9ef9acf5650559616dab11e7fe6f76b5905ca411f1ef0d1b9",
+        "7b6e66685465e38be6d559ea97bfffcb3ccada93c5a9a88fb92a5f826abd8ea2",
+        "aa25d4378764f3879a059c95171e43578c18b9fbc7ddf440fd50b4954f6792c6"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {
+        "sigma_h": 0.2
+      },
+      "multistage": false,
+      "name": "ddpm_legacy_initial_noise_cfg1.5_legacy_initial_sigma",
+      "solver": "ddpm",
+      "boundary": "legacy_initial_noise",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "da59267cc51a6667262aa49f682516b50f601457eb09247cfaa391fe09f1c3f6",
+      "final_float_rgb_sha256": "ed477fd728e65ac146cee58e0d59e2528bff16113029a41bd1a30200e8b05d3a",
+      "trace_sha256": [
+        "409a4641ac4af0d4277df0d34cf3bfe4faf13b5d332ee55fe03261198beeeec5",
+        "7c7083bb48b3fdda9747c94e3ca0de3fdc74bf8f2b86138237b868cc5d051b1b",
+        "fbad48472323dc9853a402c37d716581a9d8b8e2a0de74bec077f05d10111c1e",
+        "4bb59e7184e7ecc9da3e9385f386c72e13ac352fbb9d0e474ba488378d18666e",
+        "da59267cc51a6667262aa49f682516b50f601457eb09247cfaa391fe09f1c3f6"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {
+        "sigma_h": 0.2
+      },
+      "multistage": false,
+      "name": "ddpm_noise_filling_cfg1.5_sigma",
+      "solver": "ddpm",
+      "boundary": "noise_filling",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "199691fa0b587f0b4bbb82b416d4b8d06f941421e566f1d808600730b22f0420",
+      "final_float_rgb_sha256": "0a317425ffaacb1131c5d9e67f68ee04e6349b69bb4b7601c1d603b3d474f955",
+      "trace_sha256": [
+        "409a4641ac4af0d4277df0d34cf3bfe4faf13b5d332ee55fe03261198beeeec5",
+        "441f224825995eb80750994274d8d4a006acc8b9cf85d571425d6e21b4cda523",
+        "0c0353cc2f65291f0f3311af6239258aaa9aeceda62a3e11d7ebaca76530b1db",
+        "518a85bdf4183087b8093c8c44cea775719cae77b2949b3574cbd676f1919f6d",
+        "199691fa0b587f0b4bbb82b416d4b8d06f941421e566f1d808600730b22f0420"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {
+        "drift_scale": 0.5
+      },
+      "multistage": false,
+      "name": "ddpm_fresh_cfg1.5_drift",
+      "solver": "ddpm",
+      "boundary": "fresh",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "73260d4585cc9977914ca084b64e5c02c031c8cc60f2785ac61809d0910c13f7",
+      "final_float_rgb_sha256": "dbd6459b38201602d186af68a846b752c79b35b56191868a596dc646f11e4ee0",
+      "trace_sha256": [
+        "409a4641ac4af0d4277df0d34cf3bfe4faf13b5d332ee55fe03261198beeeec5",
+        "416d445c9eaaeadf2410a641856ebfc08706e98c3279e0ac49ef4fcae0479d80",
+        "7c22842f0ca73f57fbe1f252035711a55340b0c7fdedfe7e1179ed3e3aa23536",
+        "561fb7474e786729bade4c6fdd238f509d8dcf33ebf7e0caf695183b68535f1e",
+        "73260d4585cc9977914ca084b64e5c02c031c8cc60f2785ac61809d0910c13f7"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {
+        "guidance_scale_per_stage": [
+          1.1,
+          1.3,
+          1.5
+        ]
+      },
+      "multistage": false,
+      "name": "ddpm_fresh_cfg1.1_stagecfg",
+      "solver": "ddpm",
+      "boundary": "fresh",
+      "cfg": 1.1,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "7587f2ccf54b7bb53be2c2331533c5a759e2585027e87c43bebecc003adaf0eb",
+      "final_float_rgb_sha256": "5686a3a2375b297bbc07a1f07778c5273b84090d0eba2a251f4018f004c683ed",
+      "trace_sha256": [
+        "4a5e908286158667b9012ede1a6ff3320459c6478ac198773d90a4d607851701",
+        "324d9a6610e279084cd0c37859af65d940f2257555aceb7dcef3c988d1f21cad",
+        "3f9eac5397c45f339dbf3c1dbb4ed47be521f95286a379774fd46e8abc935707",
+        "135d2cfb175e3719419616cbb32bad82f16ac6e60db0cbe98cb8e58acf95f78b",
+        "7587f2ccf54b7bb53be2c2331533c5a759e2585027e87c43bebecc003adaf0eb"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": true,
+      "name": "ddpm_fresh_cfg1.5_multistage",
+      "solver": "ddpm",
+      "boundary": "fresh",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "ea9c7e355f2a7097f6c56b83526e6f7e93917e1b9c5091ff2f279502d961a9c6",
+      "final_float_rgb_sha256": "a66b7725a0c56a8c5811c00a61bf48c3709790c6541d71b4fe7db2163665fd40",
+      "trace_sha256": [
+        "b1b994b791c8eb991f1e2b06fc7446572936b2b3325e5ab92ee44f90eb985f24",
+        "c2a3f5dd972289ff8f916ce4e401ae3244f7e1333be446ad24028e6f9aac4304",
+        "0040d9960e1fd4414beffd57919312e379ba86f722c42a5627e9a0d26a797902",
+        "8ee19fb70631a209fd6944e160e142e96a7487c34d9c88313bb17fb53cdf3206",
+        "ea9c7e355f2a7097f6c56b83526e6f7e93917e1b9c5091ff2f279502d961a9c6"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": true,
+      "name": "ddpm_noise_filling_cfg1.5_multistage",
+      "solver": "ddpm",
+      "boundary": "noise_filling",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "a8c539235ab0df6f249d11f63ea733da1872b0e2499ae93b028c9de0d658a514",
+      "final_float_rgb_sha256": "efe13a152c5290fbc23797ba454e8ee6c6211723d0b9022d1dc37d4ecfa7c35d",
+      "trace_sha256": [
+        "b1b994b791c8eb991f1e2b06fc7446572936b2b3325e5ab92ee44f90eb985f24",
+        "2039e06ccdad34cb68da6538d67c2298dc3ca529496a6656e2e6f50ef1a492bf",
+        "d8d1c95a78a7cdc1e98bdd62f15a39edf98e09a70c11e73046e74a14225f9751",
+        "8e1431c7075584d061f7c5256ed1601d37c3c6cabb316fc515eb5d5208f04d40",
+        "a8c539235ab0df6f249d11f63ea733da1872b0e2499ae93b028c9de0d658a514"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": true,
+      "name": "ddpm_bilinear_cfg1_multistage",
+      "solver": "ddpm",
+      "boundary": "bilinear",
+      "cfg": 1.0,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "18a7ec562eb0f4e4d84e872fc1998c42c35a3f8579df5e0527f69e81d72c9c44",
+      "final_float_rgb_sha256": "5b658056f441c260439297fabfbd820fba77611cea8a36cdf2e6afd171cfed7e",
+      "trace_sha256": [
+        "f48b47567bf4d4debb19cda3cf287968adb4d7a58eeb929bb82558778c08a4db",
+        "a47d490c80b8b59e0775cdff64d4b427e1dd4919d1a64196b6ee7a80d451e23d",
+        "caaadd6e5585fe207502c17543dcb86d44a5690adb0b8f2fb23bb6adc0d0c091",
+        "11b7bbe43fc89880a1e9931e77043471dde3812fbbf26cdf7dbbebcfb8eed283",
+        "18a7ec562eb0f4e4d84e872fc1998c42c35a3f8579df5e0527f69e81d72c9c44"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": true,
+      "name": "dpm1_bilinear_cfg1.5_multistage",
+      "solver": "dpm1",
+      "boundary": "bilinear",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 250,
+      "compared_tensor_pairs": 1016,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "62ccde9b38ece0349727e5796ed0471fd8e95ae9869e787481470107f5048ab9",
+      "final_float_rgb_sha256": "3c2e630b1d5508b688bcb3f478c688b9f85682c32b1d757fe66f78465506d5e4",
+      "trace_sha256": [
+        "655b78a183a300f991fdde3c5d291f8304786921147b50e1f33d52a74d534a6e",
+        "324e3fff68594bf6856f16d74f8057e527157ce7f1e7659ebe5f9ffd51e3767d",
+        "9515394805f05abd087882f9c2326dfb6acc3f901876e071e07122436ff044e3",
+        "6c28e69f46e409f05415fd11bd20d90fc10392522ece11dcf8c078b59aca6987",
+        "62ccde9b38ece0349727e5796ed0471fd8e95ae9869e787481470107f5048ab9"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    },
+    {
+      "options": {},
+      "multistage": true,
+      "name": "dpm2_fresh_cfg1.5_multistage",
+      "solver": "dpm2",
+      "boundary": "fresh",
+      "cfg": 1.5,
+      "seed": 641,
+      "batch": 2,
+      "grids": [
+        8,
+        16,
+        32
+      ],
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "stage_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "status": "passed",
+      "model_calls": 244,
+      "compared_tensor_pairs": 992,
+      "max_abs": 0.0,
+      "reference": "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py",
+      "final_sha256": "91fe7e58cd35668523c8b019befdedc5f8716993414de363022288f02bb86673",
+      "final_float_rgb_sha256": "ef259700495d7dc4b0a91f86931c46e1a35c5891fce72646f45ea1f121f9ddbf",
+      "trace_sha256": [
+        "b709a7cf7ae5cc533697f30dbadb44a1895f1f021d6ab94361ded4fe53f5aa6a",
+        "2907a6752dae9fc5b5aa5525a04f50543559700d6b388da7074fc6beb8caf25d",
+        "596522b15d44bdd806a2f7a48f1e200dba2a6c8a27123ee376c6140e4358944f",
+        "99110109572939c0576e64f93d9f8f290a755ab9731d6988b2eb7157e9f92f33",
+        "91fe7e58cd35668523c8b019befdedc5f8716993414de363022288f02bb86673"
+      ],
+      "scope": "Full old evaluator stage assembly and current NativeRDDStages; original DiT and diffusion solver backends reused. All model calls, stage boundary/endpoint tensors, final float VAE pixels, RNG. Nonzero random small DiT, random tiny VAE; no trained-quality claim."
+    }
+  ],
+  "tensor_checks": 42736,
+  "negative_controls": [
+    {
+      "solver": "ddpm",
+      "cfg": 1.0,
+      "identical_coarse_stage": true,
+      "different_first_boundary": true,
+      "different_final": true
+    },
+    {
+      "solver": "ddpm",
+      "cfg": 1.5,
+      "identical_coarse_stage": true,
+      "different_first_boundary": true,
+      "different_final": true
+    },
+    {
+      "solver": "dpm1",
+      "cfg": 1.0,
+      "identical_coarse_stage": true,
+      "different_first_boundary": true,
+      "different_final": true
+    },
+    {
+      "solver": "dpm1",
+      "cfg": 1.5,
+      "identical_coarse_stage": true,
+      "different_first_boundary": true,
+      "different_final": true
+    },
+    {
+      "solver": "dpm2",
+      "cfg": 1.0,
+      "identical_coarse_stage": true,
+      "different_first_boundary": true,
+      "different_final": true
+    },
+    {
+      "solver": "dpm2",
+      "cfg": 1.5,
+      "identical_coarse_stage": true,
+      "different_first_boundary": true,
+      "different_final": true
+    }
+  ],
+  "video_boundary_checks": [
+    {
+      "dtype": "torch.float32",
+      "target_grid": [
+        3,
+        8,
+        8
+      ],
+      "old_mode": "noise_filling",
+      "canonical_mode": "fresh",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "boundary",
+          "shape": [
+            2,
+            4,
+            3,
+            8,
+            8
+          ],
+          "dtype": "torch.float32",
+          "byte_exact": true,
+          "max_abs": 0.0
+        },
+        {
+          "name": "RNG",
+          "shape": [
+            5056
+          ],
+          "dtype": "torch.uint8",
+          "byte_exact": true,
+          "max_abs": 0.0
+        }
+      ],
+      "scope": "AST-extracted original native boundary dispatch only; no Wan forward, GPU kernels or full video sampler execution"
+    },
+    {
+      "dtype": "torch.float32",
+      "target_grid": [
+        3,
+        8,
+        8
+      ],
+      "old_mode": "noise_filling",
+      "canonical_mode": "refresh",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "boundary",
+          "shape": [
+            2,
+            4,
+            3,
+            8,
+            8
+          ],
+          "dtype": "torch.float32",
+          "byte_exact": true,
+          "max_abs": 0.0
+        },
+        {
+          "name": "RNG",
+          "shape": [
+            5056
+          ],
+          "dtype": "torch.uint8",
+          "byte_exact": true,
+          "max_abs": 0.0
+        }
+      ],
+      "scope": "AST-extracted original native boundary dispatch only; no Wan forward, GPU kernels or full video sampler execution"
+    },
+    {
+      "dtype": "torch.float32",
+      "target_grid": [
+        3,
+        8,
+        8
+      ],
+      "old_mode": "innovation_preserving",
+      "canonical_mode": "noise_filling",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "boundary",
+          "shape": [
+            2,
+            4,
+            3,
+            8,
+            8
+          ],
+          "dtype": "torch.float32",
+          "byte_exact": true,
+          "max_abs": 0.0
+        },
+        {
+          "name": "RNG",
+          "shape": [
+            5056
+          ],
+          "dtype": "torch.uint8",
+          "byte_exact": true,
+          "max_abs": 0.0
+        }
+      ],
+      "scope": "AST-extracted original native boundary dispatch only; no Wan forward, GPU kernels or full video sampler execution"
+    },
+    {
+      "dtype": "torch.float32",
+      "target_grid": [
+        6,
+        8,
+        8
+      ],
+      "old_mode": "noise_filling",
+      "canonical_mode": "fresh",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "boundary",
+          "shape": [
+            2,
+            4,
+            6,
+            8,
+            8
+          ],
+          "dtype": "torch.float32",
+          "byte_exact": true,
+          "max_abs": 0.0
+        },
+        {
+          "name": "RNG",
+          "shape": [
+            5056
+          ],
+          "dtype": "torch.uint8",
+          "byte_exact": true,
+          "max_abs": 0.0
+        }
+      ],
+      "scope": "AST-extracted original native boundary dispatch only; no Wan forward, GPU kernels or full video sampler execution"
+    },
+    {
+      "dtype": "torch.float32",
+      "target_grid": [
+        6,
+        8,
+        8
+      ],
+      "old_mode": "noise_filling",
+      "canonical_mode": "refresh",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "boundary",
+          "shape": [
+            2,
+            4,
+            6,
+            8,
+            8
+          ],
+          "dtype": "torch.float32",
+          "byte_exact": true,
+          "max_abs": 0.0
+        },
+        {
+          "name": "RNG",
+          "shape": [
+            5056
+          ],
+          "dtype": "torch.uint8",
+          "byte_exact": true,
+          "max_abs": 0.0
+        }
+      ],
+      "scope": "AST-extracted original native boundary dispatch only; no Wan forward, GPU kernels or full video sampler execution"
+    },
+    {
+      "dtype": "torch.float32",
+      "target_grid": [
+        6,
+        8,
+        8
+      ],
+      "old_mode": "innovation_preserving",
+      "canonical_mode": "noise_filling",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "boundary",
+          "shape": [
+            2,
+            4,
+            6,
+            8,
+            8
+          ],
+          "dtype": "torch.float32",
+          "byte_exact": true,
+          "max_abs": 0.0
+        },
+        {
+          "name": "RNG",
+          "shape": [
+            5056
+          ],
+          "dtype": "torch.uint8",
+          "byte_exact": true,
+          "max_abs": 0.0
+        }
+      ],
+      "scope": "AST-extracted original native boundary dispatch only; no Wan forward, GPU kernels or full video sampler execution"
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "target_grid": [
+        3,
+        8,
+        8
+      ],
+      "old_mode": "noise_filling",
+      "canonical_mode": "fresh",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "boundary",
+          "shape": [
+            2,
+            4,
+            3,
+            8,
+            8
+          ],
+          "dtype": "torch.bfloat16",
+          "byte_exact": true,
+          "max_abs": 0.0
+        },
+        {
+          "name": "RNG",
+          "shape": [
+            5056
+          ],
+          "dtype": "torch.uint8",
+          "byte_exact": true,
+          "max_abs": 0.0
+        }
+      ],
+      "scope": "AST-extracted original native boundary dispatch only; no Wan forward, GPU kernels or full video sampler execution"
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "target_grid": [
+        3,
+        8,
+        8
+      ],
+      "old_mode": "noise_filling",
+      "canonical_mode": "refresh",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "boundary",
+          "shape": [
+            2,
+            4,
+            3,
+            8,
+            8
+          ],
+          "dtype": "torch.bfloat16",
+          "byte_exact": true,
+          "max_abs": 0.0
+        },
+        {
+          "name": "RNG",
+          "shape": [
+            5056
+          ],
+          "dtype": "torch.uint8",
+          "byte_exact": true,
+          "max_abs": 0.0
+        }
+      ],
+      "scope": "AST-extracted original native boundary dispatch only; no Wan forward, GPU kernels or full video sampler execution"
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "target_grid": [
+        3,
+        8,
+        8
+      ],
+      "old_mode": "innovation_preserving",
+      "canonical_mode": "noise_filling",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "boundary",
+          "shape": [
+            2,
+            4,
+            3,
+            8,
+            8
+          ],
+          "dtype": "torch.bfloat16",
+          "byte_exact": true,
+          "max_abs": 0.0
+        },
+        {
+          "name": "RNG",
+          "shape": [
+            5056
+          ],
+          "dtype": "torch.uint8",
+          "byte_exact": true,
+          "max_abs": 0.0
+        }
+      ],
+      "scope": "AST-extracted original native boundary dispatch only; no Wan forward, GPU kernels or full video sampler execution"
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "target_grid": [
+        6,
+        8,
+        8
+      ],
+      "old_mode": "noise_filling",
+      "canonical_mode": "fresh",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "boundary",
+          "shape": [
+            2,
+            4,
+            6,
+            8,
+            8
+          ],
+          "dtype": "torch.bfloat16",
+          "byte_exact": true,
+          "max_abs": 0.0
+        },
+        {
+          "name": "RNG",
+          "shape": [
+            5056
+          ],
+          "dtype": "torch.uint8",
+          "byte_exact": true,
+          "max_abs": 0.0
+        }
+      ],
+      "scope": "AST-extracted original native boundary dispatch only; no Wan forward, GPU kernels or full video sampler execution"
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "target_grid": [
+        6,
+        8,
+        8
+      ],
+      "old_mode": "noise_filling",
+      "canonical_mode": "refresh",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "boundary",
+          "shape": [
+            2,
+            4,
+            6,
+            8,
+            8
+          ],
+          "dtype": "torch.bfloat16",
+          "byte_exact": true,
+          "max_abs": 0.0
+        },
+        {
+          "name": "RNG",
+          "shape": [
+            5056
+          ],
+          "dtype": "torch.uint8",
+          "byte_exact": true,
+          "max_abs": 0.0
+        }
+      ],
+      "scope": "AST-extracted original native boundary dispatch only; no Wan forward, GPU kernels or full video sampler execution"
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "target_grid": [
+        6,
+        8,
+        8
+      ],
+      "old_mode": "innovation_preserving",
+      "canonical_mode": "noise_filling",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "boundary",
+          "shape": [
+            2,
+            4,
+            6,
+            8,
+            8
+          ],
+          "dtype": "torch.bfloat16",
+          "byte_exact": true,
+          "max_abs": 0.0
+        },
+        {
+          "name": "RNG",
+          "shape": [
+            5056
+          ],
+          "dtype": "torch.uint8",
+          "byte_exact": true,
+          "max_abs": 0.0
+        }
+      ],
+      "scope": "AST-extracted original native boundary dispatch only; no Wan forward, GPU kernels or full video sampler execution"
+    }
+  ],
+  "video_error": null,
+  "source_sha256_before": {
+    "unified_multires/tools/validate_rdd_boundaries_20261104.py": "7b16312778624a860e559cc383a94523b2c65eb60be230972cb10079c616b864",
+    "multiscale_diffusion/2d/sample_fid_unified.py": "460aa551485e39a4f625821262633601f655a5a0170b2ef8f76834765419296b",
+    "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py": "2b02ad965d3540be84bffad256a4a3dd60a57a7fd57dece2b5d5b542420c4cc5",
+    "multiscale_diffusion/rdd_video/sample_fastwan_native_vsa.py": "e047379bd3ae007c52b38c2437088d992f7481dcbb6ae8cc12a2dad9435e1a24",
+    "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/rdd_video/sample_fastwan_native_vsa.py": "786dfeec320102c7e779f9c82040137806b931efcd563005259e83384164e5e6",
+    "unified_multires/umdiff/rdd_native.py": "dafba282db965b66809e0bd5135518726aed2aca0f9cf7de50968fd34c23b2b2",
+    "unified_multires/umdiff/rdd_multistage.py": "0dc0556e1d477f699273b4914c7d8fc90ab968b6b63be7ef1081458b4968dcd9",
+    "unified_multires/umdiff/boundaries.py": "489cc1e81a624e9df6607710c516e8f8e9b26e460386df4b6d59514eb0f2c197",
+    "multiscale_diffusion/diffusion/gaussian_diffusion_with_drift.py": "cd90dc41d2eb18560d86fd1a14742c7cbb1ddf9d2408ccfddb3d4489e14217e5",
+    "multiscale_diffusion/DiT/models_multires.py": "43b3520e5559c1dae385243a767bfe154dc11b05ece52cd14fcd10992666fe92"
+  },
+  "source_sha256_after": {
+    "unified_multires/tools/validate_rdd_boundaries_20261104.py": "7b16312778624a860e559cc383a94523b2c65eb60be230972cb10079c616b864",
+    "multiscale_diffusion/2d/sample_fid_unified.py": "460aa551485e39a4f625821262633601f655a5a0170b2ef8f76834765419296b",
+    "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/2d/sample_fid_unified.py": "2b02ad965d3540be84bffad256a4a3dd60a57a7fd57dece2b5d5b542420c4cc5",
+    "multiscale_diffusion/rdd_video/sample_fastwan_native_vsa.py": "e047379bd3ae007c52b38c2437088d992f7481dcbb6ae8cc12a2dad9435e1a24",
+    "unified_multires/evidence/rdd_reproduction_20261104/prechange_sources/multiscale_diffusion/rdd_video/sample_fastwan_native_vsa.py": "786dfeec320102c7e779f9c82040137806b931efcd563005259e83384164e5e6",
+    "unified_multires/umdiff/rdd_native.py": "dafba282db965b66809e0bd5135518726aed2aca0f9cf7de50968fd34c23b2b2",
+    "unified_multires/umdiff/rdd_multistage.py": "0dc0556e1d477f699273b4914c7d8fc90ab968b6b63be7ef1081458b4968dcd9",
+    "unified_multires/umdiff/boundaries.py": "489cc1e81a624e9df6607710c516e8f8e9b26e460386df4b6d59514eb0f2c197",
+    "multiscale_diffusion/diffusion/gaussian_diffusion_with_drift.py": "cd90dc41d2eb18560d86fd1a14742c7cbb1ddf9d2408ccfddb3d4489e14217e5",
+    "multiscale_diffusion/DiT/models_multires.py": "43b3520e5559c1dae385243a767bfe154dc11b05ece52cd14fcd10992666fe92"
+  },
+  "source_stable_during_test": true
+}

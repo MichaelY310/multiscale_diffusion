@@ -1,0 +1,28 @@
+{
+  "name": "RDD_sample_unified",
+  "num_warmup_batches": 1,
+  "num_measured_batches": 3,
+  "batch_size": 256,
+  "total_samples_measured": 768,
+  "mean_latency_per_sample": 2.723731608072917,
+  "std_latency_per_sample": 9.175476840014935e-05,
+  "throughput_samples_per_sec": 0.36714336942600445,
+  "total_time_sec": 2091.825875,
+  "per_batch_times_ms": [
+    697249.9375,
+    697279.625,
+    697296.3125
+  ],
+  "cfg_scale": 1.5,
+  "stage_lengths": [
+    300,
+    300,
+    400
+  ],
+  "num_steps": [
+    400,
+    300,
+    300
+  ],
+  "sampler": "jump_step"
+}

@@ -1,0 +1,863 @@
+{
+  "status": "passed",
+  "cpu_only": true,
+  "training": [
+    {
+      "name": "training_0p3_sigma",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.3,
+        0.6,
+        1.0
+      ],
+      "learned_sigma": true,
+      "updates": 4,
+      "microbatches_per_update": 2,
+      "batch_size": 4,
+      "layers": {
+        "forward_input": {
+          "pairs": 1464,
+          "exact": 1464,
+          "byte_exact": 1464,
+          "within_tolerance": 1464,
+          "max_abs": 0.0,
+          "nonzero_native": 1464,
+          "nonzero_unified": 1464
+        },
+        "forward_output": {
+          "pairs": 1152,
+          "exact": 1152,
+          "byte_exact": 1152,
+          "within_tolerance": 1152,
+          "max_abs": 0.0,
+          "nonzero_native": 1152,
+          "nonzero_unified": 1152
+        },
+        "activation_gradient": {
+          "pairs": 1152,
+          "exact": 1152,
+          "byte_exact": 1152,
+          "within_tolerance": 1152,
+          "max_abs": 0.0,
+          "nonzero_native": 1152,
+          "nonzero_unified": 1152
+        },
+        "parameter_gradient": {
+          "pairs": 124,
+          "exact": 124,
+          "byte_exact": 124,
+          "within_tolerance": 124,
+          "max_abs": 0.0,
+          "nonzero_native": 124,
+          "nonzero_unified": 124
+        }
+      },
+      "rows": [
+        {
+          "step": 0,
+          "losses": [
+            7.423941612243652,
+            10.301709175109863
+          ],
+          "all_byte_exact": true
+        },
+        {
+          "step": 1,
+          "losses": [
+            10.981332778930664,
+            11.694485664367676
+          ],
+          "all_byte_exact": true
+        },
+        {
+          "step": 2,
+          "losses": [
+            7.61956787109375,
+            7.625470161437988
+          ],
+          "all_byte_exact": true
+        },
+        {
+          "step": 3,
+          "losses": [
+            6.581496238708496,
+            11.892112731933594
+          ],
+          "all_byte_exact": true
+        }
+      ],
+      "AdamW_and_EMA_byte_exact": true,
+      "resume_next_update_byte_exact": true,
+      "temporary_checkpoint": {
+        "sha256": "f369f53bf1e725fcaaf2f7c15997f433cec599fe8f84c8909204af5a12dd4866",
+        "bytes": 1396783,
+        "deleted_after_verification": true
+      }
+    },
+    {
+      "name": "training_0p4_sigma",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.4,
+        0.7,
+        1.0
+      ],
+      "learned_sigma": true,
+      "updates": 4,
+      "microbatches_per_update": 2,
+      "batch_size": 4,
+      "layers": {
+        "forward_input": {
+          "pairs": 1464,
+          "exact": 1464,
+          "byte_exact": 1464,
+          "within_tolerance": 1464,
+          "max_abs": 0.0,
+          "nonzero_native": 1464,
+          "nonzero_unified": 1464
+        },
+        "forward_output": {
+          "pairs": 1152,
+          "exact": 1152,
+          "byte_exact": 1152,
+          "within_tolerance": 1152,
+          "max_abs": 0.0,
+          "nonzero_native": 1152,
+          "nonzero_unified": 1152
+        },
+        "activation_gradient": {
+          "pairs": 1152,
+          "exact": 1152,
+          "byte_exact": 1152,
+          "within_tolerance": 1152,
+          "max_abs": 0.0,
+          "nonzero_native": 1152,
+          "nonzero_unified": 1152
+        },
+        "parameter_gradient": {
+          "pairs": 124,
+          "exact": 124,
+          "byte_exact": 124,
+          "within_tolerance": 124,
+          "max_abs": 0.0,
+          "nonzero_native": 124,
+          "nonzero_unified": 124
+        }
+      },
+      "rows": [
+        {
+          "step": 0,
+          "losses": [
+            10.76801872253418,
+            14.575551986694336
+          ],
+          "all_byte_exact": true
+        },
+        {
+          "step": 1,
+          "losses": [
+            15.47473430633545,
+            16.46047019958496
+          ],
+          "all_byte_exact": true
+        },
+        {
+          "step": 2,
+          "losses": [
+            11.01413345336914,
+            11.084129333496094
+          ],
+          "all_byte_exact": true
+        },
+        {
+          "step": 3,
+          "losses": [
+            9.547977447509766,
+            16.63465118408203
+          ],
+          "all_byte_exact": true
+        }
+      ],
+      "AdamW_and_EMA_byte_exact": true,
+      "resume_next_update_byte_exact": true,
+      "temporary_checkpoint": {
+        "sha256": "0529ce06bdd8ea08c935cb32fa10ca36bcb5c00bdd72aa30519372226557ff58",
+        "bytes": 1396783,
+        "deleted_after_verification": true
+      }
+    },
+    {
+      "name": "training_0p3_velocity",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.3,
+        0.6,
+        1.0
+      ],
+      "learned_sigma": false,
+      "updates": 4,
+      "microbatches_per_update": 2,
+      "batch_size": 4,
+      "layers": {
+        "forward_input": {
+          "pairs": 1464,
+          "exact": 1464,
+          "byte_exact": 1464,
+          "within_tolerance": 1464,
+          "max_abs": 0.0,
+          "nonzero_native": 1464,
+          "nonzero_unified": 1464
+        },
+        "forward_output": {
+          "pairs": 1152,
+          "exact": 1152,
+          "byte_exact": 1152,
+          "within_tolerance": 1152,
+          "max_abs": 0.0,
+          "nonzero_native": 1152,
+          "nonzero_unified": 1152
+        },
+        "activation_gradient": {
+          "pairs": 1152,
+          "exact": 1152,
+          "byte_exact": 1152,
+          "within_tolerance": 1152,
+          "max_abs": 0.0,
+          "nonzero_native": 1152,
+          "nonzero_unified": 1152
+        },
+        "parameter_gradient": {
+          "pairs": 124,
+          "exact": 124,
+          "byte_exact": 124,
+          "within_tolerance": 124,
+          "max_abs": 0.0,
+          "nonzero_native": 124,
+          "nonzero_unified": 124
+        }
+      },
+      "rows": [
+        {
+          "step": 0,
+          "losses": [
+            7.407192230224609,
+            10.300843238830566
+          ],
+          "all_byte_exact": true
+        },
+        {
+          "step": 1,
+          "losses": [
+            11.00552749633789,
+            11.715052604675293
+          ],
+          "all_byte_exact": true
+        },
+        {
+          "step": 2,
+          "losses": [
+            7.5853166580200195,
+            7.6073737144470215
+          ],
+          "all_byte_exact": true
+        },
+        {
+          "step": 3,
+          "losses": [
+            6.540501594543457,
+            11.851028442382812
+          ],
+          "all_byte_exact": true
+        }
+      ],
+      "AdamW_and_EMA_byte_exact": true,
+      "resume_next_update_byte_exact": true,
+      "temporary_checkpoint": {
+        "sha256": "ced1acecfa325acf46f732eabc5ebe07fc571e2060889cb1a5a494905890cb40",
+        "bytes": 1388335,
+        "deleted_after_verification": true
+      }
+    }
+  ],
+  "sampling": [
+    {
+      "name": "sample_0p3_fresh_euler_cfg1p0",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.3,
+        0.6,
+        1.0
+      ],
+      "boundary": "fresh",
+      "solver": "euler",
+      "cfg": 1.0,
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "ad9b52ecd51909ea2ec8750ae782ce3a375fe7f77a4dec02b82778ead86c5a25",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "26d2d5fc7ce7b50c886cca89218d296a75313ca902a2ef377f9f7d33c4d32ba8"
+    },
+    {
+      "name": "sample_0p3_fresh_euler_cfg1p5",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.3,
+        0.6,
+        1.0
+      ],
+      "boundary": "fresh",
+      "solver": "euler",
+      "cfg": 1.5,
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "cc0247ded221da0b7f7cb6a6486a5a71d64851dafa3a6fa0c721d195b122e33c",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "7ac86f7012b15082b4e608d3727a6769855939f44e932be37f357233872f574f"
+    },
+    {
+      "name": "sample_0p3_fresh_midpoint_cfg1p0",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.3,
+        0.6,
+        1.0
+      ],
+      "boundary": "fresh",
+      "solver": "midpoint",
+      "cfg": 1.0,
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "ec21ad20dff05eec1d83e55c49ea957160f6a59bc09a907946058365b552b417",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "f7ceb22ef0a3fcc9f38a12c2f14bfc8bb4902ffebe9d2674b3d7a6b63b37acfb"
+    },
+    {
+      "name": "sample_0p3_fresh_midpoint_cfg1p5",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.3,
+        0.6,
+        1.0
+      ],
+      "boundary": "fresh",
+      "solver": "midpoint",
+      "cfg": 1.5,
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "6a8e8db8d3ec57cd44bd6e349c960a46c247ee682c5ce0f792bb0834f9d84610",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "b030ee3b582fd1455b7295eb1cb1ce6f55d78e0715ef69f8f4e343ac853adaf2"
+    },
+    {
+      "name": "sample_0p3_noise_filling_euler_cfg1p0",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.3,
+        0.6,
+        1.0
+      ],
+      "boundary": "noise_filling",
+      "solver": "euler",
+      "cfg": 1.0,
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "d5ebf20f9cbcd48b48c151d720732c0b3688fd9878e7ad4740083814d98d7e06",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "21e26bff14bf8da0b62de9383b208c1756bb77237825bf565fd88c7246e41302"
+    },
+    {
+      "name": "sample_0p3_noise_filling_euler_cfg1p5",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.3,
+        0.6,
+        1.0
+      ],
+      "boundary": "noise_filling",
+      "solver": "euler",
+      "cfg": 1.5,
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "41856822d6b29ca60e6f6e43f3daf880932a2fc88cb721e47ec2498df44d63fa",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "ef7aef82fe5bb47bfd9e6d0c0a9dc714fc5eaee23f2a3ea1e044ee57eacc0496"
+    },
+    {
+      "name": "sample_0p3_noise_filling_midpoint_cfg1p0",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.3,
+        0.6,
+        1.0
+      ],
+      "boundary": "noise_filling",
+      "solver": "midpoint",
+      "cfg": 1.0,
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "ec89ac6158dbcc10df8efea7db3306bcfdb2c6c1c8a5bffefaecd4260172761a",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "c0b4e2eb961857daadc0428f036986ed02242e16f87f45cf805300817903c318"
+    },
+    {
+      "name": "sample_0p3_noise_filling_midpoint_cfg1p5",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.3,
+        0.6,
+        1.0
+      ],
+      "boundary": "noise_filling",
+      "solver": "midpoint",
+      "cfg": 1.5,
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "d3557c4a736d1e8e3fd2327f603172d8859b3b6103df543e9f103229e65a6f79",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "c50e448c5dc5439f005eea15cef48b0a4111f6346e1241ebeaa0c8a88234a17c"
+    },
+    {
+      "name": "sample_0p4_fresh_euler_cfg1p0",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.4,
+        0.7,
+        1.0
+      ],
+      "boundary": "fresh",
+      "solver": "euler",
+      "cfg": 1.0,
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "430c663a39652b2831d665c96174548ad97121d7c4fbe4bd100fa649555e1bd5",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "f61fcc0d2196e3a8de15b526c4a74fc48c5cb1c57a553a644cf92fa74a7bd9c6"
+    },
+    {
+      "name": "sample_0p4_fresh_euler_cfg1p5",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.4,
+        0.7,
+        1.0
+      ],
+      "boundary": "fresh",
+      "solver": "euler",
+      "cfg": 1.5,
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "54f309a2c59a6d96240e1604616904f2caf95340c42b9f43d53ea4c32bdcda1f",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "b7a2af98c10449d8462cb917fd4e73751a2ac0dc88dd699f3ad8427d98772fa7"
+    },
+    {
+      "name": "sample_0p4_fresh_midpoint_cfg1p0",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.4,
+        0.7,
+        1.0
+      ],
+      "boundary": "fresh",
+      "solver": "midpoint",
+      "cfg": 1.0,
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "5ead4f82659cdbc4ee5f4f16ed3cdf90d87d81fdcc3476e599dd47a5ef82ad0f",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "96e4dabd2024dcea576aaea01ca0be988b441d0d84a2dd7d879e8ef17021e3e8"
+    },
+    {
+      "name": "sample_0p4_fresh_midpoint_cfg1p5",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.4,
+        0.7,
+        1.0
+      ],
+      "boundary": "fresh",
+      "solver": "midpoint",
+      "cfg": 1.5,
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "929c88428e8b7cfaa2d19b2570381bdfaa3e14eda55c28a80dfed0ad0401f6e5",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "a39e00997f5fccd1f208c82966fa0b15ce40f0a911ef4411eb28637ab8f4a1f9"
+    },
+    {
+      "name": "sample_0p4_noise_filling_euler_cfg1p0",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.4,
+        0.7,
+        1.0
+      ],
+      "boundary": "noise_filling",
+      "solver": "euler",
+      "cfg": 1.0,
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "b8fff60f5a67f2942ae8e33518763a60b437f6eb0b8935ec37f16f5774bda314",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "7bddcd647c6998296287b40ac3bb98ed004da1dd3d632a85f2a09337cf1d654b"
+    },
+    {
+      "name": "sample_0p4_noise_filling_euler_cfg1p5",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.4,
+        0.7,
+        1.0
+      ],
+      "boundary": "noise_filling",
+      "solver": "euler",
+      "cfg": 1.5,
+      "steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "998b5f9798437bfc6263270fb9079db159f936c1b0325617044139d7dd585ff9",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "13d6c44a5e9cb1559f5c8c39a42496daa21b16a7b71081a9f6f10b5f67efba93"
+    },
+    {
+      "name": "sample_0p4_noise_filling_midpoint_cfg1p0",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.4,
+        0.7,
+        1.0
+      ],
+      "boundary": "noise_filling",
+      "solver": "midpoint",
+      "cfg": 1.0,
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "54905902653fece45bd46f67b92c2f3ba510f149ef0023851c811d045d932ac1",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "c76e3b963efd0e636592c5abd6fe0732fcebb90a352eb48944752786a34bbe01"
+    },
+    {
+      "name": "sample_0p4_noise_filling_midpoint_cfg1p5",
+      "status": "passed",
+      "bounds": [
+        0.0,
+        0.4,
+        0.7,
+        1.0
+      ],
+      "boundary": "noise_filling",
+      "solver": "midpoint",
+      "cfg": 1.5,
+      "steps_coarse_to_fine": [
+        40,
+        40,
+        45
+      ],
+      "nfe": 252,
+      "stage_nfe": [
+        81,
+        81,
+        90
+      ],
+      "model_input_calls": 252,
+      "layer_tensor_pairs": 27468,
+      "all_byte_exact": true,
+      "final_latent_sha256": "4842a423bb841647498e21bd661cf42462e23a0b98763a4d99fb142ec5b4d3dc",
+      "rng_byte_exact": true,
+      "outer_rng_unchanged": true,
+      "trace_digest": "bea365ed2200c650151e2c67fe5b8cf0c9fd01200d0a9d5bb246e99c8c3a3817"
+    }
+  ],
+  "scope": "Frozen pre-renaming old FM source vs current native FM frontend; shared original DiT definition and per-stage backend, independently assembled stage loops. CPU FP32 random nonzero weights, full32/16/8 grids; no real datasets or pretrained assets.",
+  "rgb_codec": {
+    "status": "passed",
+    "preprocessing_cases": 4,
+    "input_rgb_shapes": [
+      [
+        270,
+        260
+      ],
+      [
+        519,
+        777
+      ],
+      [
+        79,
+        96
+      ],
+      [
+        256,
+        256
+      ]
+    ],
+    "latent_shape": [
+      2,
+      4,
+      32,
+      32
+    ],
+    "layers": {
+      "forward_input": {
+        "pairs": 176,
+        "exact": 176,
+        "byte_exact": 176,
+        "within_tolerance": 176,
+        "max_abs": 0.0,
+        "nonzero_native": 176,
+        "nonzero_unified": 176
+      },
+      "forward_output": {
+        "pairs": 176,
+        "exact": 176,
+        "byte_exact": 176,
+        "within_tolerance": 176,
+        "max_abs": 0.0,
+        "nonzero_native": 176,
+        "nonzero_unified": 176
+      },
+      "activation_gradient": {
+        "pairs": 0,
+        "exact": 0,
+        "byte_exact": 0,
+        "within_tolerance": 0,
+        "max_abs": 0.0,
+        "nonzero_native": 0,
+        "nonzero_unified": 0
+      },
+      "parameter_gradient": {
+        "pairs": 0,
+        "exact": 0,
+        "byte_exact": 0,
+        "within_tolerance": 0,
+        "max_abs": 0.0,
+        "nonzero_native": 0,
+        "nonzero_unified": 0
+      }
+    },
+    "latent_sha256": "92c1b050c12a386e9ba8e7a0c4315c597726ece4d4484ba713f583703c20352f",
+    "decoded_rgb_sha256": "fe27dac37cb6b8771220e3db6aeeea38723b7b43eadd7a909f1ae68fab6cf4cd",
+    "note": "Random small-channel AutoencoderKL, full256 RGB and32 latent grid; frozen VAE has no training gradient. Original ImageNet folder transform, posterior sample, .18215 scale, decode; not real VAE quality or data-loader DDP order."
+  },
+  "source_sha256": {
+    "evidence/rdd_reproduction_20261104/reference_before/flow_matching_with_drift.py": "8f937db98f607adea2370a9bd9107852b61c8bdf235034448f5310c468e58686",
+    "evidence/rdd_reproduction_20261104/reference_before/train_RDD_FM_imagenet256_unified.py": "1440bfc59e68743cf6d3d083cfcdc334134d2332ad68d7a69e25f158f4082000",
+    "umdiff/rdd_fm_native.py": "8c9d7e36ccbe42c3ad1d424bf8e9f8d2f51e6fe5782304832a2472c2f9d574ed",
+    "umdiff/training.py": "285f2693b058d3cfe1b5ab861c2dcb10d8c6537d2d1250517485dffc1dcfd4fd",
+    "umdiff/cli.py": "e115d189bc924507a41655d6af9fa5380c2a1a4ba0f63bd7aee70574db478264",
+    "tools/validate_rdd_fm_native_20261104.py": "7387f1c9526371cf08ff933bace6ca9300abebc2026c895e73050d5d019e3656"
+  },
+  "cuda_initialized": false,
+  "seconds": 53.41929644532502
+}

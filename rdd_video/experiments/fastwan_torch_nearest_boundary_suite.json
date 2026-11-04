@@ -1,0 +1,15 @@
+[
+  {"name":"fixed_vsa20","stage_factors":"1,1;1,1;1,1","attention_mode":"vsa"},
+  {"name":"fixed_vsa20_nearest","stage_factors":"1,1;1,1;1,1","attention_mode":"vsa","boundary_executor":"torch_nearest"},
+  {"name":"spatial221_c2f20_q32","stage_factors":"2,1;2,1;1,1","attention_mode":"c2f_route_only","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192},
+  {"name":"spatial221_c2f20_q32_nearest","stage_factors":"2,1;2,1;1,1","attention_mode":"c2f_route_only","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"},
+  {"name":"spatial421_c2f20_q32","stage_factors":"4,1;2,1;1,1","attention_mode":"c2f_route_only","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192},
+  {"name":"spatial421_c2f20_q32_nearest","stage_factors":"4,1;2,1;1,1","attention_mode":"c2f_route_only","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"},
+  {"name":"spatial441_c2f20_q32_reuse2","stage_factors":"4,1;4,1;1,1","attention_mode":"c2f_route_only","reuse_every":2,"reuse_scope":"projected","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192},
+  {"name":"spatial441_c2f20_q32_reuse2_nearest","stage_factors":"4,1;4,1;1,1","attention_mode":"c2f_route_only","reuse_every":2,"reuse_scope":"projected","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"},
+  {"name":"spatial441_c2f12p5_q32_reuse2_nearest","stage_factors":"4,1;4,1;1,1","attention_mode":"c2f_route_only","route_density":0.125,"reuse_every":2,"reuse_scope":"projected","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"},
+  {"name":"st221_c2f20_q32_nearest","stage_factors":"2,2;2,2;1,1","attention_mode":"c2f_route_only","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"},
+  {"name":"st421_c2f20_q32_nearest","stage_factors":"4,4;2,2;1,1","attention_mode":"c2f_route_only","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"},
+  {"name":"st441_c2f20_q32_reuse2_nearest","stage_factors":"4,4;4,4;1,1","attention_mode":"c2f_route_only","reuse_every":2,"reuse_scope":"projected","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"},
+  {"name":"st441_c2f12p5_q32_reuse2_nearest","stage_factors":"4,4;4,4;1,1","attention_mode":"c2f_route_only","route_density":0.125,"reuse_every":2,"reuse_scope":"projected","small_stage_executor":"triton_q32","small_stage_max_padded_tokens":8192,"boundary_executor":"torch_nearest"}
+]

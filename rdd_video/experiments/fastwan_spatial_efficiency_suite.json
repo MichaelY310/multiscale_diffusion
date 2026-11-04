@@ -1,0 +1,62 @@
+[
+  {
+    "name": "fixed_vsa20",
+    "stage_factors": "1,1;1,1;1,1",
+    "attention_mode": "vsa"
+  },
+  {
+    "name": "spatial221_c2f20",
+    "stage_factors": "2,1;2,1;1,1",
+    "attention_mode": "c2f_route_only"
+  },
+  {
+    "name": "spatial421_c2f20",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "c2f_route_only"
+  },
+  {
+    "name": "spatial421_c2f18p75",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "c2f_route_only",
+    "route_density": 0.1875
+  },
+  {
+    "name": "spatial441_c2f20",
+    "stage_factors": "4,1;4,1;1,1",
+    "attention_mode": "c2f_route_only"
+  },
+  {
+    "name": "spatial441_c2f20_reuse2",
+    "stage_factors": "4,1;4,1;1,1",
+    "attention_mode": "c2f_route_only",
+    "reuse_every": 2,
+    "reuse_scope": "projected"
+  },
+  {
+    "name": "spatial441_c2f12p5_reuse2",
+    "stage_factors": "4,1;4,1;1,1",
+    "attention_mode": "c2f_route_only",
+    "route_density": 0.125,
+    "reuse_every": 2,
+    "reuse_scope": "projected"
+  },
+  {
+    "name": "spatial421_c2f20_masked_sdpa",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "c2f_route_only",
+    "small_stage_executor": "masked_sdpa",
+    "small_stage_max_padded_tokens": 1024
+  },
+  {
+    "name": "spatial421_c2f20_dense_seed",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "c2f_route_only",
+    "small_stage_executor": "dense_sdpa",
+    "small_stage_max_padded_tokens": 1024
+  },
+  {
+    "name": "spatial421_c2f20_reuse_coarse",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "c2f_route_reuse_coarse"
+  }
+]

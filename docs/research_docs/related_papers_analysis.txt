@@ -1,0 +1,404 @@
+================================================================================
+        RDD 相关论文综合分析 — Multi-Resolution / Progressive Diffusion
+================================================================================
+
+整理时间: 2026-07-24
+目的: 梳理所有与 RDD 相关的多分辨率/渐进式生成论文，分析竞争关系和差异化机会
+
+
+================================================================================
+ 1. f-DM: A Multi-stage Diffusion Model via Progressive Signal Transformation
+================================================================================
+作者: Jiatao Gu et al. (Apple)
+发表: ICLR 2023
+链接: https://arxiv.org/abs/2210.04955
+
+核心方法:
+- 在前向扩散中引入"渐进信号变换"序列（下采样/模糊/VAE编码）
+- 阶段内用插值公式在原始信号和退化信号之间平滑过渡
+- 双重预测训练：同时预测 x_θ 和 δ_θ（退化残差）
+- 所有阶段共享一个 U-Net + 阶段适配器
+
+关键技术:
+- Noise Rescaling：跨阶段 SNR 匹配（VP 模式）
+- Noise Resampling：预采样全尺寸噪声，阶段边界重分配
+- 非 Markov 前向过程（依赖阶段边界信息）
+
+实验: FFHQ/AFHQ/LSUN/ImageNet 256×256
+结果: FID 匹配或超过 DDPM，~2× 推理加速
+
+与 RDD 的关系: ★★★ 最直接竞争者
+- 同: 多阶段、分辨率编入扩散、coarse-to-fine
+- 异: RDD 用连续 drift（Markov），f-DM 用离散变换+插值（非Markov）
+- 异: RDD 单一预测目标 ε̃，f-DM 双重预测
+- 异: RDD 兼容 DPM-Solver，f-DM 不行
+
+
+================================================================================
+ 2. Relay Diffusion: Unifying Diffusion Process Across Resolutions
+================================================================================
+作者: Jiacheng Teng et al. (Tsinghua)
+发表: ICLR 2024 Spotlight
+链接: https://arxiv.org/abs/2309.03350
+代码: https://github.com/zai-org/RelayDiffusion
+
+核心方法:
+- 通过"blurring diffusion + block noise"将低分辨率噪声图转为等效高分辨率噪声图
+- 关键洞察（和 RDD 相同！）：同一噪声级在高分辨率下 SNR 更低（频域分析）
+- 用 DCT 分析证明了跨分辨率 SNR 不匹配问题
+- 高分辨率模型从"relay"的噪声图继续去噪，不从纯噪声开始
+
+关键技术:
+- Block noise：将低分辨率每个像素展开为 block，保持频域 SNR
+- Blurring diffusion：在低分辨率上做模糊+噪声的联合过程
+- 两个独立模型分别训练（低分辨率+高分辨率）
+
+结果: 
+- CelebA-HQ FID=1.56, ImageNet-256 sFID=5.64（SOTA级别）
+- CogView3 用了 Relay Diffusion 实现文图生成
+
+与 RDD 的关系: ★★★ 关键对比对象
+- 同: 都识别了跨分辨率 SNR 问题并解决
+- 异: Relay 用两个独立模型，RDD 是单模型+drift
+- 异: Relay 的"block noise"是对噪声做结构化处理，RDD 的 drift 是对信号做结构化处理
+- 异: Relay 需要训两个模型，RDD 只训一个（或 unified 一个）
+- **重要**: Relay 的 DCT 频域分析可以引用来佐证 RDD 的 drift coefficient 的必要性
+
+
+================================================================================
+ 3. Matryoshka Diffusion Models (MDM)
+================================================================================
+作者: Jiatao Gu et al. (Apple，f-DM 同一作者组)
+发表: ICLR 2024
+链接: https://arxiv.org/abs/2310.15111
+
+核心方法:
+- 在扩展空间中联合多分辨率去噪（不是分阶段，是同时）
+- NestedUNet 架构：低分辨率参数嵌套在高分辨率参数内
+- 多分辨率损失：对所有分辨率同时监督
+- 渐进式训练：先训低分辨率，逐步加入高分辨率
+
+关键技术:
+- 联合去噪而非级联：所有分辨率共享同一个 timestep
+- Nested 架构：小模型完全包含在大模型内
+- 渐进训练加速收敛
+
+实验: ImageNet 256/512, CC3M/CC12M 文图生成
+结果: 端到端高分辨率生成，不依赖级联或 VAE
+
+与 RDD 的关系: ★★☆ 
+- 同: 多分辨率单模型
+- 异: MDM 所有分辨率同时去噪（同一 timestep），RDD 是顺序的（先低后高）
+- 异: MDM 的计算量没有减少（每步都处理所有分辨率），RDD 的核心优势是减少高分辨率步数
+- 异: MDM 用 NestedUNet，RDD 用 DiT
+- **关键差异**: MDM 不省推理计算，只是训练更稳定；RDD 的目标是推理加速
+
+
+================================================================================
+ 4. Simple Diffusion: End-to-end Diffusion for High Resolution Images
+================================================================================
+作者: Emiel Hoogeboom, Jonathan Heek, Tim Salimans (Google Brain)
+发表: ICML 2023
+链接: https://arxiv.org/abs/2301.11093
+
+核心方法:
+- 证明标准扩散模型可以端到端训练高分辨率（不需要级联/VAE）
+- 关键发现：高分辨率需要调整 noise schedule（更多噪声步给高分辨率）
+- 多尺度损失（U-Net 各层都做监督）
+- U-ViT 架构（U-Net + ViT 混合）
+
+关键技术:
+- Noise schedule shifting：根据分辨率调整 SNR 曲线
+- Multi-scale loss：中间层也预测信号
+- 没有显式的多阶段/级联
+
+与 RDD 的关系: ★★☆
+- 同: 认识到分辨率与 SNR 的关系
+- 异: Simple Diffusion 不做多阶段，全程同一分辨率
+- 异: 不省推理计算
+- 可引用: 支撑你的论点——不同分辨率需要不同的噪声处理
+
+
+================================================================================
+ 5. Pyramidal Denoising Diffusion Probabilistic Models (PDDM)
+================================================================================
+作者: Ryu & Ye (KAIST)
+发表: arXiv 2022 (后续未见正式会议接收)
+链接: https://arxiv.org/abs/2208.01864
+
+核心方法:
+- 用位置编码训练单一 score function，支持多分辨率
+- 采样时从低分辨率开始，逐步上采样+去噪
+- 不修改扩散过程本身，只是在采样时用金字塔策略
+
+关键技术:
+- 位置编码条件化分辨率
+- 标准 DDPM 训练（无修改）
+- 金字塔反向采样
+
+与 RDD 的关系: ★☆☆
+- 同: 单模型多分辨率
+- 异: PDDM 不修改前向过程，RDD 引入 drift
+- 异: PDDM 没有理论保证跨分辨率一致性
+- 竞争力低：未见正式发表，结果一般
+
+
+================================================================================
+ 6. Pyramidal Flow Matching for Efficient Video Generative Modeling
+================================================================================
+作者: Yang Jin et al.
+发表: ICLR 2025
+链接: https://arxiv.org/abs/2410.05954
+项目: https://www.pyramidflow.net
+
+核心方法:
+- 将 Flow Matching 的去噪轨迹重新解释为金字塔阶段
+- 只在最终阶段使用全分辨率，早期阶段用低分辨率
+- 各阶段流通过精心设计保持连续性
+- 自回归视频生成+金字塔结构
+
+关键技术:
+- 统一金字塔 flow matching（不是级联，是重新参数化）
+- 时空金字塔：时间和空间同时降采样
+- 对预训练模型的无需重训适配
+
+实验: 视频生成，768p, 5s clips
+结果: 大幅提速，质量可比
+
+与 RDD 的关系: ★★★ 重要参考+扩展方向
+- 同: 低分辨率省计算的核心思想
+- 异: 用 Flow Matching 而非 DDPM
+- 异: 应用于视频，时空联合金字塔
+- **启发**: 你的 RDD 可以直接推广到视频（时间维度做金字塔）
+- **论文可引用**: 证明金字塔/多分辨率方法在视频上的 scalability
+
+
+================================================================================
+ 7. PyramidalWan: Making Pretrained Video Model Pyramidal
+================================================================================
+作者: Qualcomm AI Research
+发表: arXiv 2025 (2601.04792)
+链接: https://arxiv.org/abs/2601.04792
+
+核心方法:
+- 对预训练的 Wan2.1 视频模型做金字塔化改造
+- 3 个时空阶段：81×448×832 → 41×224×416 → 21×112×208
+- 无需重新训练，直接对预训练模型做推理加速
+- ~2.5× 加速
+
+关键技术:
+- 前向和反向扩散过程都分解为 3 个阶段
+- 时间+空间同时降采样
+- 对预训练模型的适配（不改训练）
+
+与 RDD 的关系: ★★☆
+- 同: 多阶段加速
+- 异: 用于视频，且是对预训练模型的 post-hoc 优化
+- **启发**: RDD 也可以做 training-free 的金字塔推理加速（对预训练 DiT）
+
+
+================================================================================
+ 8. Decomposable Flow Matching (DFM)
+================================================================================
+作者: Snap Research
+发表: NeurIPS 2025 (accepted)
+链接: https://arxiv.org/abs/2506.19839
+项目: https://snap-research.github.io/dfm/
+
+核心方法:
+- 对 Laplacian 金字塔的每一层独立做 Flow Matching
+- 修改 DiT 架构：per-scale patchification + timestep-embedding
+- 保持核心 DiT 架构不变
+- 图像和视频都适用
+
+关键技术:
+- 多尺度分解（Laplacian pyramid）+ 独立 Flow Matching
+- 不需要级联间的 renoising 或复杂衔接
+- 采样时逐层生成（coarse to fine）
+- 阶段采样：每个 scale 从 logit-normal 分布采时间步
+
+实验: ImageNet 512×512
+结果: FDD 提升 35.2%（相比基础架构）
+
+与 RDD 的关系: ★★★ 最新竞争者（NeurIPS 2025!）
+- 同: DiT backbone + 多尺度 + coarse-to-fine
+- 异: DFM 用 Laplacian 分解（频域），RDD 用空间下采样
+- 异: DFM 各层独立 Flow Matching，RDD 用带 drift 的单一扩散过程
+- 异: DFM 是 Flow Matching，RDD 是 DDPM 框架
+- **重大威胁**: 同期工作，同 backbone，需要明确差异化
+- **差异化方向**: RDD 有闭式 posterior + DPM-Solver 兼容性 + 单一连续过程
+
+
+================================================================================
+ 9. Laplacian Multi-scale Flow Matching (LapFlow)
+================================================================================
+作者: Zhao et al.
+发表: arXiv 2025 (2602.19461), 投稿中
+链接: https://arxiv.org/abs/2602.19461
+
+核心方法:
+- Laplacian 金字塔分解 + Mixture-of-Transformers (MoT)
+- 因果注意力机制处理多尺度
+- 所有尺度并行生成（不是顺序级联）
+- 时间加权复杂度分析：理论上比 DiT attention 开销低
+
+关键技术:
+- 并行多尺度生成（vs RDD 的顺序）
+- MoT 架构
+- 因果注意力保证信息从低频到高频流动
+
+实验: CelebA-HQ, ImageNet
+结果: 更少 GFLOPs + 更快推理 + 更好 FID
+
+与 RDD 的关系: ★★★
+- 同: 多尺度 + DiT 系架构
+- 异: 并行 vs 顺序；Laplacian vs 空间下采样；Flow Matching vs DDPM
+- **差异化**: RDD 的顺序采样允许低分辨率引导高分辨率，LapFlow 并行则不行
+
+
+================================================================================
+ 10. LowDiff: Efficient Diffusion with Low-Resolution Condition
+================================================================================
+作者: Unknown (2025)
+发表: arXiv 2025 (2509.15342)
+链接: https://arxiv.org/abs/2509.15342
+
+核心方法:
+- 统一模型从低分辨率逐步精炼到目标分辨率
+- 级联方法但用统一模型
+- 结合架构设计和生成技术
+
+与 RDD 的关系: ★★☆
+- 同: 统一模型 + 渐进分辨率
+- 异: 似乎是条件式级联，非单一扩散过程
+- 需要更详细阅读
+
+
+================================================================================
+ 11. HiStream: Efficient High-Resolution Video Generation
+================================================================================
+作者: Unknown (2025)
+发表: arXiv 2025 (2512.21338)
+链接: https://arxiv.org/abs/2512.21338
+
+核心方法:
+- 自回归框架，三轴压缩：空间、时间、时间步
+- 空间：低分辨率去噪 → 高分辨率精炼 + cached features
+- 时间：chunk-by-chunk + anchor cache
+- 时间步：后续 chunk 用更少去噪步
+
+与 RDD 的关系: ★☆☆
+- 同: 低分辨率先去噪
+- 异: 自回归视频生成，方法论差异大
+
+
+================================================================================
+ 12. Lumina-Video: Multi-scale Next-DiT for Video
+================================================================================
+作者: Alpha-VLLM team
+发表: arXiv 2025 (2502.06782)
+链接: https://arxiv.org/abs/2502.06782
+
+核心方法:
+- Multi-scale Next-DiT：联合学习多种 patchification
+- Motion score 条件控制动态程度
+- 渐进训练（分辨率+FPS 递增）
+
+与 RDD 的关系: ★★☆
+- 同: DiT + 多尺度
+- 异: multi-scale patchification vs multi-stage diffusion
+- 异: 视频专用
+- **启发**: 多 patchification 是另一种实现多尺度的方式
+
+
+================================================================================
+ 综合分析：RDD 的定位与差异化
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ RDD 的独特卖点（vs 所有已有工作）                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+
+1. **连续 Drift（Markov）**：
+   - f-DM: 离散变换+插值（非Markov）
+   - Relay: 两个独立模型
+   - MDM: 联合去噪（无顺序）
+   - DFM/LapFlow: 独立 Flow Matching per scale
+   → RDD 是唯一一个在单一 Markov 过程中连续地做分辨率转移的
+
+2. **闭式 Posterior + DPM-Solver 兼容**：
+   - f-DM: 不兼容
+   - Relay: 不适用
+   - DFM: Flow Matching 有自己的 solver 但不同体系
+   → RDD 可以直接用现有 DDPM 生态的所有加速方法
+
+3. **单一预测目标 ε̃**：
+   - f-DM: 需要双重预测（x_θ + δ_θ）
+   - 其他方法也各有额外预测头
+   → RDD 训练最简单，完全复用标准 DDPM 训练代码
+
+4. **DiT Backbone**：
+   - f-DM/MDM: U-Net
+   - Simple Diffusion: U-ViT
+   - DFM/LapFlow: DiT 但用了 Laplacian 分解
+   → RDD 用标准 DiT 架构 + 不同大小模型处理不同分辨率，符合 scaling law
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ 最大竞争威胁                                                             │
+└─────────────────────────────────────────────────────────────────────────┘
+
+1. **DFM (NeurIPS 2025)** — 同期工作，DiT+多尺度+图像视频
+   应对：强调 RDD 的 DDPM 框架兼容性 + 理论完备性（闭式 posterior）
+   
+2. **LapFlow (2025)** — 并行多尺度 + MoT
+   应对：RDD 的顺序结构允许 early exit / 灵活 resolution schedule
+   
+3. **Relay Diffusion (ICLR 2024)** — SOTA 级 FID
+   应对：RDD 是单模型，Relay 需要两个；RDD 理论更 elegant
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ RDD 仍需要做的事情                                                       │
+└─────────────────────────────────────────────────────────────────────────┘
+
+A. 必须在论文 Related Work 中讨论的（否则被 reject）：
+   - f-DM (ICLR 2023) — 最相似
+   - Relay Diffusion (ICLR 2024) — 同样识别了 SNR 问题
+   - MDM (ICLR 2024) — 同一作者组的后续工作
+   - Simple Diffusion (ICML 2023) — noise schedule 与分辨率
+   - DFM (NeurIPS 2025) — 最新同期竞争
+   - Pyramidal Flow (ICLR 2025) — 视频方向
+
+B. 需要补充的实验（参考竞争论文）：
+   1. [来自 DFM/LapFlow] FID vs GFLOPs 曲线
+      - 不只看 FID，还要看计算效率
+      - 画出 Pareto frontier：RDD 各配置 vs DiT 各步数
+   
+   2. [来自 Relay] 频域分析可视化
+      - 用 DCT/FFT 展示 RDD 在各 stage 的频率分布
+      - 证明 drift 确实在逐步去除高频
+   
+   3. [来自 DFM] 视频生成
+      - 即使只是小规模 demo，也能大幅提升论文影响力
+      - DFM 做了视频，如果你也能做，审稿人会更认可 generality
+   
+   4. [来自 f-DM] 不同变换类型的消融
+      - f-DM 对比了 downsampling / blurring / VAE
+      - RDD 目前只做了 avg_pool downsampling
+      - 可以尝试：bicubic downsampling / Gaussian blur + downsample
+   
+   5. [来自 LapFlow] 与 Laplacian 分解的对比
+      - 空间下采样 vs Laplacian 金字塔 的消融
+      - 证明哪种多尺度分解对 DiT 更好
+
+C. 论文写作建议：
+   1. 强调 RDD 的理论贡献（闭式 posterior、SDE 框架、drift coefficient）
+   2. 强调实用性（单一训练目标、DPM-Solver 兼容、不需要 noise resampling）
+   3. 定位为"f-DM 的连续化+理论完善版"而非全新方法
+   4. 将 Relay 的 DCT 频域分析作为佐证材料引用
+   5. 明确指出 DFM/LapFlow 用 Flow Matching，RDD 用 DDPM，是互补的方法论
+
+D. 最大的潜在弱点（审稿人可能攻击的点）：
+   1. "和 f-DM 区别不够大" → 用 DPM-Solver 实验 + Drift 消融反驳
+   2. "为什么不用 Flow Matching" → 说明 DDPM 生态更成熟 + 闭式 posterior
+   3. "只在 ImageNet 上做" → 补 512 + 视频 demo
+   4. "Unified 模型参数效率不如 MDM 的 Nested" → 强调 DiT scaling law

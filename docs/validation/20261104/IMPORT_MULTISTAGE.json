@@ -1,0 +1,72 @@
+{
+  "status": "passed",
+  "actual_cli_import": true,
+  "actual_cli_sample": true,
+  "final_latent_byte_exact": true,
+  "max_abs": 0.0,
+  "latent_shape": [
+    1,
+    4,
+    32,
+    32
+  ],
+  "mixed_stage_steps_preserved": {
+    "32": 400000,
+    "16": 400000,
+    "8": 600000
+  },
+  "wrong_metadata_rejected": "Checkpoint resolution metadata disagrees with mapping 8",
+  "inference_only": true,
+  "optimizer_resume_converted": false,
+  "interval_and_args_metadata_rejections": [
+    "Checkpoint T_c metadata differs from requested stage interval",
+    "Checkpoint T_c_plus_1 metadata differs from requested stage interval",
+    "Checkpoint stage-length metadata differs from requested recipe"
+  ],
+  "cleanup": [
+    {
+      "file": "wrong.pt",
+      "bytes": 344119,
+      "sha256": "441b3a4ceb717d174f71a3db2704f0bc0683fb9d5515cf879e092d314edf8805",
+      "removed_after_check": true
+    },
+    {
+      "file": "8.pt",
+      "bytes": 343903,
+      "sha256": "ea743c0b0d7e991d721738a2d904597b5130a6636b24a30e0d2a15ebcb588ac5",
+      "removed_after_check": true
+    },
+    {
+      "file": "sample.pt",
+      "bytes": 17890,
+      "sha256": "479b1799db06d66f18889609dd02181ec071f4051274df2ac3c254a1b2401cd3",
+      "removed_after_check": true
+    },
+    {
+      "file": "bundle.pt",
+      "bytes": 1094015,
+      "sha256": "48a4d00db8fafd85a4bafcaa482d50ee40544a94d7868a8ebe8629e967762131",
+      "removed_after_check": true
+    },
+    {
+      "file": "32.pt",
+      "bytes": 374725,
+      "sha256": "3a2233c4eeff386d20cc56487cbb3f7cc5d18f317e43fc843dad1b9dde882fe3",
+      "removed_after_check": true
+    },
+    {
+      "file": "16.pt",
+      "bytes": 350149,
+      "sha256": "e486397330bf1770f05d5cf8bf4c4a71028ababaeba96a173135fa020d3256e4",
+      "removed_after_check": true
+    }
+  ],
+  "scope": "CPU random native per-grid DiT, complete 3/3/3 DDPM sampling; model import/layout and real CLI, not a quality run.",
+  "cuda_initialized": false,
+  "sources": {
+    "unified_multires/tools/validate_rdd_multistage_import_20261104.py": "21381315cbdc97394537d205d65cef529d6131981a69a13b2f790fdc1104be1c",
+    "unified_multires/tools/import_legacy_rdd_multistage.py": "d9e038c0159e3aca5abb7f7d6690571756fd1808a2e734ba8b13542d510a888d",
+    "unified_multires/umdiff/rdd_multistage.py": "0dc0556e1d477f699273b4914c7d8fc90ab968b6b63be7ef1081458b4968dcd9",
+    "unified_multires/configs/rdd_reproduction/rdd_ddpm_multistage_xl_l_b_300_300_400_ddpm_cfg1p0_fresh.json": "0774082ec1c405bd3b16adca6c133c4731c4e4232898f5707d08e6b1811ab1bd"
+  }
+}

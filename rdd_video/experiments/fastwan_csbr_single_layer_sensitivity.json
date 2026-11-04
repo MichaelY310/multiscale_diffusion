@@ -1,0 +1,578 @@
+[
+  {
+    "name": "rdd_vsa20_baseline",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest"
+  },
+  {
+    "name": "single_l00_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      0
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "0": [
+        0.9488689012588153,
+        -0.22346659376257014,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l01_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      1
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "1": [
+        0.8827349044446051,
+        0.029831719555583513,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l02_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      2
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "2": [
+        0.6680603068215367,
+        -0.0323164722011356,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l03_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      3
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "3": [
+        0.44815622199452143,
+        0.012935470197557543,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l04_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      4
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "4": [
+        0.5336141749298171,
+        -0.048675218995084084,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l05_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      5
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "5": [
+        0.3982864859208962,
+        -0.025054833234286564,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l06_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      6
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "6": [
+        0.42281249275202754,
+        -0.0459186086398683,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l07_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      7
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "7": [
+        0.6516334233270031,
+        -0.10660479898493554,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l08_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      8
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "8": [
+        0.349483849072065,
+        -0.022826280261715515,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l09_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      9
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "9": [
+        0.2929014153240134,
+        -0.014787294212610328,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l10_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      10
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "10": [
+        0.39570816848046725,
+        -0.053907936771980865,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l11_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      11
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "11": [
+        0.3400792246826828,
+        -0.05614507565035319,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l12_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      12
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "12": [
+        0.30693830282919354,
+        -0.029969473345901852,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l13_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      13
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "13": [
+        0.4050594488527713,
+        -0.05266637314857724,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l14_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      14
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "14": [
+        0.5868937776399464,
+        -0.09360975463930271,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l15_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      15
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "15": [
+        0.8345573679577453,
+        -0.2009985190954166,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l16_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      16
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "16": [
+        0.3453016315528535,
+        -0.06553375701786304,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l17_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      17
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "17": [
+        0.6492839314655097,
+        -0.12059449065009321,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l18_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      18
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "18": [
+        0.45559479376972667,
+        -0.07204493690238872,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l19_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      19
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "19": [
+        0.6335784407563999,
+        -0.1168061733402458,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l20_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      20
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "20": [
+        0.620206218209192,
+        -0.08413378269257081,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l21_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      21
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "21": [
+        0.36162507430711294,
+        -0.030101522137740755,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l22_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      22
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "22": [
+        0.4791900374813844,
+        -0.05699125868430175,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l23_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      23
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "23": [
+        0.5595950435428645,
+        -0.09914359637986184,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l24_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      24
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "24": [
+        0.27652768796345045,
+        0.05246358935343649,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l25_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      25
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "25": [
+        0.4072870113946527,
+        -0.08163564446836948,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l26_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      26
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "26": [
+        0.5684697091021228,
+        -0.15502249367856744,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l27_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      27
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "27": [
+        0.5571468164135724,
+        -0.12059148701346827,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l28_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      28
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "28": [
+        0.5114131457193152,
+        -0.1193836772352219,
+        0.0
+      ]
+    }
+  },
+  {
+    "name": "single_l29_multiscale",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      29
+    ],
+    "cross_stage_reuse_stages": [
+      2
+    ],
+    "cross_stage_reuse_layer_coefficients": {
+      "29": [
+        0.7122723547676469,
+        -0.1241434985399135,
+        0.0
+      ]
+    }
+  }
+]

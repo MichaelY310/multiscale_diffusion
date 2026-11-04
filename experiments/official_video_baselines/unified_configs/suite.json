@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "smoke_only": true,
+  "max_updates": 3,
+  "fastvideo_pin": "37dd31d5eadfa726e102702ec1ba1cf7c977eaa1",
+  "experiments": {
+    "controlled_fixed": {
+      "scope": "controlled_spatial_method_on_Wan",
+      "config": "controlled_fixed.yaml",
+      "native_reproduction": false,
+      "author_implementation": true,
+      "full_model_gpu_bridge_passed": false
+    },
+    "controlled_rdd": {
+      "scope": "controlled_spatial_method_on_Wan",
+      "config": "controlled_rdd.yaml",
+      "native_reproduction": false,
+      "author_implementation": true,
+      "full_model_gpu_bridge_passed": false
+    },
+    "controlled_pyramid_flow": {
+      "scope": "controlled_spatial_method_on_Wan",
+      "config": "controlled_pyramid_flow.yaml",
+      "native_reproduction": false,
+      "author_implementation": true,
+      "full_model_gpu_bridge_passed": false
+    },
+    "controlled_pyramidal_wan": {
+      "scope": "controlled_spatial_method_on_Wan",
+      "config": "controlled_pyramidal_wan.yaml",
+      "native_reproduction": false,
+      "author_implementation": false,
+      "full_model_gpu_bridge_passed": false
+    },
+    "native_pyramid_flow": {
+      "scope": "native_author_code",
+      "source_commit": "a012faa1dc4d71301a7a153c7f9554c081947ea2",
+      "config": "native_pyramid_flow.yaml",
+      "native_reproduction": true,
+      "cached_features_required": "native VAE/T5/CLIP and actual empty prompt; synthetic is not training readiness",
+      "full_model_gpu_bridge_passed": false
+    },
+    "native_pyramidal_wan": {
+      "scope": "native_author_code",
+      "config": null,
+      "status": "blocked_no_author_training_source",
+      "native_reproduction": false
+    }
+  },
+  "controlled_fairness_signature": {
+    "model": "/scr/yuheng/bugswarm/official_video_baselines_20261004/assets/Wan2.1-T2V-1.3B-Diffusers",
+    "data": {
+      "data_path": "/scr/yuheng/bugswarm/official_video_baselines_20261004/fair_data/controlled_wan/train",
+      "dataloader_num_workers": 1,
+      "train_batch_size": 1,
+      "training_cfg_rate": 0.1,
+      "seed": 20261004,
+      "num_latent_t": 3,
+      "num_height": 128,
+      "num_width": 256,
+      "num_frames": 9
+    },
+    "optimizer": {
+      "learning_rate": 1e-05,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "weight_decay": 0.01,
+      "lr_scheduler": "constant_with_warmup",
+      "lr_warmup_steps": 0
+    },
+    "model_runtime": {
+      "enable_gradient_checkpointing_type": "full",
+      "weighting_scheme": "uniform",
+      "precondition_outputs": false
+    },
+    "precision": "fp32",
+    "distributed": {
+      "num_gpus": 1,
+      "sp_size": 1,
+      "tp_size": 1,
+      "hsdp_replicate_dim": 1,
+      "hsdp_shard_dim": 1
+    },
+    "global_batch": 1,
+    "steps": 3,
+    "attention": "FLASH_ATTN"
+  },
+  "native_vs_controlled": "Separate tables. Native PF Flux and controlled Wan have different backbones, caches and recipes.",
+  "evaluation_contract": {
+    "paired_raw_video_ids_and_captions": true,
+    "fixed_split": true,
+    "prompts_and_seeds": "identical recorded lists",
+    "report_output_frames_resolution_fps": true,
+    "actual_nfe_includes_boundaries": true,
+    "count_cfg_branches": true,
+    "teacher_cost_in_gpu_hours": true,
+    "quality_requires_decoded_native_video": true,
+    "equal_updates_and_equal_measured_gpu_hours": "report both, separately"
+  },
+  "ready_for_formal_training": false
+}

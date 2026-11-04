@@ -1,0 +1,113 @@
+{
+  "gpu_computation": false,
+  "cuda_context_initialized": true,
+  "surrogate_not_wan": true,
+  "results": [
+    {
+      "method": "fixed",
+      "losses": [
+        {
+          "step": 1,
+          "stage": 0,
+          "loss": 2.170421600341797,
+          "teacher_loss": 0.0
+        },
+        {
+          "step": 2,
+          "stage": 0,
+          "loss": 2.2798359394073486,
+          "teacher_loss": 0.0
+        },
+        {
+          "step": 3,
+          "stage": 0,
+          "loss": 2.2891032695770264,
+          "teacher_loss": 0.0
+        }
+      ],
+      "cpu_optimizer_updates": 3,
+      "dcp_weight_roundtrip": true
+    },
+    {
+      "method": "rdd",
+      "losses": [
+        {
+          "step": 1,
+          "stage": 0,
+          "loss": 1.3081389665603638,
+          "teacher_loss": 0.0
+        },
+        {
+          "step": 2,
+          "stage": 1,
+          "loss": 2.8417088985443115,
+          "teacher_loss": 0.0
+        },
+        {
+          "step": 3,
+          "stage": 2,
+          "loss": 5.73539400100708,
+          "teacher_loss": 0.0
+        }
+      ],
+      "cpu_optimizer_updates": 3,
+      "dcp_weight_roundtrip": true
+    },
+    {
+      "method": "pyramid_flow",
+      "losses": [
+        {
+          "step": 1,
+          "stage": 0,
+          "loss": 0.35630276799201965,
+          "teacher_loss": 0.0
+        },
+        {
+          "step": 2,
+          "stage": 1,
+          "loss": 0.3895292282104492,
+          "teacher_loss": 0.0
+        },
+        {
+          "step": 3,
+          "stage": 2,
+          "loss": 1.1181598901748657,
+          "teacher_loss": 0.0
+        }
+      ],
+      "cpu_optimizer_updates": 3,
+      "dcp_weight_roundtrip": true
+    },
+    {
+      "method": "pyramidal_wan",
+      "losses": [
+        {
+          "step": 1,
+          "stage": 0,
+          "loss": 2.4727721214294434,
+          "teacher_loss": 0.31201866269111633
+        },
+        {
+          "step": 2,
+          "stage": 1,
+          "loss": 17.976972579956055,
+          "teacher_loss": 0.6717383861541748
+        },
+        {
+          "step": 3,
+          "stage": 2,
+          "loss": 18.856243133544922,
+          "teacher_loss": 0.9444704055786133
+        }
+      ],
+      "cpu_optimizer_updates": 3,
+      "dcp_weight_roundtrip": true
+    }
+  ],
+  "pending": [
+    "real Wan GPU forward/backward",
+    "multi-rank FSDP",
+    "RGB/VAE preprocessing",
+    "VBench scorer weights"
+  ]
+}

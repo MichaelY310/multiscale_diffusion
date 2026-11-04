@@ -1,0 +1,73 @@
+models:
+  student:
+    _target_: fastvideo_native_pyramid.NativePyramidModel
+    source: /scr/yuheng/bugswarm/official_video_baselines_20261004/reference/Pyramid-Flow
+    init_from: /scr/yuheng/bugswarm/rdd_workspace_20261005/assets_20261006/pyramid-flow-miniflux
+    trainable: true
+    annotation: /scr/yuheng/bugswarm/rdd_workspace_20261005/fair_data_20261006/fixture14_pf/train.jsonl
+    empty_prompt: /scr/yuheng/bugswarm/rdd_workspace_20261005/fair_data_20261006/fixture14_pf/empty_prompt.pt
+    cache_fingerprint: d2a315cedf777640c009e0fa4ae5dbc74ca957eedd723382dab52d3be4fa82e1
+    recipe:
+      model_name: pyramid_flux
+      model_variant: diffusion_transformer_384p
+      model_dtype: bf16
+      use_mixed_training: true
+      load_vae: false
+      load_text_encoder: false
+      sample_ratios:
+      - 1
+      - 2
+      - 1
+      stages:
+      - 1
+      - 2
+      - 4
+      stage_range:
+      - 0
+      - 0.3333333333333333
+      - 0.6666666666666666
+      - 1
+      scheduler_gamma: 0.3333333333333333
+      max_temporal_length: 8
+      frame_per_unit: 1
+      video_sync_group: 1
+      use_temporal_causal: true
+      use_flash_attn: false
+      use_gradient_checkpointing: true
+      gradient_checkpointing_ratio: 1.0
+method:
+  _target_: fastvideo_native_pyramid.NativePyramidMethod
+  use_temporal_pyramid: true
+  native_lr_schedule: constant_with_warmup
+  clip_grad: 1.0
+training:
+  distributed:
+    num_gpus: 2
+    sp_size: 1
+    tp_size: 1
+  data:
+    data_path: /scr/yuheng/bugswarm/rdd_workspace_20261005/fair_data_20261006/fixture14_pf
+    train_batch_size: 4
+    dataloader_num_workers: 0
+    seed: 20261006
+  optimizer:
+    learning_rate: 5.0e-05
+    betas:
+    - 0.9
+    - 0.999
+    weight_decay: 0.0001
+    lr_scheduler: constant_with_warmup
+    lr_warmup_steps: 1
+  loop:
+    max_train_steps: 5000
+    gradient_accumulation_steps: 1
+  checkpoint:
+    output_dir: /scr/yuheng/bugswarm/rdd_workspace_20261005/gpu_checks_20261006/v4_atomic_native_pyramid_flow_resume
+    training_state_checkpointing_steps: 2
+    checkpoints_total_limit: 0
+    resume_from_checkpoint: /scr/yuheng/bugswarm/rdd_workspace_20261005/gpu_checks_20261006/v4_atomic_native_pyramid_flow_continuous/checkpoint-2
+  tracker:
+    trackers:
+    - none
+  dit_precision: bf16
+callbacks: {}

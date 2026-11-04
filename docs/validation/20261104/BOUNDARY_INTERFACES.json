@@ -1,0 +1,93 @@
+{
+  "status": "passed",
+  "standalone_boundaries": [
+    {
+      "factor": 2,
+      "clock": 0.3,
+      "component_matches_frozen_fm_byte_exact": true,
+      "fresh_refresh_byte_exact": true
+    },
+    {
+      "factor": 2,
+      "clock": 0.6,
+      "component_matches_frozen_fm_byte_exact": true,
+      "fresh_refresh_byte_exact": true
+    },
+    {
+      "factor": 4,
+      "clock": 0.3,
+      "component_matches_frozen_fm_byte_exact": true,
+      "fresh_refresh_byte_exact": true
+    },
+    {
+      "factor": 4,
+      "clock": 0.6,
+      "component_matches_frozen_fm_byte_exact": true,
+      "fresh_refresh_byte_exact": true
+    }
+  ],
+  "preview_sampler_guards": [
+    {
+      "boundary": "noise_filling",
+      "ddim": true,
+      "jump": false,
+      "dpm": false,
+      "expected_rejection": true,
+      "passed": true
+    },
+    {
+      "boundary": "noise_filling",
+      "ddim": false,
+      "jump": false,
+      "dpm": false,
+      "expected_rejection": true,
+      "passed": true
+    },
+    {
+      "boundary": "noise_filling",
+      "ddim": true,
+      "jump": true,
+      "dpm": true,
+      "expected_rejection": true,
+      "passed": true
+    },
+    {
+      "boundary": "noise_filling",
+      "ddim": false,
+      "jump": true,
+      "dpm": false,
+      "expected_rejection": false,
+      "passed": true
+    },
+    {
+      "boundary": "noise_filling",
+      "ddim": false,
+      "jump": false,
+      "dpm": true,
+      "expected_rejection": false,
+      "passed": true
+    },
+    {
+      "boundary": "fresh",
+      "ddim": true,
+      "jump": false,
+      "dpm": false,
+      "expected_rejection": false,
+      "passed": true
+    },
+    {
+      "boundary": "refresh",
+      "ddim": false,
+      "jump": false,
+      "dpm": false,
+      "expected_rejection": false,
+      "passed": true
+    }
+  ],
+  "post_trajectory_docstring_edit": {
+    "previous_verified_sha256": "460aa551485e39a4f625821262633601f655a5a0170b2ef8f76834765419296b",
+    "current_sha256": "aa613a575aa343901667299e10944284c395444da17e46fc5ba5308e39e8a2eb",
+    "only_docstring_changed": true
+  },
+  "cuda_initialized": false
+}

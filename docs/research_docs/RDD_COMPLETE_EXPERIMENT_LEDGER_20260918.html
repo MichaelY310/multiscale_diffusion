@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RDD 全量实验记录与可视化审计</title>
+<style>
+body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f1f5f9;color:#0f172a;line-height:1.65}
+main{max-width:1220px;margin:32px auto;padding:40px 52px;background:white;box-shadow:0 8px 30px #0f172a18}
+h1{font-size:2rem;margin:0 0 8px} h2{margin-top:42px;border-bottom:2px solid #e2e8f0;padding-bottom:8px} h3{margin-top:28px}
+.meta{color:#64748b} .warning{background:#fff7ed;border-left:5px solid #ea580c;padding:14px 18px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px} .card{background:#f8fafc;padding:14px;border:1px solid #e2e8f0}
+img{width:100%;height:auto;border:1px solid #e2e8f0;background:white} section p{color:#475569}
+table{border-collapse:collapse;width:100%;font-size:.88rem;display:block;overflow-x:auto} th{background:#0f172a;color:white;position:sticky;top:0} th,td{padding:7px 9px;border-bottom:1px solid #e2e8f0;white-space:nowrap} tr:nth-child(even){background:#f8fafc}
+code{background:#f1f5f9;padding:2px 5px} @media(max-width:800px){main{margin:0;padding:24px}.stats{grid-template-columns:1fr 1fr}}
+</style></head><body><main>
+<h1>RDD 全量实验记录与可视化审计</h1><p class="meta">生成日期：2026-09-18</p>
+<p>覆盖 Hugging Face 仓库和 surfi2 的全部 log/txt，并完成 JSON/JSONL/CSV/TSV/Markdown/YAML/TOML/代码与报告文件的第二轮扫描。主结论只使用 provenance 与协议审核通过的原生 ImageNet 结果。</p>
+<div class="stats">
+<div class="card"><b>5,428</b><br>unique log/txt sources</div><div class="card"><b>751</b><br>raw FID blocks</div>
+<div class="card"><b>116</b><br>canonical valid rows</div><div class="card"><b>252</b><br>old-HF invalid rows</div></div>
+<h2>清洗原则</h2><p class="warning">旧 Hugging Face-preprocessed 数据训练的结果全部隔离。FID 数值本身不能决定实验是否有效；dataset、checkpoint 与 evaluator provenance 优先。</p>
+<h2>主要结论</h2><ol><li>在控制模型架构后，Unified-L 的训练分配排序非常稳定：300/300/400 最好，其次 400/300/300，再到 100/300/600，600/300/100 最差。固定 90/80/80 与 interval-proportional NFE250 都保持同一排序。</li><li>三阶段优于两阶段。400K 时 Unified-L 300/300/400 FID 8.456；16→32 的 500/500 为 10.643；直接 8→32 的 500/500 为 11.978。省掉中间 16×16 会进一步损失。</li><li>训练与推理边界必须匹配。仅修改推理 stage_lengths 会把 Unified-XL FID 从 3.537 恶化到 9.183、25.023 或 40.282，这不能冒充训练分配 ablation。</li><li>在固定 DDPM 250 NFE、CFG1.5 的已测范围内，更多步数给最终 32×32 stage 更好；Unified-XL 从 60 个 fine steps 的 3.701 攆到 150 个的 3.404。</li><li>DPM2 的 scheduled steps 不是 NFE。按实际 NFE 比较，它在约 124–244 NFE 有优势，但约 64 NFE 明显失稳。</li><li>CFG1.5 是 Unified-XL 当前 FID 最优 operating point。继续增大 CFG 会提高 precision/IS，同时显著降低 recall 并恶化 FID。</li><li>corrected Unified-L FM 在 50K 仍弱于对应 diffusion：66.993 vs 50.943（300/300/400），70.121 vs 55.458（400/300/300）。legacy FM-XL 的 CFG1.5 很强，但其时间边界语义和 guidance operating point 不同，不能据此宣称 FM 收敛更快。</li><li>旧 HF-preprocessed 数据训练的 252 个 canonical FID blocks 全部隔离到 H 级。它们可用于提出 sampler/分配假设，不能用于论文绝对数值或与原生 ImageNet 直接比较。</li><li>严格固定 sampler、NFE、CFG、transition、sampling split 与推理边界后，8 条正式训练曲线的 FID 上升次数均为 0。旧图中的尖峰来自把不同协议连线，不是训练突然退化。</li><li>第二轮又扫描了 JSON/JSONL/CSV/TSV/Markdown/YAML/TOML/Python/Shell/TeX/HTML/SVG 等 42,832 个文本源；剔除环境与 third-party 后有 5,934 个项目源。没有发现遗漏的论文级 50K FID，但补回 13 条 CSRA/low-pass 10K 诊断记录。</li><li>加速结果必须按协议隔离：2D DDPM250 结构 microbenchmark、attention-reuse proxy、未微调 FastWan 视频计时和 RDD-3D runtime 不能横向混成一个 SOTA 表。3-step DMD 目前也没有质量合格的正式 FID。</li></ol>
+<h2>图表</h2><section><h3>RDD 与 DiT 收敛曲线</h3><img src="figures/experiment_ledger_20260918/01_convergence_rdd_vs_dit.svg" alt="RDD 与 DiT 收敛曲线"><p>相同 DDPM250、CFG1.0、50K 评估；Unified XL 的 450K 留空，不插值。</p></section>
+<section><h3>Unified-L 训练分配与阶段数</h3><img src="figures/experiment_ledger_20260918/02_unified_l_training_allocations.svg" alt="Unified-L 训练分配与阶段数"><p>共享同一个 L/2 模型，消除了 multistage 模型容量不一致的混杂因素。</p></section>
+<section><h3>Unified 模型大小</h3><img src="figures/experiment_ledger_20260918/03_unified_model_size.svg" alt="Unified 模型大小"><p>相同训练/采样分配下，XL 在整条曲线上优于 L；不能把模型大小优势误写成分配优势。</p></section>
+<section><h3>仅 Flow Matching</h3><img src="figures/experiment_ledger_20260918/04_flow_matching_only.svg" alt="仅 Flow Matching"><p>legacy XL 是 400K，corrected L 是 50K；边界语义和 CFG 也不同。本图只列 operating points，不是收敛曲线。</p></section>
+<section><h3>Diffusion 与 corrected FM 的 50K 对比</h3><img src="figures/experiment_ledger_20260918/05_diffusion_vs_fm_50k.svg" alt="Diffusion 与 corrected FM 的 50K 对比"><p>当前 FM 配置在 50K 明显更差；不能依据 legacy XL 的 CFG1.5 单点宣称 FM 收敛更快。</p></section>
+<section><h3>固定总 NFE 的采样步数分配</h3><img src="figures/experiment_ledger_20260918/06_sampling_step_allocation.svg" alt="固定总 NFE 的采样步数分配"><p>在已测范围内，把更多步数给最终 32×32 stage 可稳定降低 FID。</p></section>
+<section><h3>DDPM 与 DPM2 的实际计算量</h3><img src="figures/experiment_ledger_20260918/07_solver_actual_nfe.svg" alt="DDPM 与 DPM2 的实际计算量"><p>DPM2 在约 124–244 NFE 有优势，但约 64 NFE 时明显失稳；scheduled steps 不能当 NFE。</p></section>
+<section><h3>CFG 与 Precision–Recall</h3><img src="figures/experiment_ledger_20260918/08_cfg_and_precision_recall.svg" alt="CFG 与 Precision–Recall"><p>CFG1.5 最优 FID；更大 CFG 继续提高 precision/IS，但以 recall 和 FID 为代价。</p></section>
+<section><h3>边界匹配与 stage transition</h3><img src="figures/experiment_ledger_20260918/09_boundary_and_transition_controls.svg" alt="边界匹配与 stage transition"><p>推理边界错配会严重恶化；noise filling 比 bilinear 的 FID 低约 26%。</p></section>
+<section><h3>固定与区间比例采样</h3><img src="figures/experiment_ledger_20260918/10_fixed_vs_proportional.svg" alt="固定与区间比例采样"><p>改变推理分配后，300/300/400 &gt; 400/300/300 &gt; 100/300/600 &gt; 600/300/100 的排序完全不变。</p></section>
+<section><h3>Unified-L 的多指标收敛</h3><img src="figures/experiment_ledger_20260918/11_unified_l_full_metrics.svg" alt="Unified-L 的多指标收敛"><p>FID、sFID、IS、precision 的完整轨迹；避免只凭 FID 误判质量/多样性。</p></section>
+<section><h3>速度实验</h3><img src="figures/experiment_ledger_20260918/12_speed_benchmarks.svg" alt="速度实验"><p>250-step sampling 是单前向、无 CFG 的 H20 benchmark；training 是单卡 microbenchmark，不是端到端 8-GPU throughput。</p></section>
+<section><h3>旧错误数据集结果的分布</h3><img src="figures/experiment_ledger_20260918/13_historical_invalid_hf_distribution.svg" alt="旧错误数据集结果的分布"><p>只用于检查趋势和生成假设，绝不能与原生 ImageNet 的绝对 FID 混表。</p></section>
+<section><h3>400K 的主要 operating points</h3><img src="figures/experiment_ledger_20260918/14_400k_operating_points.svg" alt="400K 的主要 operating points"><p>CFG1.0 与 CFG1.5 分面显示，防止把不同 guidance 强度当成同一收敛协议。</p></section>
+<section><h3>结构化 JSON 中恢复的 CSRA 10K 指标</h3><img src="figures/experiment_ledger_20260918/15_structured_csra_fid10k.svg" alt="结构化 JSON 中恢复的 CSRA 10K 指标"><p>这些是第二轮扫描补入的 10K 诊断，不能与正式 50K FID 混图；独立 reader 使 FID 从 11.674 上升到 17.527。</p></section>
+<section><h3>加速证据按协议分组</h3><img src="figures/experiment_ledger_20260918/16_acceleration_evidence_by_protocol.svg" alt="加速证据按协议分组"><p>2D、视频与 3D 的硬件、任务和质量门槛不同，因此只在各自面板内比较。视频 direct reuse 虽降低 denoiser 延迟，但质量失败且 VAE 稀释了端到端收益。</p></section>
+<h2>结构化文件补充诊断</h2><p>以下为10K/low-pass诊断，不与正式50K FID混表。</p><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>protocol</th>
+      <th>variant</th>
+      <th>fid</th>
+      <th>sfid</th>
+      <th>inception_score</th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>source_repo_path</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CSRA development 10K</td>
+      <td>aligned</td>
+      <td>16.8040</td>
+      <td>18.3741</td>
+      <td>97.6982</td>
+      <td>0.6495</td>
+      <td>0.6929</td>
+      <td>eval_results/csra_prefix6_fid10k_20260914/metrics/summary_fid10k.json</td>
+    </tr>
+    <tr>
+      <td>CSRA development 10K</td>
+      <td>original_dense</td>
+      <td>11.8755</td>
+      <td>17.5159</td>
+      <td>116.0083</td>
+      <td>0.6953</td>
+      <td>0.7007</td>
+      <td>eval_results/csra_prefix6_fid10k_20260914/metrics/summary_fid10k.json</td>
+    </tr>
+    <tr>
+      <td>CSRA development 10K</td>
+      <td>zero</td>
+      <td>20.3236</td>
+      <td>18.5105</td>
+      <td>84.6775</td>
+      <td>0.6243</td>
+      <td>0.7007</td>
+      <td>eval_results/csra_prefix6_fid10k_20260914/metrics/summary_fid10k.json</td>
+    </tr>
+    <tr>
+      <td>CSRA independent 10K</td>
+      <td>original_rdd</td>
+      <td>11.6741</td>
+      <td>17.5614</td>
+      <td>115.2414</td>
+      <td>0.7059</td>
+      <td>0.7099</td>
+      <td>eval_results/csra_reader_independent_fid10k_20260914/metrics/summary_fid10k.json</td>
+    </tr>
+    <tr>
+      <td>CSRA independent 10K</td>
+      <td>reader</td>
+      <td>17.5270</td>
+      <td>18.8710</td>
+      <td>93.6692</td>
+      <td>0.6476</td>
+      <td>0.7011</td>
+      <td>eval_results/csra_reader_independent_fid10k_20260914/metrics/summary_fid10k.json</td>
+    </tr>
+    <tr>
+      <td>low-pass-128 10K</td>
+      <td>RDD_100_300_600_8x8continued600K_cfg1</td>
+      <td>17.4860</td>
+      <td>28.9628</td>
+      <td>64.4538</td>
+      <td>0.6592</td>
+      <td>0.6924</td>
+      <td>eval_results/diagnostics/stage_allocation/lowpass_metrics/summary_lowpass128_10k.json</td>
+    </tr>
+    <tr>
+      <td>low-pass-128 10K</td>
+      <td>RDD_100_300_600_8x8continued600K_cfg1p5</td>
+      <td>9.7593</td>
+      <td>29.6278</td>
+      <td>149.3916</td>
+      <td>0.8144</td>
+      <td>0.6098</td>
+      <td>eval_results/diagnostics/stage_allocation/lowpass_metrics/summary_lowpass128_10k.json</td>
+    </tr>
+    <tr>
+      <td>low-pass-128 10K</td>
+      <td>RDD_100_300_600_cfg1</td>
+      <td>18.0027</td>
+      <td>29.0991</td>
+      <td>64.9980</td>
+      <td>0.6540</td>
+      <td>0.6871</td>
+      <td>eval_results/diagnostics/stage_allocation/lowpass_metrics/summary_lowpass128_10k.json</td>
+    </tr>
+    <tr>
+      <td>low-pass-128 10K</td>
+      <td>RDD_100_300_600_cfg1p5</td>
+      <td>10.0076</td>
+      <td>29.5458</td>
+      <td>148.7651</td>
+      <td>0.8113</td>
+      <td>0.6148</td>
+      <td>eval_results/diagnostics/stage_allocation/lowpass_metrics/summary_lowpass128_10k.json</td>
+    </tr>
+    <tr>
+      <td>low-pass-64 10K</td>
+      <td>RDD_100_300_600_8x8continued600K_cfg1</td>
+      <td>10.3478</td>
+      <td>11.1054</td>
+      <td>20.9522</td>
+      <td>0.6843</td>
+      <td>0.6443</td>
+      <td>eval_results/diagnostics/stage_allocation/lowpass_metrics/summary_lowpass64_10k.json</td>
+    </tr>
+    <tr>
+      <td>low-pass-64 10K</td>
+      <td>RDD_100_300_600_8x8continued600K_cfg1p5</td>
+      <td>10.8179</td>
+      <td>12.1157</td>
+      <td>43.7684</td>
+      <td>0.7500</td>
+      <td>0.6312</td>
+      <td>eval_results/diagnostics/stage_allocation/lowpass_metrics/summary_lowpass64_10k.json</td>
+    </tr>
+    <tr>
+      <td>low-pass-64 10K</td>
+      <td>RDD_100_300_600_cfg1</td>
+      <td>10.2911</td>
+      <td>11.1490</td>
+      <td>21.1739</td>
+      <td>0.6818</td>
+      <td>0.6349</td>
+      <td>eval_results/diagnostics/stage_allocation/lowpass_metrics/summary_lowpass64_10k.json</td>
+    </tr>
+    <tr>
+      <td>low-pass-64 10K</td>
+      <td>RDD_100_300_600_cfg1p5</td>
+      <td>10.8398</td>
+      <td>12.0362</td>
+      <td>43.5207</td>
+      <td>0.7521</td>
+      <td>0.6215</td>
+      <td>eval_results/diagnostics/stage_allocation/lowpass_metrics/summary_lowpass64_10k.json</td>
+    </tr>
+  </tbody>
+</table>
+<h2>加速证据总审计</h2><p class="warning">2D、视频、3D和DMD的任务、硬件与质量门槛不同，只能在各自协议内解释。</p><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>family</th>
+      <th>method</th>
+      <th>task_protocol</th>
+      <th>speedup</th>
+      <th>latency_reduction_percent</th>
+      <th>quality_metric</th>
+      <th>quality_value</th>
+      <th>evidence_status</th>
+      <th>source</th>
+      <th>notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2D structural RDD</td>
+      <td>RDD Unified L/2</td>
+      <td>H20, batch16, DDPM250, 90/80/80 for RDD, single conditional forward</td>
+      <td>2.5600</td>
+      <td>NaN</td>
+      <td>latency_ms_per_image</td>
+      <td>520.9000</td>
+      <td>measured microbenchmark</td>
+      <td>benchmark_250_speed.log</td>
+      <td>Structural compute comparison; boundary implementation is close to but not identical to formal noise filling</td>
+    </tr>
+    <tr>
+      <td>2D structural RDD</td>
+      <td>RDD Multistage 300/300/400</td>
+      <td>H20, batch16, DDPM250, 90/80/80 for RDD, single conditional forward</td>
+      <td>2.2350</td>
+      <td>NaN</td>
+      <td>latency_ms_per_image</td>
+      <td>596.6000</td>
+      <td>measured microbenchmark</td>
+      <td>benchmark_250_speed.log</td>
+      <td>Structural compute comparison; boundary implementation is close to but not identical to formal noise filling</td>
+    </tr>
+    <tr>
+      <td>2D structural RDD</td>
+      <td>RDD Unified XL/2</td>
+      <td>H20, batch16, DDPM250, 90/80/80 for RDD, single conditional forward</td>
+      <td>1.8960</td>
+      <td>NaN</td>
+      <td>latency_ms_per_image</td>
+      <td>703.4000</td>
+      <td>measured microbenchmark</td>
+      <td>benchmark_250_speed.log</td>
+      <td>Structural compute comparison; boundary implementation is close to but not identical to formal noise filling</td>
+    </tr>
+    <tr>
+      <td>2D structural RDD</td>
+      <td>DiT-XL/2 baseline</td>
+      <td>H20, batch16, DDPM250, 90/80/80 for RDD, single conditional forward</td>
+      <td>1.0000</td>
+      <td>NaN</td>
+      <td>latency_ms_per_image</td>
+      <td>1333.4000</td>
+      <td>measured microbenchmark</td>
+      <td>benchmark_250_speed.log</td>
+      <td>Structural compute comparison; boundary implementation is close to but not identical to formal noise filling</td>
+    </tr>
+    <tr>
+      <td>2D attention reuse</td>
+      <td>probability refresh every 3 steps</td>
+      <td>Unified-XL 400K, DDPM 80/80/90, CFG1.5, paired sample</td>
+      <td>1.1420</td>
+      <td>NaN</td>
+      <td>image_cosine</td>
+      <td>0.9953</td>
+      <td>paired proxy only; no FID</td>
+      <td>docs/research_docs/RDD_ATTENTION_ACCELERATION_EXPERIMENTS_ZH.md</td>
+      <td>PSNR 31.29 dB; proxy quality is not distributional quality</td>
+    </tr>
+    <tr>
+      <td>2D attention reuse</td>
+      <td>layer-depth 5/3/3 refresh</td>
+      <td>Unified-XL 400K, DDPM 80/80/90, CFG1.5, paired sample</td>
+      <td>1.1360</td>
+      <td>NaN</td>
+      <td>image_cosine</td>
+      <td>0.9964</td>
+      <td>paired proxy only; no FID</td>
+      <td>docs/research_docs/RDD_ATTENTION_ACCELERATION_EXPERIMENTS_ZH.md</td>
+      <td>PSNR 31.87 dB; proxy quality is not distributional quality</td>
+    </tr>
+    <tr>
+      <td>2D attention reuse</td>
+      <td>probability refresh every 5 steps</td>
+      <td>Unified-XL 400K, DDPM 80/80/90, CFG1.5, paired sample</td>
+      <td>1.1800</td>
+      <td>NaN</td>
+      <td>image_cosine</td>
+      <td>0.9889</td>
+      <td>paired proxy only; no FID</td>
+      <td>docs/research_docs/RDD_ATTENTION_ACCELERATION_EXPERIMENTS_ZH.md</td>
+      <td>PSNR 27.84 dB; proxy quality is not distributional quality</td>
+    </tr>
+    <tr>
+      <td>2D attention reuse</td>
+      <td>conservative cascade + refresh3</td>
+      <td>Unified-XL 400K, DDPM 80/80/90, CFG1.5, paired sample</td>
+      <td>1.0840</td>
+      <td>NaN</td>
+      <td>image_cosine</td>
+      <td>0.9931</td>
+      <td>paired proxy only; no FID</td>
+      <td>docs/research_docs/RDD_ATTENTION_ACCELERATION_EXPERIMENTS_ZH.md</td>
+      <td>PSNR 29.83 dB; proxy quality is not distributional quality</td>
+    </tr>
+    <tr>
+      <td>Video C2F route/reuse</td>
+      <td>temporal C2F-20 + reuse2</td>
+      <td>FastWan DMD3, 832x448x29, same checkpoint</td>
+      <td>1.6258</td>
+      <td>38.4935</td>
+      <td>sample_plus_vae_speedup</td>
+      <td>1.2047</td>
+      <td>plumbing/latency only; not RDD-trained</td>
+      <td>eval_results/rdd_fastwan_fair_accel_20260907/fair_acceleration_all_metrics.csv</td>
+      <td>Generated videos are not evidence of matched RDD video quality</td>
+    </tr>
+    <tr>
+      <td>Video direct block reuse</td>
+      <td>reuse6</td>
+      <td>FastWan DMD3, 1280 output, paired ABBA/BAAB</td>
+      <td>1.1866</td>
+      <td>15.7224</td>
+      <td>end_to_end_reduction_percent</td>
+      <td>1.8628</td>
+      <td>measured latency; quality failed</td>
+      <td>eval_results/direct_reuse_fullmodel_20260915/summary_and_audit.json</td>
+      <td>Includes VAE in the quality_value column; no FID/VBench and visible degradation</td>
+    </tr>
+    <tr>
+      <td>Video direct block reuse</td>
+      <td>reuse8</td>
+      <td>FastWan DMD3, 1280 output, paired ABBA/BAAB</td>
+      <td>1.2569</td>
+      <td>20.4373</td>
+      <td>end_to_end_reduction_percent</td>
+      <td>2.4987</td>
+      <td>measured latency; quality failed</td>
+      <td>eval_results/direct_reuse_fullmodel_20260915/summary_and_audit.json</td>
+      <td>Includes VAE in the quality_value column; no FID/VBench and visible degradation</td>
+    </tr>
+    <tr>
+      <td>Video direct block reuse</td>
+      <td>reuse10</td>
+      <td>FastWan DMD3, 1280 output, paired ABBA/BAAB</td>
+      <td>1.3513</td>
+      <td>25.9961</td>
+      <td>end_to_end_reduction_percent</td>
+      <td>3.1797</td>
+      <td>measured latency; quality failed</td>
+      <td>eval_results/direct_reuse_fullmodel_20260915/summary_and_audit.json</td>
+      <td>Includes VAE in the quality_value column; no FID/VBench and visible degradation</td>
+    </tr>
+    <tr>
+      <td>2D CSRA reader</td>
+      <td>skip-6 reader</td>
+      <td>Independent 10K, same ADM reference</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>FID10K_reader_minus_RDD</td>
+      <td>5.8529</td>
+      <td>quality gate failed; speed not measured in same run</td>
+      <td>eval_results/csra_reader_independent_fid10k_20260914/quality_audit.json</td>
+      <td>FID 11.6741 -&gt; 17.5270; must not be mixed with 50K paper FID</td>
+    </tr>
+    <tr>
+      <td>RDD DMD</td>
+      <td>3-stage / 3-NFE student</td>
+      <td>one NFE per resolution stage</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>formal_FID</td>
+      <td>NaN</td>
+      <td>no valid FID; visual/semantic quality failed</td>
+      <td>docs/research_docs/RDD_DMD_FAILURE_DIAGNOSIS_ZH.md</td>
+      <td>Do not report the theoretical 250/3 NFE ratio as quality-matched speedup</td>
+    </tr>
+    <tr>
+      <td>RDD-3D dynamic sparse</td>
+      <td>dynamic sparse vs force dense</td>
+      <td>30 measured samples; model load/NPZ write excluded</td>
+      <td>3.9367</td>
+      <td>74.5978</td>
+      <td>token_NFE_reduction</td>
+      <td>5.1423</td>
+      <td>task-specific runtime benchmark</td>
+      <td>eval_results/rdd3d_dynamic_sparse/dynamic_sparse_final_test_64_seed20260812/runtime_benchmark.json</td>
+      <td>Different 3D task and protocol; not comparable to 2D/video wall-clock</td>
+    </tr>
+  </tbody>
+</table>
+<h2>关键结果</h2><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>method</th>
+      <th>model</th>
+      <th>train_step</th>
+      <th>sampler</th>
+      <th>actual_nfe</th>
+      <th>cfg</th>
+      <th>fid</th>
+      <th>sfid</th>
+      <th>inception_score</th>
+      <th>precision</th>
+      <th>recall</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RDD flow matching</td>
+      <td>FM Unified L corrected 300/300/400</td>
+      <td>50000</td>
+      <td>Euler</td>
+      <td>252</td>
+      <td>1.0000</td>
+      <td>66.9929</td>
+      <td>13.2713</td>
+      <td>21.0584</td>
+      <td>0.3643</td>
+      <td>0.5348</td>
+    </tr>
+    <tr>
+      <td>RDD flow matching</td>
+      <td>FM Unified L corrected 400/300/300</td>
+      <td>50000</td>
+      <td>Euler</td>
+      <td>252</td>
+      <td>1.0000</td>
+      <td>70.1212</td>
+      <td>17.7755</td>
+      <td>20.6746</td>
+      <td>0.3498</td>
+      <td>0.5271</td>
+    </tr>
+    <tr>
+      <td>RDD flow matching</td>
+      <td>FM Unified XL v2 legacy</td>
+      <td>400000</td>
+      <td>Euler</td>
+      <td>252</td>
+      <td>1.0000</td>
+      <td>14.6174</td>
+      <td>5.8444</td>
+      <td>92.5354</td>
+      <td>0.6507</td>
+      <td>0.6390</td>
+    </tr>
+    <tr>
+      <td>RDD flow matching</td>
+      <td>FM Unified XL v2 legacy</td>
+      <td>400000</td>
+      <td>Euler</td>
+      <td>252</td>
+      <td>1.5000</td>
+      <td>3.3587</td>
+      <td>4.5916</td>
+      <td>235.0467</td>
+      <td>0.8428</td>
+      <td>0.5062</td>
+    </tr>
+    <tr>
+      <td>RDD flow matching</td>
+      <td>FM Unified XL v2 legacy</td>
+      <td>400000</td>
+      <td>Midpoint RK2</td>
+      <td>252</td>
+      <td>1.5000</td>
+      <td>3.2909</td>
+      <td>4.6201</td>
+      <td>235.4825</td>
+      <td>0.8429</td>
+      <td>0.5122</td>
+    </tr>
+    <tr>
+      <td>Original diffusion</td>
+      <td>Original DiT-XL/2</td>
+      <td>400000</td>
+      <td>DDPM</td>
+      <td>250</td>
+      <td>1.0000</td>
+      <td>19.7813</td>
+      <td>6.1639</td>
+      <td>67.5878</td>
+      <td>0.6348</td>
+      <td>0.6221</td>
+    </tr>
+    <tr>
+      <td>Original diffusion</td>
+      <td>Original DiT-XL/2</td>
+      <td>500000</td>
+      <td>DDPM</td>
+      <td>250</td>
+      <td>1.0000</td>
+      <td>17.4636</td>
+      <td>6.1833</td>
+      <td>75.1025</td>
+      <td>0.6426</td>
+      <td>0.6292</td>
+    </tr>
+    <tr>
+      <td>Original diffusion</td>
+      <td>Original DiT-XL/2</td>
+      <td>500000</td>
+      <td>DDPM</td>
+      <td>250</td>
+      <td>1.5000</td>
+      <td>4.9510</td>
+      <td>4.6180</td>
+      <td>170.7484</td>
+      <td>0.8137</td>
+      <td>0.5284</td>
+    </tr>
+    <tr>
+      <td>RDD diffusion</td>
+      <td>Unified L 300/300/400</td>
+      <td>400000</td>
+      <td>DDPM</td>
+      <td>250</td>
+      <td>1.0000</td>
+      <td>8.4563</td>
+      <td>4.3990</td>
+      <td>118.6152</td>
+      <td>0.7064</td>
+      <td>0.6243</td>
+    </tr>
+    <tr>
+      <td>RDD diffusion</td>
+      <td>Unified XL 300/300/400</td>
+      <td>400000</td>
+      <td>DDPM</td>
+      <td>250</td>
+      <td>1.0000</td>
+      <td>7.0651</td>
+      <td>4.3322</td>
+      <td>130.1901</td>
+      <td>0.7167</td>
+      <td>0.6293</td>
+    </tr>
+    <tr>
+      <td>RDD diffusion</td>
+      <td>Unified XL 300/300/400</td>
+      <td>400000</td>
+      <td>DDPM</td>
+      <td>250</td>
+      <td>1.5000</td>
+      <td>3.5374</td>
+      <td>5.1655</td>
+      <td>275.5237</td>
+      <td>0.8681</td>
+      <td>0.5070</td>
+    </tr>
+  </tbody>
+</table>
+<h2>可追溯数据</h2><ul>
+<li><code>curated_valid_results.csv</code>：主结果。</li><li><code>historical_invalid_results.csv</code>：旧错误数据集。</li>
+<li><code>all_fid_blocks_classified.csv</code>：751 个原始 blocks 的分类。</li><li><code>source_inventory.csv</code>：5,428 个文本源。</li>
+<li><code>duplicate_conflict_audit.csv</code>：镜像、冲突、误标与有效重复。</li></ul>
+</main></body></html>

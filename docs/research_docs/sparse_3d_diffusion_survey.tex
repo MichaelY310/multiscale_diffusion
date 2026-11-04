@@ -1,0 +1,1227 @@
+% Sparse Multi-Resolution 3D Diffusion: Comprehensive Survey
+% For RDD-compatible 3D Generation with Voxel-like Representations
+% Compile: pdflatex -interaction=nonstopmode sparse_3d_diffusion_survey.tex (run twice for TOC)
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{geometry}
+\geometry{margin=2.0cm}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{array}
+\usepackage{tabularx}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red!70!black},
+    numbers=left, numberstyle=\tiny\color{gray},
+    frame=single, breaklines=true, tabsize=4,
+    showstringspaces=false, language=Python, captionpos=b
+}
+\lstdefinestyle{flowchart}{
+    basicstyle=\ttfamily\footnotesize, frame=single, numbers=none,
+    breaklines=false, language={}, keywordstyle={},
+    commentstyle={}, stringstyle={}, backgroundcolor=\color{gray!5}
+}
+
+\newcommand{\alphabar}{\bar{\alpha}}
+
+\title{\huge Sparse Multi-Resolution 3D Diffusion\\[0.4em]
+\Large A Comprehensive Survey of 3D Representations\\Compatible with RDD's Constant Upsampling\\[0.2em]
+\normalsize NeurIPS/ICLR Candidate Research Direction}
+\author{Research Notes -- YANG, YUAN}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+%=================================================================
+\section{Executive Summary}
+%=================================================================
+
+\subsection{Core Thesis}
+
+RDD (Residual Drift Diffusion) introduces a \textbf{constant upsampling} mechanism in multi-resolution diffusion that does not depend on neighboring values. This property enables a \textbf{sparse diffusion} paradigm: voxels identified as empty at coarse resolution can be \emph{discarded} during refinement, since their upsampled values are independent of neighbors. This survey identifies 3D representations that can be mapped to $N \times N \times N$ grids and are compatible with this sparse multi-resolution diffusion framework.
+
+\subsection{Key Finding: Top 3 Representations for RDD-3D}
+
+\begin{enumerate}
+    \item \textbf{GaussianCube} (NeurIPS 2024): 3DGS $\to$ Optimal Transport $\to$ $32^3 \times 14$ grid. Perfect grid structure, proven diffusion compatibility, extremely compact.
+    \item \textbf{XCube/VDB Sparse Voxel Hierarchy} (CVPR 2024): Native sparse voxel octree with hierarchical latent diffusion. Scales to $1024^3$. Perfect for sparse RDD.
+    \item \textbf{K-Planes / TensoRF-VM factorization}: Compact plane-based representations where upsampling operates on 2D factors. Implicit sparsity via Hadamard product.
+\end{enumerate}
+
+\subsection{Project Architecture Vision}
+
+\begin{lstlisting}[style=flowchart, caption={Proposed Sparse RDD-3D Pipeline}]
+                    RDD Sparse 3D Generation Pipeline
+    ================================================================
+    
+    TRAINING:
+    3D Asset --> Encoder (VAE) --> Latent Grid N^3 x C
+                                        |
+                                   [Sparsify: mark empty voxels]
+                                        |
+                                   Sparse Latent (only surface voxels)
+                                        |
+                            RDD Forward Process (multi-scale drift)
+                                        |
+                            Train Denoiser (Sparse 3D U-Net / DiT)
+    
+    GENERATION (Multi-Resolution):
+    Step 1: Generate coarse grid (8^3 or 16^3) -- DENSE
+            |
+    Step 2: RDD Constant Upsample to 32^3
+            |-- Identify empty voxels (density < threshold)
+            |-- DISCARD empty voxels (sparse!)
+            |-- Denoise only non-empty voxels
+            |
+    Step 3: RDD Constant Upsample to 64^3
+            |-- Further sparsify
+            |-- Denoise sparse subset
+            |
+    Step 4: RDD Constant Upsample to 128^3 (final)
+            |-- Finest detail generation
+            |
+    DECODE: Sparse Latent --> 3D Output (mesh/3DGS/NeRF)
+\end{lstlisting}
+
+%=================================================================
+\section{Background: RDD's Constant Upsampling Property}
+%=================================================================
+
+\subsection{Why Constant Upsampling Enables Sparse 3D}
+
+In standard image super-resolution or cascaded diffusion, upsampling (bilinear, bicubic) \emph{depends on neighboring pixels}. This means every pixel must exist for correct interpolation. RDD's key innovation:
+
+\begin{equation}
+    \boxed{\text{UP}_{\text{RDD}}(x_i) = x_i \quad \text{(constant/nearest-neighbor replication)}}
+\end{equation}
+
+Each voxel's upsampled value depends \textbf{only on itself}, not neighbors. Consequences:
+\begin{itemize}
+    \item If a voxel is identified as ``empty'' (e.g., $\sigma < \epsilon$), we can skip upsampling it entirely
+    \item The remaining non-empty voxels can be upsampled independently
+    \item This converts the $O(N^3)$ dense computation to $O(k)$ where $k \ll N^3$ is the number of occupied voxels
+    \item For typical 3D shapes, surface voxels scale as $O(N^2)$, giving $O(N^2/N^3) = O(1/N)$ sparsity ratio
+\end{itemize}
+
+\subsection{RDD Forward Process (3D Extension)}
+
+\begin{equation}
+    q(x_t | x_0) = \mathcal{N}\!\left(\sqrt{\alphabar_t}\, x_0 + \sqrt{\alphabar_t}\, \kappa(t)\, \mathbf{d},\; (1-\alphabar_t)\,\mathbf{I}\right)
+\end{equation}
+
+For 3D voxel grids:
+\begin{equation}
+    \mathbf{d}[i,j,k] = \mathrm{UP}(\mathrm{DOWN}(x_0))[i,j,k] - x_0[i,j,k]
+\end{equation}
+
+where $\mathrm{DOWN}$: $N^3 \to (N/r)^3$ (average pooling) and $\mathrm{UP}$: $(N/r)^3 \to N^3$ (nearest-neighbor). Since UP is constant:
+\begin{equation}
+    \mathbf{d}[i,j,k] = \bar{x}_0[\lfloor i/r \rfloor, \lfloor j/r \rfloor, \lfloor k/r \rfloor] - x_0[i,j,k]
+\end{equation}
+
+\textbf{Key insight}: $\mathbf{d}[i,j,k]$ only depends on $x_0[i,j,k]$ and its block average. If the entire block is zero (empty voxels), then $\mathbf{d} = 0$ and the forward/reverse process trivially produces zeros --- justifying discarding empty regions.
+
+%=================================================================
+\section{Category 1: Sparse Voxel Diffusion Methods}
+%=================================================================
+
+\subsection{XCube (CVPR 2024 Highlight) -- NVIDIA}
+
+\textbf{Paper}: ``XCube: Large-Scale 3D Generative Modeling using Sparse Voxel Hierarchies''\\
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2312.03806}
+
+\subsubsection{3D Representation: Sparse Voxel Hierarchy (SVH)}
+
+Based on \textbf{VDB} (Volumetric Dynamic B+tree) --- the industry standard for sparse volumetric data:
+\begin{itemize}
+    \item 4-level shallow-wide tree: Hash Table $\to$ InternalNode1 ($32^3$ branching) $\to$ InternalNode2 ($16^3$) $\to$ LeafNode ($8^3$ voxels)
+    \item $O(1)$ average random access per voxel
+    \item Only allocates memory for non-empty regions
+    \item Hierarchy: $\mathcal{G} = \{G_1, G_2, ..., G_L\}$ from coarse to fine
+    \item Effective resolution up to $1024^3$ with only millions of active voxels
+\end{itemize}
+
+\subsubsection{Architecture}
+
+\textbf{Stage 1: Sparse Structure VAE}
+\begin{itemize}
+    \item \textbf{Encoder}: Sparse 3D convolution network (fVDB/NanoVDB backend), downsamples $(G, A)$ to latent resolution $X$
+    \item \textbf{Decoder}: Neural Kernel-inspired structure prediction. Predicts subdivision masks to progressively refine from $X$ back to target resolution
+    \item Latent dimension: 8
+    \item KL weight: 0.03
+\end{itemize}
+
+\textbf{Stage 2: Hierarchical Voxel Latent Diffusion}
+
+\begin{lstlisting}[style=flowchart, caption={XCube Hierarchical Generation}]
+Level 1 (16^3 DENSE):
+    Diffusion Model: Dense 3D U-Net
+    Output: Coarse structure (which regions are occupied)
+        |
+Level 2 (128^3 SPARSE):
+    Condition: Level 1 features (via concat/cross-attn)
+    Diffusion Model: Sparse 3D U-Net
+    Output: Medium-detail geometry + attributes
+        |
+Level 3 (512^3 or 1024^3 SPARSE):
+    Condition: Level 2 features
+    Diffusion Model: Sparse 3D U-Net
+    Output: Fine-detail surface + attributes
+\end{lstlisting}
+
+\subsubsection{Key Mathematical Details}
+
+VAE loss:
+\begin{equation}
+    \mathcal{L}_{\text{VAE}} = \mathbb{E}_{q}[\log p(G,A|X)] - \beta \cdot D_{\text{KL}}(q(X|G,A) \| p(X))
+\end{equation}
+
+Diffusion loss per level (independent models):
+\begin{equation}
+    \mathcal{L}_{\text{diff}}^{(l)} = \mathbb{E}_{t,\epsilon}\left[\|\epsilon - \epsilon_\theta(x_t^{(l)}, t, c^{(l-1)})\|^2\right]
+\end{equation}
+
+where $c^{(l-1)}$ is the coarser level's output serving as conditioning.
+
+\subsubsection{Experimental Results}
+
+\begin{itemize}
+    \item \textbf{ShapeNet}: 1-NNA (CD/EMD) competitive or superior to all baselines on Chair/Airplane/Car
+    \item \textbf{Waymo Open Dataset}: 100m$\times$100m outdoor scenes, 10cm voxel size ($1024^3$ effective)
+    \item \textbf{Generation speed}: $<30$ seconds for 1024$^3$ with millions of voxels
+    \item \textbf{Framework efficiency}: 3$\times$ faster than TorchSparse, 0.5$\times$ memory
+    \item Applications: unconditional, text-to-3D, scan completion, user-guided editing
+\end{itemize}
+
+\subsubsection{RDD Compatibility Analysis}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Aspect & Compatibility \\
+\midrule
+Grid Structure & $\star\star\star\star\star$ --- native $N^3$ sparse grid \\
+Constant Upsampling & $\star\star\star\star\star$ --- VDB supports arbitrary upsampling \\
+Sparsity & $\star\star\star\star\star$ --- core design principle \\
+Multi-resolution & $\star\star\star\star\star$ --- hierarchical by design \\
+\midrule
+\textbf{Limitation} & Uses cascade (independent models per level) \\
+\textbf{RDD Advantage} & RDD's single-chain drift avoids cascade complexity \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%-------------------------------------------------------------------
+\subsection{OctFusion (2024)}
+
+\textbf{Paper}: ``OctFusion: Octree-based Diffusion Models for 3D Shape Generation''\\
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2408.14732}
+
+\subsubsection{Core Innovation: Unified Multi-Scale U-Net}
+
+Unlike XCube's cascade approach, OctFusion uses a \textbf{single unified U-Net} that simultaneously processes all octree levels:
+
+\begin{itemize}
+    \item No independent models per resolution
+    \item Weight sharing across octree depths (depth 6=64$^3$, 7=128$^3$, 8=256$^3$)
+    \item Feature propagation through octree neighborhood relations
+    \item Only \textbf{33M parameters} (extremely lightweight)
+    \item Generation: 50 steps, 2.5 seconds on single RTX 4090
+\end{itemize}
+
+\subsubsection{Mathematical Formulation}
+
+Multi-scale diffusion with shared time step:
+\begin{equation}
+    x_t^{(l)} = \sqrt{\alphabar_t} \cdot x_0^{(l)} + \sqrt{1-\alphabar_t} \cdot \epsilon^{(l)}, \quad \forall l \in \{1,...,L\}
+\end{equation}
+
+Unified loss:
+\begin{equation}
+    \mathcal{L} = \sum_{l=1}^{L} w_l \cdot \mathbb{E}_{t,\epsilon}\left[\|\epsilon^{(l)} - \epsilon_\theta(x_t^{(l)}, t)\|^2\right]
+\end{equation}
+
+VAE (Dual Octree Graph Convolution):
+\begin{equation}
+    \mathcal{L}_{\text{VAE}} = \mathcal{L}_{\text{BCE}}(\text{occupancy}) + \mathcal{L}_{\text{MSE}}(\text{SDF}) + \lambda_{\text{KL}} \cdot \mathcal{L}_{\text{KL}}
+\end{equation}
+
+\subsubsection{Results}
+
+\begin{itemize}
+    \item Best average shading-image-based FID across all ShapeNet categories
+    \item Particularly strong on complex structures (rifle, airplane)
+    \item Supports: unconditional, category-conditional, text-conditional, sketch-conditional
+    \item Output is guaranteed \textbf{continuous and manifold}
+\end{itemize}
+
+\subsubsection{RDD Compatibility}
+
+\textbf{Extremely compatible} --- OctFusion's unified multi-scale approach is the \emph{exact same philosophy} as RDD:
+\begin{itemize}
+    \item Single model handling all resolutions (vs XCube's cascade)
+    \item Shared weights = shared computation across scales
+    \item RDD's $\kappa(t)$ schedule can naturally control which octree levels are active
+    \item Direct architectural reference for RDD-3D
+\end{itemize}
+
+%-------------------------------------------------------------------
+\subsection{TRELLIS (2024) -- Microsoft Research}
+
+\textbf{Paper}: ``Structured 3D Latents for Scalable and Versatile 3D Generation''\\
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2412.01506}
+
+\subsubsection{SLAT: Structured LATents}
+
+\begin{itemize}
+    \item Local latent vectors defined on \textbf{sparse voxel structure} (only active/surface cells)
+    \item Sparse VAE encoder: 3D shifted-window attention transformer
+    \item Serialization of occupied cells into active-voxel tokens
+    \item KL regularization toward standard normal
+\end{itemize}
+
+\subsubsection{Two-Stage Pipeline}
+
+\begin{enumerate}
+    \item Generate sparse structure (which voxels are active) --- binary occupancy
+    \item Generate latent vectors for non-empty cells --- continuous features
+\end{enumerate}
+
+\subsubsection{Architecture: Rectified Flow Transformer}
+
+\begin{itemize}
+    \item Backbone: Rectified Flow (straight-line ODE paths)
+    \item Sparse attention via 3D shifted-window
+    \item Model scale: trained up to \textbf{2 billion parameters}
+    \item Training data: large-scale curated 3D assets
+\end{itemize}
+
+\subsubsection{Results}
+
+\begin{itemize}
+    \item TRELLIS.2: 512$^3$ in 3s, 1024$^3$ in 17s, 1536$^3$ in 60s (H100)
+    \item State-of-the-art quality in both geometry and texture
+    \item Supports text-conditional and image-conditional generation
+\end{itemize}
+
+\subsubsection{RDD Compatibility}
+
+\textbf{Highly compatible}:
+\begin{itemize}
+    \item SLAT's ``sparse local latents'' directly maps to RDD's sparse grid
+    \item Two-stage can be unified into RDD's multi-resolution framework
+    \item Rectified Flow + sparse attention is a modern backbone option for RDD
+    \item The shifted-window attention provides local-to-global information flow
+\end{itemize}
+
+%-------------------------------------------------------------------
+\subsection{Direct3D-S2 (2025)}
+
+\textbf{Paper}: ``Gigascale 3D Generation Made Easy with Spatial Sparse Attention''\\
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2505.17412}
+
+\subsubsection{Spatial Sparse Attention (SSA)}
+
+Key contribution --- efficient attention for sparse 3D:
+\begin{itemize}
+    \item \textbf{3.9$\times$ forward speedup} over dense attention
+    \item Only 8 GPUs needed for 1024-resolution training
+    \item 24-layer DiT blocks, hidden dimension 1024
+    \item Grouped-Query Attention (GQA), group=2, 16 heads per group
+    \item Operates only on non-empty voxel tokens
+\end{itemize}
+
+\subsubsection{RDD Compatibility}
+
+SSA can be directly adopted as RDD's backbone attention mechanism for the sparse denoising network.
+
+%=================================================================
+\section{Category 2: Grid-Structured 3D Representations}
+%=================================================================
+
+\subsection{GaussianCube (NeurIPS 2024) -- Critical Method}
+
+\textbf{Paper}: ``GaussianCube: Structuring Gaussian Splatting using Optimal Transport for 3D Generative Modeling''\\
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2403.19655}
+
+\subsubsection{Method: 3DGS $\to$ Structured $N^3$ Grid}
+
+\textbf{Step 1: Density-Constrained Fitting}
+
+Standard 3DGS optimization but with a hard cap on Gaussian count:
+\begin{equation}
+    N_{\text{Gaussians}} \leq N_{\max} = N^3 \quad (N=32 \Rightarrow 32768 \text{ Gaussians})
+\end{equation}
+
+After each densification step, if count exceeds $N_{\max}$, prune lowest-opacity Gaussians. Train for 30K iterations.
+
+Each Gaussian $G_i$ has 14 attribute channels:
+\begin{equation}
+    G_i = (\underbrace{\mu_i}_{\mathbb{R}^3}, \underbrace{s_i}_{\mathbb{R}^3}, \underbrace{q_i}_{\mathbb{R}^4}, \underbrace{\alpha_i}_{\mathbb{R}^1}, \underbrace{c_i}_{\mathbb{R}^3}) \in \mathbb{R}^{14}
+\end{equation}
+
+\textbf{Step 2: Optimal Transport Structuralization}
+
+Solve the Linear Assignment Problem (LAP):
+\begin{equation}
+    \pi^* = \arg\min_{\pi \in \Pi_{N^3}} \sum_{i=1}^{N^3} \|\mu_i - g_{\pi(i)}\|_2^2
+\end{equation}
+
+where $g_j$ are predefined voxel center coordinates on the $N \times N \times N$ grid. Uses Jonker-Volgenant algorithm with segmented approximation (sort by coordinate, split into 4 segments, solve each independently).
+
+\textbf{Step 3: Final Representation}
+\begin{equation}
+    \boxed{\text{GaussianCube} \in \mathbb{R}^{N \times N \times N \times 14}}
+\end{equation}
+
+Each voxel stores the full attributes of the Gaussian assigned to that position. Position channel stores \textbf{offset} $\Delta\mu = \mu - g_{\pi(i)}$ (residual from grid center).
+
+\subsubsection{Diffusion Model}
+
+Standard ADM 3D U-Net:
+\begin{itemize}
+    \item Replace all 2D ops (conv, attention, up/downsample) with 3D versions
+    \item Full attention at $8^3$ and $4^3$ resolutions
+    \item Input/output: $32 \times 32 \times 32 \times 14$
+    \item 1000-step diffusion, cosine noise schedule
+    \item Trained on 16 Tesla V100
+\end{itemize}
+
+\subsubsection{Experimental Results}
+
+\begin{table}[H]
+\centering
+\caption{GaussianCube vs. Alternative Representations (ShapeNet Car)}
+\begin{tabular}{lccccc}
+\toprule
+Method & PSNR$\uparrow$ & LPIPS$\downarrow$ & SSIM$\uparrow$ & Speed & Params \\
+\midrule
+Voxel $128^3\times32$ & 26.77 & 0.1103 & 0.9431 & 1$\times$ & 67.1M \\
+Triplane $256^2\times32$ & 29.41 & 0.0721 & 0.9620 & 1.27$\times$ & 6.29M \\
+\textbf{GaussianCube} $32^3\times14$ & \textbf{34.94} & \textbf{0.0347} & \textbf{0.9863} & 3.33$\times$ & \textbf{0.46M} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Key findings:
+\begin{itemize}
+    \item \textbf{146$\times$ fewer parameters} than dense voxel, yet much higher quality
+    \item \textbf{14$\times$ fewer parameters} than triplane
+    \item Drastically better PSNR (+8.17 dB over voxel, +5.53 dB over triplane)
+    \item FID scores superior on ShapeNet and OmniObject3D
+\end{itemize}
+
+\subsubsection{RDD Compatibility Analysis}
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{
+\textbf{GaussianCube is perhaps the single most compatible representation for RDD-3D:}
+\begin{enumerate}
+    \item Perfect $N^3$ grid structure --- standard 3D convolutions apply directly
+    \item Each voxel has opacity $\alpha$ --- natural sparsity signal (discard $\alpha < \epsilon$)
+    \item Constant upsampling: $16^3 \to 32^3 \to 64^3$ by replicating each voxel to $2\times2\times2$ children
+    \item No neural decoder needed --- directly renderable via splatting
+    \item Proven to work with standard 3D U-Net diffusion
+    \item Extremely compact (460K params/shape)
+\end{enumerate}
+}}
+\end{center}
+
+\textbf{Proposed RDD-GaussianCube pipeline}:
+\begin{lstlisting}[style=flowchart]
+RDD Multi-Resolution GaussianCube Generation:
+
+    t=T (noise): Start from 8^3 x 14 dense noise
+        |
+    RDD reverse (coarse stage): Denoise to clean 8^3 x 14
+        |  (kappa transitions from 1->0 in this stage)
+        |
+    Constant Upsample: 8^3 -> 16^3 (replicate each voxel 2x2x2)
+        |  Identify empty: alpha_i < threshold
+        |  Discard empty voxels (SPARSE!)
+        |
+    RDD reverse (medium stage): Denoise 16^3 sparse
+        |
+    Constant Upsample: 16^3 -> 32^3
+        |  Further sparsify
+        |
+    RDD reverse (fine stage): Denoise 32^3 sparse
+        |
+    Output: Sparse GaussianCube -> Render via splatting
+\end{lstlisting}
+
+%-------------------------------------------------------------------
+\subsection{Plenoxels / Direct Voxel Representation}
+
+\textbf{Paper}: ``Plenoxels: Radiance Fields without Neural Networks'' (CVPR 2022)\\
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2112.05131}
+
+\subsubsection{Representation}
+
+Each voxel corner stores:
+\begin{equation}
+    v_{ijk} = (\sigma_{ijk}, \mathbf{k}_{ijk}) \in \mathbb{R}^{1+27}
+\end{equation}
+
+where $\sigma$ is density and $\mathbf{k} \in \mathbb{R}^{27}$ are degree-2 spherical harmonic coefficients ($9 \times 3$ color channels).
+
+Color computation:
+\begin{equation}
+    c(\mathbf{d}) = \text{sigmoid}\left(\sum_{l=0}^{2} \sum_{m=-l}^{l} k_l^m Y_l^m(\mathbf{d})\right)
+\end{equation}
+
+Volume rendering via trilinear interpolation of 8 nearest corners.
+
+\subsubsection{Multi-Resolution and Sparsity}
+
+\begin{itemize}
+    \item Coarse-to-fine: $128^3 \to 256^3 \to 512^3$
+    \item Periodic pruning: remove voxels with $\sigma < \epsilon$
+    \item Typical occupancy: 5--20\% of total grid
+    \item Native sparse storage
+\end{itemize}
+
+\subsubsection{RDD Compatibility}
+
+\textbf{Excellent}:
+\begin{itemize}
+    \item Natural $N^3$ voxel grid with 28 channels per voxel
+    \item Native sparsity (periodic pruning)
+    \item Coarse-to-fine upsampling is standard practice
+    \item \textbf{Challenge}: High memory at high resolution ($512^3 \times 28$ = 14GB dense)
+    \item RDD's sparse approach directly solves this memory problem
+\end{itemize}
+
+%-------------------------------------------------------------------
+\subsection{K-Planes Factorized Representation}
+
+\textbf{Paper}: ``K-Planes: Explicit Radiance Fields in Space, Time, and Appearance'' (CVPR 2023)\\
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2301.10241}
+
+\subsubsection{Mathematical Formulation}
+
+3D represented as 3 planes with Hadamard (element-wise) product:
+\begin{equation}
+    f(\mathbf{q}) = f_{XY}(x,y) \odot f_{XZ}(x,z) \odot f_{YZ}(y,z)
+\end{equation}
+
+Multi-scale version with $S$ spatial scales:
+\begin{equation}
+    f(\mathbf{q}) = \text{concat}\left[\bigodot_{c \in \{XY,XZ,YZ\}} f_c^{(s)}(\mathbf{q})\right]_{s=1}^{S}
+\end{equation}
+
+\subsubsection{Key Property: Implicit Sparsity via Hadamard Product}
+
+If \emph{any} plane has a zero at a given projection:
+\begin{equation}
+    f_{XY}(x,y) = 0 \quad \Rightarrow \quad f(\mathbf{q}) = 0 \quad \forall z
+\end{equation}
+
+This provides a natural sparsity mechanism without explicit sparse data structures!
+
+\subsubsection{Conversion to $N^3$ Grid}
+
+\begin{equation}
+    \text{Grid}[i,j,k] = P_{XY}[i,j] \odot P_{XZ}[i,k] \odot P_{YZ}[j,k]
+\end{equation}
+
+\begin{itemize}
+    \item No MLP needed --- purely explicit evaluation
+    \item Memory: $3 \times S \times N^2 \times M$ (vs $N^3 \times C$ for dense voxel)
+    \item Typical: $N=256, M=32, S=4$: $\approx$25M params $\approx$ 100MB
+\end{itemize}
+
+\subsubsection{RDD Compatibility}
+
+\textbf{Very high}:
+\begin{itemize}
+    \item Upsampling planes (2D bilinear) directly equals volume upsampling
+    \item Empty voxels detectable by checking plane values
+    \item Constant upsampling on planes: $O(N^2)$ instead of $O(N^3)$
+    \item Diffusion can operate on \textbf{plane factors} rather than full volume
+\end{itemize}
+
+\textbf{Novel idea}: Run RDD diffusion on the \emph{plane factors} directly. Multi-resolution: $64^2 \to 128^2 \to 256^2$ planes. The resulting 3D is implicitly multi-resolution.
+
+%-------------------------------------------------------------------
+\subsection{TensoRF VM Decomposition}
+
+\textbf{Paper}: ``TensoRF: Tensorial Radiance Fields'' (ECCV 2022)\\
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2203.09517}
+
+\subsubsection{Vector-Matrix Decomposition}
+
+\begin{equation}
+    \mathcal{T} = \sum_{r=1}^{R_1} \mathbf{v}_r^X \circ \mathbf{M}_r^{Y,Z} + \sum_{r=1}^{R_2} \mathbf{v}_r^Y \circ \mathbf{M}_r^{X,Z} + \sum_{r=1}^{R_3} \mathbf{v}_r^Z \circ \mathbf{M}_r^{X,Y}
+\end{equation}
+
+where $\mathbf{v}_r^X \in \mathbb{R}^I$ (vector) and $\mathbf{M}_r^{Y,Z} \in \mathbb{R}^{J \times K}$ (matrix/plane).
+
+\begin{itemize}
+    \item Memory: $O(N^2)$ instead of $O(N^3)$
+    \item Quality: comparable to dense voxel at $300^3$
+    \item Size: $<75$MB vs Plenoxels' GBs
+\end{itemize}
+
+\subsubsection{RDD Compatibility}
+
+\textbf{High}:
+\begin{itemize}
+    \item Can evaluate to any $N^3$ grid for diffusion
+    \item Factored structure allows efficient upsampling (2D plane upsample + 1D vector upsample)
+    \item Compact enough for latent diffusion
+\end{itemize}
+
+%=================================================================
+\section{Category 3: Grid-Based Implicit/Explicit 3D Generation}
+%=================================================================
+
+\subsection{SDFusion: Latent Diffusion on SDF Grids (CVPR 2023)}
+
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2212.04493}
+
+\subsubsection{Method}
+
+\begin{itemize}
+    \item Input: Truncated SDF on $64^3$ voxel grid
+    \item VQ-VAE compression: $64^3 \to 8^3$ latent ($8\times$ per axis)
+    \item Latent diffusion: 3D U-Net denoiser on $8^3$ latent space
+    \item Multi-modal conditioning: image (CLIP), text (CLIP), partial shape
+\end{itemize}
+
+\subsubsection{Limitations for RDD}
+
+\begin{itemize}
+    \item[$\times$] Dense 3D convolutions on full grid
+    \item[$\times$] Fixed resolution $64^3$ (hard to scale)
+    \item[$\times$] No sparsity exploitation
+    \item[$\checkmark$] But: VQ-VAE + latent diffusion paradigm is sound
+\end{itemize}
+
+%-------------------------------------------------------------------
+\subsection{DiffRF: Direct Voxel Radiance Field Diffusion (CVPR 2023)}
+
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2212.01206}
+
+\subsubsection{Key Innovation: Rendering-Guided Loss}
+
+\begin{equation}
+    \mathcal{L} = \mathcal{L}_{\text{DDPM}} + \lambda \mathcal{L}_{\text{RGB}}
+\end{equation}
+\begin{equation}
+    \mathcal{L}_{\text{RGB}} = \|\hat{I}(\hat{V}_0) - I_{\text{gt}}\|^2
+\end{equation}
+
+where $\hat{V}_0$ is the predicted clean volume from noisy input, and $\hat{I}$ is differentiable volume rendering.
+
+\subsubsection{Architecture}
+
+\begin{itemize}
+    \item Direct diffusion on $128^3 \times 4$ voxel grid (density + RGB)
+    \item 3D U-Net denoiser (converted from 2D ADM U-Net)
+    \item No encoder/decoder --- operates in voxel space directly
+\end{itemize}
+
+\subsubsection{RDD Relevance}
+
+Rendering-guided loss is valuable for RDD-3D:
+\begin{itemize}
+    \item Can supervise multi-resolution generation with 2D rendered images
+    \item Avoids need for perfect 3D ground truth
+    \item Compatible with any voxel-based representation
+\end{itemize}
+
+%-------------------------------------------------------------------
+\subsection{VoxGRAF: Sparse Voxel GAN (NeurIPS 2022)}
+
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2206.07695}
+
+\subsubsection{Architecture}
+
+\begin{lstlisting}[style=flowchart, caption={VoxGRAF Progressive Growing}]
+z (latent) --> Dense 32^3 feature grid
+    |
+    v (3D sparse conv)
+Grow to 64^3 --> Free Space Pruning (discard empty)
+    |
+    v (3D sparse conv)  
+Grow to 128^3 --> Free Space Pruning
+    |
+    v
+Volume Rendering --> 2D image --> 2D Discriminator
+\end{lstlisting}
+
+\subsubsection{RDD Relevance}
+
+VoxGRAF's \textbf{progressive growing + free-space pruning} is exactly the paradigm RDD enables for diffusion:
+\begin{itemize}
+    \item Start dense at low resolution
+    \item Upsample and prune empty voxels
+    \item Process only non-empty voxels at high resolution
+    \item Replace GAN with RDD diffusion
+\end{itemize}
+
+%=================================================================
+\section{Category 4: Mesh/Surface Extraction from Grids}
+%=================================================================
+
+\subsection{FlexiCubes (SIGGRAPH 2023)}
+
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2308.05371}
+
+\subsubsection{Differentiable Mesh from Voxel Grid}
+
+Given SDF values $s$ on a cubic grid, FlexiCubes extracts high-quality mesh with extra learnable parameters:
+
+\textbf{Weight parameters} $\alpha \in \mathbb{R}_{>0}^8$ per cube: adjust edge crossing positions:
+\begin{equation}
+    u_e = \frac{s(x_i)\alpha_i \cdot x_j - s(x_j)\alpha_j \cdot x_i}{s(x_i)\alpha_i - s(x_j)\alpha_j}
+\end{equation}
+
+\textbf{Split parameters} $\beta \in [0,1]^{12}$ per cube: control tetrahedralization.
+
+\subsubsection{RDD Integration}
+
+FlexiCubes provides differentiable mesh extraction from any grid-based SDF:
+\begin{itemize}
+    \item RDD generates sparse SDF grid (multi-resolution)
+    \item FlexiCubes converts final grid to mesh
+    \item End-to-end differentiable for rendering losses
+    \item Supports $128^3$ to $256^3$ grids
+\end{itemize}
+
+%-------------------------------------------------------------------
+\subsection{DMTet: Deep Marching Tetrahedra (NeurIPS 2021)}
+
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2111.04276}
+
+\subsubsection{Key Properties}
+
+\begin{itemize}
+    \item Tetrahedral grid (from regular cube subdivision)
+    \item Each vertex: SDF value $s_i$ + deformation $\Delta v_i$
+    \item Differentiable mesh extraction via linear interpolation on sign-changing edges
+    \item \textbf{Volume subdivision}: only refine tetrahedra containing surface
+    \item Resolution: $128^3$ base, up to $256^3$ with adaptive subdivision
+\end{itemize}
+
+\subsubsection{Surface point extraction}
+
+\begin{equation}
+    p_{ij} = \frac{|s_j| \cdot (v_i + \Delta v_i) + |s_i| \cdot (v_j + \Delta v_j)}{|s_i| + |s_j|}
+\end{equation}
+
+\subsubsection{RDD Integration}
+
+DMTet's coarse-to-fine subdivision aligns with RDD:
+\begin{itemize}
+    \item Coarse grid ($32^3$): RDD generates rough SDF
+    \item Adaptive subdivision: only refine near surface (= non-empty voxels)
+    \item Fine grid ($128^3+$): RDD refines surface detail
+\end{itemize}
+
+%-------------------------------------------------------------------
+\subsection{Get3D: SDF Generation on Grid (NeurIPS 2022)}
+
+\textbf{ArXiv}: \url{https://arxiv.org/abs/2209.11163}
+
+\subsubsection{Architecture}
+
+\begin{itemize}
+    \item StyleGAN2 backbone generates feature volume $4^3 \to 8^3 \to 16^3 \to 32^3 \times 64$
+    \item Trilinear interpolation to DMTet vertices
+    \item MLP predicts SDF + deformation at each vertex
+    \item DMTet extracts mesh differentiably
+    \item 2D discriminator on rendered images
+\end{itemize}
+
+\subsubsection{Grid Structure}
+
+Feature volume progression:
+\begin{equation}
+    F^{(l)} = \text{ModConv3D}(F^{(l-1)}; w) \quad l = 1,...,4
+\end{equation}
+\begin{equation}
+    F^{(0)} \in \mathbb{R}^{4\times4\times4\times256}, \quad F^{(4)} \in \mathbb{R}^{32\times32\times32\times64}
+\end{equation}
+
+\subsubsection{RDD Compatibility}
+
+The progressive $4^3 \to 32^3$ feature volume is directly analogous to RDD's multi-resolution stages. Replace StyleGAN2 with RDD diffusion on the feature volume.
+
+%=================================================================
+\section{Category 5: NeRF-to-Grid Representations for Diffusion}
+%=================================================================
+
+\subsection{Tri-plane + Diffusion (EG3D / RodinDiffusion / NFD)}
+
+\subsubsection{EG3D Tri-plane (CVPR 2022)}
+
+Three orthogonal feature planes:
+\begin{equation}
+    F(\mathbf{p}) = T_{XY}(x,y) + T_{XZ}(x,z) + T_{YZ}(y,z), \quad T_* \in \mathbb{R}^{N \times N \times C}
+\end{equation}
+
+Decoded via MLP: $(\sigma, \mathbf{c}) = \text{MLP}(F(\mathbf{p}))$
+
+\subsubsection{Diffusion on Tri-planes}
+
+Multiple works apply diffusion directly on tri-plane latents:
+\begin{itemize}
+    \item \textbf{RodinDiffusion} (CVPR 2023): 3D avatar generation, $512^2 \times 64$ planes
+    \item \textbf{NFD} (CVPR 2023): reshape tri-planes as 2D images, use 2D U-Net diffusion
+    \item \textbf{SSDNeRF} (ICCV 2023): joint optimization of tri-planes + diffusion prior
+\end{itemize}
+
+\subsubsection{RDD Compatibility}
+
+\textbf{Moderate}:
+\begin{itemize}
+    \item Tri-planes are 2D, not 3D --- need architectural adaptation
+    \item Cannot directly identify ``empty voxels'' without MLP evaluation
+    \item Memory efficient ($O(N^2)$) but lacks native 3D sparsity
+    \item \textbf{Alternative}: Run RDD on tri-plane factors (2D multi-resolution diffusion $\times$ 3 planes)
+\end{itemize}
+
+%-------------------------------------------------------------------
+\subsection{DVGO / Direct Voxel Grid Optimization (CVPR 2022)}
+
+\subsubsection{Post-Activation Interpolation}
+
+Key innovation for sharp boundaries:
+\begin{equation}
+    \sigma(\mathbf{x}) = \text{softplus}\left(\text{trilinear}(V^{(\text{density})}, \mathbf{x}) + b\right)
+\end{equation}
+
+Store raw (pre-activation) values; interpolate first, activate after.
+
+\subsubsection{Grid Structure}
+
+\begin{itemize}
+    \item Density grid: $V^{(\text{density})} \in \mathbb{R}^{N \times N \times N}$
+    \item Feature grid: $V^{(\text{feature})} \in \mathbb{R}^{N \times N \times N \times C}$ ($C=12$)
+    \item Shallow MLP decodes features to color
+    \item Resolution: $160^3$ to $320^3$
+\end{itemize}
+
+\subsubsection{RDD Compatibility}
+
+\textbf{Good}: DVGO's density grid provides natural sparsity mask. Feature grid can be ``baked'' (evaluate MLP at grid points) to produce pure grid representation suitable for diffusion.
+
+%=================================================================
+\section{Detailed Comparison Table}
+%=================================================================
+
+\begin{longtable}{p{2.5cm}|p{2cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{2cm}|p{2cm}}
+\caption{Comprehensive Comparison of 3D Representations for Sparse RDD} \\
+\toprule
+\textbf{Method} & \textbf{Representation} & \textbf{$N^3$ Grid} & \textbf{Sparse} & \textbf{Multi-Res} & \textbf{RDD Compat.} & \textbf{Max Res.} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Method} & \textbf{Representation} & \textbf{$N^3$ Grid} & \textbf{Sparse} & \textbf{Multi-Res} & \textbf{RDD Compat.} & \textbf{Max Res.} \\
+\midrule
+\endhead
+XCube & Sparse VDB & \checkmark & \checkmark\checkmark & \checkmark\checkmark & $\star\star\star\star\star$ & 1024$^3$ \\
+\midrule
+OctFusion & Octree latent & \checkmark & \checkmark\checkmark & \checkmark\checkmark & $\star\star\star\star\star$ & 256$^3$ \\
+\midrule
+TRELLIS & Sparse SLAT & \checkmark & \checkmark\checkmark & \checkmark & $\star\star\star\star\star$ & 1536$^3$ \\
+\midrule
+\textbf{GaussianCube} & \textbf{OT-structured 3DGS} & \checkmark\checkmark & \checkmark & \checkmark & $\star\star\star\star\star$ & \textbf{32$^3$ (extensible)} \\
+\midrule
+Direct3D-S2 & Sparse DiT & \checkmark & \checkmark\checkmark & --- & $\star\star\star\star$ & 1024$^3$ \\
+\midrule
+VoxGRAF & Sparse voxel & \checkmark & \checkmark\checkmark & \checkmark & $\star\star\star\star$ & 128$^3$ \\
+\midrule
+Plenoxels & Dense/sparse SH & \checkmark\checkmark & \checkmark & \checkmark & $\star\star\star\star$ & 512$^3$ \\
+\midrule
+K-Planes & Factored planes & indirect & implicit & \checkmark & $\star\star\star\star$ & 512$^3$ \\
+\midrule
+TensoRF-VM & Vec-Mat decomp & indirect & implicit & \checkmark & $\star\star\star\star$ & 300$^3$ \\
+\midrule
+Get3D & Dense feature vol & \checkmark & --- & \checkmark & $\star\star\star$ & 32$^3$ feat \\
+\midrule
+SDFusion & Dense SDF grid & \checkmark & --- & --- & $\star\star$ & 64$^3$ \\
+\midrule
+DiffRF & Dense voxel RF & \checkmark & --- & --- & $\star\star$ & 128$^3$ \\
+\midrule
+3DShape2VecSet & Token set & --- & --- & --- & $\star\star$ & N/A \\
+\midrule
+Tri-plane & 3$\times N^2$ planes & indirect & --- & --- & $\star\star$ & 256$^2$ \\
+\midrule
+MeshGPT & 1D sequence & --- & --- & --- & $\star$ & N/A \\
+\midrule
+Shap-E & MLP params & --- & --- & --- & $\star$ & N/A \\
+\bottomrule
+\end{longtable}
+
+%=================================================================
+\section{Proposed Architecture: RDD-3D Sparse Diffusion}
+%=================================================================
+
+\subsection{Design Choices}
+
+Based on this survey, the optimal architecture combines:
+
+\begin{enumerate}
+    \item \textbf{Representation}: GaussianCube (proven quality, native grid) OR Sparse Voxel SDF (XCube-style, native sparsity)
+    \item \textbf{Encoder}: Sparse 3D VAE (TRELLIS-style shifted-window attention)
+    \item \textbf{Diffusion}: RDD with unified multi-scale denoiser (OctFusion philosophy)
+    \item \textbf{Backbone}: Sparse 3D U-Net (XCube) or Sparse DiT with SSA (Direct3D-S2)
+    \item \textbf{Decoder}: Differentiable rendering (GaussianCube splatting or FlexiCubes mesh extraction)
+\end{enumerate}
+
+\subsection{Architecture Option A: RDD-GaussianCube}
+
+\begin{lstlisting}[style=flowchart, caption={RDD-GaussianCube Architecture}]
+=== TRAINING ===
+
+    3D Asset (mesh/scan)
+        |
+    3DGS Fitting (density-constrained, N_max=64^3)
+        |
+    Optimal Transport Structuralization
+        |
+    GaussianCube: 64 x 64 x 64 x 14
+        |
+    Sparse VAE Encoder (3D sparse conv)
+        |-- Downsample: 64^3 -> 32^3 -> 16^3 -> 8^3
+        |-- KL regularization
+        |
+    Latent: 8^3 x D (dense at coarsest level)
+        |
+    RDD Forward Process:
+        |-- Stage 1 (t in [T, T2]): drift toward 4^3 average
+        |-- Stage 2 (t in [T2, T1]): drift toward 8^3 
+        |-- Stage 3 (t in [T1, 0]): no drift (finest detail)
+        |
+    Train Sparse 3D U-Net denoiser
+
+=== GENERATION ===
+
+    Sample z_T ~ N(0, I) at 8^3 x D
+        |
+    RDD Reverse (Stage 1): 8^3 -> clean coarse structure
+        |
+    Constant Upsample: 8^3 -> 16^3 (nearest-neighbor)
+        |-- Threshold: keep only voxels with predicted density > eps
+        |-- Result: sparse 16^3 
+        |
+    RDD Reverse (Stage 2): denoise sparse 16^3
+        |
+    Constant Upsample: 16^3 -> 32^3 -> 64^3 (with pruning)
+        |
+    RDD Reverse (Stage 3): denoise sparse 64^3 (fine detail)
+        |
+    Sparse VAE Decoder -> GaussianCube 64^3 x 14
+        |
+    Gaussian Splatting Rendering -> Novel views
+\end{lstlisting}
+
+\subsection{Architecture Option B: RDD-SparseVoxel (XCube-inspired)}
+
+\begin{lstlisting}[style=flowchart, caption={RDD-SparseVoxel Architecture}]
+=== TRAINING ===
+
+    3D Asset -> Voxelize to Sparse SDF (OpenVDB)
+        |
+    Multi-level sparse representation:
+        Level 1: 16^3 (dense, coarse structure)
+        Level 2: 64^3 (sparse, medium detail)
+        Level 3: 256^3 (sparse, fine surface)
+        |
+    Sparse Structure VAE (per level):
+        Encode (sparse 3D conv) -> latent per level
+        |
+    RDD Forward (UNIFIED, single chain):
+        x_t = sqrt(alpha_bar_t) * x_0 + sqrt(alpha_bar_t)*kappa(t)*d + noise
+        |
+        d = UP(DOWN(x_0)) - x_0   [constant upsample!]
+        |
+        Single noise schedule covers ALL levels
+        kappa(t) smoothly transitions between resolution stages
+        |
+    Train UNIFIED Sparse 3D U-Net (OctFusion-style weight sharing)
+
+=== GENERATION ===
+
+    z_T ~ N(0, I) at Level 1 (16^3 dense)
+        |
+    RDD Reverse (t: T -> T2):
+        Denoises toward coarse structure
+        kappa: 1 -> 0 (drift disappears)
+        |
+    [TRANSITION: constant upsample 16^3 -> 64^3]
+        |-- Mark empty voxels (density < eps)
+        |-- Discard empty -> sparse 64^3
+        |
+    RDD Reverse (t: T2 -> T1):
+        Denoises sparse 64^3
+        |
+    [TRANSITION: constant upsample 64^3 -> 256^3]
+        |-- Further prune empty
+        |
+    RDD Reverse (t: T1 -> 0):
+        Final surface detail at sparse 256^3
+        |
+    Decode: latent -> SDF -> FlexiCubes -> Mesh
+\end{lstlisting}
+
+\subsection{Architecture Option C: RDD-FactoredPlanes (Novel)}
+
+\begin{lstlisting}[style=flowchart, caption={RDD on Factored Plane Representation}]
+=== KEY IDEA ===
+    Instead of diffusing on N^3 volume, diffuse on 
+    3 planes (each N^2 x C) using K-Planes factorization.
+    
+    Memory: O(N^2) instead of O(N^3)!
+    RDD upsampling: 2D plane upsample (constant/nearest)
+    Sparsity: Hadamard product guarantees zero propagation
+
+=== PIPELINE ===
+
+    3D Asset -> Fit K-Planes (multi-scale)
+        P_XY^s, P_XZ^s, P_YZ^s for s=1,...,S
+        |
+    Stack/concatenate planes -> "triplane latent"
+        Total: 3 x S x N^2 x M
+        |
+    RDD 2D Diffusion on each plane independently:
+        Coarse planes (64^2): diffuse first
+        Fine planes (256^2): diffuse conditioned on coarse
+        |
+    Constant upsample on 2D planes (nearest-neighbor)
+        |
+    Reconstruct: f(x,y,z) = Product of plane features
+        |
+    Threshold density -> Marching Cubes -> Mesh
+
+=== ADVANTAGES ===
+    - O(N^2) memory and compute (not N^3!)
+    - Can reuse existing 2D diffusion architectures
+    - RDD constant upsample works in 2D
+    - Implicit 3D sparsity from Hadamard product
+    
+=== DISADVANTAGES ===
+    - Cross-plane artifacts (known tri-plane issue)
+    - Cannot directly identify sparse 3D regions from 2D planes
+    - Less natural for 3D sparse operations
+\end{lstlisting}
+
+%=================================================================
+\section{Experimental Baselines and Expected Metrics}
+%=================================================================
+
+\subsection{Datasets}
+
+\begin{itemize}
+    \item \textbf{ShapeNet} (55 categories, ~51K shapes): Standard benchmark for 3D generation
+    \item \textbf{Objaverse} (800K+ objects): Large-scale diverse 3D dataset
+    \item \textbf{OmniObject3D} (6K real scanned objects, 190 categories): Real-world benchmark
+    \item \textbf{Waymo Open Dataset}: Large-scale outdoor scenes (for scene-level generation)
+\end{itemize}
+
+\subsection{Metrics}
+
+\begin{itemize}
+    \item \textbf{FID} (Frechet Inception Distance): on multi-view rendered images (20 views standard)
+    \item \textbf{KID} (Kernel Inception Distance): unbiased alternative to FID
+    \item \textbf{1-NNA} (1-Nearest Neighbor Accuracy): on Chamfer Distance (CD) and Earth Mover's Distance (EMD)
+    \item \textbf{Coverage (COV)}: diversity measure
+    \item \textbf{MMD} (Minimum Matching Distance): fidelity measure
+    \item \textbf{PSNR/SSIM/LPIPS}: for novel-view synthesis quality
+    \item \textbf{IoU}: volumetric overlap for occupancy evaluation
+    \item \textbf{Chamfer Distance}: point cloud geometry accuracy
+\end{itemize}
+
+\subsection{Expected Performance Targets}
+
+Based on current SOTA (XCube, TRELLIS, GaussianCube):
+
+\begin{table}[H]
+\centering
+\caption{Target Metrics for RDD-3D}
+\begin{tabular}{lcc}
+\toprule
+Metric & Current SOTA & RDD-3D Target \\
+\midrule
+ShapeNet FID (multi-view) & $\sim$15--25 & $\leq$ 20 \\
+Generation time (256$^3$) & 2.5s (OctFusion) & $\leq$ 3s \\
+Memory (256$^3$) & 8GB (dense) & $\leq$ 2GB (sparse) \\
+Max resolution & 1536$^3$ (TRELLIS) & 512$^3$+ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%=================================================================
+\section{Action Plan}
+%=================================================================
+
+\subsection{P0: Proof of Concept (4--6 weeks)}
+
+\begin{enumerate}
+    \item \textbf{Implement RDD-GaussianCube baseline}:
+    \begin{itemize}
+        \item Use GaussianCube's public code for data preparation
+        \item Implement 3D RDD forward process (constant upsample + drift)
+        \item Train 3D U-Net denoiser at $32^3$ resolution
+        \item Validate: compare FID with GaussianCube's original ADM baseline
+    \end{itemize}
+    
+    \item \textbf{Implement sparse masking}:
+    \begin{itemize}
+        \item After coarse-level generation, threshold opacity to create binary mask
+        \item Verify: generation quality preserved when discarding low-opacity voxels
+        \item Measure: actual sparsity ratio achieved (target: 70--90\% empty)
+    \end{itemize}
+    
+    \item \textbf{Benchmark constant vs. bilinear upsampling}:
+    \begin{itemize}
+        \item Ablation: nearest-neighbor vs bilinear upsample in RDD 3D
+        \item Confirm: constant upsample + RDD drift correction matches bilinear quality
+    \end{itemize}
+\end{enumerate}
+
+\subsection{P1: Sparse Acceleration (4--6 weeks)}
+
+\begin{enumerate}
+    \item \textbf{Implement sparse 3D U-Net}:
+    \begin{itemize}
+        \item Replace dense 3D convolutions with sparse alternatives (MinkowskiEngine or fVDB)
+        \item Only process non-empty voxels at medium/fine resolutions
+        \item Measure: FLOPs reduction and wallclock speedup
+    \end{itemize}
+    
+    \item \textbf{Scale to higher resolution}:
+    \begin{itemize}
+        \item Extend from $32^3$ to $64^3$ and $128^3$ with sparse operations
+        \item Implement multi-stage RDD: $16^3 \to 32^3 \to 64^3 \to 128^3$
+        \item Verify: linear scaling with occupied voxels (not cubic with resolution)
+    \end{itemize}
+    
+    \item \textbf{Sparse attention (optional)}:
+    \begin{itemize}
+        \item Implement Direct3D-S2's Spatial Sparse Attention
+        \item Compare: sparse U-Net vs sparse DiT backbone
+    \end{itemize}
+\end{enumerate}
+
+\subsection{P2: Full System and Paper (6--8 weeks)}
+
+\begin{enumerate}
+    \item \textbf{Alternative representations}:
+    \begin{itemize}
+        \item Test K-Planes factored representation with RDD
+        \item Compare: GaussianCube vs. SDF voxel vs. factored planes
+        \item Identify best representation for different tasks (objects vs. scenes)
+    \end{itemize}
+    
+    \item \textbf{Conditioning and applications}:
+    \begin{itemize}
+        \item Add image conditioning (CLIP/DINOv2)
+        \item Add text conditioning
+        \item Shape completion from partial input
+    \end{itemize}
+    
+    \item \textbf{Paper writing}:
+    \begin{itemize}
+        \item Core contribution: ``Sparse Multi-Resolution 3D Diffusion via Constant Upsampling''
+        \item Key claim: RDD's neighbor-independent upsampling enables native sparse 3D generation
+        \item Ablation: $\gamma=0$ (no drift) vs full RDD vs cascade baseline
+        \item Comparison: vs XCube (cascade), vs OctFusion (unified but no sparsity claim), vs TRELLIS (two-stage)
+    \end{itemize}
+\end{enumerate}
+
+%=================================================================
+\section{Key Novelty Claim for Paper}
+%=================================================================
+
+\subsection{Positioning Statement}
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Novelty}: We observe that RDD's constant (nearest-neighbor) upsampling creates a unique opportunity for 3D generation: since upsampled values are \emph{independent of neighbors}, empty voxels can be identified and \emph{discarded without loss of information}. This transforms the $O(N^3)$ dense volumetric diffusion into $O(k)$ sparse generation where $k$ is the number of surface voxels ($k \propto N^2 \ll N^3$).
+
+\textbf{Unlike prior work}:
+\begin{itemize}
+    \item XCube uses \emph{cascade} diffusion (separate models per level) --- we use a \emph{single unified RDD chain}
+    \item OctFusion handles multi-scale but doesn't exploit the \emph{mathematical guarantee} that constant upsampling enables exact sparse computation
+    \item TRELLIS separates structure and content generation --- RDD's drift term naturally handles both in one process
+\end{itemize}
+
+\textbf{Mathematical insight}: In RDD, if a block of voxels has identical values (constant region), the drift term $\mathbf{d} = \text{UP}(\text{DOWN}(x_0)) - x_0 = 0$ exactly. Empty (zero) regions remain zero throughout the forward/reverse process, making sparse computation \emph{exact} (not approximate).
+}}
+\end{center}
+
+\subsection{Comparison with Existing Work}
+
+\begin{table}[H]
+\centering
+\caption{Novelty Positioning}
+\begin{tabular}{p{3cm}cccc}
+\toprule
+& Single Chain & Constant UP & Exact Sparsity & Unified Model \\
+\midrule
+XCube & $\times$ (cascade) & N/A & $\times$ & $\times$ \\
+OctFusion & \checkmark & $\times$ (learned) & $\times$ (approx) & \checkmark \\
+TRELLIS & $\times$ (two-stage) & N/A & $\times$ & $\times$ \\
+Cascade DDPM & $\times$ & $\times$ (bilinear) & $\times$ & $\times$ \\
+\textbf{RDD-3D (ours)} & \checkmark & \checkmark & \checkmark & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%=================================================================
+\section{References}
+%=================================================================
+
+\begin{enumerate}[label={[\arabic*]}]
+    \item XCube: Ren et al., ``XCube: Large-Scale 3D Generative Modeling using Sparse Voxel Hierarchies,'' CVPR 2024 Highlight. arXiv:2312.03806
+    \item OctFusion: Xiong et al., ``OctFusion: Octree-based Diffusion Models for 3D Shape Generation,'' 2024. arXiv:2408.14732
+    \item TRELLIS: Xiang et al., ``Structured 3D Latents for Scalable and Versatile 3D Generation,'' 2024. arXiv:2412.01506
+    \item GaussianCube: Zhang et al., ``GaussianCube: Structuring Gaussian Splatting using Optimal Transport for 3D Generative Modeling,'' NeurIPS 2024. arXiv:2403.19655
+    \item Direct3D: Wu et al., ``Direct3D: Scalable Image-to-3D Generation via 3D Latent Diffusion Transformer,'' 2024. arXiv:2405.14832
+    \item Direct3D-S2: ``Gigascale 3D Generation Made Easy with Spatial Sparse Attention,'' 2025. arXiv:2505.17412
+    \item 3DShape2VecSet: Zhang et al., ``3DShape2VecSet: A 3D Shape Representation for Neural Fields and Generative Diffusion Models,'' SIGGRAPH 2023. arXiv:2301.11445
+    \item Michelangelo: Zhao et al., ``Michelangelo: Conditional 3D Shape Generation with Shape-Image-Text Aligned Latent Representation,'' NeurIPS 2023. arXiv:2306.17115
+    \item SDFusion: Cheng et al., ``SDFusion: Multimodal 3D Shape Completion, Reconstruction, and Generation,'' CVPR 2023. arXiv:2212.04493
+    \item DiffRF: M\"uller et al., ``DiffRF: Rendering-Guided 3D Radiance Field Diffusion,'' CVPR 2023. arXiv:2212.01206
+    \item VoxGRAF: Schwarz et al., ``VoxGRAF: Fast 3D-Aware Image Synthesis with Sparse Voxel Grids,'' NeurIPS 2022. arXiv:2206.07695
+    \item SSDNeRF: Chen et al., ``Single-Stage Diffusion NeRF: A Unified Approach to 3D Generation and Reconstruction,'' ICCV 2023. arXiv:2304.06714
+    \item TensoRF: Chen et al., ``TensoRF: Tensorial Radiance Fields,'' ECCV 2022. arXiv:2203.09517
+    \item K-Planes: Fridovich-Keil et al., ``K-Planes: Explicit Radiance Fields in Space, Time, and Appearance,'' CVPR 2023. arXiv:2301.10241
+    \item Plenoxels: Fridovich-Keil et al., ``Plenoxels: Radiance Fields without Neural Networks,'' CVPR 2022. arXiv:2112.05131
+    \item DVGO: Sun et al., ``Direct Voxel Grid Optimization: Super-fast Convergence for Radiance Fields Reconstruction,'' CVPR 2022. arXiv:2111.11215
+    \item EG3D: Chan et al., ``Efficient Geometry-aware 3D Generative Adversarial Networks,'' CVPR 2022. arXiv:2112.07945
+    \item FlexiCubes: Shen et al., ``Flexible Isosurface Extraction for Gradient-Based Mesh Optimization,'' SIGGRAPH 2023. arXiv:2308.05371
+    \item DMTet: Shen et al., ``Deep Marching Tetrahedra: a Hybrid Representation for High-Resolution 3D Shape Synthesis,'' NeurIPS 2021. arXiv:2111.04276
+    \item Get3D: Gao et al., ``GET3D: A Generative Model of High Quality 3D Textured Shapes Learned from Images,'' NeurIPS 2022. arXiv:2209.11163
+    \item NKSR: Huang et al., ``Neural Kernel Surface Reconstruction,'' CVPR 2023. arXiv:2305.19590
+    \item LION: Zeng et al., ``LION: Latent Point Diffusion Models for 3D Shape Generation,'' NeurIPS 2022.
+    \item MeshGPT: Siddiqui et al., ``MeshGPT: Generating Triangle Meshes with Decoder-Only Transformers,'' ICLR 2024. arXiv:2311.15475
+    \item Shap-E: Jun and Nichol, ``Shap-E: Generating Conditional 3D Implicit Functions,'' 2023. arXiv:2305.02463
+    \item PVD: Zhou et al., ``3D Shape Generation and Completion through Point-Voxel Diffusion,'' ICCV 2021. arXiv:2104.03670
+    \item Conv. Occ. Networks: Peng et al., ``Convolutional Occupancy Networks,'' ECCV 2020.
+    \item L3DG: Lan et al., ``Latent 3D Gaussian Diffusion,'' 2024. arXiv:2410.13530
+    \item SPVD: ``Sparse Point-Voxel Diffusion,'' 2024. arXiv:2408.06145
+    \item fVDB: Williams et al., ``fVDB: A Deep-Learning Framework for Sparse, Large-Scale, and High-Performance Spatial Intelligence,'' 2024. arXiv:2407.01781
+\end{enumerate}
+
+\end{document}

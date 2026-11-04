@@ -1,0 +1,57 @@
+{
+  "samples": [
+    {
+      "asset": "01a036ee7dfa48bb99f2e1451b200e9fa91bcebfebe75f8fafcabd986030f57a",
+      "vertices": 1209900,
+      "faces": 2112958,
+      "stage_counts": [
+        119,
+        936,
+        5322
+      ],
+      "ply": "/scr/yuheng/DevOpsBench/multiscale_diffusion/results_rdd3d/dynamic_sparse_scale1k_w640d16_4gpu/preview_step100000/meshes/01a036ee7dfa48bb99f2e1451b200e9fa91bcebfebe75f8fafcabd986030f57a_prediction.ply",
+      "glb": "/scr/yuheng/DevOpsBench/multiscale_diffusion/results_rdd3d/dynamic_sparse_scale1k_w640d16_4gpu/preview_step100000/meshes/01a036ee7dfa48bb99f2e1451b200e9fa91bcebfebe75f8fafcabd986030f57a_prediction.glb",
+      "preview": "/scr/yuheng/DevOpsBench/multiscale_diffusion/results_rdd3d/dynamic_sparse_scale1k_w640d16_4gpu/preview_step100000/meshes/01a036ee7dfa48bb99f2e1451b200e9fa91bcebfebe75f8fafcabd986030f57a_preview.png"
+    },
+    {
+      "asset": "03ba33cd5e3771bd9e18907ae8686d2f75c8bc30fc162fb2e98a382e59a7e018",
+      "vertices": 1160657,
+      "faces": 1985702,
+      "stage_counts": [
+        141,
+        1079,
+        6271
+      ],
+      "ply": "/scr/yuheng/DevOpsBench/multiscale_diffusion/results_rdd3d/dynamic_sparse_scale1k_w640d16_4gpu/preview_step100000/meshes/03ba33cd5e3771bd9e18907ae8686d2f75c8bc30fc162fb2e98a382e59a7e018_prediction.ply",
+      "glb": "/scr/yuheng/DevOpsBench/multiscale_diffusion/results_rdd3d/dynamic_sparse_scale1k_w640d16_4gpu/preview_step100000/meshes/03ba33cd5e3771bd9e18907ae8686d2f75c8bc30fc162fb2e98a382e59a7e018_prediction.glb",
+      "preview": "/scr/yuheng/DevOpsBench/multiscale_diffusion/results_rdd3d/dynamic_sparse_scale1k_w640d16_4gpu/preview_step100000/meshes/03ba33cd5e3771bd9e18907ae8686d2f75c8bc30fc162fb2e98a382e59a7e018_preview.png"
+    },
+    {
+      "asset": "041e7c01675321d347b31a5b635739cea2a75a04b3764a1520e11647cefab9ab",
+      "vertices": 868001,
+      "faces": 1553850,
+      "stage_counts": [
+        96,
+        715,
+        3799
+      ],
+      "ply": "/scr/yuheng/DevOpsBench/multiscale_diffusion/results_rdd3d/dynamic_sparse_scale1k_w640d16_4gpu/preview_step100000/meshes/041e7c01675321d347b31a5b635739cea2a75a04b3764a1520e11647cefab9ab_prediction.ply",
+      "glb": "/scr/yuheng/DevOpsBench/multiscale_diffusion/results_rdd3d/dynamic_sparse_scale1k_w640d16_4gpu/preview_step100000/meshes/041e7c01675321d347b31a5b635739cea2a75a04b3764a1520e11647cefab9ab_prediction.glb",
+      "preview": "/scr/yuheng/DevOpsBench/multiscale_diffusion/results_rdd3d/dynamic_sparse_scale1k_w640d16_4gpu/preview_step100000/meshes/041e7c01675321d347b31a5b635739cea2a75a04b3764a1520e11647cefab9ab_preview.png"
+    },
+    {
+      "asset": "060817eb9a66b0a90ff517e50ef3aa7c3179bf2bcdc3407ec6d2cebb64f74724",
+      "vertices": 319021,
+      "faces": 529660,
+      "stage_counts": [
+        61,
+        445,
+        1959
+      ],
+      "ply": "/scr/yuheng/DevOpsBench/multiscale_diffusion/results_rdd3d/dynamic_sparse_scale1k_w640d16_4gpu/preview_step100000/meshes/060817eb9a66b0a90ff517e50ef3aa7c3179bf2bcdc3407ec6d2cebb64f74724_prediction.ply",
+      "glb": "/scr/yuheng/DevOpsBench/multiscale_diffusion/results_rdd3d/dynamic_sparse_scale1k_w640d16_4gpu/preview_step100000/meshes/060817eb9a66b0a90ff517e50ef3aa7c3179bf2bcdc3407ec6d2cebb64f74724_prediction.glb",
+      "preview": "/scr/yuheng/DevOpsBench/multiscale_diffusion/results_rdd3d/dynamic_sparse_scale1k_w640d16_4gpu/preview_step100000/meshes/060817eb9a66b0a90ff517e50ef3aa7c3179bf2bcdc3407ec6d2cebb64f74724_preview.png"
+    }
+  ],
+  "failures": []
+}

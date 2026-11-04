@@ -463,8 +463,8 @@ def noise_filling_transition_fm(
     high-resolution Gaussian can be decomposed as an orthonormal lift of the
     coarse Gaussian plus an independent ``(I-P)`` component.  Reusing a
     normalized lift of the recovered coarse innovation carries its direction
-    into the finer stage while giving that stage the identity covariance used
-    during training.  Exact equality after downsampling is neither expected
+    into the finer stage while giving identity covariance for an ideal independent Gaussian coarse
+    innovation. A model-recovered residual need not have that ideal law.  Exact equality after downsampling is neither expected
     nor possible here because training used unit-variance noise independently
     at every resolution.
 
@@ -504,7 +504,7 @@ def sample_rdd_fm_multistage(
     device: torch.device,
     model_kwargs: Optional[dict] = None,
     cfg_scale: float = 1.0,
-    upsample_mode: str = "nearest",
+    upsample_mode: str = "fresh",
     solver: str = "euler",
     return_metrics: bool = False,
 ) -> torch.Tensor:
@@ -525,7 +525,7 @@ def sample_rdd_fm_multistage(
         device: torch device
         model_kwargs: extra kwargs for model
         cfg_scale: classifier-free guidance scale
-        upsample_mode: ``noise_filling`` (recommended), ``nearest`` or
+        upsample_mode: ``noise_filling`` (recovered endpoint noise), ``fresh`` / ``refresh``, ``nearest`` or
             ``bilinear``. The latter two reconstruct clean signal and redraw
             all noise, and are kept as compatibility baselines.
         solver: ``euler`` or ``midpoint``/``rk2``.
@@ -558,9 +558,9 @@ def sample_rdd_fm_multistage(
                 x_init = noise_filling_transition_fm(
                     previous_state, pred_x1, fm.s_k, res
                 )
-            elif upsample_mode in {"nearest", "bilinear"}:
+            elif upsample_mode in {"fresh", "refresh", "redraw", "nearest", "bilinear"}:
                 x_init = upsample_with_noise_fm(
-                    pred_x1, fm.s_k, res, mode=upsample_mode
+                    pred_x1, fm.s_k, res, mode="bilinear" if upsample_mode == "bilinear" else "nearest"
                 )
             else:
                 raise ValueError(f"Unknown FM upsample mode: {upsample_mode}")

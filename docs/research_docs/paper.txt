@@ -1,0 +1,910 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2026
+
+% The authors should use one of these tracks.
+% Before accepting by the NeurIPS conference, select one of the options below.
+% 0. "default" for submission
+\usepackage[nonatbib]{neurips_2026}
+% the "default" option is equal to the "main" option, which is used for the Main Track with double-blind reviewing.
+% 1. "main" option is used for the Main Track
+%  \usepackage[main]{neurips_2026}
+% 2. "position" option is used for the Position Paper Track
+%  \usepackage[position]{neurips_2026}
+% 3. "eandd" option is used for the Evaluations & Datasets Track
+ % \usepackage[eandd]{neurips_2026}
+ % if you need to opt-in for a single-blind submission in the E&D track:
+ %\usepackage[eandd, nonanonymous]{neurips_2026}
+% 4. "creativeai" option is used for the Creative AI Track
+%  \usepackage[creativeai]{neurips_2026}
+% 5. "sglblindworkshop" option is used for the Workshop with single-blind reviewing
+ % \usepackage[sglblindworkshop]{neurips_2026}
+% 6. "dblblindworkshop" option is used for the Workshop with double-blind reviewing
+%  \usepackage[dblblindworkshop]{neurips_2026}
+
+% After being accepted, the authors should add "final" behind the track to compile a camera-ready version.
+% 1. Main Track
+ % \usepackage[main, final]{neurips_2026}
+% 2. Position Paper Track
+%  \usepackage[position, final]{neurips_2026}
+% 3. Evaluations & Datasets Track
+ % \usepackage[eandd, final]{neurips_2026}
+% 4. Creative AI Track
+%  \usepackage[creativeai, final]{neurips_2026}
+% 5. Workshop with single-blind reviewing
+%  \usepackage[sglblindworkshop, final]{neurips_2026}
+% 6. Workshop with double-blind reviewing
+%  \usepackage[dblblindworkshop, final]{neurips_2026}
+% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote.
+% For workshops (5., 6.), the authors should add the name of the workshop, "\workshoptitle" command is used to set the workshop title.
+% \workshoptitle{WORKSHOP TITLE}
+
+% "preprint" option is used for arXiv or other preprint submissions
+ % \usepackage[preprint]{neurips_2026}
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2026}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Ensure definition/proof environments exist (neurips style may override amsthm)
+\makeatletter
+\@ifundefined{definition}{\newtheorem{definition}{Definition}}{}
+\@ifundefined{proof}{\newenvironment{proof}[1][\proofname]{\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1]\ignorespaces}{\popQED\endtrivlist\@endpe}}{}
+\makeatother
+
+% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote. 
+\title{Resolution-Drift Diffusion: Accelerating Diffusion Model Inference via Cross-Resolution Forward Processes}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+
+\author{%
+  David S.~Hippocampus\thanks{Use footnote for providing further information
+    about author (webpage, alternative address)---\emph{not} for acknowledging
+    funding agencies.} \\
+  Department of Computer Science\\
+  Cranberry-Lemon University\\
+  Pittsburgh, PA 15213 \\
+  \texttt{hippo@cs.cranberry-lemon.edu} \\
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+}
+
+
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+Diffusion models have achieved remarkable success in high-fidelity image generation, yet their iterative sampling process remains prohibitively slow, often requiring hundreds to thousands of network evaluations. Existing approaches to accelerate inference---such as cascaded pipelines, latent-space diffusion, and multi-resolution training---typically introduce additional model complexity, require training multiple networks, or rely on separately trained upsampling modules. In this work, we propose \textbf{Resolution-Drift Diffusion}, a novel formulation that unifies denoising and super-resolution within a single diffusion process. Our key insight is to introduce a deterministic drift term into the forward diffusion that progressively transforms the signal from high resolution to low resolution as noise increases. Specifically, we define the drift as $\bar{d}^c = \textbf{UP}(\bar{x}_0^{c+1}) - \bar{x}_0^c$, which drives the noisy signal toward a smoothed, lower-resolution representation without introducing high-frequency artifacts. The reverse process is then required to simultaneously denoise and recover the lost high-frequency details, effectively learning an implicit super-resolution operator without any separate upsampling model. We derive the complete jump-step posterior for the resulting non-standard diffusion process, including closed-form expressions for the mean, covariance, and a resolution-dependent drift coefficient $\gamma_{s,t}^c$. Our approach enables a coarse-to-fine sampling strategy that significantly reduces the total number of network evaluations at high resolutions while maintaining generation quality.
+\end{abstract}
+
+
+\section{Introduction}
+\label{sec:intro}
+
+Diffusion models have emerged as the dominant paradigm for generative modeling, achieving state-of-the-art results in image synthesis~\cite{ho2020ddpm, dhariwal2021adm}, text-to-image generation~\cite{ramesh2022dalle2, saharia2022imagen, rombach2022ldm}, and a wide range of conditional generation tasks. The core principle underlying these models is elegant: a forward process gradually corrupts data by adding Gaussian noise, and a learned reverse process recovers clean samples by iteratively denoising. Despite their exceptional sample quality and mode coverage, diffusion models suffer from a critical limitation---\textbf{inference speed}. Generating a single image typically requires hundreds to thousands of sequential network evaluations, making them orders of magnitude slower than single-step generators such as GANs~\cite{karras2018progan}.
+
+The computational bottleneck of diffusion models stems from two interrelated factors. First, the standard formulation operates entirely within a fixed-resolution space: both the forward noising process and the reverse denoising process take place at the target output resolution~\cite{ho2020ddpm, song2021sde}. For high-resolution generation (e.g., $512 \times 512$ or $1024 \times 1024$), each network evaluation involves processing a large spatial tensor, which is inherently expensive. Second, the sequential nature of the sampling process---where each step depends on the output of the previous one---precludes trivial parallelization across steps.
+
+A natural strategy to address this bottleneck is to exploit the observation that \textbf{low-resolution computations are substantially cheaper than high-resolution ones}. If the majority of the iterative denoising could be performed at low resolution, with only a small number of steps at high resolution, the total computational cost would be dramatically reduced. Moreover, lower-resolution representations require less modeling capacity---a smaller network can capture the structure of a $64 \times 64$ image far more efficiently than that of a $256 \times 256$ image. This suggests an additional source of savings beyond sheer pixel count: \textit{the model itself can be scaled down at lower resolutions}. This intuition has motivated several lines of prior work:
+
+\textbf{Cascaded diffusion models}~\cite{ho2022cdm, saharia2022imagen, ramesh2022dalle2} decompose generation into a pipeline of multiple diffusion models at increasing resolutions (e.g., $32 \times 32 \to 64 \times 64 \to 256 \times 256$). While effective, this approach requires training and deploying multiple independent models, and the quality of each stage is limited by the fidelity of the previous stage's output. Errors can accumulate across stages, necessitating careful conditioning augmentation strategies~\cite{ho2022cdm}.
+
+\textbf{Latent diffusion models}~\cite{rombach2022ldm, podell2023sdxl} avoid operating in pixel space by first training a perceptual compression autoencoder and then performing diffusion in a lower-dimensional latent space. Although this reduces computational cost, it introduces a dependency on a separately trained encoder/decoder and may lose fine-grained spatial details that are difficult to recover from the compressed representation.
+
+\textbf{Multi-resolution training methods}~\cite{tevet2022pddm, gu2022fdm, hoogeboom2023simple, gu2024mdm, jabri2023rin} explore single-model approaches that operate across multiple resolutions. PDDM~\cite{tevet2022pddm} uses positional encoding to enable a single score function for multi-resolution generation, employing a coarse-to-fine pyramid sampling strategy. f-DM~\cite{gu2022fdm} introduces progressive signal transformations (downsampling, blurring) into the diffusion process itself, with an interpolation formula that transitions between resolution stages. Simple diffusion~\cite{hoogeboom2023simple} demonstrates that a single standard diffusion model can be trained end-to-end at high resolutions by shifting the noise schedule and using multi-scale losses. Matryoshka Diffusion Models~\cite{gu2024mdm} propose a NestedUNet architecture that performs joint multi-resolution diffusion in an extended space. RIN~\cite{jabri2023rin} achieves adaptive computation through interface-latent decoupling, dynamically allocating computation across spatial locations. These methods demonstrate the promise of multi-resolution generation, yet most treat the resolution transition as a discrete event---a switch that occurs at a specific boundary in the diffusion timeline.
+
+Despite these advances, a natural question arises: \textit{Can we instead model the resolution transition as a continuous process that unfolds gradually throughout the forward diffusion, and leverage the reduced modeling complexity at lower resolutions to further accelerate inference?}
+
+In this work, we answer this question affirmatively by proposing \textbf{Resolution-Drift Diffusion}. Our key contribution is the introduction of a deterministic \textbf{drift term} into the forward diffusion process that progressively drives the signal from its original high-resolution representation toward a lower-resolution counterpart as the noise level increases. Concretely, we define the drift as:
+\begin{equation}
+  \bar{d}^c = \textbf{UP}(\bar{x}_0^{c+1}) - \bar{x}_0^c,
+\end{equation}
+where $\textbf{UP}$ is a nearest-neighbor upsampling operator and $\bar{x}_0^{c+1}$ is the downsampled version of the clean image. This drift term has a clear geometric interpretation: it points from the current resolution toward a smoothed (low-pass filtered) version of the signal, explicitly removing high-frequency information without introducing new artifacts.
+
+Under this modified forward process, the terminal distribution at each resolution stage is centered at the upsampled clean image of the next (lower) resolution level:
+\begin{equation}
+  \mathbb{E}[\bar{x}_{T_{c+1}}^c \mid \bar{x}_0^c] = \sqrt{\bar{\alpha}_{T_{c+1}}}\textbf{UP}(\bar{x}_0^{c+1}).
+\end{equation}
+Consequently, the reverse process must simultaneously denoise and recover the lost high-frequency details, effectively learning an implicit super-resolution operator. We derive the complete jump-step posterior for this non-standard diffusion process, obtaining closed-form expressions for the mean, covariance, and a resolution-dependent drift coefficient $\gamma_{s,t}^c$ that corrects for the cross-resolution drift during sampling.
+
+Our approach offers several advantages: (1) it is a \textbf{single-model} framework that does not require separate upsampling networks or cascaded pipelines; (2) the coarse-to-fine sampling strategy naturally reduces the number of expensive high-resolution network evaluations; (3) the continuous drift formulation provides a principled mathematical foundation with exact posterior derivations that enable efficient jump-step sampling; (4) since the majority of denoising occurs at lower resolutions where the signal is inherently simpler, the model capacity required at each level can be scaled accordingly, offering further computational savings beyond the reduction in spatial dimensions alone.
+
+
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Diffusion Models: Foundations and Acceleration}
+
+Diffusion probabilistic models (DPMs)~\cite{ho2020ddpm} formulate generative modeling as a two-step process: a fixed forward process that gradually adds Gaussian noise to data, and a learned reverse process that iteratively denoises. The key simplification of predicting the noise $\epsilon$ rather than the clean data~\cite{ho2020ddpm} enabled the training of high-quality generative models. Song et al.~\cite{song2021sde} unified diffusion models and score-based generative models through the lens of stochastic differential equations (SDEs), establishing the probability flow ODE and enabling exact log-likelihood computation. Nichol \& Dhariwal~\cite{nichol2021improved} improved DDPM by learning the reverse process variance, introducing a cosine noise schedule, and proposing classifier guidance. Karras et al.~\cite{karras2022edm} elucidated the design space of diffusion models, proposing a unified framework with improved network preconditioning, Heun solvers, and log-normal noise distributions.
+
+A major line of research has focused on \textbf{accelerating the sampling process}. DDIM~\cite{song2021ddim} demonstrated that the DDPM training objective corresponds to a broader family of non-Markovian forward processes, enabling deterministic sampling with 10--50$\times$ fewer steps while maintaining sample quality. The probability flow ODE~\cite{song2021sde} further enables the use of adaptive-step ODE solvers for efficient deterministic sampling. Consistency models~\cite{song2023consistency} learn to map any point on the ODE trajectory directly to the origin in a single step, achieving extreme acceleration. These methods reduce the number of sequential steps but do not address the per-step computational cost at high resolutions, which is the focus of our work.
+
+\subsection{High-Resolution Image Generation}
+
+\textbf{Cascaded diffusion models} represent a prominent approach to high-resolution generation. Ho \& Salimans~\cite{ho2022cdm} proposed a pipeline of diffusion models at increasing resolutions ($32 \to 64 \to 256$), introducing conditioning augmentation (Gaussian noise and blur) to prevent error accumulation across stages. Imagen~\cite{saharia2022imagen} combined a large frozen T5-XXL language model with cascaded diffusion models, achieving state-of-the-art text-to-image generation with dynamic thresholding for stable high-guidance sampling. DALL-E 2~\cite{ramesh2022dalle2} decomposed image generation into a prior (generating CLIP image embeddings from text) and a decoder (generating images from embeddings), using cascaded upsampling models ($64 \to 256 \to 1024$). SDXL~\cite{podell2023sdxl} improved latent diffusion for high-resolution synthesis through micro-conditioning on image size and crop parameters, dual text encoders, and multi-aspect-ratio training. While cascaded approaches are effective, they require training multiple models and introduce inter-stage error propagation.
+
+\textbf{Latent diffusion models}~\cite{rombach2022ldm} address the computational cost of pixel-space diffusion by training a perceptual compression autoencoder and performing the diffusion process in a lower-dimensional latent space. This approach was foundational to Stable Diffusion and enabled practical deployment of diffusion models. Wuerstchen~\cite{harvey2023wuerstchen} extended this idea with an extreme 42:1 compression ratio using a three-stage architecture (VQGAN $\to$ latent LDM $\to$ text-conditioned LDM), achieving competitive quality with significantly reduced training cost. However, latent-space methods depend on a separately trained encoder/decoder, and the compression may discard fine spatial details.
+
+\textbf{Single-model, multi-resolution methods} aim to achieve high-resolution generation without cascades. PDDM~\cite{tevet2022pddm} trains a single score function conditioned on positional encodings, enabling multi-resolution generation through pyramid reverse sampling from low-resolution noise. f-DM~\cite{gu2022fdm} generalizes the diffusion process to include progressive signal transformations (downsampling, blurring, VAE encoding), with a key interpolation formula that smoothly transitions between resolution stages during the forward process. Simple diffusion~\cite{hoogeboom2023simple} showed that a single standard diffusion model can be trained end-to-end at high resolutions by shifting the noise schedule to account for the resolution-dependent SNR and using multi-scale losses. Matryoshka Diffusion Models (MDM)~\cite{gu2024mdm} propose a NestedUNet architecture that embeds low-resolution UNet parameters within high-resolution ones, performing joint multi-resolution diffusion in an extended space with progressive training.
+
+\subsection{Efficient Architectures for Diffusion Models}
+
+The choice of backbone network significantly impacts both generation quality and computational efficiency. DiT~\cite{peebles2023dit} demonstrated that replacing the U-Net backbone with a Transformer yields strong scaling properties---increasing Gflops consistently improves FID, following a power-law relationship. The key architectural innovation is adaLN-Zero conditioning, which initializes the entire block as an identity function. RIN~\cite{jabri2023rin} proposed Recurrent Interface Networks that decouple computation into interface tokens (tied to spatial locations) and latents (discrete, data-independent), enabling adaptive computation that dynamically allocates resources to complex image regions. eDiff-I~\cite{balaji2023ediffi} trained an ensemble of expert denoisers specialized for different noise levels, observing that early sampling steps depend heavily on text conditioning while later steps focus on visual fidelity. RAPHAEL~\cite{xue2023raphael} introduced Space-MoE and Time-MoE layers into the U-Net, creating billions of possible diffusion paths where each path specializes in rendering specific text concepts in specific spatial regions.
+
+\subsection{Relation to Our Work}
+
+Our work is most closely related to f-DM~\cite{gu2022fdm} and PDDM~\cite{tevet2022pddm} in that we also explore multi-resolution diffusion processes. f-DM introduces progressive signal transformations (downsampling, blurring) at stage boundaries and uses an interpolation formula to transition between resolution stages during the forward process. Our approach shares the high-level motivation---encoding resolution transitions into the diffusion dynamics---but differs in \textit{how} the transition is realized: rather than applying a discrete signal transformation at stage boundaries, we inject a continuous drift at every forward step, distributing the resolution change uniformly across the diffusion timeline. This yields a Markovian forward process with a single-step transition that explicitly accounts for the cross-resolution shift, leading to closed-form posterior expressions (including the drift coefficient $\gamma_{s,t}^c$) that apply at arbitrary jump sizes. PDDM~\cite{tevet2022pddm} operates at multiple resolutions using positional encoding but performs standard DDPM sampling at each level without modifying the diffusion process itself. By contrast, both f-DM and our method integrate the resolution transition into the forward dynamics, enabling the reverse process to learn implicit super-resolution as part of denoising.
+
+\section{Method}
+\label{sec:method}
+
+\subsection{Preliminaries: Resolution Hierarchy and Operators}
+
+We consider images at multiple resolution levels. Let $\bar{x}_0^c = \textbf{DOWN}_s^c(x_0)$ denote the clean image at resolution level $c$, where $x_0 \in \mathbb{R}^{H \times W}$ is the original full-resolution image, $\textbf{DOWN}_s$ is an average pooling operator with stride $s$, and $\textbf{UP}_s$ is the corresponding nearest-neighbor upsampling operator. Specifically, $\textbf{DOWN}_s$ computes the mean over non-overlapping $s \times s$ blocks, and $\textbf{UP}_s$ replicates each pixel to fill an $s \times s$ block. These operators satisfy $\textbf{UP}_s \circ \textbf{DOWN}_s(x) = x_{\text{smooth}}$, where $x_{\text{smooth}}$ is a piecewise-constant (block-averaged) approximation of $x$ that preserves low-frequency content while discarding high-frequency details.
+
+Throughout, we fix $T_0 = 0$ so that the forward process begins from the clean image. We define a resolution schedule $\{T_0, T_1, \ldots, T_C\}$ that partitions the total diffusion budget $T_C$ across $C$ resolution levels. For example, with $T_0=0, T_1=300, T_2=600, T_3=1000$ and $s=2$, the process operates at $256 \times 256$ for steps $0$--$300$, at $128 \times 128$ for steps $300$--$600$, and at $64 \times 64$ for steps $600$--$1000$. This allocation ensures that the majority of network evaluations occur at lower resolutions, where computation is substantially cheaper.
+
+\subsection{Resolution-Drift Diffusion}
+
+\subsubsection{Motivation}
+
+A natural approach to multi-resolution diffusion is to perform standard DDPM at each resolution level, switching resolutions via explicit downsample and upsample operations. However, this requires a separate model to predict the high-resolution signal from the low-resolution one, since $\textbf{DOWN}_s$ is not invertible. Our goal is to design a forward process that \emph{natively} transitions across resolutions, such that the reverse process implicitly learns to recover high-frequency details as part of denoising, without any separate upsampling module.
+
+\subsubsection{The Drift Term}
+
+The key idea is to introduce a deterministic \textbf{drift} into the forward diffusion that progressively drives the signal from the current resolution toward the next (lower) resolution. We define the drift at level $c$ as:
+\begin{equation}
+  \bar{d}^c = \textbf{UP}_s(\bar{x}_0^{c+1}) - \bar{x}_0^c.
+  \label{eq:drift}
+\end{equation}
+Since $\bar{x}_0^{c+1} = \textbf{DOWN}_s(\bar{x}_0^c)$, the drift $\bar{d}^c$ points from the current resolution toward its block-averaged (low-pass filtered) version. It encodes exactly the high-frequency information that is lost when moving to the next resolution level, and crucially, it does \emph{not} introduce any new high-frequency artifacts.
+
+\subsubsection{Modified Forward Process}
+
+At each resolution level $c$, we modify the standard DDPM forward transition by injecting the drift into the mean:
+\begin{equation}
+  q(\bar{x}_{T_c+t}^c \mid \bar{x}_{T_c+t-1}^c) = \mathcal{N}\!\left(\bar{x}_{T_c+t}^c \;\middle|\; \sqrt{\alpha_{T_c+t}}\,\bar{x}_{T_c+t-1}^c + \frac{\sqrt{\bar{\alpha}_{T_c+t}}}{T_{c+1} - T_c}\,\bar{d}^c,\; (1 - \alpha_{T_c+t})I \right),
+  \label{eq:forward_step}
+\end{equation}
+where $\alpha_t$ and $\bar{\alpha}_t = \prod_{i=1}^{t}\alpha_i$ are the standard noise schedule parameters. The drift coefficient $\frac{\sqrt{\bar{\alpha}_{T_c+t}}}{T_{c+1}-T_c}$ ensures that the accumulated drift over the interval $[T_c, T_{c+1}]$ exactly compensates for the resolution gap.
+
+\subsubsection{Properties of the Forward Process}
+
+By composing the transitions in Eq.~\eqref{eq:forward_step}, the marginal distribution at any time $t$ within level $c$ is:
+\begin{equation}
+  q(\bar{x}_{T_c+t}^c \mid \bar{x}_{0}^c) = \mathcal{N}\!\left(\bar{x}_{T_c+t}^c \;\middle|\; \sqrt{\bar{\alpha}_{T_c+t}}\,\bar{x}_{0}^c + \frac{t}{T_{c+1} - T_c}\sqrt{\bar{\alpha}_{T_c+t}}\,\bar{d}^c,\; (1 - \bar{\alpha}_{T_c+t})I \right).
+  \label{eq:forward_marginal}
+\end{equation}
+At the end of each resolution level ($t = T_{c+1} - T_c$), the mean simplifies to:
+\begin{equation}
+  \mathbb{E}[\bar{x}_{T_{c+1}}^c \mid \bar{x}_0^c] = \sqrt{\bar{\alpha}_{T_{c+1}}}\,\textbf{UP}_s(\bar{x}_0^{c+1}).
+  \label{eq:terminal_mean}
+\end{equation}
+This is the central property of our formulation: the terminal distribution at level $c$ is centered at the \emph{upsampled clean image of the next level}, not at the current level's clean image. In contrast, standard DDPM would yield $\mathbb{E}[\bar{x}_{T_{c+1}}^c \mid \bar{x}_0^c] = \sqrt{\bar{\alpha}_{T_{c+1}}}\,\bar{x}_0^c$, which remains anchored at the current resolution.
+
+Consequently, the reverse process at level $c$ must simultaneously (1) denoise the signal and (2) recover the high-frequency details lost to the drift. This means the model implicitly learns a super-resolution operator as an integral part of denoising, without requiring any separate upsampling network or cascaded pipeline.
+
+\subsubsection{Training Objective}
+
+To enable seamless integration with existing diffusion frameworks, we define an effective noise variable that absorbs the drift:
+\begin{equation}
+  \tilde{\epsilon} = \epsilon + \frac{\sqrt{\bar{\alpha}_{T_c+t}}}{\sqrt{1-\bar{\alpha}_{T_c+t}}}\cdot\frac{t}{T_{c+1}-T_c}\,\bar{d}^c,
+  \label{eq:effective_noise}
+\end{equation}
+so that Eq.~\eqref{eq:forward_marginal} can be rewritten in the standard form $\bar{x}_{T_c+t}^c = \sqrt{\bar{\alpha}_{T_c+t}}\,\bar{x}_0^c + \sqrt{1-\bar{\alpha}_{T_c+t}}\,\tilde{\epsilon}$. The model is trained to predict $\tilde{\epsilon}$ using the standard simplified loss:
+\begin{equation}
+  \mathcal{L}_{\text{simple}} = \mathbb{E}_{t, c, \epsilon}\left[\|\tilde{\epsilon} - \epsilon_\theta(\bar{x}_{T_c+t}^c, T_c+t, c)\|^2\right],
+  \label{eq:loss}
+\end{equation}
+where the network additionally receives the resolution level $c$ as a condition. This formulation allows us to reuse the same training machinery as DDPM with minimal modifications.
+
+\subsection{Reverse Process and Jump-Step Sampling}
+
+\subsubsection{Posterior Derivation}
+
+Following the standard DDPM derivation, we obtain the posterior $q(\bar{x}_{T_c+s}^c \mid \bar{x}_{T_c+t}^c, \bar{x}_0^c)$ for $0 \le s < t \le T_{c+1}-T_c$ by combining the forward transition (Eq.~\eqref{eq:forward_step}) with the marginal (Eq.~\eqref{eq:forward_marginal}). The posterior is Gaussian with covariance:
+\begin{equation}
+  \Sigma_{s,t}^c = \frac{(\bar{\alpha}_{T_c+s} - \bar{\alpha}_{T_c+t})(1 - \bar{\alpha}_{T_c+s})}{\bar{\alpha}_{T_c+s}(1 - \bar{\alpha}_{T_c+t})}\,I,
+  \label{eq:posterior_cov}
+\end{equation}
+and mean:
+\begin{equation}
+  \mu_{s,t}^c = \underbrace{\frac{1 - \bar{\alpha}_{T_c+s}}{1 - \bar{\alpha}_{T_c+t}}\sqrt{\frac{\bar{\alpha}_{T_c+t}}{\bar{\alpha}_{T_c+s}}}\,\bar{x}_{T_c+t}^c}_{\text{standard DDPM denoising term}} + \underbrace{\frac{\bar{\alpha}_{T_c+s} - \bar{\alpha}_{T_c+t}}{1 - \bar{\alpha}_{T_c+t}}\frac{1}{\sqrt{\bar{\alpha}_{T_c+s}}}\,\bar{x}_0^c}_{\text{clean signal term}} + \underbrace{\gamma_{s,t}^c\,\bar{d}^c}_{\text{drift correction}},
+  \label{eq:posterior_mean}
+\end{equation}
+where the \textbf{drift coefficient} is:
+\begin{equation}
+  \gamma_{s,t}^c = \frac{\sqrt{\bar{\alpha}_{T_c+s}}}{T_{c+1} - T_c}\left[\frac{s(\bar{\alpha}_{T_c+s} - \bar{\alpha}_{T_c+t})}{\bar{\alpha}_{T_c+s}(1 - \bar{\alpha}_{T_c+t})} - \frac{(t-s)\bar{\alpha}_{T_c+t}}{\bar{\alpha}_{T_c+s}(1 - \bar{\alpha}_{T_c+t})}\right].
+  \label{eq:drift_coeff}
+\end{equation}
+
+The posterior mean (Eq.~\eqref{eq:posterior_mean}) consists of three terms. The first two are identical to the standard DDIM/DDPM posterior: they denoise the current sample and interpolate toward the predicted clean signal. The third term, $\gamma_{s,t}^c\,\bar{d}^c$, is unique to our formulation---it corrects for the cross-resolution drift that accumulated during the forward process. When $\bar{d}^c = 0$ (i.e., no resolution transition), $\gamma_{s,t}^c = 0$ and we recover exactly the standard DDPM posterior.
+
+\subsubsection{Connection to Stochastic Differential Equations}
+
+Our modified forward process can be naturally embedded into the continuous-time SDE framework of~\cite{song2021sde}. Specifically, the marginal distribution (Eq.~\eqref{eq:forward_marginal}) is recovered by the linear SDE:
+\begin{equation}
+  d\bar{x}_t = \left[f(t)\,\bar{x}_t + a(t)\right]dt + g(t)\,dW_t,
+  \label{eq:pfsde}
+\end{equation}
+where $f(t) = \frac{d}{dt}\log\alpha(t)$ and $g^2(t) = -2\sigma_t^2\frac{d\lambda_t}{dt}$ are the standard drift and diffusion coefficients shared with the VP-SDE~\cite{song2021sde}, and $a(t) = \frac{\alpha(t)}{T_{c+1}-T_c}\,\bar{d}^c$ is the \textbf{resolution drift coefficient} (see Appendix~\ref{app:dpmsolver} for the derivation). The key insight is that the resolution transition is absorbed entirely into the deterministic drift $a(t)$, leaving the stochastic structure unchanged.
+
+This connection has two important practical implications. First, it allows us to leverage the broad ecosystem of SDE-based sampling methods: Langevin dynamics~\cite{song2021sde}, predictor-corrector schemes~\cite{song2021sde}, and high-order solvers such as DPM-Solver~\cite{lu2022dpm} can all be applied to RDD by simply adding the drift correction term (as we demonstrate in Section~\ref{sec:method}). Second, it positions RDD as a natural extension of the VP-SDE family---just as EDM~\cite{karras2022edm} unifies VP and VE SDEs through a parameterization change, RDD extends the VP-SDE with an additional drift that encodes cross-resolution information, establishing a principled bridge between multi-resolution generation and the SDE framework.
+
+\subsubsection{Sampling Algorithm}
+
+The complete sampling procedure is summarized in Algorithm~\ref{alg:sampling}. Starting from pure noise at the lowest resolution, we denoise at each level and then upsample to the next level, where the reverse process simultaneously denoises and recovers high-frequency details.
+
+\begin{algorithm}[t]
+\caption{Resolution-Drift Diffusion Sampling}
+\label{alg:sampling}
+\begin{algorithmic}[1]
+\REQUIRE Noise schedule $\{\alpha_t\}$, resolution schedule $\{T_0, \ldots, T_C\}$, stride $s$, model $\epsilon_\theta$
+\FOR{$c = C-1$ \textbf{down to} $0$}
+  \STATE Sample $\bar{x}_{T_{c+1}}^c \sim \mathcal{N}(0, I)$ \hfill $\triangleright$ \textit{or upsample from level $c{+}1$}
+  \FOR{$t = T_{c+1}-1$ \textbf{down to} $T_c$}
+    \STATE $\hat{x}_0^c \leftarrow \frac{1}{\sqrt{\bar{\alpha}_{T_c+t}}}\left(\bar{x}_{T_c+t}^c - \sqrt{1-\bar{\alpha}_{T_c+t}}\,\epsilon_\theta(\bar{x}_{T_c+t}^c, T_c{+}t, c)\right)$
+    \STATE $\mu \leftarrow \mu_{t-1,t}^c$ using Eq.~\eqref{eq:posterior_mean} with predicted $\hat{x}_0^c$
+    \STATE $\bar{x}_{T_c+t-1}^c \sim \mathcal{N}(\mu, \Sigma_{t-1,t}^c)$
+  \ENDFOR
+  \STATE $\bar{x}_{T_c}^c \leftarrow$ denoised sample at level $c$
+\ENDFOR
+\RETURN $\bar{x}_{T_0}^0 = x_0$
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Cross-Resolution Posterior Sampling}
+
+After denoising at resolution level $c$ to obtain $\bar{x}_0^c$, we need to produce the initial noisy sample at the next higher resolution level $c{-}1$ to begin the next denoising phase. Rather than upsample via spatial interpolation (bilinear, bicubic) and add isotropic noise, we derive a principled Bayesian posterior that respects the \emph{structure} of the cross-resolution relationship.
+
+\paragraph{Setup.}
+Let $D \in \mathbb{R}^{m \times n}$ and $U \in \mathbb{R}^{n \times m}$ denote the matrix forms of $\textbf{DOWN}_s$ and $\textbf{UP}_s$ respectively, where $n = HW$ and $m = HW/s^2$. We have $DU = I_m$ and the cross-resolution relationship $\bar{x}_0^c = D\,\bar{x}_0^{c-1}$. Define $a = \sqrt{\bar{\alpha}_{T_c}}$ and $b = 1 - \bar{\alpha}_{T_c}$.
+
+We model the cross-resolution prior with a structured covariance:
+\begin{equation}
+  p(\bar{x}_0^{c-1} \mid \bar{x}_0^c) = \mathcal{N}\!\left(\bar{x}_0^{c-1} \;\middle|\; U\,\bar{x}_0^c,\; B\right), \qquad B = b\,(I_n - D^T D),
+  \label{eq:cross_prior}
+\end{equation}
+and the diffusion forward process at level $c{-}1$:
+\begin{equation}
+  q(\bar{x}_{T_c}^{c-1} \mid \bar{x}_0^{c-1}) = \mathcal{N}\!\left(\bar{x}_{T_c}^{c-1} \;\middle|\; a\,\bar{x}_0^{c-1},\; b\,I_n \right).
+  \label{eq:cross_forward}
+\end{equation}
+
+\paragraph{Posterior via Bayes' rule.}
+Treating $q(\bar{x}_{T_c}^{c-1} \mid \bar{x}_0^{c-1})$ as the likelihood and $p(\bar{x}_0^{c-1} \mid \bar{x}_0^c)$ as the prior, the posterior of $\bar{x}_0^{c-1}$ is (see Appendix~\ref{app:cross_res} for the derivation):
+\begin{equation}
+  p(\bar{x}_0^{c-1} \mid \bar{x}_{T_c}^{c-1}, \bar{x}_0^c) = \mathcal{N}\!\left(\bar{x}_0^{c-1} \;\middle|\; \boldsymbol{\mu},\; \boldsymbol{\Sigma}\right),
+  \label{eq:cross_res}
+\end{equation}
+with posterior covariance and mean:
+\begin{align}
+  \boldsymbol{\Sigma} &= \left(\tfrac{1}{b}\,I_n + D^T B^{-1} D\right)^{-1} = b\,(I_n - D^T D),
+  \label{eq:cross_sigma} \\
+  \boldsymbol{\mu} &= \boldsymbol{\Sigma}\!\left(D^T B^{-1}\,\bar{x}_0^c + \tfrac{a}{b}\,U\,\bar{x}_0^c\right).
+  \label{eq:cross_mean}
+\end{align}
+The covariance $\boldsymbol{\Sigma} = b(I_n - D^T D)$ is singular, assigning zero variance in the row space of $D$ (low-frequency components determined by $\bar{x}_0^c$) and variance $b$ in the null space of $D$ (high-frequency components). To sample $\bar{x}_{T_c}^{c-1}$, we draw $\bar{x}_0^{c-1} \sim p(\bar{x}_0^{c-1} \mid \bar{x}_0^c)$ and apply the forward process, yielding a structured noise distribution without any spatial interpolation.
+
+\subsubsection{Jump-Step Posterior Sampling}
+
+Algorithm~\ref{alg:sampling} steps through every individual timestep. In practice, we can jump multiple steps at once by directly evaluating the multi-step posterior $q(\bar{x}_{T_c+s}^c \mid \bar{x}_{T_c+t}^c, \hat{x}_0^c)$ for arbitrary $s < t$. The posterior mean and covariance (Eq.~\eqref{eq:posterior_mean}--\eqref{eq:posterior_cov}) depend only on $\bar{\alpha}_{T_c+s}$, $\bar{\alpha}_{T_c+t}$, and the predicted clean signal $\hat{x}_0^c$, so they apply at any jump size without modification.
+
+Concretely, given the current sample $\bar{x}_t^c$ at internal index $t$ and a target index $s$, we compute:
+\begin{equation}
+  \hat{x}_0^c = \frac{1}{\sqrt{\bar{\alpha}_t}}\left(\bar{x}_t^c - \sqrt{1-\bar{\alpha}_t}\,\epsilon_\theta(\bar{x}_t^c, t, c)\right), \quad
+  \hat{d}^c = \textbf{UP}_s(\textbf{DOWN}_s(\hat{x}_0^c)) - \hat{x}_0^c,
+\end{equation}
+and then sample:
+\begin{equation}
+  \bar{x}_s^c = \underbrace{\frac{1-\bar{\alpha}_s}{1-\bar{\alpha}_t}\sqrt{\frac{\bar{\alpha}_t}{\bar{\alpha}_s}}\,\bar{x}_t^c}_{\text{denoise}} + \underbrace{\frac{\bar{\alpha}_s - \bar{\alpha}_t}{1-\bar{\alpha}_t}\frac{1}{\sqrt{\bar{\alpha}_s}}\,\hat{x}_0^c}_{\text{clean signal}} + \underbrace{\gamma_{s,t}^c\,\hat{d}^c}_{\text{drift}} + \sigma\,\mathbf{z},
+  \label{eq:jumpstep}
+\end{equation}
+where $\sigma = \sqrt{\Sigma_{s,t}^c}$ and $\mathbf{z} \sim \mathcal{N}(0, I)$. Setting $\mathbf{z} = 0$ yields a \textbf{deterministic} trajectory analogous to DDIM~\cite{song2021ddim}; including stochastic noise yields the full posterior analogous to DDPM ancestral sampling. A single-step jump ($t = s+1$) recovers exactly the standard DDPM update. This flexibility allows us to trade off between sample quality and speed by choosing the jump size.
+
+\subsubsection{Efficient Sampling via DPM-Solver}
+
+While Algorithm~\ref{alg:sampling} uses the exact DDPM posterior, practical sampling benefits from high-order ODE solvers that take larger jumps with fewer network evaluations. We derive a DPM-Solver~\cite{lu2022dpm} style update that incorporates the drift correction.
+
+The probability flow ODE for our modified diffusion process takes the form:
+\begin{equation}
+  d\bar{x}_t = \left[f(t)\,\bar{x}_t + a(t)\right]dt + g(t)\,dW_t,
+  \label{eq:pfsde}
+\end{equation}
+where $f(t) = \frac{d}{dt}\log\alpha(t)$ and $g^2(t) = -2\sigma_t^2\frac{d\lambda_t}{dt}$ follow the standard DDPM parameterization with $\lambda_t = \log(\alpha_t / \sigma_t)$. The drift coefficient $a(t) = \frac{\alpha(t)}{T_{c+1}-T_c}\,\bar{d}^c$ is the unique choice that recovers our marginal distribution (Eq.~\eqref{eq:forward_marginal}); see Appendix~\ref{app:dpmsolver} for the derivation.
+
+Eliminating the stochastic term yields the deterministic probability flow ODE. Reparameterizing in log-SNR space ($\lambda_t$) and discretizing with step size $h = \lambda_{t_{i+1}} - \lambda_{t_i}$, the first-order (multistep) update from $t_i$ to $t_{i+1}$ is:
+\begin{equation}
+  \bar{x}_{t_{i+1}} = \frac{\alpha_{t_{i+1}}}{\alpha_{t_i}}\,\bar{x}_{t_i} - \sigma_{t_{i+1}}\,\phi_1(h)\,\epsilon_\theta(\bar{x}_{t_i}, t_i) + \sqrt{\bar{\alpha}_{t_{i+1}}}\,\frac{t_{i+1} - t_i}{T_{c+1}-T_c}\,\hat{d}^c,
+  \label{eq:dpm1}
+\end{equation}
+where $\phi_1(h) = (e^h - 1)/h$ and $\hat{d}^c = \textbf{UP}_s(\textbf{DOWN}_s(\hat{x}_0)) - \hat{x}_0$ is the drift estimated from the predicted clean signal $\hat{x}_0$. The first two terms are the standard DPM-Solver update; the third term is the \textbf{drift correction}, which accounts for the cross-resolution shift accumulated over the jump.
+
+For second-order accuracy, we introduce an intermediate point at $\lambda_s = \lambda_{t_i} + \frac{1}{2}h$:
+\begin{equation}
+  u = \frac{\alpha_s}{\alpha_{t_i}}\,\bar{x}_{t_i} - \sigma_s\,\phi_1(h/2)\,\epsilon_\theta(\bar{x}_{t_i}, t_i) + \sqrt{\bar{\alpha}_s}\,\frac{t_s - t_i}{T_{c+1}-T_c}\,\hat{d}^c,
+  \label{eq:dpm2_mid}
+\end{equation}
+evaluate $\epsilon_\theta(u, t_s)$ at the midpoint, and compute:
+\begin{equation}
+  \bar{x}_{t_{i+1}} = \frac{\alpha_{t_{i+1}}}{\alpha_{t_i}}\,\bar{x}_{t_i} - \sigma_{t_{i+1}}\,\phi_1(h)\,\epsilon_\theta(u, t_s) + \sqrt{\bar{\alpha}_{t_{i+1}}}\,\frac{t_{i+1} - t_i}{T_{c+1}-T_c}\,\hat{d}^c_s,
+  \label{eq:dpm2}
+\end{equation}
+where $\hat{d}^c_s$ uses the clean signal predicted at the midpoint. This requires two network evaluations per step but achieves $O(h^2)$ local truncation error, enabling high-quality sampling with as few as 20--50 steps.
+
+\paragraph{Two sampling strategies.}
+In practice, we employ two complementary sampling strategies. The \textbf{DDPM jump-step posterior} (Section~3.3.4) provides an exact Gaussian posterior for arbitrary jump sizes, requiring one network evaluation per step. The \textbf{DPM-Solver with drift correction} (this section) provides an approximate but efficient alternative based on high-order ODE integration. The posterior sampler is preferred for moderate jump sizes (5--20 steps per resolution), while DPM-Solver is preferable for aggressive subsampling (20--50 total steps). Both methods share the same drift correction term, ensuring consistency. The complete derivation of the jump-step posterior is given in Appendix~\ref{app:jumpstep}.
+
+\subsubsection{Comparison with Standard DDPM}
+
+Table~\ref{tab:comparison} summarizes the key differences between standard DDPM and our RDD formulation across all major components. In every case, RDD reduces to DDPM when the drift $\bar{d}^c = 0$ (i.e., no resolution transition), confirming that RDD is a strict generalization.
+
+\begin{table}[t]
+\centering
+\caption{\textbf{Comparison of DDPM and RDD formulations.} RDD extends each component of DDPM with a resolution drift term $\bar{d}^c = \textbf{UP}_s(\textbf{DOWN}_s(x_0^c)) - x_0^c$. When $\bar{d}^c = 0$, all RDD formulas reduce exactly to their DDPM counterparts.}
+\label{tab:comparison}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}p{2.8cm}p{5.2cm}p{5.8cm}@{}}
+\toprule
+\textbf{Component} & \textbf{DDPM} & \textbf{RDD (Ours)} \\
+\midrule
+\textbf{Forward step} &
+$q(x_t \mid x_{t-1}) = \mathcal{N}\!\left(\sqrt{\alpha_t}\,x_{t-1},\; (1{-}\alpha_t)I\right)$ &
+$q(\bar{x}_t^c \mid \bar{x}_{t-1}^c) = \mathcal{N}\!\left(\sqrt{\alpha_t}\,\bar{x}_{t-1}^c + \frac{\sqrt{\bar{\alpha}_t}}{\Delta T}\bar{d}^c,\; (1{-}\alpha_t)I\right)$ \\[6pt]
+\textbf{Marginal} &
+$q(x_t \mid x_0) = \mathcal{N}\!\left(\sqrt{\bar{\alpha}_t}\,x_0,\; (1{-}\bar{\alpha}_t)I\right)$ &
+$q(\bar{x}_t^c \mid x_0^c) = \mathcal{N}\!\left(\sqrt{\bar{\alpha}_t}\,x_0^c + \frac{t}{\Delta T}\sqrt{\bar{\alpha}_t}\,\bar{d}^c,\; (1{-}\bar{\alpha}_t)I\right)$ \\[6pt]
+\textbf{Prediction target} &
+$\epsilon_\theta(x_t, t)$ predicts noise $\epsilon$ &
+$\epsilon_\theta(\bar{x}_t^c, t, c)$ predicts effective noise $\tilde{\epsilon}$ (same training form) \\[6pt]
+\textbf{Posterior mean} &
+$\mu = \frac{1{-}\bar{\alpha}_s}{1{-}\bar{\alpha}_t}\sqrt{\frac{\bar{\alpha}_t}{\bar{\alpha}_s}}\,x_t + \frac{\bar{\alpha}_s{-}\bar{\alpha}_t}{1{-}\bar{\alpha}_t}\frac{1}{\sqrt{\bar{\alpha}_s}}\,\hat{x}_0$ &
+$\mu = \text{(i)}\;+\;\text{(ii)}\;+\;\gamma_{s,t}^c\,\bar{d}^c$ \newline {\small (i)(ii) identical to DDPM; (iii) drift correction} \\[6pt]
+\textbf{SDE} &
+$dx = f(t)\,x\,dt + g(t)\,dW$ &
+$d\bar{x} = \bigl[f(t)\,\bar{x} + a(t)\bigr]dt + g(t)\,dW$ \newline {\small $a(t) = \frac{\alpha(t)}{\Delta T}\,\bar{d}^c$} \\[6pt]
+\textbf{DPM-Solver (1st)} &
+$x_{t_{i+1}} = \frac{\alpha_{t_{i+1}}}{\alpha_{t_i}}\,x_{t_i} - \sigma_{t_{i+1}}\,\phi_1(h)\,\epsilon_\theta$ &
+$\bar{x}_{t_{i+1}} = \frac{\alpha_{t_{i+1}}}{\alpha_{t_i}}\,\bar{x}_{t_i} - \sigma_{t_{i+1}}\,\phi_1(h)\,\epsilon_\theta + \sqrt{\bar{\alpha}_{t_{i+1}}}\frac{h_t}{\Delta T}\,\hat{d}^c$ \\[4pt]
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\subsubsection{Computational Advantage}
+
+The computational savings of our approach depend on the resolution schedule. With the schedule $T_0{=}0, T_1{=}300, T_2{=}600, T_3{=}1000$ and stride $s{=}2$ (generating $256 \times 256$ images), the total compute is proportional to:
+\begin{equation}
+  \text{Cost} \propto 300 \cdot 256^2 + 300 \cdot 128^2 + 400 \cdot 64^2 \approx 300 \cdot 256^2 \times 1.09,
+\end{equation}
+yielding a theoretical speedup of roughly $1000 / (300 + 300/4 + 400/16) \approx 2.7\times$ over standard DDPM at full resolution, with the exact ratio depending on the network architecture and the resolution schedule. More aggressive schedules (e.g., allocating more steps to lower resolutions) can achieve greater speedups.
+
+
+\section*{References}
+
+{
+\small
+
+\begin{enumerate}
+
+\bibitem{ho2020ddpm}
+Ho, J., Jain, A., \& Abbeel, P.
+Denoising diffusion probabilistic models.
+\textit{NeurIPS}, 2020.
+
+\bibitem{song2021sde}
+Song, Y., Sohl-Dickstein, J., Kingma, D.~P., Kumar, A., Ermon, S., \& Poole, B.
+Score-based generative modeling through stochastic differential equations.
+\textit{ICLR}, 2021.
+
+\bibitem{song2021ddim}
+Song, J., Meng, C., \& Ermon, S.
+Denoising diffusion implicit models.
+\textit{ICLR}, 2021.
+
+\bibitem{nichol2021improved}
+Nichol, A.~Q. \& Dhariwal, P.
+Improved denoising diffusion probabilistic models.
+\textit{ICML}, 2021.
+
+\bibitem{dhariwal2021adm}
+Dhariwal, P. \& Nichol, A.
+Diffusion models beat GANs on image synthesis.
+\textit{NeurIPS}, 2021.
+
+\bibitem{karras2022edm}
+Karras, T., Aittala, M., Laine, S., Hellsten, J., Lehtinen, J., \& Aila, T.
+Elucidating the design space of diffusion-based generative models.
+\textit{NeurIPS}, 2022.
+
+\bibitem{rombach2022ldm}
+Rombach, R., Blattmann, A., Lorenz, D., Esser, P., \& Ommer, B.
+High-resolution image synthesis with latent diffusion models.
+\textit{CVPR}, 2022.
+
+\bibitem{peebles2023dit}
+Peebles, W. \& Xie, S.
+Scalable diffusion models with transformers.
+\textit{ICLR}, 2023.
+
+\bibitem{ho2022cdm}
+Ho, J. \& Salimans, T.
+Cascaded diffusion models for high fidelity image generation.
+\textit{JMLR}, 23(47):1--33, 2022.
+
+\bibitem{saharia2022imagen}
+Saharia, C., Chan, W., Saxena, S., Li, L., Whang, J., et~al.
+Photorealistic text-to-image diffusion models with deep language understanding.
+\textit{NeurIPS}, 2022.
+
+\bibitem{ramesh2022dalle2}
+Ramesh, A., Dhariwal, P., Nichol, A., Chu, C., \& Chen, M.
+Hierarchical text-conditional image generation with CLIP latents.
+\textit{arXiv:2204.06125}, 2022.
+
+\bibitem{podell2023sdxl}
+Podell, D., English, Z., Lacey, K., Blattmann, A., Dockhorn, T., et~al.
+SDXL: Improving latent diffusion models for high-resolution image synthesis.
+\textit{arXiv:2307.01952}, 2023.
+
+\bibitem{tevet2022pddm}
+Ryu, D. \& Ye, J.~C.
+Pyramidal denoising diffusion probabilistic models.
+\textit{arXiv:2208.01864}, 2022.
+
+\bibitem{gu2022fdm}
+Gu, J., Zhai, S., Zhang, Y., Bautista, M.~A., \& Susskind, J.
+f-DM: A multi-stage diffusion model via progressive signal transformation.
+\textit{arXiv:2210.04955}, 2022.
+
+\bibitem{hoogeboom2023simple}
+Hoogeboom, E., Heek, J., \& Salimans, T.
+Simple diffusion: End-to-end diffusion for high resolution images.
+\textit{ICML}, 2023.
+
+\bibitem{gu2024mdm}
+Gu, J., Zhai, S., Zhang, Y., Susskind, J., \& Jaitly, N.
+Matryoshka diffusion models.
+\textit{ICLR}, 2024.
+
+\bibitem{jabri2023rin}
+Jabri, A., Fleet, D.~J., \& Chen, T.
+Scalable adaptive computation for iterative generation.
+\textit{ICML}, 2023.
+
+\bibitem{harvey2023wuerstchen}
+Harvey, W., Lewandowski, D., Oreshkin, B.~N., et~al.
+Wuerstchen: An efficient architecture for large-scale text-to-image diffusion models.
+\textit{arXiv:2306.00614}, 2023.
+
+\bibitem{balaji2023ediffi}
+Balaji, Y., Nah, S., Huang, X., Vahdat, A., et~al.
+eDiff-I: Text-to-image diffusion models with an ensemble of expert denoisers.
+\textit{arXiv:2211.01324}, 2023.
+
+\bibitem{xue2023raphael}
+Xue, Z., Song, G., Guo, Q., Liu, B., Zong, Z., Liu, Y., \& Luo, P.
+RAPHAEL: Text-to-image generation via large mixture of diffusion paths.
+\textit{NeurIPS}, 2023.
+
+\bibitem{karras2018progan}
+Karras, T., Aila, T., Laine, S., \& Lehtinen, J.
+Progressive growing of GANs for improved quality, stability, and variation.
+\textit{ICLR}, 2018.
+
+\bibitem{lu2022dpm}
+Lu, C., Zhou, Y., Bao, F., Chen, J., Li, C., \& Zhu, J.
+DPM-Solver++: Fast solver for guided sampling of diffusion probabilistic models.
+\textit{NeurIPS}, 2022.
+
+\bibitem{song2023consistency}
+Song, Y., Dhariwal, P., Chen, M., \& Sutskever, I.
+Consistency models.
+\textit{ICML}, 2023.
+
+\end{enumerate}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+\section{Forward Process and Reverse Process Derivations}
+\label{app:forward}
+
+\subsection{Resolution Operators}
+
+\begin{definition}[Downsample and Upsample Operators]
+For positive integer $s$, define $\textbf{DOWN}_s : \mathbb{R}^{H \times W} \to \mathbb{R}^{H/s \times W/s}$ as average pooling over non-overlapping $s \times s$ blocks:
+\begin{equation}
+  (\textbf{DOWN}_s(X))_{i,j} = \frac{1}{s^2} \sum_{u=0}^{s-1} \sum_{v=0}^{s-1} X_{si+u,\, sj+v},
+  \label{app:def:down}
+\end{equation}
+and $\textbf{UP}_s : \mathbb{R}^{H/s \times W/s} \to \mathbb{R}^{H \times W}$ as nearest-neighbor interpolation:
+\begin{equation}
+  (\textbf{UP}_s(Y))_{si+u,\, sj+v} = Y_{i,j}, \quad \forall\, 0 \le u,v < s.
+  \label{app:def:up}
+\end{equation}
+\end{definition}
+
+In matrix form, $\textbf{DOWN}_s(x) = \textbf{Img}(D_s\,\textbf{Vec}(x))$ and $\textbf{UP}_s(x) = \textbf{Img}(U_s\,\textbf{Vec}(x))$, where $D_s \in \mathbb{R}^{\frac{HW}{s^2} \times HW}$ and $U_s \in \mathbb{R}^{HW \times \frac{HW}{s^2}}$ are block-diagonal with blocks $\frac{1}{s^2}\mathbf{1}_{1 \times s^2}$ and $\mathbf{1}_{s^2 \times 1}$ respectively. Key properties: (1)~$\textbf{UP}_s \circ \textbf{DOWN}_s(x) = x_{\text{smooth}}$ (piecewise-constant approximation); (2)~$\textbf{DOWN}_s$ is not injective; (3)~$D_s \cdot U_s = I_{HW/s^2}$.
+
+\subsection{Forward Process: Marginal Distribution}
+
+We derive the marginal distribution $q(\bar{x}_{T_c+t}^c \mid \bar{x}_0^c)$ of the modified forward process (Eq.~\eqref{eq:forward_step}). At resolution level $c$, the modified forward step is:
+\begin{equation}
+  q(\bar{x}_{T_c+t}^c \mid \bar{x}_{T_c+t-1}^c) = \mathcal{N}\!\left(\bar{x}_{T_c+t}^c \;\middle|\; \sqrt{\alpha_{T_c+t}}\,\bar{x}_{T_c+t-1}^c + \frac{\sqrt{\bar{\alpha}_{T_c+t}}}{T_{c+1} - T_c}\,\bar{d}^c,\; (1 - \alpha_{T_c+t})I \right).
+  \label{app:eq:step}
+\end{equation}
+
+\begin{proof}[Proof of Eq.~\eqref{eq:forward_marginal}]
+We proceed by induction on $t$. For $t=1$: the mean is $\sqrt{\alpha_{T_c+1}}\,\bar{x}_0^c + \frac{\sqrt{\bar{\alpha}_{T_c+1}}}{T_{c+1}-T_c}\bar{d}^c$ and the variance is $(1-\bar{\alpha}_{T_c+1})I$, matching Eq.~\eqref{eq:forward_marginal}.
+
+Assume the claim holds for $t$. For step $t{+}1$:
+\begin{align*}
+  \mathbb{E}[\bar{x}_{T_c+t+1}^c \mid \bar{x}_0^c] &= \sqrt{\alpha_{T_c+t+1}}\,\mathbb{E}[\bar{x}_{T_c+t}^c \mid \bar{x}_0^c] + \frac{\sqrt{\bar{\alpha}_{T_c+t+1}}}{T_{c+1}-T_c}\,\bar{d}^c \\
+  &= \sqrt{\alpha_{T_c+t+1}}\left(\sqrt{\bar{\alpha}_{T_c+t}}\,\bar{x}_0^c + \frac{t}{T_{c+1}-T_c}\sqrt{\bar{\alpha}_{T_c+t}}\,\bar{d}^c\right) + \frac{\sqrt{\bar{\alpha}_{T_c+t+1}}}{T_{c+1}-T_c}\,\bar{d}^c \\
+  &= \sqrt{\bar{\alpha}_{T_c+t+1}}\,\bar{x}_0^c + \frac{t+1}{T_{c+1}-T_c}\sqrt{\bar{\alpha}_{T_c+t+1}}\,\bar{d}^c,
+\end{align*}
+where we used $\alpha_{T_c+t+1}\bar{\alpha}_{T_c+t} = \bar{\alpha}_{T_c+t+1}$. The variance: $\text{Var}[\bar{x}_{T_c+t+1}^c] = \alpha_{T_c+t+1}^2(1-\bar{\alpha}_{T_c+t}) + (1-\alpha_{T_c+t+1}) = 1-\bar{\alpha}_{T_c+t+1}$.
+\end{proof}
+
+Setting $t = T_{c+1} - T_c$ gives the terminal distribution:
+\begin{equation}
+  q(\bar{x}_{T_{c+1}}^c \mid \bar{x}_0^c) = \mathcal{N}\!\left(\bar{x}_{T_{c+1}}^c \;\middle|\; \sqrt{\bar{\alpha}_{T_{c+1}}}\,\textbf{UP}_s(\bar{x}_0^{c+1}),\; (1 - \bar{\alpha}_{T_{c+1}})I \right),
+  \label{app:eq:terminal}
+\end{equation}
+where $\bar{x}_0^c + \bar{d}^c = \textbf{UP}_s(\bar{x}_0^{c+1})$. From Eq.~\eqref{eq:forward_marginal}, we can write $\bar{x}_{T_c+t}^c = \sqrt{\bar{\alpha}_{T_c+t}}\,\bar{x}_0^c + \sqrt{1-\bar{\alpha}_{T_c+t}}\,\tilde{\epsilon}$ with effective noise $\tilde{\epsilon} = \epsilon + \frac{\sqrt{\bar{\alpha}_{T_c+t}}}{\sqrt{1-\bar{\alpha}_{T_c+t}}}\cdot\frac{t}{T_{c+1}-T_c}\,\bar{d}^c$, recovering the standard DDPM training form.
+
+\subsection{Reverse Process: Posterior Derivation}
+
+We derive the reverse posterior $q(\bar{x}_{T_c+s}^c \mid \bar{x}_{T_c+t}^c, \bar{x}_0^c)$ for $0 \le s < t \le T_{c+1}-T_c$ following the same approach as DDPM~\cite{ho2020ddpm}: combine the single-step forward transition with the marginal via Bayes' rule.
+
+The single-step forward transition from $s$ to $t$ (where $t = s+1$) is:
+\begin{equation}
+  q(\bar{x}_{T_c+t}^c \mid \bar{x}_{T_c+s}^c) = \mathcal{N}\!\left(\bar{x}_{T_c+t}^c \;\middle|\; \sqrt{\alpha_{T_c+t}}\,\bar{x}_{T_c+s}^c + \frac{\sqrt{\bar{\alpha}_{T_c+t}}}{T_{c+1}-T_c}\,\bar{d}^c,\; (1-\alpha_{T_c+t})I \right).
+  \label{app:eq:forward_single}
+\end{equation}
+The marginal at time $s$ is (from Eq.~\eqref{eq:forward_marginal}):
+\begin{equation}
+  q(\bar{x}_{T_c+s}^c \mid \bar{x}_0^c) = \mathcal{N}\!\left(\bar{x}_{T_c+s}^c \;\middle|\; \sqrt{\bar{\alpha}_{T_c+s}}\,\bar{x}_0^c + \frac{s}{T_{c+1}-T_c}\sqrt{\bar{\alpha}_{T_c+s}}\,\bar{d}^c,\; (1-\bar{\alpha}_{T_c+s})I \right).
+  \label{app:eq:marginal_s}
+\end{equation}
+
+\begin{proof}[Posterior via Bayes' rule]
+By Bayes' rule, $q(\bar{x}_{T_c+s}^c \mid \bar{x}_{T_c+t}^c, \bar{x}_0^c) \propto q(\bar{x}_{T_c+t}^c \mid \bar{x}_{T_c+s}^c)\,q(\bar{x}_{T_c+s}^c \mid \bar{x}_0^c)$. Both factors are Gaussian, so the posterior is Gaussian $q(\bar{x}_{T_c+s}^c \mid \bar{x}_{T_c+t}^c, \bar{x}_0^c) = \mathcal{N}(\mu, \Sigma)$.
+
+The precision (inverse variance) is the sum of the two precisions:
+\begin{equation}
+  \Sigma^{-1} = \frac{1}{1-\alpha_{T_c+t}} + \frac{1}{1-\bar{\alpha}_{T_c+s}} = \frac{1-\bar{\alpha}_{T_c+s} + 1-\alpha_{T_c+t}}{(1-\alpha_{T_c+t})(1-\bar{\alpha}_{T_c+s})}.
+\end{equation}
+Since $\alpha_{T_c+t} = \bar{\alpha}_{T_c+t}/\bar{\alpha}_{T_c+s}$ for $t = s+1$, we have $1-\alpha_{T_c+t} = (\bar{\alpha}_{T_c+s}-\bar{\alpha}_{T_c+t})/\bar{\alpha}_{T_c+s}$, yielding:
+\begin{equation}
+  \Sigma = \frac{(\bar{\alpha}_{T_c+s} - \bar{\alpha}_{T_c+t})(1 - \bar{\alpha}_{T_c+s})}{\bar{\alpha}_{T_c+s}(1 - \bar{\alpha}_{T_c+t})}\,I.
+  \label{app:eq:post_cov}
+\end{equation}
+
+The mean is a precision-weighted combination:
+\begin{align*}
+  \mu &= \Sigma\left[\frac{1}{1-\alpha_{T_c+t}}\left(\sqrt{\alpha_{T_c+t}}\,\bar{x}_{T_c+s}^c + \frac{\sqrt{\bar{\alpha}_{T_c+t}}}{T_{c+1}-T_c}\,\bar{d}^c\right) + \frac{1}{1-\bar{\alpha}_{T_c+s}}\left(\sqrt{\bar{\alpha}_{T_c+s}}\,\bar{x}_0^c + \frac{s}{T_{c+1}-T_c}\sqrt{\bar{\alpha}_{T_c+s}}\,\bar{d}^c\right)\right].
+\end{align*}
+Eliminating $\bar{x}_{T_c+s}^c$ using the forward transition (solving Eq.~\eqref{app:eq:forward_single} for $\bar{x}_{T_c+s}^c$) and collecting terms in $\bar{x}_{T_c+t}^c$, $\bar{x}_0^c$, and $\bar{d}^c$ gives:
+\begin{equation}
+  \mu = \underbrace{\frac{1 - \bar{\alpha}_{T_c+s}}{1 - \bar{\alpha}_{T_c+t}}\sqrt{\frac{\bar{\alpha}_{T_c+t}}{\bar{\alpha}_{T_c+s}}}\;\bar{x}_{T_c+t}^c}_{\text{(i) denoising}} + \underbrace{\frac{\bar{\alpha}_{T_c+s} - \bar{\alpha}_{T_c+t}}{1 - \bar{\alpha}_{T_c+t}}\frac{1}{\sqrt{\bar{\alpha}_{T_c+s}}}\;\bar{x}_0^c}_{\text{(ii) clean signal}} + \underbrace{\gamma_{s,t}^c\;\bar{d}^c}_{\text{(iii) drift correction}},
+  \label{app:eq:post_mean}
+\end{equation}
+where the drift coefficient is:
+\begin{equation}
+  \gamma_{s,t}^c = \frac{\sqrt{\bar{\alpha}_{T_c+s}}}{T_{c+1} - T_c}\left[\frac{s(\bar{\alpha}_{T_c+s} - \bar{\alpha}_{T_c+t})}{\bar{\alpha}_{T_c+s}(1 - \bar{\alpha}_{T_c+t})} - \frac{(t-s)\bar{\alpha}_{T_c+t}}{\bar{\alpha}_{T_c+s}(1 - \bar{\alpha}_{T_c+t})}\right].
+  \label{app:eq:gamma}
+\end{equation}
+\end{proof}
+
+When $\bar{d}^c = 0$, $\gamma_{s,t}^c = 0$ and the posterior reduces to the standard DDPM posterior. In our implementation, we use the numerically equivalent form $\gamma_{s,t}^c = \Sigma\left(\frac{D}{\sigma_2^2} - \frac{AB}{\sigma_1^2}\right)$ (with $A, B, D, \sigma_1^2, \sigma_2^2$ defined as in the code) to avoid subtracting large similar quantities.
+
+\subsection{Cross-Resolution Posterior Sampling}
+\label{app:cross_res}
+
+The derivations in Sections~A.2--A.3 address the reverse process \emph{within} a single resolution level. Here we derive the posterior for transitioning \emph{between} resolution levels: given the denoised sample $\bar{x}_0^c$ at level $c$ (e.g., $300 \times 300$), we seek the distribution of the noisy image $\bar{x}_{T_c}^{c-1}$ at level $c{-}1$ (e.g., $600 \times 600$) at timestep $T_c$.
+
+\paragraph{Notation.}
+Let $D \in \mathbb{R}^{m \times n}$ and $U \in \mathbb{R}^{n \times m}$ denote the matrix forms of $\textbf{DOWN}_s$ and $\textbf{UP}_s$ respectively, where $n = HW$ (high-resolution) and $m = HW/s^2$ (low-resolution). Key properties: $DU = I_m$ and $\bar{x}_0^c = D\,\bar{x}_0^{c-1}$. Define:
+\begin{equation}
+  a = \sqrt{\bar{\alpha}_{T_c}}, \qquad b = 1 - \bar{\alpha}_{T_c}.
+  \label{app:eq:ab}
+\end{equation}
+
+\paragraph{Model specification.}
+We define two Gaussian distributions:
+
+\noindent\textbf{(1) Cross-resolution prior} on the high-resolution clean image given the low-resolution clean image:
+\begin{equation}
+  p(\bar{x}_0^{c-1} \mid \bar{x}_0^c) = \mathcal{N}\!\left(\bar{x}_0^{c-1} \;\middle|\; U\,\bar{x}_0^c,\; B\right), \qquad B = b\,(I_n - D^T D).
+  \label{app:eq:prior}
+\end{equation}
+The covariance $B = b(I_n - D^T D)$ is singular: it assigns zero variance in the row space of $D$ (low-frequency components fully determined by $\bar{x}_0^c$) and variance $b$ in the null space of $D$ (high-frequency components entirely uncertain).
+
+\noindent\textbf{(2) Diffusion forward process} at resolution level $c{-}1$:
+\begin{equation}
+  q(\bar{x}_{T_c}^{c-1} \mid \bar{x}_0^{c-1}) = \mathcal{N}\!\left(\bar{x}_{T_c}^{c-1} \;\middle|\; a\,\bar{x}_0^{c-1},\; b\,I_n \right).
+  \label{app:eq:forward}
+\end{equation}
+
+\paragraph{Posterior via Bayes' rule.}
+We treat Eq.~\eqref{app:eq:forward} as the likelihood and Eq.~\eqref{app:eq:prior} as the prior. The posterior of $\bar{x}_0^{c-1}$ given both the noisy observation $\bar{x}_{T_c}^{c-1}$ and the low-resolution clean image $\bar{x}_0^c$ is:
+\begin{equation}
+  p(\bar{x}_0^{c-1} \mid \bar{x}_{T_c}^{c-1}, \bar{x}_0^c) \propto q(\bar{x}_{T_c}^{c-1} \mid \bar{x}_0^{c-1})\;p(\bar{x}_0^{c-1} \mid \bar{x}_0^c).
+  \label{app:eq:bayes}
+\end{equation}
+
+\begin{proof}[Proof of Eqs.~\eqref{eq:cross_res}--\eqref{eq:cross_mean}]
+For a Gaussian prior $\mathcal{N}(x;\, \mu_p,\, \Sigma_p)$ and Gaussian likelihood $\mathcal{N}(y;\, A x,\, \Sigma_\ell)$, the posterior is:
+\begin{align}
+  \boldsymbol{\Sigma} &= \left(\Sigma_p^{-1} + A^T \Sigma_\ell^{-1} A\right)^{-1},
+  \label{app:eq:post_cov_general}\\
+  \boldsymbol{\mu} &= \boldsymbol{\Sigma}\!\left(\Sigma_p^{-1}\,\mu_p + A^T \Sigma_\ell^{-1}\,y\right).
+  \label{app:eq:post_mean_general}
+\end{align}
+
+\noindent\textbf{Substituting} $\Sigma_p = B = b(I_n - D^T D)$, $\mu_p = U\bar{x}_0^c$, $A = a I_n$, $\Sigma_\ell = b I_n$, and $y = \bar{x}_{T_c}^{c-1}$:
+
+\noindent\textbf{Precision matrix:}
+\begin{align}
+  \boldsymbol{\Sigma}^{-1} &= B^{-1} + a^2 \cdot \tfrac{1}{b}\,I_n
+  = \tfrac{1}{b}\,(I_n - D^T D)^+ + \tfrac{a^2}{b}\,I_n,
+  \label{app:eq:precision}
+\end{align}
+where $(I_n - D^T D)^+$ denotes the pseudoinverse. Since $I_n - D^T D$ is a projection matrix, its pseudoinverse equals itself: $(I_n - D^T D)^+ = I_n - D^T D$. Therefore:
+\begin{align}
+  \boldsymbol{\Sigma}^{-1} &= \tfrac{1}{b}\,(I_n - D^T D) + \tfrac{a^2}{b}\,I_n
+  = \tfrac{1}{b}\!\left(a^2 I_n + (I_n - D^T D)\right).
+  \label{app:eq:precision2}
+\end{align}
+
+\noindent\textbf{Posterior covariance via Woodbury identity.}
+We compute $\boldsymbol{\Sigma} = (\boldsymbol{\Sigma}^{-1})^{-1}$. Rewriting:
+\begin{equation}
+  \boldsymbol{\Sigma}^{-1} = \tfrac{1}{b}\,I_n + D^T \underbrace{\left(-\tfrac{1}{b}\,I_m\right)}_{\Theta^{-1}} D,
+  \label{app:eq:woodbury_form}
+\end{equation}
+where we used $D^T D = I_n - (I_n - D^T D)$, so $-\tfrac{1}{b}(I_n - D^T D) = -\tfrac{1}{b}I_n + \tfrac{1}{b}D^T D$, giving $\boldsymbol{\Sigma}^{-1} = \tfrac{a^2}{b}I_n + \tfrac{1}{b}(I_n - D^T D) = \tfrac{1+a^2}{b}I_n - \tfrac{1}{b}(I_n - D^T D) - \tfrac{1}{b}I_n + \tfrac{1}{b}I_n = \tfrac{1}{b}I_n - \tfrac{1}{b}(I_n - D^T D) + \tfrac{a^2}{b}I_n$.
+
+Applying the Woodbury identity $(A + UCV)^{-1} = A^{-1} - A^{-1}U(C^{-1} + VA^{-1}U)^{-1}VA^{-1}$ with $A = \tfrac{1}{b}I_n$, $U = D^T$, $C = \Theta^{-1} = -\tfrac{1}{b}I_m$, $V = D$:
+\begin{align}
+  \boldsymbol{\Sigma} &= b\,I_n - b\,I_n \cdot D^T \left(-\tfrac{1}{b}\,I_m + D \cdot b\,I_n \cdot D^T\right)^{-1} D \cdot b\,I_n \notag\\
+  &= b\,I_n - b^2 D^T \left(-\tfrac{1}{b}\,I_m + b\,DD^T\right)^{-1} D.
+  \label{app:eq:woodbury_step}
+\end{align}
+
+Now, $DD^T = \tfrac{1}{s^2}\,I_m$ for average-pooling downsampling (see Section~A.1), so:
+\begin{align}
+  -\tfrac{1}{b}\,I_m + b\,DD^T &= -\tfrac{1}{b}\,I_m + \tfrac{b}{s^2}\,I_m = \left(\tfrac{b}{s^2} - \tfrac{1}{b}\right)I_m = \tfrac{b^2 - s^2}{b\,s^2}\,I_m.
+  \label{app:eq:woodbury_inner}
+\end{align}
+
+Alternatively, a more direct derivation avoids explicit computation of $DD^T$. Note that $B = b(I_n - D^T D)$, so $B^{-1} = \tfrac{1}{b}(I_n - D^T D)$ (pseudoinverse). Then:
+\begin{equation}
+  D^T B^{-1} D = \tfrac{1}{b}\,D^T(I_n - D^T D)D = \tfrac{1}{b}\,(D^T D - D^T D \cdot D^T D) = 0,
+  \label{app:eq:dtbd_zero}
+\end{equation}
+since $D^T D$ is idempotent. Therefore:
+\begin{equation}
+  \boldsymbol{\Sigma}^{-1} = \tfrac{1}{b}\,I_n + 0 = \tfrac{1}{b}\,I_n \quad \Longrightarrow \quad \boldsymbol{\Sigma} = b\,I_n.
+  \label{app:eq:sigma_simple}
+\end{equation}
+
+\noindent\textbf{Posterior mean:}
+\begin{align}
+  \boldsymbol{\mu} &= \boldsymbol{\Sigma}\!\left(B^{-1}\,U\,\bar{x}_0^c + \tfrac{a^2}{b}\,\bar{x}_{T_c}^{c-1}\right)
+  = b\,I_n \!\left(\tfrac{1}{b}(I_n - D^T D)\,U\,\bar{x}_0^c + \tfrac{a^2}{b}\,\bar{x}_{T_c}^{c-1}\right) \notag\\
+  &= (I_n - D^T D)\,U\,\bar{x}_0^c + a^2\,\bar{x}_{T_c}^{c-1}.
+  \label{app:eq:mu_derived}
+\end{align}
+\end{proof}
+
+\paragraph{Simplified form.}
+Since $(I_n - D^T D)\,U = U - D^T(DU) = U - D^T I_m = U - D^T$, and using $a^2 = 1 - b$:
+\begin{equation}
+  \boldsymbol{\mu} = (U - D^T)\,\bar{x}_0^c + a^2\,\bar{x}_{T_c}^{c-1}.
+  \label{app:eq:mu_simplified}
+\end{equation}
+
+\paragraph{Sampling procedure.}
+To sample $\bar{x}_{T_c}^{c-1}$ at resolution level $c{-}1$ given $\bar{x}_0^c$ from level $c$:
+\begin{enumerate}
+  \item Draw $\bar{x}_0^{c-1} \sim p(\bar{x}_0^{c-1} \mid \bar{x}_0^c) = \mathcal{N}(U\bar{x}_0^c,\; b(I_n - D^T D))$.
+  \item Apply the forward process: $\bar{x}_{T_c}^{c-1} = a\,\bar{x}_0^{c-1} + \sqrt{b}\,\epsilon$, \quad $\epsilon \sim \mathcal{N}(0, I_n)$.
+\end{enumerate}
+Equivalently, in a single step:
+\begin{equation}
+  \bar{x}_{T_c}^{c-1} = a\,U\,\bar{x}_0^c + a\sqrt{b}\,(I_n - D^T D)\,\epsilon_1 + \sqrt{b}\,\epsilon_2,
+  \label{app:eq:cross_sample}
+\end{equation}
+where $\epsilon_1, \epsilon_2 \sim \mathcal{N}(0, I_n)$ are independent. The first noise term adds structured high-frequency perturbation (in the null space of $D$), while the second is the standard isotropic diffusion noise.
+
+\section{Efficient Sampling Methods}
+\label{app:sampling}
+
+This section details two practical sampling strategies that extend the single-step posterior (Appendix~\ref{app:forward}) to multi-step jumps.
+
+\subsection{DPM-Solver with Drift Correction}
+\label{app:dpmsolver}
+
+We derive high-order ODE solvers for Resolution-Drift Diffusion by extending the DPM-Solver~\cite{lu2022dpm} framework.
+
+\begin{definition}[Probability Flow SDE with Drift]
+The modified diffusion process admits a linear SDE:
+\begin{equation}
+  d\bar{x}_t = \left[f(t)\,\bar{x}_t + a(t)\right]dt + g(t)\,dW_t,
+  \label{app:eq:sde}
+\end{equation}
+with $f(t) = \frac{d}{dt}\log\alpha(t)$, $g^2(t) = -2\sigma_t^2\frac{d\lambda_t}{dt}$ (where $\lambda_t = \log(\alpha_t/\sigma_t)$), and drift coefficient $a(t) = \frac{\alpha(t)}{T_{c+1}-T_c}\,\bar{d}^c$.
+\end{definition}
+
+\begin{proof}[Derivation of $a(t)$]
+The solution via integrating factor $\Phi(t) = \alpha(t)$ is $\bar{x}_t = \alpha(t)\bar{x}_0 + \int_0^t \alpha(t)\alpha(s)^{-1}a(s)\,ds + \text{(noise)}$. Matching the mean of Eq.~\eqref{eq:forward_marginal} requires $\int_0^t \alpha(t)\alpha(s)^{-1}a(s)\,ds = \frac{t}{\Delta T}\alpha(t)\bar{d}^c$. This holds when $a(s) = \frac{\alpha(s)}{\Delta T}\bar{d}^c$, since $\int_0^t \alpha(t)\alpha(s)^{-1}\frac{\alpha(s)}{\Delta T}\bar{d}^c\,ds = \frac{t\,\alpha(t)}{\Delta T}\bar{d}^c$.
+\end{proof}
+
+\begin{definition}[Deterministic Sampling ODE and $\phi$-functions]
+Eliminating the stochastic term and reparameterizing in log-SNR space:
+\begin{equation}
+  \bar{x}_t = \frac{\alpha_t}{\alpha_s}\,\bar{x}_s + \alpha_t\frac{t-s}{T_{c+1}-T_c}\,\bar{d}^c - \alpha_t\int_{\lambda_s}^{\lambda_t} e^{-\lambda}\,\hat{\epsilon}_\theta(\bar{x}_\lambda, \lambda)\,d\lambda,
+  \label{app:eq:ode_sol}
+\end{equation}
+where $\phi_k(z) = \int_0^1 e^{(1-\delta)z}\frac{\delta^{k-1}}{(k-1)!}\,d\delta$ yields $\phi_1(z) = (e^z-1)/z$.
+\end{definition}
+
+\begin{proof}[DPM-Solver-1 (Eq.~\eqref{eq:dpm1})]
+Let $h = \lambda_{t_{i+1}} - \lambda_{t_i}$. With $\hat{\epsilon}_\theta$ constant over $[\lambda_{t_i}, \lambda_{t_{i+1}}]$:
+$\int e^{-\lambda}\hat{\epsilon}_\theta\,d\lambda = \frac{\sigma_{t_i}}{\alpha_{t_i}}\phi_1(h)\,h\,\epsilon_\theta$. Substituting into Eq.~\eqref{app:eq:ode_sol} and using $\frac{\alpha_{t_{i+1}}}{\alpha_{t_i}}\sigma_{t_i}\phi_1(h)h = \sigma_{t_{i+1}}\phi_1(h)$ yields Eq.~\eqref{eq:dpm1}.
+\end{proof}
+
+\begin{proof}[DPM-Solver-2 (Eqs.~\eqref{eq:dpm2_mid}--\eqref{eq:dpm2})]
+Taylor-expand $\hat{\epsilon}_\theta$ around $\lambda_{t_i}$: the integral gains a $\phi_2(h)h^2\epsilon_\theta'$ term. Rather than computing the derivative, we use a midpoint evaluation at $\lambda_s = \lambda_{t_i} + h/2$. The half-step (Eq.~\eqref{eq:dpm2_mid}) estimates $\epsilon_\theta$ at the midpoint; substituting into the full step yields Eq.~\eqref{eq:dpm2} with $O(h^3)$ local error.
+\end{proof}
+
+In practice, log-SNR values $\lambda_t = \frac{1}{2}\log(\bar{\alpha}_t / (1 - \bar{\alpha}_t))$ are precomputed. The drift correction uses real (continuous) timestep values via a precomputed \texttt{timestep\_map}. When $\bar{d}^c = 0$, all drift terms vanish and the solver reduces to standard DPM-Solver.
+
+\subsection{DDPM Posterior Jump-Step Sampling}
+\label{app:jumpstep}
+
+This appendix provides the complete derivation of the jump-step posterior $q(\bar{x}_{T_c+s}^c \mid \bar{x}_{T_c+t}^c, \bar{x}_0^c)$ for arbitrary $0 \le s < t \le T_{c+1}-T_c$, following the same Bayes' rule approach as DDPM~\cite{ho2020ddpm} but extended to our modified forward process with resolution drift.
+
+\paragraph{Step 1: Multi-step forward transition.}
+The single-step forward transition from internal index $s$ to $s{+}1$ is:
+\begin{equation}
+  q(\bar{x}_{T_c+s+1}^c \mid \bar{x}_{T_c+s}^c) = \mathcal{N}\!\left(\bar{x}_{T_c+s+1}^c \;\middle|\; \sqrt{\alpha_{T_c+s+1}}\,\bar{x}_{T_c+s}^c + \frac{\sqrt{\bar{\alpha}_{T_c+s+1}}}{T_{c+1}-T_c}\,\bar{d}^c,\; (1-\alpha_{T_c+s+1})I \right).
+  \label{app:eq:js_forward_single}
+\end{equation}
+Composing two consecutive steps (from $s$ to $s{+}2$):
+\begin{align}
+  q(\bar{x}_{T_c+s+2}^c \mid \bar{x}_{T_c+s}^c) &= \int q(\bar{x}_{T_c+s+2}^c \mid \bar{x}_{T_c+s+1}^c)\,q(\bar{x}_{T_c+s+1}^c \mid \bar{x}_{T_c+s}^c)\,d\bar{x}_{T_c+s+1}^c \notag\\
+  &= \mathcal{N}\!\left(\bar{x}_{T_c+s+2}^c \;\middle|\; \sqrt{\bar{\alpha}_{T_c+s+2}}\,\bar{x}_{T_c+s}^c + \frac{\sqrt{\bar{\alpha}_{T_c+s+2}}}{T_{c+1}-T_c}\cdot 2\,\bar{d}^c,\; (1-\bar{\alpha}_{T_c+s+2})I \right).
+  \label{app:eq:js_forward_two}
+\end{align}
+
+\paragraph{Step 2: General multi-step marginal.}
+By induction, composing $(t{-}s)$ consecutive steps gives the forward transition from index $s$ to index $t$:
+\begin{equation}
+  q(\bar{x}_{T_c+t}^c \mid \bar{x}_{T_c+s}^c) = \mathcal{N}\!\left(\bar{x}_{T_c+t}^c \;\middle|\; \sqrt{\frac{\bar{\alpha}_{T_c+t}}{\bar{\alpha}_{T_c+s}}}\,\bar{x}_{T_c+s}^c + \frac{\sqrt{\bar{\alpha}_{T_c+t}}}{T_{c+1}-T_c}(t{-}s)\,\bar{d}^c,\; \sigma_1^2 I \right),
+  \label{app:eq:js_forward_multi}
+\end{equation}
+where $\sigma_1^2 = 1 - \bar{\alpha}_{T_c+t}/\bar{\alpha}_{T_c+s}$.
+
+The marginal distribution at index $s$ (from the forward process starting at $\bar{x}_0^c$) is:
+\begin{equation}
+  q(\bar{x}_{T_c+s}^c \mid \bar{x}_0^c) = \mathcal{N}\!\left(\bar{x}_{T_c+s}^c \;\middle|\; \sqrt{\bar{\alpha}_{T_c+s}}\,\bar{x}_0^c + \frac{s}{T_{c+1}-T_c}\sqrt{\bar{\alpha}_{T_c+s}}\,\bar{d}^c,\; \sigma_2^2 I \right),
+  \label{app:eq:js_marginal}
+\end{equation}
+where $\sigma_2^2 = 1 - \bar{\alpha}_{T_c+s}$.
+
+\paragraph{Step 3: Posterior via Bayes' rule.}
+By Bayes' rule, $q(\bar{x}_{T_c+s}^c \mid \bar{x}_{T_c+t}^c, \bar{x}_0^c) \propto q(\bar{x}_{T_c+t}^c \mid \bar{x}_{T_c+s}^c)\,q(\bar{x}_{T_c+s}^c \mid \bar{x}_0^c)$. Both factors are Gaussian in $\bar{x}_{T_c+s}^c$, so the posterior is Gaussian $\mathcal{N}(\mu, \Sigma)$.
+
+\begin{proof}[Derivation of the jump-step posterior]
+We apply the standard Gaussian posterior formula. Define the shorthand:
+\begin{equation}
+  A = \sqrt{\frac{\bar{\alpha}_{T_c+t}}{\bar{\alpha}_{T_c+s}}}, \qquad B = \frac{\sqrt{\bar{\alpha}_{T_c+t}}}{T_{c+1}-T_c}(t{-}s), \qquad C = \sqrt{\bar{\alpha}_{T_c+s}}, \qquad D = \frac{\sqrt{\bar{\alpha}_{T_c+s}}}{T_{c+1}-T_c}\,s.
+  \label{app:eq:js_abcd}
+\end{equation}
+
+\noindent\textbf{Rewriting the two Gaussian factors:}
+\begin{align}
+  q(\bar{x}_{T_c+t}^c \mid \bar{x}_{T_c+s}^c) &= \mathcal{N}\!\left(\bar{x}_{T_c+t}^c \;\middle|\; A\,\bar{x}_{T_c+s}^c + B\,\bar{d}^c,\; \sigma_1^2 I \right), \label{app:eq:js_likelihood}\\
+  q(\bar{x}_{T_c+s}^c \mid \bar{x}_0^c) &= \mathcal{N}\!\left(\bar{x}_{T_c+s}^c \;\middle|\; C\,\bar{x}_0^c + D\,\bar{d}^c,\; \sigma_2^2 I \right). \label{app:eq:js_prior}
+\end{align}
+
+\noindent\textbf{Posterior covariance:}
+\begin{equation}
+  \Sigma = \left(\frac{A^2}{\sigma_1^2} + \frac{1}{\sigma_2^2}\right)^{-1} = \left(\frac{\bar{\alpha}_{T_c+t}}{\bar{\alpha}_{T_c+s}\,\sigma_1^2} + \frac{1}{\sigma_2^2}\right)^{-1}.
+  \label{app:eq:js_sigma}
+\end{equation}
+Substituting $\sigma_1^2 = 1 - \bar{\alpha}_{T_c+t}/\bar{\alpha}_{T_c+s} = (\bar{\alpha}_{T_c+s} - \bar{\alpha}_{T_c+t})/\bar{\alpha}_{T_c+s}$:
+\begin{equation}
+  \Sigma = \left(\frac{\bar{\alpha}_{T_c+t}}{\bar{\alpha}_{T_c+s} - \bar{\alpha}_{T_c+t}} + \frac{1}{1 - \bar{\alpha}_{T_c+s}}\right)^{-1} = \frac{(\bar{\alpha}_{T_c+s} - \bar{\alpha}_{T_c+t})(1 - \bar{\alpha}_{T_c+s})}{\bar{\alpha}_{T_c+s} - \bar{\alpha}_{T_c+t} + \bar{\alpha}_{T_c+t}(1 - \bar{\alpha}_{T_c+s})}\,I.
+  \label{app:eq:js_sigma_expanded}
+\end{equation}
+
+\noindent\textbf{Posterior mean:}
+\begin{align}
+  \mu &= \Sigma\!\left(\frac{A}{\sigma_1^2}\left(\bar{x}_{T_c+t}^c - B\,\bar{d}^c\right) + \frac{1}{\sigma_2^2}\left(C\,\bar{x}_0^c + D\,\bar{d}^c\right)\right). \label{app:eq:js_mu}
+\end{align}
+Expanding and collecting terms in $\bar{x}_{T_c+t}^c$, $\bar{x}_0^c$, and $\bar{d}^c$:
+\begin{equation}
+  \mu = \underbrace{\frac{1 - \bar{\alpha}_{T_c+s}}{1 - \bar{\alpha}_{T_c+t}}\sqrt{\frac{\bar{\alpha}_{T_c+t}}{\bar{\alpha}_{T_c+s}}}\;\bar{x}_{T_c+t}^c}_{\text{(i) denoising}} + \underbrace{\frac{\bar{\alpha}_{T_c+s} - \bar{\alpha}_{T_c+t}}{1 - \bar{\alpha}_{T_c+t}}\frac{1}{\sqrt{\bar{\alpha}_{T_c+s}}}\;\bar{x}_0^c}_{\text{(ii) clean signal}} + \underbrace{\gamma_{s,t}^c\;\bar{d}^c}_{\text{(iii) drift correction}},
+  \label{app:eq:js_mu_expanded}
+\end{equation}
+where the drift coefficient is:
+\begin{equation}
+  \gamma_{s,t}^c = \Sigma\!\left(\frac{D}{\sigma_2^2} - \frac{AB}{\sigma_1^2}\right) = \frac{\sqrt{\bar{\alpha}_{T_c+s}}}{T_{c+1} - T_c}\left[\frac{s(\bar{\alpha}_{T_c+s} - \bar{\alpha}_{T_c+t})}{\bar{\alpha}_{T_c+s}(1 - \bar{\alpha}_{T_c+t})} - \frac{(t-s)\bar{\alpha}_{T_c+t}}{\bar{\alpha}_{T_c+s}(1 - \bar{\alpha}_{T_c+t})}\right].
+  \label{app:eq:js_gamma}
+\end{equation}
+\end{proof}
+
+\paragraph{Properties.}
+When $\bar{d}^c = 0$, $\gamma_{s,t}^c = 0$ and the posterior reduces to the standard DDPM jump-step posterior. A single-step jump ($t = s+1$) recovers exactly the standard DDPM update. Setting the noise term $\mathbf{z} = 0$ yields a deterministic trajectory (DDIM-like); including stochastic noise yields the full Bayesian posterior (DDPM-like).
+
+\paragraph{Sampling procedure.}
+Given $\bar{x}_t^c$ at internal index $t$ and target index $s < t$:
+\begin{enumerate}
+  \item Predict clean signal: $\hat{x}_0^c = \frac{1}{\sqrt{\bar{\alpha}_t}}(\bar{x}_t^c - \sqrt{1-\bar{\alpha}_t}\,\epsilon_\theta(\bar{x}_t^c, t, c))$
+  \item Estimate drift: $\hat{d}^c = \textbf{UP}_s(\textbf{DOWN}_s(\hat{x}_0^c)) - \hat{x}_0^c$
+  \item Compute posterior parameters $\Sigma$ and $\mu$ using Eqs.~\eqref{app:eq:js_sigma}--\eqref{app:eq:js_gamma}
+  \item Sample: $\bar{x}_s^c = \mu + \sqrt{\Sigma}\,\mathbf{z}$, \quad $\mathbf{z} \sim \mathcal{N}(0, I)$
+\end{enumerate}
+
+\paragraph{Comparison with DPM-Solver.}
+The posterior sampler is exact (up to $\hat{x}_0^c$ prediction) with one network evaluation per step. DPM-Solver is approximate ($O(h^{n+1})$ error for order $n$) but can take larger jumps. In practice, the posterior sampler works well for moderate jumps (5--20 steps), while DPM-Solver is preferable for aggressive subsampling (20--50 total steps). 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\input{checklist.tex}
+
+
+\end{document}

@@ -1,0 +1,123 @@
+{
+  "status": "passed",
+  "device": "cpu",
+  "cases": [
+    {
+      "family": "fm",
+      "selected_weights": "ema",
+      "status": "passed",
+      "real_import_cli": true,
+      "real_sample_cli": true,
+      "all_state_tensors_byte_exact": true,
+      "sampling_latent_byte_exact": true,
+      "source_sha256": "227af2e27a13e77c3b2704e14da06e0a8698b9b0952c0fdca6b579ac923f671e",
+      "converted_sha256": "79fc6bddb47219d978bc7938fe7c7408cd0d127c94e2c5beb03ddbcbb9bae2e1",
+      "sample_sha256": "88effebac425f5a3acadfb68306eda643ff6f5b61f07fd47eac69eccef68e4bf"
+    },
+    {
+      "family": "fm",
+      "selected_weights": "model",
+      "status": "passed",
+      "real_import_cli": true,
+      "real_sample_cli": true,
+      "all_state_tensors_byte_exact": true,
+      "sampling_latent_byte_exact": true,
+      "source_sha256": "227af2e27a13e77c3b2704e14da06e0a8698b9b0952c0fdca6b579ac923f671e",
+      "converted_sha256": "77f0a04921c4fbb67663f19adf7b4d6143433f654fe79cc53fa68dce58103d82",
+      "sample_sha256": "7268ccc6fb997b5dd6d6386c94e27207a16c84c62e2462da1a04b128f726868d"
+    },
+    {
+      "family": "ddpm",
+      "selected_weights": "ema",
+      "status": "passed",
+      "real_import_cli": true,
+      "real_sample_cli": true,
+      "all_state_tensors_byte_exact": true,
+      "sampling_latent_byte_exact": true,
+      "source_sha256": "95a25a6c6f0a3ece8111554fa5de1f4874d8feaa3d71c0f2c6ad59cb5ccd53ca",
+      "converted_sha256": "2d8a5a4b29d8cd32c585ca93cd3e9a948e14dac26541bbfb877ef72e3cc693f8",
+      "sample_sha256": "65c772fde335ccc62a3278cf9e7bbf4060178e70d1b8203c2e36afe6ecaf44a0"
+    },
+    {
+      "family": "ddpm",
+      "selected_weights": "model",
+      "status": "passed",
+      "real_import_cli": true,
+      "real_sample_cli": true,
+      "all_state_tensors_byte_exact": true,
+      "sampling_latent_byte_exact": true,
+      "source_sha256": "95a25a6c6f0a3ece8111554fa5de1f4874d8feaa3d71c0f2c6ad59cb5ccd53ca",
+      "converted_sha256": "63a68e056a53b76221de7bb85fb75aa7e2f855191c1f68b02435bb24c59e5bd2",
+      "sample_sha256": "0212aa4d62355f58733385befdf7163b30e94d2bebe603c6d5b344c2bd54fe1d"
+    }
+  ],
+  "strict_rejections": [
+    {
+      "family": "fm",
+      "case": "missing_key",
+      "rejected": true,
+      "message": "Strict key mismatch: missing=['x_embedder.proj.weight'], unexpected=[]"
+    },
+    {
+      "family": "fm",
+      "case": "extra_key",
+      "rejected": true,
+      "message": "Strict key mismatch: missing=[], unexpected=['unexpected.weight']"
+    },
+    {
+      "family": "fm",
+      "case": "wrong_shape",
+      "rejected": true,
+      "message": "Strict shape mismatch: [('x_embedder.proj.weight', [32, 4, 2, 2], [1])]"
+    },
+    {
+      "family": "fm",
+      "case": "wrong_clock",
+      "rejected": true,
+      "message": "Checkpoint FM stage-length metadata differs from the requested clock"
+    },
+    {
+      "family": "fm",
+      "case": "missing_ema",
+      "rejected": true,
+      "message": "Legacy checkpoint is missing requested 'ema' weights; no fallback was used"
+    },
+    {
+      "family": "ddpm",
+      "case": "missing_key",
+      "rejected": true,
+      "message": "Strict key mismatch: missing=['x_embedder.proj.weight'], unexpected=[]"
+    },
+    {
+      "family": "ddpm",
+      "case": "extra_key",
+      "rejected": true,
+      "message": "Strict key mismatch: missing=[], unexpected=['unexpected.weight']"
+    },
+    {
+      "family": "ddpm",
+      "case": "wrong_shape",
+      "rejected": true,
+      "message": "Strict shape mismatch: [('x_embedder.proj.weight', [32, 4, 2, 2], [1])]"
+    },
+    {
+      "family": "ddpm",
+      "case": "wrong_clock",
+      "rejected": true,
+      "message": "Checkpoint DDPM stage-length metadata differs from requested clock"
+    },
+    {
+      "family": "ddpm",
+      "case": "missing_ema",
+      "rejected": true,
+      "message": "Legacy checkpoint is missing requested 'ema' weights; no fallback was used"
+    }
+  ],
+  "all_temporary_checkpoint_and_sample_payloads_deleted": true,
+  "scope": "Tiny nonzero random DiT and synthetic legacy checkpoint; validates strict EMA/model selection, metadata rejection and actual inference CLI envelope. No real archived checkpoint downloaded or formal quality run.",
+  "source_sha256": {
+    "tools/validate_rdd_checkpoint_import_20261104.py": "7e3afdc3757ecc5fa6f8fc785d6217a3a1ef985979fd5adf6aad3b12efc5967b",
+    "tools/import_legacy_rdd_checkpoint.py": "b5e98ba8a3521e29298ee4a82ffd9ae1837a78e3a34b3fbcf29ad2e34b9c1e3a",
+    "umdiff/cli.py": "e115d189bc924507a41655d6af9fa5380c2a1a4ba0f63bd7aee70574db478264"
+  }
+}

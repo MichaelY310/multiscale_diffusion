@@ -1,0 +1,149 @@
+{
+  "existing_reusable_three_stage": [
+    [
+      100,
+      300,
+      600
+    ],
+    [
+      300,
+      300,
+      400
+    ]
+  ],
+  "predicted_three_stage": [
+    150,
+    50,
+    800
+  ],
+  "predicted_two_stage": [
+    150,
+    850
+  ],
+  "uncertain_boundary": "both",
+  "delta": 50,
+  "new_candidates": [
+    {
+      "topology": [
+        32,
+        16,
+        8
+      ],
+      "stage_lengths": [
+        150,
+        50,
+        800
+      ],
+      "name": "RDD-boundary-32-16-8-L150-50-800",
+      "phase_1_max_steps": 50000,
+      "phase_2_max_steps": 100000,
+      "final_max_steps": 400000,
+      "phase_1_samples": 2000,
+      "phase_2_samples": 10000
+    },
+    {
+      "topology": [
+        32,
+        16,
+        8
+      ],
+      "stage_lengths": [
+        100,
+        100,
+        800
+      ],
+      "name": "RDD-boundary-32-16-8-L100-100-800",
+      "phase_1_max_steps": 50000,
+      "phase_2_max_steps": 100000,
+      "final_max_steps": 400000,
+      "phase_1_samples": 2000,
+      "phase_2_samples": 10000
+    },
+    {
+      "topology": [
+        32,
+        16,
+        8
+      ],
+      "stage_lengths": [
+        150,
+        100,
+        750
+      ],
+      "name": "RDD-boundary-32-16-8-L150-100-750",
+      "phase_1_max_steps": 50000,
+      "phase_2_max_steps": 100000,
+      "final_max_steps": 400000,
+      "phase_1_samples": 2000,
+      "phase_2_samples": 10000
+    },
+    {
+      "topology": [
+        32,
+        8
+      ],
+      "stage_lengths": [
+        150,
+        850
+      ],
+      "name": "RDD-boundary-32-8-L150-850",
+      "phase_1_max_steps": 50000,
+      "phase_2_max_steps": 100000,
+      "final_max_steps": 400000,
+      "phase_1_samples": 2000,
+      "phase_2_samples": 10000
+    },
+    {
+      "topology": [
+        32,
+        8
+      ],
+      "stage_lengths": [
+        100,
+        900
+      ],
+      "name": "RDD-boundary-32-8-L100-900",
+      "phase_1_max_steps": 50000,
+      "phase_2_max_steps": 100000,
+      "final_max_steps": 400000,
+      "phase_1_samples": 2000,
+      "phase_2_samples": 10000
+    },
+    {
+      "topology": [
+        32,
+        8
+      ],
+      "stage_lengths": [
+        200,
+        800
+      ],
+      "name": "RDD-boundary-32-8-L200-800",
+      "phase_1_max_steps": 50000,
+      "phase_2_max_steps": 100000,
+      "final_max_steps": 400000,
+      "phase_1_samples": 2000,
+      "phase_2_samples": 10000
+    },
+    {
+      "topology": [
+        32,
+        8
+      ],
+      "stage_lengths": [
+        500,
+        500
+      ],
+      "name": "RDD-boundary-32-8-L500-500",
+      "phase_1_max_steps": 50000,
+      "phase_2_max_steps": 100000,
+      "final_max_steps": 400000,
+      "phase_1_samples": 2000,
+      "phase_2_samples": 10000
+    }
+  ],
+  "decision": {
+    "after_50k": "only eliminate clearly broken candidates",
+    "after_100k": "continue top 2 per topology to 400k"
+  }
+}

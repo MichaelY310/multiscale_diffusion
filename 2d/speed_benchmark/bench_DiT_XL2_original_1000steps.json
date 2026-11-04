@@ -1,0 +1,19 @@
+{
+  "name": "DiT-XL/2_original",
+  "num_warmup_batches": 1,
+  "num_measured_batches": 3,
+  "batch_size": 256,
+  "total_samples_measured": 768,
+  "mean_latency_per_sample": 9.91731,
+  "std_latency_per_sample": 0.00036,
+  "throughput_samples_per_sec": 0.1008,
+  "total_time_sec": 7616.4937,
+  "per_batch_times_ms": [
+    2538879.0,
+    2538889.75,
+    2538725.0
+  ],
+  "cfg_scale": 1.5,
+  "num_sampling_steps": 1000,
+  "model": "DiT-XL/2"
+}

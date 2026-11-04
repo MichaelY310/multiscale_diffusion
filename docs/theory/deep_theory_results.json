@@ -1,0 +1,255 @@
+{
+  "training": {
+    "model_A_allocation": [
+      325.0732924693175,
+      253.8617255932889,
+      421.06498193739355
+    ],
+    "model_B_allocation": [
+      319.37479908772644,
+      229.67932051930288,
+      450.9458803929707
+    ],
+    "model_C_allocation": [
+      304.1690974707131,
+      185.50130308996432,
+      510.3295994393226
+    ],
+    "empirical": [
+      300,
+      300,
+      400
+    ],
+    "band_energies": [
+      221372.2563178917,
+      135006.62084480302,
+      185707.25269776347
+    ],
+    "complexities": [
+      885489.0252715668,
+      540026.4833792121,
+      1485658.0215821078
+    ]
+  },
+  "inference": {
+    "euler_allocations": {
+      "6": [
+        1,
+        2,
+        4
+      ],
+      "10": [
+        1,
+        3,
+        6
+      ],
+      "20": [
+        2,
+        6,
+        12
+      ],
+      "30": [
+        3,
+        9,
+        18
+      ],
+      "50": [
+        4,
+        15,
+        31
+      ],
+      "100": [
+        9,
+        31,
+        60
+      ],
+      "250": [
+        22,
+        77,
+        151
+      ]
+    },
+    "heun_allocations": {
+      "6": [
+        1,
+        1,
+        2
+      ],
+      "10": [
+        1,
+        2,
+        3
+      ],
+      "20": [
+        1,
+        3,
+        6
+      ],
+      "30": [
+        2,
+        5,
+        8
+      ],
+      "50": [
+        3,
+        8,
+        14
+      ],
+      "100": [
+        7,
+        15,
+        28
+      ],
+      "250": [
+        17,
+        38,
+        70
+      ]
+    },
+    "euler_convergence": "O(1/N)",
+    "heun_convergence": "O(1/N^2)",
+    "euler_constant": 90864.83376092048,
+    "heun_constant": 80563.55560131742
+  },
+  "practical_configs": {
+    "Fast preview (10 NFE)": {
+      "total_nfe": 10,
+      "euler_optimal": [
+        1,
+        3,
+        6
+      ],
+      "heun_optimal": [
+        1,
+        2,
+        3
+      ],
+      "heun_total_nfe": 12,
+      "uniform": [
+        3,
+        3,
+        4
+      ]
+    },
+    "Quick draft (20 NFE)": {
+      "total_nfe": 20,
+      "euler_optimal": [
+        2,
+        6,
+        12
+      ],
+      "heun_optimal": [
+        1,
+        3,
+        6
+      ],
+      "heun_total_nfe": 20,
+      "uniform": [
+        6,
+        6,
+        8
+      ]
+    },
+    "Standard (50 NFE)": {
+      "total_nfe": 50,
+      "euler_optimal": [
+        4,
+        15,
+        31
+      ],
+      "heun_optimal": [
+        3,
+        8,
+        14
+      ],
+      "heun_total_nfe": 50,
+      "uniform": [
+        16,
+        16,
+        18
+      ]
+    },
+    "High quality (100 NFE)": {
+      "total_nfe": 100,
+      "euler_optimal": [
+        9,
+        31,
+        60
+      ],
+      "heun_optimal": [
+        7,
+        15,
+        28
+      ],
+      "heun_total_nfe": 100,
+      "uniform": [
+        33,
+        33,
+        34
+      ]
+    },
+    "Maximum quality (250 NFE)": {
+      "total_nfe": 250,
+      "euler_optimal": [
+        22,
+        77,
+        151
+      ],
+      "heun_optimal": [
+        17,
+        38,
+        70
+      ],
+      "heun_total_nfe": 250,
+      "uniform": [
+        83,
+        83,
+        84
+      ]
+    }
+  },
+  "Rk_estimation": {
+    "method_1": {
+      "name": "Training Loss Per Stage",
+      "formula": "R_k = E[||v_\u03b8(x_t,t) - u_t||\u00b2] for t \u2208 stage k",
+      "pros": "Free from training logs, no extra computation",
+      "cons": "Measures pointwise error, not curvature",
+      "how_to_compute": "During training, log MSE loss binned by timestep. Average over bins belonging to each stage."
+    },
+    "method_2": {
+      "name": "Velocity Curvature (Finite Difference)",
+      "formula": "R_k = E[||v(t+\u03b4) - 2v(t) + v(t-\u03b4)||] / \u03b4\u00b2",
+      "pros": "Directly measures what causes Euler/Heun error",
+      "cons": "Requires 3 forward passes per sample",
+      "how_to_compute": "Sample x_t at t \u2208 stage k. Evaluate v at t-\u03b4, t, t+\u03b4. Compute second difference. Average over batch."
+    },
+    "method_3": {
+      "name": "Richardson Extrapolation",
+      "formula": "R_k \u2248 ||Euler(1 big step) - Euler(2 half steps)||",
+      "pros": "Most practical for adaptive methods",
+      "cons": "Requires 3 forward passes (1 big + 2 small)",
+      "how_to_compute": "For a given x_t: (a) take 1 Euler step of size h, (b) take 2 Euler steps of size h/2. Difference \u2248 leading-order error term."
+    }
+  },
+  "adaptive_stepsize": {
+    "euler_allocation": "n_k \u221d L_k \u00b7 \u221aR_k (equivalently \u221d (R_k\u00b7L_k\u00b2)^(1/2))",
+    "heun_allocation": "n_k \u221d (R_k\u00b7L_k\u00b3)^(1/3)",
+    "derivation": "From min \u03a3_k R_k\u00b7(L_k/n_k)^p  s.t. \u03a3n_k=N:\n  \u2202/\u2202n_k: p\u00b7R_k\u00b7L_k^p / n_k^(p+1) = \u03bb\n  \u2192 n_k = (p\u00b7R_k\u00b7L_k^p / \u03bb)^(1/(p+1))\n  \u2192 n_k \u221d (R_k\u00b7L_k^p)^(1/(p+1))\n  Euler (p=1, error=R\u00b7h=R\u00b7L/n): n_k \u221d (R_k\u00b7L_k)^(1/2) = \u221a(R_k)\u00b7\u221aL_k\n  Hmm wait, let me redo. Error model:\n  Euler local error: e = h\u00b2\u00b7R/2, global = n\u00b7e = n\u00b7(L/n)\u00b2\u00b7R/2 = L\u00b2\u00b7R/(2n)\n  Total: min \u03a3 L_k\u00b2\u00b7R_k/n_k  s.t. \u03a3n_k=N\n  \u2192 n_k\u00b2 = L_k\u00b2\u00b7R_k/\u03bb \u2192 n_k \u221d L_k\u00b7\u221aR_k  \u2713\n  Heun local error: e = h\u00b3\u00b7R/12, global = n\u00b7e = n\u00b7(L/n)\u00b3\u00b7R/12 = L\u00b3\u00b7R/(12n\u00b2)\n  Total: min \u03a3 L_k\u00b3\u00b7R_k/n_k\u00b2  s.t. \u03a3n_k=N\n  \u2192 2\u00b7L_k\u00b3\u00b7R_k/n_k\u00b3 = \u03bb \u2192 n_k\u00b3 \u221d L_k\u00b3\u00b7R_k \u2192 n_k \u221d (L_k\u00b3\u00b7R_k)^(1/3) = L_k\u00b7R_k^(1/3)  \u2713",
+    "convergence_rates": {
+      "euler": "E*(N) = (\u03a3 L_k\u00b7\u221aR_k)\u00b2 / N = O(1/N)",
+      "heun": "E*(N) = (\u03a3 L_k\u00b7R_k^(1/3))\u00b3 \u00b7 (27/4) / N\u00b2 = O(1/N\u00b2)"
+    }
+  },
+  "comparison": {
+    "speed_fails_dit": true,
+    "speed_works_flux": true,
+    "fdm_penalty_pct": 4.224242063594685
+  },
+  "key_formulas": {
+    "training": "L_k = T \u00d7 \u221a(E_k \u00d7 W_k) / \u03a3 \u221a(E_j \u00d7 W_j)",
+    "euler_inference": "n_k = N \u00d7 (L_k\u00b7\u221aR_k) / \u03a3(L_j\u00b7\u221aR_j)",
+    "heun_inference": "n_k = (N/2) \u00d7 (L_k\u00b7R_k^(1/3)) / \u03a3(L_j\u00b7R_j^(1/3))",
+    "euler_error": "E*(N) = (\u03a3 L_k\u00b7\u221aR_k)\u00b2 / N",
+    "heun_error": "E*(N) = (\u03a3 L_k\u00b7R_k^(1/3))\u00b3 \u00d7 (27/4) / N\u00b2"
+  }
+}

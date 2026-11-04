@@ -1,0 +1,398 @@
+[
+  {
+    "name": "rdd_vsa20_baseline",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest"
+  },
+  {
+    "name": "single_s1_l00_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      0
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l01_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      1
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l02_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      2
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l03_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      3
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l04_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      4
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l05_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      5
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l06_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      6
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l07_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      7
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l08_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      8
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l09_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      9
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l10_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      10
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l11_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      11
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l12_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      12
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l13_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      13
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l14_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      14
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l15_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      15
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l16_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      16
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l17_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      17
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l18_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      18
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l19_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      19
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l20_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      20
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l21_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      21
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l22_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      22
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l23_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      23
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l24_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      24
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l25_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      25
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l26_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      26
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l27_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      27
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l28_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      28
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "single_s1_l29_scalar075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [
+      29
+    ],
+    "cross_stage_reuse_stages": [
+      1
+    ],
+    "cross_stage_reuse_scale": 0.75
+  }
+]

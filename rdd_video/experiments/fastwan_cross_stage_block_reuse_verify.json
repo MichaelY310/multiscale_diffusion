@@ -1,0 +1,25 @@
+[
+  {
+    "name": "spatial421_rdd_vsa20",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest"
+  },
+  {
+    "name": "csbr_uniform6_s075",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 5, 10, 15, 20, 25],
+    "cross_stage_reuse_stages": [2],
+    "cross_stage_reuse_scale": 0.75
+  },
+  {
+    "name": "csbr_uniform12_s100",
+    "stage_factors": "4,1;2,1;1,1",
+    "attention_mode": "vsa",
+    "boundary_executor": "torch_nearest",
+    "cross_stage_reuse_layers": [0, 3, 5, 8, 10, 13, 16, 18, 21, 23, 26, 29],
+    "cross_stage_reuse_stages": [2]
+  }
+]

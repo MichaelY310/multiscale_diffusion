@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430">
+  <rect width="1200" height="430" fill="white"/>
+  <style>
+    .title { font: 700 19px Arial, sans-serif; fill: #111827; }
+    .subtitle { font: 13px Arial, sans-serif; fill: #4b5563; }
+    .label { font: 13px Arial, sans-serif; fill: #1f2937; }
+    .small { font: 12px Arial, sans-serif; fill: #4b5563; }
+    .value { font: 700 13px Arial, sans-serif; fill: #111827; }
+    .axis { stroke: #9ca3af; stroke-width: 1; }
+    .grid { stroke: #e5e7eb; stroke-width: 1; }
+  </style>
+
+  <text x="30" y="32" class="title">RDD-3D sparse SLat pilot</text>
+  <text x="30" y="53" class="subtitle">32 ObjaverseXL assets · TRELLIS.2 shape SLat · topology-conditioned active-child projection</text>
+
+  <rect x="25" y="75" width="365" height="325" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="45" y="105" class="title">A  Active tokens by latent scale</text>
+  <text x="45" y="125" class="small">bar length uses log₁₀(tokens); labels are exact means</text>
+  <line x1="130" y1="145" x2="130" y2="365" class="axis"/>
+  <line x1="130" y1="365" x2="365" y2="365" class="axis"/>
+  <text x="45" y="173" class="label">512 / 8³</text>
+  <rect x="130" y="157" width="110" height="22" rx="3" fill="#93c5fd"/>
+  <text x="247" y="173" class="value">105</text>
+  <text x="45" y="213" class="label">512 / 16³</text>
+  <rect x="130" y="197" width="144" height="22" rx="3" fill="#60a5fa"/>
+  <text x="281" y="213" class="value">446</text>
+  <text x="45" y="253" class="label">512 / 32³</text>
+  <rect x="130" y="237" width="180" height="22" rx="3" fill="#2563eb"/>
+  <text x="317" y="253" class="value">1,936</text>
+  <text x="45" y="303" class="label">1024 / 16³</text>
+  <rect x="130" y="287" width="144" height="22" rx="3" fill="#86efac"/>
+  <text x="281" y="303" class="value">446</text>
+  <text x="45" y="343" class="label">1024 / 32³</text>
+  <rect x="130" y="327" width="180" height="22" rx="3" fill="#22c55e"/>
+  <text x="317" y="343" class="value">1,936</text>
+  <text x="45" y="383" class="label">1024 / 64³</text>
+  <rect x="130" y="367" width="215" height="22" rx="3" fill="#15803d"/>
+  <text x="350" y="383" class="value">8,375</text>
+
+  <rect x="410" y="75" width="365" height="325" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="430" y="105" class="title">B  Coarse latent remains decodable</text>
+  <text x="430" y="125" class="small">1024 output; reference is original SC-VAE decode</text>
+  <line x1="475" y1="345" x2="745" y2="345" class="axis"/>
+  <line x1="475" y1="155" x2="475" y2="345" class="axis"/>
+  <line x1="475" y1="193" x2="745" y2="193" class="grid"/>
+  <line x1="475" y1="269" x2="745" y2="269" class="grid"/>
+  <text x="440" y="198" class="small">1.0</text>
+  <text x="440" y="274" class="small">0.9</text>
+  <text x="440" y="350" class="small">0.8</text>
+  <rect x="520" y="235" width="72" height="110" rx="4" fill="#7c3aed"/>
+  <text x="527" y="226" class="value">F=0.945</text>
+  <text x="515" y="370" class="label">64³→32³</text>
+  <text x="520" y="390" class="small">4.50× fewer tokens</text>
+  <rect x="640" y="282" width="72" height="63" rx="4" fill="#c084fc"/>
+  <text x="647" y="273" class="value">F=0.883</text>
+  <text x="635" y="370" class="label">64³→16³</text>
+  <text x="638" y="390" class="small">20.22× fewer tokens</text>
+
+  <rect x="795" y="75" width="380" height="325" rx="10" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="815" y="105" class="title">C  1024-resolution efficiency</text>
+  <text x="815" y="125" class="small">1.3B SLat DiT · real supports · 40 NFE (8/12/20)</text>
+  <line x1="855" y1="345" x2="1145" y2="345" class="axis"/>
+  <line x1="855" y1="155" x2="855" y2="345" class="axis"/>
+  <line x1="855" y1="250" x2="1145" y2="250" class="grid"/>
+  <text x="820" y="350" class="small">1.0×</text>
+  <text x="820" y="255" class="small">1.5×</text>
+  <text x="820" y="160" class="small">2.0×</text>
+  <rect x="890" y="269" width="62" height="76" rx="4" fill="#f59e0b"/>
+  <text x="896" y="260" class="value">1.40×</text>
+  <text x="883" y="370" class="label">wall time</text>
+  <text x="879" y="390" class="small">denoiser only</text>
+  <rect x="985" y="208" width="62" height="137" rx="4" fill="#f97316"/>
+  <text x="991" y="199" class="value">1.72×</text>
+  <text x="972" y="370" class="label">token-NFE</text>
+  <text x="982" y="390" class="small">reduction</text>
+  <rect x="1080" y="168" width="62" height="177" rx="4" fill="#dc2626"/>
+  <text x="1086" y="159" class="value">1.93×</text>
+  <text x="1065" y="370" class="label">attention proxy</text>
+  <text x="1077" y="390" class="small">reduction</text>
+</svg>

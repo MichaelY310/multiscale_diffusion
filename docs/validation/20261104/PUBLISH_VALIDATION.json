@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "device": "cpu",
+  "python_files_parsed": 653,
+  "python_ast_matches_tested_local_snapshot": true,
+  "shell_files_checked": 420,
+  "bash_n_errors": [],
+  "pytest": {
+    "passed": 19,
+    "subtests_passed": 3,
+    "log_sha256": "06b4c1304b1c3dce42b88c4b6cbbb26642ee14f42116ba6ce174dde95b047fdc",
+    "scope": [
+      "2d/test_rdd_fm_sampler_cpu.py",
+      "tests/test_rdd_improvements.py",
+      "tests/test_fdm_rescaling.py",
+      "tests/test_dmd_objective_utils.py",
+      "tests/test_dmd_training_budget.py",
+      "tests/test_dmd_checkpoint_retention.py"
+    ]
+  },
+  "dmd_math_required_checks": 17,
+  "selected_source_files_present": 1449,
+  "gpu_or_training_started": false,
+  "archived_parity_reports_reexecuted_here": false
+}

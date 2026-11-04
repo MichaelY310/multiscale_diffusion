@@ -1,0 +1,46 @@
+models:
+  student:
+    _target_: fastvideo_pyramidal_wan_paper.PaperPyramidalWanModel
+    init_from: /scr/yuheng/bugswarm/FastVideo/huggingface/hub/models--Wan-AI--Wan2.1-T2V-1.3B-Diffusers/snapshots/0fad780a534b6463e45facd96134c9f345acfa5b
+    manifest: /scr/yuheng/bugswarm/rdd_workspace_20261005/fair_data_20261006/wan_v1/paper_manifest_ddp_fixture12.json
+    cache_shape: paper
+    packed_backend: flex
+    trainable: true
+  teacher:
+    _target_: fastvideo_pyramidal_wan_paper.PaperPyramidalWanModel
+    init_from: /scr/yuheng/bugswarm/FastVideo/huggingface/hub/models--Wan-AI--Wan2.1-T2V-1.3B-Diffusers/snapshots/0fad780a534b6463e45facd96134c9f345acfa5b
+    trainable: false
+method:
+  _target_: fastvideo_pyramidal_wan_paper.PaperPyramidalWanMethod
+  examples_per_stage: 2
+  teacher_weight: 1.0
+  clip_grad: 1.0
+training:
+  distributed:
+    num_gpus: 2
+    sp_size: 1
+    tp_size: 1
+  data:
+    data_path: /scr/yuheng/bugswarm/rdd_workspace_20261005/fair_data_20261006/wan_v1
+    train_batch_size: 6
+    dataloader_num_workers: 0
+    seed: 20261006
+  optimizer:
+    learning_rate: 1.0e-05
+    betas:
+    - 0.9
+    - 0.999
+    weight_decay: 0.01
+    lr_warmup_steps: 0
+  loop:
+    max_train_steps: 3
+    gradient_accumulation_steps: 1
+  checkpoint:
+    output_dir: /scr/yuheng/bugswarm/rdd_workspace_20261005/gpu_checks_20261006/paper_published_ddp2
+    training_state_checkpointing_steps: 0
+    checkpoints_total_limit: 0
+  tracker:
+    trackers:
+    - none
+  dit_precision: bf16
+callbacks: {}

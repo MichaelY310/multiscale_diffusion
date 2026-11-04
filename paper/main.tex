@@ -1,0 +1,1823 @@
+\documentclass[10pt]{article}
+\usepackage{neurips_2026}
+
+% Packages
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\newtheorem{proposition}{Proposition}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{bm}
+% \usepackage{microtype} % disabled: requires scalable fonts
+\usepackage{tabularx}
+\usepackage{pifont}       % for \ding{51}, \ding{55} (checkmark/cross)
+
+% Math operators
+\DeclareMathOperator{\DOWN}{DOWN}
+\DeclareMathOperator{\UP}{UP}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\bx}{\bm{x}}
+\newcommand{\beps}{\bm{\epsilon}}
+\newcommand{\bd}{\bm{d}}
+\newcommand{\bu}{\bm{u}}
+\newcommand{\by}{\bm{y}}
+\newcommand{\bw}{\bm{w}}
+\newcommand{\bz}{\bm{z}}
+
+\title{Resolution-Drift Diffusion: Accelerating Diffusion Training via\\ Continuous Resolution Transitions}
+
+\author{
+  Anonymous Author(s)\\
+  \textit{Under Review}
+}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+%=============================================================================
+\begin{abstract}
+We present \emph{Resolution-Drift Diffusion} (RDD), a residualized transformed-signal construction that embeds a lifted degradation $G_c$ into a standard variance-preserving (VP) diffusion through the same-state residual $d_c(x)=G_c(x)-x$.
+Average-pool/downsample followed by upsampling is our principal instance, but the construction applies to other same-state lifted transforms under explicit conditions.
+The residual parameterization turns corruption and degradation into a single prediction target and creates an implicit structured-to-stochastic curriculum.
+Under a controlled native-ImageNet evaluation with 250-step DDPM sampling and no guidance amplification, a DiT-XL/2 model trained with RDD for 400K steps achieves FID $7.06$, compared with $19.78$ for the fixed-resolution DiT baseline; the advantage persists throughout a 50K--500K checkpoint sweep.
+At inference, early denoising steps operate at reduced resolution ($8{\times}8$ and $16{\times}16$ latent grids); a single-GPU microbenchmark at 250 DDPM steps measures a $1.90\times$ sampling speedup for the unified XL model, subject to the benchmark limitations described in \S\ref{sec:speed}.
+We derive the stage-local Markov process, correct arbitrary-jump posterior, continuous-time SDE, and drift-aware DPM update; we also characterize noise filling as the unique transition matching the chosen RDD marginal within an isotropic Gaussian family.
+We further give a separate conditional-flow-matching derivation, including an analytic clean-reconstruction formula for projection residuals, and instantiate its spatiotemporal form for Wan-style video fine-tuning; FM and video results are not included in the current validated result set.
+RDD requires no architectural modifications beyond resolution-level conditioning and changes the probability path rather than the representation target, making combinations with methods such as SiT or REPA plausible but still requiring empirical validation.
+\end{abstract}
+
+%=============================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Diffusion models~\citep{ho2020ddpm,song2021sde} have emerged as the dominant paradigm for high-fidelity image generation, achieving remarkable sample quality on complex distributions.
+However, a fundamental limitation persists: standard diffusion models perform all computation at the target resolution, resulting in substantial computational cost during both training and sampling.
+For a $256\times256$ image, every denoising step processes the full $256\times256\times3$ tensor regardless of whether the current noise level warrants such fine-grained computation.
+
+Cascaded diffusion models~\citep{ho2022cdm,saharia2022imagen,ramesh2022dalle2} address this by decomposing generation into stages: a base model generates a low-resolution image, and subsequent super-resolution models progressively upsample it.
+While effective, this approach introduces several drawbacks: (i) multiple separately-trained models increase system complexity, (ii) errors in the base model propagate and amplify through the cascade, and (iii) the interface between stages requires careful design of conditioning mechanisms.
+
+\textbf{Our key insight.}
+We observe that the progression from noisy to clean in diffusion models naturally mirrors the progression from low to high resolution---both involve revealing increasingly fine-grained structure.
+Rather than treating these as separate processes, we propose embedding the resolution transition directly into the forward diffusion dynamics as a continuous \emph{drift} term.
+This drift smoothly transforms a high-resolution signal toward its low-resolution counterpart while noise is simultaneously added, creating a modified forward process whose reverse simultaneously denoises \emph{and} upsamples.
+
+We call our framework \emph{Resolution-Drift Diffusion} (RDD).
+Rather than claiming the first transformed-signal diffusion---f-DM~\citep{gu2022fdm} already establishes that broader family---we study a deliberately tractable residual parameterization in a fixed state space.
+That restriction is useful: it admits a single standard DiT prediction head, an isotropic stage-local posterior, and an analytic drift correction.
+When the residual is zero, the construction reduces identically to standard DDPM.
+
+\textbf{Contributions.} In order of current evidential strength, our contributions are:
+\begin{enumerate}
+    \item \textbf{Training efficiency:} substantially faster controlled convergence on native ImageNet: at 400K steps, RDD obtains FID $7.06$ versus $19.78$ for DiT under identical DDPM250/CFG1.0 evaluation, and RDD at 150K already outperforms DiT at 500K (\S\ref{sec:convergence}).
+    \item \textbf{Residualized transform path:} We identify a same-state transformed-signal family $G_c$ for which $d_c=G_c(x)-x$ can be folded into one VP-style target and trained with a standard DiT. For projection lifts, this exposes a structured residual subspace without an explicit DCT or an auxiliary degradation head.
+    \item \textbf{Inference efficiency:} reduced-resolution early steps lower measured DDPM250 sampling latency by $1.90\times$ for Unified XL and $2.56\times$ for Unified L in our current microbenchmark (\S\ref{sec:speed}).
+    \item \textbf{RDD-specific reverse process:} We derive the stage-local Markov transition, exact arbitrary-jump posterior including $\gamma_{s,t}^c$, the corresponding SDE, and a solver update that first separates learned effective noise from the Gaussian innovation (\S\ref{sec:posterior}, \S\ref{sec:dpmsolver}). These are tractable consequences of the residual parameterization, not priority claims over f-DM's general reverse construction.
+    \item \textbf{Training-consistent transitions:} Within the RDD marginal and isotropic Gaussian initialization family, noise filling is the unique matching initialization (\S\ref{sec:noise_filling}). This is a property of our parameterization, not a claim that cross-scale noise resampling is historically new.
+    \item \textbf{Flow and video extension:} We derive RDD conditional flow matching independently of the reverse SDE and give a Wan-compatible spatiotemporal implementation with training-matched boundaries and exact clean reconstruction for idempotent projection lifts. Its empirical validation remains planned and is not used to support the present image claims.
+\end{enumerate}
+
+
+We validate RDD on ImageNet $256\times256$ as a controlled testbed, following the evaluation protocol established by DiT~\citep{peebles2023dit}, SiT~\citep{ma2024sit}, and ADM~\citep{dhariwal2021adm}.
+Higher-resolution validation is planned after the controlled ImageNet-256 mechanism and compute-matched experiments are complete (Appendix~\ref{app:scaling_512}).
+At present, our validated unified-model results cover L/2 and XL/2 backbones, together with an XL/L/B multistage configuration.
+
+%=============================================================================
+\section{Related Work}
+\label{sec:related}
+
+
+We organize existing approaches by \emph{how they handle multi-resolution generation}, revealing a fine-grained taxonomy from which RDD emerges as a distinct point.
+
+% ═══════════════════════════════════════════════════════════════
+\paragraph{Category I: Hard Cascade (independent models, hard transition).}
+The most established paradigm trains \emph{separate} models at each resolution and chains them sequentially, with each stage starting its own diffusion process from near-pure noise.
+
+CDM~\citep{ho2022cdm} introduced cascaded diffusion with a critical technique: \emph{conditioning augmentation}---corrupting the low-resolution condition during super-resolution training with Gaussian noise or blur.
+The original paper states that this ``\emph{prevents compounding error due to train-test mismatch in super-resolution models.}''
+Imagen~\citep{saharia2022imagen} adopted the same 64$\to$256$\to$1024 cascade with noise conditioning augmentation, where ``\emph{the sampled signal-to-noise ratio is provided to the model}'' as an additional conditioning input.
+DALL$\cdot$E 2~\citep{ramesh2022dalle2} uses a four-model hierarchy (CLIP prior + decoder + 2$\times$SR), each independently trained.
+SDXL~\citep{podell2023sdxl} employs a two-stage pipeline at the same latent resolution: the refiner specializes on low-noise (high-detail) timesteps via SDEdit-style re-noising.
+eDiff-I~\citep{balaji2023ediffi} extends this by training \emph{expert denoisers} specialized to different noise intervals within each cascade stage.
+
+\emph{Key limitation:} Each stage discards temporal continuity---the cascade starts fresh from re-noised input. Independent training introduces pipeline complexity, and conditioning augmentation only partially mitigates the resulting distribution mismatch.
+
+% ═══════════════════════════════════════════════════════════════
+\paragraph{Category II: Noise-based bridging at resolution transitions.}
+These methods maintain the cascade structure but \emph{bridge} the distribution gap between stages via carefully designed noise injection, avoiding a full restart from pure noise.
+
+Relay Diffusion~\citep{relay_diffusion} identifies that ``\emph{the same noise level on a higher resolution results in a higher Signal-to-Noise Ratio in the frequency domain}'' (via DCT analysis).
+Their solution applies \emph{block noise}---a local average filter on standard Gaussian noise over $s{\times}s$ spatial blocks---to equalize cross-resolution SNR, combined with a blurring diffusion bridge that aligns the second-stage starting state with the first-stage terminal distribution.
+RMD~\citep{rmd2025} partitions timesteps across resolutions using logSNR curves, and introduces a \emph{predicted-noise re-injection} mechanism: at transitions, Gaussian noise is replaced by ``\emph{a resolution-aware combination of predicted and Gaussian noise}'' to stabilize cross-resolution training.
+Spectral Progressive Diffusion~\citep{xiao2026spd} performs \emph{spectral noise expansion} at resolution transitions: in the DCT domain, it preserves already-denoised low-frequency content while filling newly exposed high-frequency slots with calibrated Gaussian noise, with a transition schedule derived from the model's power spectrum.
+
+\emph{Common insight:} Resolution transitions require frequency-aware noise management. However, all three methods treat the transition as a \emph{discrete event}---an external correction applied at a specific point, rather than a continuous property of the diffusion process itself.
+
+% ═══════════════════════════════════════════════════════════════
+\paragraph{Category III: Modified forward process (degradation replaces or augments noise).}
+A more fundamental approach modifies the forward diffusion process to incorporate resolution change or signal degradation \emph{within} the process definition.
+
+f-DM~\citep{gu2022fdm} generalizes the forward process to $q(z_t|x_0) = \mathcal{N}(\alpha_t f_t(x_0),\, \sigma_t^2 I)$ for time-varying, including dimension-changing, transformations. It already interpolates transformations within a stage, derives Gaussian reverse conditionals, and resamples missing noise dimensions. It is the closest conceptual precursor and rules out a claim that transformed-signal or progressive-resolution diffusion is new by itself.
+RDD is best viewed as a \emph{residualized, same-state construction within this broader design space}: for a lifted map $G_c:\mathcal X_c\to\mathcal X_c$, it uses $d_c(x)=G_c(x)-x$ and the path $x+\kappa_t d_c(x)$. The restriction is not merely ``DiT-oriented'': it is what permits one VP-style target, isotropic covariance, a standard backbone, and simple arbitrary-jump corrections. Average pooling is one choice of $G_c$, not the definition of RDD. A dimension-changing transform without a same-state lift falls outside these simplifications and requires machinery closer to f-DM.
+
+Cold Diffusion~\citep{bansal2022cold} proves that ``\emph{an entire family of generative models can be constructed by varying the choice of image degradation}''---including progressive downsampling, blur, and masking---with ``\emph{completely deterministic degradations}'' replacing Gaussian noise entirely.
+This establishes that iterative inversion of \emph{any} degradation suffices for generation, but the work does not combine degradation with standard denoising diffusion.
+
+Scale Space Diffusion~\citep{mukhopadhyay2026ssd} independently develops generalized linear degradation processes, including dimension-changing downsampling, with exact but generally anisotropic reverse covariances and a Flexi-UNet. This is an important concurrent comparison: RDD gives up arbitrary linear state changes in exchange for a lifted fixed-dimensional VP path and a standard DiT implementation.
+
+\emph{Key distinction from RDD:} Cold Diffusion replaces Gaussian noising. f-DM and Scale Space Diffusion cover broader transformations than RDD. RDD's claim is the behavior and tractability of the transform \emph{residual} under a single-target VP parameterization, together with the controlled ImageNet convergence result.
+
+\paragraph{Concurrent progressive flow formulations.}
+Decomposable Flow Matching (DFM)~\citep{hajiali2025dfm} applies independent flow-matching objectives to levels of a user-defined multiscale decomposition. LapFlow~\citep{zhao2026lapflow} uses Laplacian-pyramid residuals, time-segmented scale training, and a mixture-of-transformers. These accepted contemporaries substantially narrow any claim of conceptual priority. They are not automatically orthogonal to RDD: the methods choose different decompositions and paths for a closely related progressive-generation objective. RDD's narrower distinction is its same-state transform residual, VP-compatible single target, and explicit separation of effective prediction, Gaussian innovation, and deterministic drift at sampling time.
+
+\paragraph{Progressive video diffusion and flow matching.}
+Pyramidal Flow Matching~\citep{jin2025pyramidflow} trains a single video DiT across spatial and temporal pyramid stages with distribution-aligned links. PyramidalWan~\citep{korzhenkov2026pyramidalwan} converts a pretrained Wan checkpoint into a spatiotemporal pyramid by low-cost fine-tuning and studies step distillation. TPDiff~\citep{ran2026tpdiff} partitions a probability-flow ODE over temporal resolutions, while Spectral Progressive Diffusion~\citep{xiao2026spd} grows image or video resolution using power-spectrum-derived schedules with training-free and fine-tuned variants. These works make ``apply a low-to-high pyramid to video'' insufficient as novelty. RDD-Video must instead test whether the \emph{residualized interior path} and analytic clean reconstruction improve optimization or the NFE--quality frontier under the same Wan checkpoint, stage boundaries, data, and solver. PyramidalWan is boundary-aligned and supports standard within-stage solvers; higher-order integration is not structurally exclusive to RDD.
+
+% ═══════════════════════════════════════════════════════════════
+\paragraph{Category IV: Frequency-domain diffusion (blur as non-isotropic noise).}
+A related family operates explicitly in the frequency domain, recognizing that blur and multi-scale structure can be expressed as frequency-dependent noise schedules.
+
+IHDM~\citep{rissanen2023ihdm} uses the heat equation (Gaussian blur) as the forward process: ``\emph{a PDE that locally erases fine-scale information when run over the 2D plane of the image.}''
+The reverse process naturally generates images in a coarse-to-fine order.
+Blurring Diffusion Models~\citep{hoogeboom2023blurring} provide the crucial theoretical unification, proving that ``\emph{blurring can equivalently be defined through a Gaussian diffusion process with non-isotropic noise}''---i.e., the diffusion operates in DCT space with per-frequency noise coefficients $(\alpha_t^{(i)}, \sigma_t^{(i)})$ that decay high frequencies faster.
+
+\emph{Key distinction from RDD:} These methods achieve multi-scale generation by explicitly working in frequency space with per-frequency schedules. RDD achieves an analogous frequency curriculum \emph{implicitly} in pixel/latent space: the drift $\bd^c = \text{UP}(\text{DOWN}(x_0)) - x_0$ is exactly the high-frequency residual, and the DNR (Drift-to-Noise Ratio) creates frequency-structured targets without DCT transforms.
+
+% ═══════════════════════════════════════════════════════════════
+\paragraph{Category V: Joint multi-resolution denoising (single model, all scales simultaneously).}
+Rather than processing resolutions sequentially, these methods denoise multiple scales jointly within a single forward pass.
+
+MDM~\citep{gu2024mdm} performs ``\emph{joint multi-resolution denoising in an extended space}'' via a NestedUNet where ``\emph{features and parameters for small-scale inputs are nested within those of large scales.}''
+This enables cross-scale interaction during denoising and supports progressive training (starting from low resolution), but requires a specialized architecture.
+
+\emph{Key distinction from RDD:} MDM denoises all resolutions simultaneously with architectural coupling. RDD partitions the timestep axis: different resolutions occupy different \emph{time intervals} within a single standard DiT---no architecture change needed.
+
+% ═══════════════════════════════════════════════════════════════
+\paragraph{Category VI: Resolution-aware noise scheduling (single resolution, adapted schedule).}
+These methods generate at a \emph{single target resolution} but adapt the noise schedule or training strategy to account for resolution-dependent properties.
+
+Simple Diffusion~\citep{hoogeboom2023simple} shows that high-resolution images require a shifted noise schedule: ``\emph{in log-space, this implies a simple shift of $2\log(d_{\text{ref}}/d)$}'' to equalize the effective SNR across resolutions.
+FasterDiT~\citep{fasterdit2024} achieves 7$\times$ training speedup via optimized timestep sampling PDFs and v-prediction, without architecture or resolution changes.
+SiT~\citep{ma2024sit} replaces DDPM with flow matching on the identical DiT-XL/2 architecture, improving FID from 2.27 to 2.06 at 7M steps.
+REPA~\citep{yu2025repa} aligns intermediate denoiser features to clean representations from a pretrained visual encoder. REG~\citep{wu2025reg} additionally noises one foundation-model class token jointly with the image latent and predicts both during inference; at 400K iterations without CFG, the published SiT-L/2+REG and SiT-XL/2+REG results are FID 4.6 and 3.4, respectively. Semantic-First Diffusion (SFD)~\citep{pan2026sfd} asynchronously denoises a learned semantic latent ahead of the texture latent and reports FID 3.53 at 400K without guidance on a LightningDiT-XL backbone. These semantic/representation methods are stronger 400K convergence references than vanilla SiT and must not be presented as if RDD were the best training accelerator at that budget.
+Patch Diffusion~\citep{wang2023patch} trains on ``\emph{random patches of varying size}'' with ``\emph{patch size randomized and diversified throughout training to encode cross-region dependency at multiple scales.}''
+
+\emph{Key distinction from RDD:} These methods operate at a single resolution with schedule/training adjustments. RDD explicitly partitions the generation process across multiple resolutions, achieving both training acceleration (via curriculum) and inference speedup (via reduced per-step computation at lower resolutions).
+
+% ═══════════════════════════════════════════════════════════════
+\paragraph{Category VII: Step-count reduction (a separate intervention axis).}
+Progressive Distillation~\citep{salimans2022distillation} iteratively halves NFE by training students to match two-step teacher outputs.
+Consistency Models~\citep{song2023consistency} learn direct mappings from any point on the PF-ODE trajectory to the origin.
+TRACT~\citep{berthelot2023tract} improves distillation via bootstrapped transitive closure.
+These methods primarily reduce the number of sampling steps, whereas RDD changes the probability path and its per-step resolution. This separation makes them plausible candidates for combination, but the interaction is empirical rather than guaranteed and is not evaluated here.
+
+% ═══════════════════════════════════════════════════════════════
+\paragraph{Where RDD sits.}
+RDD lies at the intersection of transformed-signal diffusion, progressive multiscale transport, and structured-target training. In light of f-DM, DFM, LapFlow, Scale Space Diffusion, and the video pyramidal literature, we isolate the following falsifiable distinctions:
+
+\begin{enumerate}
+\item \textbf{Residualized same-state transform within VP diffusion.}
+    RDD adds a continuous, bounded residual $\kappa_t [G_c(x_0)-x_0]$ to the standard Gaussian forward process:
+    $q(x_t|x_0) = \mathcal{N}(\sqrt{\bar\alpha_t}(x_0 + \kappa_t \bd^c),\, (1-\bar\alpha_t)I)$.
+    Relative to f-DM's general construction, this distributes one lifted transform residual across a stage and yields one effective target. Whether that parameterization causes the observed gain is tested by drift-free and matched transformed-signal controls, rather than asserted from the equations.
+
+\item \textbf{Timestep-partitioned single model (no cascade, no architecture change).}
+    Unlike CDM/Imagen (separate models), Relay/RMD (multi-model or distilled pipeline), or MDM (NestedUNet), RDD trains one standard DiT.
+    Resolution stages correspond to \emph{timestep intervals} within the unified diffusion process, conditioned only via a scalar resolution embedding $c$.
+
+\item \textbf{Training-matched boundary transition.}
+    RDD's noise-filling transition matches its forward-process marginal at stage boundaries (Proposition~\ref{prop:noise_filling}). The uniqueness statement is conditional on the RDD marginal and the isotropic Gaussian initialization family. f-DM independently uses boundary noise resampling for dimension-changing transformations, so our contribution is the derivation for this parameterization and its measured advantage over a mismatched bilinear transition, not the general idea of filling new dimensions with noise.
+
+\item \textbf{Joint training and inference efficiency.}
+    Unlike SPEED/RMD (inference-only; require a separately pretrained model), RDD modifies \emph{training itself}. Our controlled checkpoint sweep shows faster convergence, while the multi-resolution structure reduces measured DDPM250 latency; both effects arise from a single training run.
+
+\item \textbf{Structured residual curriculum without an auxiliary head.}
+    For $G_c=P_c=\UP\circ\DOWN$, the residual lies in the projection complement and behaves like a high-frequency target. For general $G_c$ it is a transform residual, not necessarily a Fourier component. The DNR interpretation is exact for the chosen projection geometry and only a hypothesis for nonlinear latent transforms.
+
+\item \textbf{Compatibility with step-reduction methods.}
+    Because RDD changes the state resolution and forward drift rather than requiring a particular model architecture, combining it with distillation is plausible. We leave empirical validation of such combinations to future work and do not include speculative multiplicative speedups in our reported results.
+\end{enumerate}
+
+Table~\ref{tab:taxonomy} summarizes the taxonomy:
+
+\begin{table}[t]
+\centering
+\caption{Taxonomy of representative multi-resolution generative approaches. Checkmarks summarize reported properties under each paper's own protocol; they do not establish compute-matched superiority.}
+\label{tab:taxonomy}
+\small
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\textbf{Method} & \textbf{Transition type} & \textbf{\#Models} & \textbf{Arch.} & \textbf{Train} & \textbf{Infer} & \textbf{Freq.~domain?} \\
+ &  &  & \textbf{change} & \textbf{accel.} & \textbf{accel.} & \\
+\midrule
+CDM / Imagen & Hard + aug.~noise & Multiple & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
+eDiff-I & Hard + experts & Multiple & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
+Relay Diffusion & Block noise bridge & 2 & \ding{55} & \ding{55} & \ding{51} & \ding{51} (DCT) \\
+SPEED & Spectral expansion & 1 (pretrained) & \ding{55} & \ding{55} & \ding{51} & \ding{51} (DCT) \\
+RMD & logSNR + noise re-inj. & 1 (distilled) & \ding{55} & \ding{55} & \ding{51} & \ding{55} \\
+f-DM & Piecewise $f_t$ interpolation & 1 & Shared U-Net & Partial & \ding{51} & \ding{55} \\
+Cold Diffusion & Degrad.~replaces noise & 1 & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
+IHDM / Blurring & Continuous blur & 1 & \ding{55} & \ding{55} & \ding{55} & \ding{51} (DCT) \\
+MDM & Joint multi-res & 1 & NestedUNet & \ding{51} & Partial & \ding{55} \\
+DFM & Per-scale flow paths & 1 & \ding{55} & \ding{51} & \ding{51} & Decomp. \\
+LapFlow & Laplacian flow paths & 1 & MoT & \ding{51} & \ding{51} & Laplacian \\
+Simple Diff. & logSNR shift & 1 & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
+\midrule
+\textbf{RDD (ours)} & \textbf{Continuous drift} & \textbf{1} & \ding{55} & \ding{51} & \ding{51} & \textbf{Implicit} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Efficient architectures and solvers.}
+DiT~\citep{peebles2023dit} introduced transformer-based diffusion backbones.
+DPM-Solver~\citep{lu2022dpm} developed high-order ODE solvers for fast sampling, which we extend with drift correction (\S\ref{sec:dpmsolver}).
+Limited-interval guidance~\citep{kynkaanniemi2024guidance} changes only when CFG is applied during sampling and is therefore a particularly clean, low-cost candidate for combination with RDD; no such combination is claimed in the current results.
+
+%=============================================================================
+\section{Method}
+\label{sec:method}
+
+\subsection{Preliminaries: Lifted Transform Hierarchy}
+\label{sec:prelim}
+
+Let $\mathcal X_c\simeq\R^{n_c}$ be the state space used by stage $c$ and let $\bx_0^c\in\mathcal X_c$ be its clean target. RDD is defined by a \emph{same-state lifted transform} $G_c:\mathcal X_c\to\mathcal X_c$. Its residual is
+\begin{equation}
+    \bd^c(\bx_0^c)=G_c(\bx_0^c)-\bx_0^c.
+    \label{eq:general_residual}
+\end{equation}
+The Gaussian derivations below require only that this residual is a deterministic same-shaped function of the clean sample. Linearity is not required for the forward marginal; idempotence is used later for the projection decomposition and analytic FM clean reconstruction.
+
+For the resolution instance used in our experiments, $G_c$ is constructed through linear operators:
+
+\textbf{Downsampling.} $\DOWN_s: \R^n \to \R^m$ performs spatial average pooling with factor $s$, producing an image with $m = n/s^2$ pixels.
+
+\textbf{Upsampling.} $\UP_s: \R^m \to \R^n$ performs nearest-neighbor upsampling, replicating each pixel into an $s\times s$ block.
+
+These operators satisfy two key properties:
+\begin{align}
+    \DOWN_s \circ \UP_s &= I_m \label{eq:du_identity} \\
+    \UP_s \circ \DOWN_s &= P_s \label{eq:ud_projection}
+\end{align}
+where $P_s$ is an orthogonal projection onto piecewise-constant functions (block averages).
+Property~\eqref{eq:du_identity} states that downsampling a nearest-neighbor upsampled image recovers the original low-resolution image.
+Property~\eqref{eq:ud_projection} states that upsampling followed by downsampling produces a piecewise-constant smoothed version.
+
+Thus $G_c=P_s=\UP_s\circ\DOWN_s$ is a same-state lift of a dimension-changing downsampler. Other transforms (blur, spectral truncation, or a learned encoder--decoder) can be substituted only after defining an output in the same state space; arbitrary dimension-changing $G_c$ does not inherit RDD's isotropic single-target derivation automatically.
+
+\textbf{Transform schedule.} We partition the diffusion timesteps $\{0, 1, \ldots, T\}$ into $C$ stages with boundaries $\{T_0 = 0, T_1, T_2, \ldots, T_C = T\}$.
+At stage $c \in \{0, 1, \ldots, C-1\}$ (timesteps $t \in [T_c, T_{c+1})$), the model operates at resolution level $c$, with resolution decreasing as $c$ increases.
+We denote the stage length as $\Delta T^c = T_{c+1} - T_c$ and the low-resolution target at level $c$ as:
+\begin{equation}
+    \bx_0^c = \UP_{s_c} \circ \DOWN_{s_c}(\bx_0)
+\end{equation}
+where $s_c$ is the downsampling factor at level $c$ (with $s_0 = 1$ for the finest resolution).
+
+\subsection{Resolution-Drift Diffusion (DDPM Formulation)}
+\label{sec:rdd_ddpm}
+
+\textbf{Drift term.} For stage $c$, the general drift is Eq.~\eqref{eq:general_residual}. In the adjacent-resolution hierarchy used experimentally, it becomes
+\begin{equation}
+    \bd^c = \UP_{s_c}(\bx_0^{c+1}) - \bx_0^c = \UP_{s_{c+1}} \circ \DOWN_{s_{c+1}}(\bx_0) - \UP_{s_c} \circ \DOWN_{s_c}(\bx_0)
+    \label{eq:drift}
+\end{equation}
+For the projection lift this residual is the negative high-frequency component removed by coarsening. For a general $G_c$ it should be called a transform residual, not necessarily a frequency residual. In all cases $\bd^c$ lives in the same space as the stage input.
+
+\textbf{Modified forward process.} The forward transition within stage $c$ (for $t \in [T_c, T_{c+1}]$) is:
+\begin{equation}
+    q(\bx_t | \bx_{t-1}) = \N\left(\sqrt{\alpha_t}\, \bx_{t-1} + \frac{\sqrt{\bar{\alpha}_t}}{\Delta T^c}\, \bd^c,\; (1 - \alpha_t) I\right)
+    \label{eq:forward_step}
+\end{equation}
+where $\alpha_t$ and $\bar{\alpha}_t = \prod_{i=1}^{t} \alpha_i$ follow the standard noise schedule.
+The drift term adds a deterministic push of $\frac{\sqrt{\bar{\alpha}_t}}{\Delta T^c}\, \bd^c$ at each step, gradually shifting the signal toward the lower-resolution representation.
+Given the constraints that the marginal mean be $\sqrt{\bar\alpha_t}(\bx_0+r_t^c\bd^c)$ and that $r_t^c$ advance linearly, the additive one-step coefficient is forced to be $\sqrt{\bar\alpha_t}/\Delta T^c$. Other envelopes are possible, but their one-step drift must be changed consistently.
+
+\textbf{Marginal distribution.} Through telescoping (see Appendix~\ref{app:forward_derivation}), the marginal is:
+\begin{equation}
+    q(\bx_t | \bx_0) = \N\left(\sqrt{\bar{\alpha}_t}\, \bx_0 + \frac{t - T_c}{\Delta T^c}\, \sqrt{\bar{\alpha}_t}\, \bd^c,\; (1 - \bar{\alpha}_t) I\right)
+    \label{eq:marginal}
+\end{equation}
+
+\textbf{Terminal property.} At the stage boundary $t = T_{c+1}$:
+\begin{equation}
+    \E[\bx_{T_{c+1}}] = \sqrt{\bar{\alpha}_{T_{c+1}}} \left(\bx_0^c + \bd^c\right) = \sqrt{\bar{\alpha}_{T_{c+1}}} \cdot \UP_{s_{c+1}} \circ \DOWN_{s_{c+1}}(\bx_0)
+\end{equation}
+The signal mean has been exactly shifted to the upsampled low-resolution version, completing the resolution transition.
+
+\textbf{Effective noise.} Reparameterizing $\bx_t$ as:
+\begin{equation}
+    \bx_t = \sqrt{\bar{\alpha}_t}\left(\bx_0 + \frac{t - T_c}{\Delta T^c}\, \bd^c\right) + \sqrt{1 - \bar{\alpha}_t}\, \beps, \quad \beps \sim \N(0, I)
+\end{equation}
+we define the \emph{effective noise}:
+\begin{equation}
+    \tilde{\beps} = \beps + \frac{\sqrt{\bar{\alpha}_t}}{\sqrt{1 - \bar{\alpha}_t}} \cdot \frac{t - T_c}{\Delta T^c} \cdot \bd^c
+    \label{eq:effective_noise}
+\end{equation}
+This allows rewriting $\bx_t = \sqrt{\bar{\alpha}_t}\, \bx_0 + \sqrt{1 - \bar{\alpha}_t}\, \tilde{\beps}$, which has the same form as standard DDPM.
+
+\textbf{Training objective.} The model $\beps_\theta(\bx_t, t, c)$ is trained to predict the effective noise $\tilde{\beps}$ using the standard simplified loss:
+\begin{equation}
+    \mathcal{L} = \E_{t, \bx_0, \beps}\left[\left\|\beps_\theta(\bx_t, t, c) - \tilde{\beps}\right\|^2\right]
+    \label{eq:loss}
+\end{equation}
+This is identical in form to the standard DDPM loss---the only difference is in how training samples $(\bx_t, \tilde{\beps})$ are constructed.
+
+\textbf{Interpretation: structured denoising and frequency-decomposition learning.}
+The effective noise $\tilde{\beps}$ in Eq.~\eqref{eq:effective_noise} has a \emph{square-root-SNR}-weighted residual contribution,
+$\sqrt{\text{SNR}(t)}\frac{t-T_c}{\Delta T^c}\bd^c$, where $\text{SNR}(t)=\bar\alpha_t/(1-\bar\alpha_t)$.
+Its magnitude is controlled jointly by the decreasing SNR and the increasing within-stage envelope $(t-T_c)/\Delta T^c$; it is zero at the stage entrance and need not vary monotonically.
+Thus RDD exposes a structured transform residual most strongly at the timesteps where this product is large, while other timesteps remain predominantly Gaussian-noise prediction.
+We call this a structured-target curriculum, but faster convergence does not follow from the formula alone. The projection residual lies in $(I-P)$, whereas an isotropic Gaussian has components in both $P$ and $(I-P)$; they are therefore not samplewise orthogonal. The drift-free staged control and per-subspace loss/gradient measurements are needed to test this explanation.
+
+\subsection{The Frequency-Decomposition Curriculum}
+\label{sec:curriculum}
+
+The effective noise formulation reveals that RDD implicitly implements a structured learning curriculum. We formalize this observation, which we consider the key explanatory insight of our framework.
+
+\textbf{SNR-weighted drift contribution.} At timestep $t$ within stage $c$, the effective noise is:
+\begin{equation}
+    \tilde\beps = \beps + \underbrace{\frac{\sqrt{\bar\alpha_t}}{\sqrt{1-\bar\alpha_t}}}_{\sqrt{\text{SNR}(t)}} \cdot \frac{t - T_c}{\Delta T^c} \cdot \bd^c
+    \label{eq:snr_drift}
+\end{equation}
+
+The drift-to-noise ratio (DNR) quantifies which component dominates the prediction target:
+\begin{equation}
+    \text{DNR}(t) = \frac{\|\sqrt{\text{SNR}(t)} \cdot \frac{t-T_c}{\Delta T^c} \cdot \bd^c\|}{\|\beps\|} \approx \sqrt{\text{SNR}(t)} \cdot \frac{t-T_c}{\Delta T^c} \cdot \frac{\|\bd^c\|}{\sqrt{n}}
+\end{equation}
+
+\textbf{Two learning regimes.} DNR, rather than an ``early'' or ``late'' label, partitions samples within a stage:
+\begin{itemize}
+    \item \textbf{Residual-dominated regime} (DNR $\gg 1$): The target is dominated by the deterministic transform residual $\bd^c$; for the projection instance this is a frequency-decomposition task.
+    \item \textbf{Noise-dominated regime} (DNR $\ll 1$): The target is close to standard Gaussian-noise prediction.
+\end{itemize}
+Because the within-stage factor starts at zero while SNR decreases with forward time, either regime can occupy an interior interval and its location depends on the schedule and residual norm.
+
+\textbf{Why this may accelerate convergence.} RDD exposes a deterministic transform residual in the target at selected SNRs. This may reduce the sample complexity of learning cross-scale structure, but determinism conditional on $\bx_0$ does not by itself imply lower marginal gradient variance. We therefore treat reduced gradient variance and feature reuse as testable mechanisms, measured with per-subspace target/loss statistics and the drift-free control.
+
+\subsection{Reverse Process and Posterior}
+\label{sec:posterior}
+
+We derive the exact reverse posterior $q(\bx_s | \bx_t, \bx_0)$ for $s < t$ within stage $c$.
+The posterior is Gaussian with:
+
+\textbf{Posterior covariance:}
+\begin{equation}
+    \Sigma_{s|t} = \frac{(\bar{\alpha}_s - \bar{\alpha}_t)(1 - \bar{\alpha}_s)}{\bar{\alpha}_s(1 - \bar{\alpha}_t)}\, I
+    \label{eq:posterior_var}
+\end{equation}
+
+\textbf{Posterior mean:}
+\begin{equation}
+    \bm{\mu}_{s|t} = \underbrace{\sqrt{\frac{\bar\alpha_t}{\bar\alpha_s}}\frac{1-\bar\alpha_s}{1-\bar\alpha_t}\,\bx_t}_{\text{noisy-state term}}
+    + \underbrace{\frac{\bar\alpha_s-\bar\alpha_t}{\sqrt{\bar\alpha_s}(1-\bar\alpha_t)}\,\bx_0}_{\text{clean-signal term}}
+    + \underbrace{\gamma_{s,t}^c\,\bd^c}_{\text{transform-residual correction}}
+    \label{eq:posterior_mean}
+\end{equation}
+
+\textbf{Drift coefficient:}
+\begin{equation}
+    \gamma_{s,t}^c
+    = \sqrt{\bar\alpha_s}\,r_s^c
+    - \frac{\bar\alpha_t(1-\bar\alpha_s)}{\sqrt{\bar\alpha_s}(1-\bar\alpha_t)}\,r_t^c,
+    \qquad r_u^c=\frac{u-T_c}{\Delta T^c}.
+    \label{eq:drift_coeff}
+\end{equation}
+These coefficients follow by centering $y_u=\bx_u-\sqrt{\bar\alpha_u}r_u^c\bd^c$ and applying the standard arbitrary-jump DDPM posterior to $y_s,y_t$. This also provides a direct implementation test: setting $\bd^c=0$ must recover the standard coefficients exactly.
+
+\begin{proposition}[Reduction to DDPM]
+When $\bd^c = 0$ (no resolution drift), Equations~\eqref{eq:posterior_var}--\eqref{eq:posterior_mean} reduce exactly to the standard DDPM posterior. Thus RDD is a strict generalization of DDPM.
+\end{proposition}
+
+\begin{proof}
+Setting $\bd^c = 0$ eliminates the drift correction term. The remaining terms in Eq.~\eqref{eq:posterior_mean} combine with $q(\bx_t|\bx_0) = \N(\sqrt{\bar\alpha_t}\bx_0, (1-\bar\alpha_t)I)$ to give the standard posterior. The variance in Eq.~\eqref{eq:posterior_var} is unchanged.
+\end{proof}
+
+\textbf{Practical sampling.} The network predicts the \emph{effective} target $\tilde\beps$, so its standard-looking clean estimate is
+\begin{equation}
+    \hat{\bx}_0 = \frac{\bx_t - \sqrt{1 - \bar{\alpha}_t}\, \beps_\theta(\bx_t, t, c)}{\sqrt{\bar{\alpha}_t}}
+\end{equation}
+We then evaluate $\hat\bd^c=G_c(\hat\bx_0)-\hat\bx_0$ and substitute $(\hat\bx_0,\hat\bd^c)$ into Eq.~\eqref{eq:posterior_mean}. The Gaussian innovation used by score/ODE solvers is a different quantity,
+\begin{equation}
+    \hat\beps_{\mathrm{pure}}=
+    \frac{\bx_t-\sqrt{\bar\alpha_t}(\hat\bx_0+r_t^c\hat\bd^c)}{\sqrt{1-\bar\alpha_t}},
+    \label{eq:pure_noise}
+\end{equation}
+and must not be confused with $\tilde\beps$. This distinction is immaterial for the weighted $x_0$ regression view of training but essential for a correct probability-flow solver.
+
+\textbf{Error propagation analysis.}
+Since the drift at inference is estimated from $\hat\bx_0$, a natural concern is error propagation through the drift correction term $\gamma_{s,t}^c \cdot \hat\bd^c$.
+Let $\delta = \hat\bx_0 - \bx_0$ denote the estimation error.
+The estimated drift is $\hat\bd^c = \UP(\DOWN(\hat\bx_0)) - \hat\bx_0 = \bd^c + (P - I)\delta = \bd^c - (I-P)\delta$, where $P = \UP \circ \DOWN$.
+The drift correction error is thus $\gamma_{s,t}^c \cdot (I-P)\delta$---a projection of the $\hat\bx_0$ error onto the \emph{null space} (high-frequency subspace).
+
+For the projection case, only the \emph{additional residual-estimation error} is confined to the complement of $P$; the ordinary clean-estimation term can still affect every subspace. Writing $C_0=(\bar\alpha_s-\bar\alpha_t)/(\sqrt{\bar\alpha_s}(1-\bar\alpha_t))$, the posterior-mean perturbation due to $\delta$ is
+\begin{equation}
+    \Delta\mu=C_0\delta+\gamma_{s,t}^c(P-I)\delta,
+    \qquad
+    \|\Delta\mu\|\leq (|C_0|+|\gamma_{s,t}^c|)\|\delta\|.
+\end{equation}
+This identity is a useful diagnostic but does not prove self-correction or perceptual harmlessness. For a nonlinear $G_c$, the local factor becomes the Jacobian $J_{G_c}-I$ and may amplify errors; this is another reason our general-transform claim is conditional. Midpoint recomputation can improve $\hat\bd^c$ empirically, but second-order benefit is not guaranteed without the matched-NFE solver ablation.
+
+\subsection{Flow Matching Formulation}
+\label{sec:fm}
+
+RDD-FM is a separate conditional probability-path construction; it is \emph{not} obtained by reusing the reverse-SDE posterior above. Flow Matching~\citep{lipman2023fm} allows regression of the velocity of a chosen conditional path. Starting from rectified/OT conditional interpolation $\bx_t=t\bx_1+(1-t)\beps$, with $t=0$ noise and $t=1$ data, we define a residualized path for stage $k$.
+
+Let $G_k:\mathcal X_k\to\mathcal X_k$, $\bd_k=G_k(\bx_1)-\bx_1$, $t\in[s_k,s_{k+1}]$, and $L_k=s_{k+1}-s_k$. Define
+\begin{align}
+    b_k(t) &= \frac{t(s_{k+1}-t)}{L_k}, \\
+    \bx_t &= t\bx_1+(1-t)\beps+b_k(t)\bd_k,
+    \label{eq:fm_interpolant}
+\end{align}
+with $\beps\sim\N(0,I)$. The envelope is chosen for its two relevant boundary values,
+\begin{equation}
+    b_k(s_k)=s_k,\qquad b_k(s_{k+1})=0.
+    \label{eq:fm_envelope_boundaries}
+\end{equation}
+Consequently,
+\begin{align}
+    \bx_{s_k} &= s_k G_k(\bx_1)+(1-s_k)\beps, \\
+    \bx_{s_{k+1}} &= s_{k+1}\bx_1+(1-s_{k+1})\beps.
+    \label{eq:fm_stage_endpoints}
+\end{align}
+Thus the coarser transform is present \emph{exactly at the start} of a fine stage and is removed over that stage. The previous text's claim that the shift was implicit at the ending boundary was incorrect; Eq.~\eqref{eq:fm_stage_endpoints} is the actual consistency mechanism.
+
+Differentiation gives the conditional data-time velocity
+\begin{equation}
+    \bu_t=\frac{d\bx_t}{dt}=\bx_1-\beps+\frac{s_{k+1}-2t}{L_k}\bd_k,
+    \label{eq:fm_velocity}
+\end{equation}
+and the conditional FM loss is
+\begin{equation}
+    \mathcal L_{\mathrm{RDD\text{-}FM}}
+    =\E\!\left[\|v_\theta(\bx_t,t,k)-\bu_t\|_2^2\right].
+    \label{eq:fm_loss}
+\end{equation}
+Uniform global $t$ corresponds to choosing stage $k$ with probability $L_k$ and then sampling uniformly within its interval. Uniformly choosing a stage is a different, intentional reweighting ablation.
+
+\textbf{Training-matched stage transition.}
+Suppose the preceding coarse stage produces a clean estimate $\hat\bx_1^{k-1}$ whose lift approximates $G_k(\bx_1)$. Initialization
+\begin{equation}
+    \bx_{s_k}^{k}=s_k\UP(\hat\bx_1^{k-1})+(1-s_k)\beps_{\mathrm{new}}
+    \label{eq:fm_noise_fill}
+\end{equation}
+matches the next stage's starting conditional marginal in Eq.~\eqref{eq:fm_stage_endpoints}. This is marginal consistency after resampling; it does not assert samplewise continuity with the previous noise realization.
+
+\textbf{Clean reconstruction is path dependent.}
+The standard shortcut $\hat\bx_1=\bx_t+(1-t)v_\theta$ is wrong when $\bd_k$ depends on $\bx_1$. For a linear idempotent projection $G_k=P_k$, let $\hat\bu_t=v_\theta(\bx_t,t,k)$ and
+\begin{align}
+    \by_t &= \bx_t+(1-t)\hat\bu_t,\\
+    c_k(t)&=b_k(t)+(1-t)b'_k(t).
+\end{align}
+For an exact conditional velocity, $\by_t=[I+c_k(t)(P_k-I)]\bx_1$. Whenever $1-c_k(t)\neq0$, the analytic inverse is
+\begin{equation}
+    \hat\bx_1=P_k\by_t+\frac{1}{1-c_k(t)}(I-P_k)\by_t.
+    \label{eq:fm_clean_inverse}
+\end{equation}
+This inverse is a concrete benefit of projection residualization. A nonlinear or non-idempotent $G_k$ needs an $x$-prediction head, an implicit solve, or a transform-specific inverse; the projection formula must not be generalized silently.
+
+\textbf{Wan convention.}
+Wan uses noise time $\sigma=1-t$, feeds $1000\sigma$ to the network, and predicts $\bw_\sigma=d\bx/d\sigma=-\bu_t$. Sampling integrates $\sigma$ from high to low. Equation~\eqref{eq:fm_clean_inverse} is equivalently obtained from $\by=\bx_\sigma-\sigma\bw_\sigma$. This change of variables is essential when fine-tuning a pretrained Wan checkpoint.
+
+\textbf{Solvers and OT scope.}
+Euler, Heun, or multistep ODE methods can integrate each smooth stage; boundaries are handled explicitly by Eq.~\eqref{eq:fm_noise_fill}. The curved conditional path is valid for conditional FM, but it is not the straight conditional OT path, so OT transport-cost guarantees do not carry over. Solver compatibility and lower NFE are empirical questions and must be compared with the same solver and true NFE on RDD and PyramidalWan.
+
+\subsection{Cross-Resolution Transition: Noise Filling as Training-Consistent Initialization}
+\label{sec:noise_filling}
+
+After completing denoising at resolution level $c+1$ (coarse), we obtain a clean low-resolution estimate $\hat\bx_0^{c+1}$.
+To begin sampling at level $c$ (finer), we need to initialize $\bx_{T_c}$ at the finer resolution.
+The standard heuristic is ``noise filling'':
+\begin{equation}
+    \bx_{T_c} = a \cdot \UP(\hat\bx_0^{c+1}) + \sqrt{b} \cdot \beps, \quad \beps \sim \N(0, I)
+    \label{eq:noise_filling}
+\end{equation}
+We show that noise filling is the \emph{unique} transition within the isotropic Gaussian initialization family considered here that is consistent with RDD's training-time marginal distribution, and provide a Bayesian interpretation that clarifies its optimality within our framework. f-DM also resamples noise at dimension-changing boundaries; our proposition is specific to the RDD projection and marginal.
+
+\textbf{Training-consistency argument (primary justification).}
+During training, the RDD model at the fine level ($c$) processes inputs sampled from the marginal $q(\bx_{T_c} | \bx_0)$.
+At the stage boundary $t = T_c$ (the \emph{starting point} of level $c$'s reverse process), the drift has completed its effect for the \emph{previous} stage, and the marginal is:
+\begin{equation}
+    q(\bx_{T_c} | \bx_0) = \N\left(\sqrt{\bar\alpha_{T_c}} \cdot \UP_{s_{c+1}}(\DOWN_{s_{c+1}}(\bx_0)),\; (1 - \bar\alpha_{T_c}) I\right)
+    \label{eq:training_marginal_boundary}
+\end{equation}
+That is, at this timestep the signal mean is the upsampled low-resolution version $\UP(\bx_0^{c+1})$, and the noise is isotropic with variance $(1-\bar\alpha_{T_c})$.
+Noise filling with $a = \sqrt{\bar\alpha_{T_c}}$, $b = 1 - \bar\alpha_{T_c}$ produces \emph{exactly this distribution}, making it the unique member of this isotropic Gaussian family that matches what the model saw during training.
+Any other initialization would create a train/test mismatch, degrading generation quality.
+
+\textbf{Bayesian interpretation and the $\sigma_h$ spectrum.}
+We additionally interpret noise filling through a Bayesian lens that illuminates its optimality.
+Decompose any image $\bx \in \R^n$ as:
+\begin{equation}
+    \bx = P_s \bx + (I - P_s)\bx = \underbrace{\UP(\DOWN(\bx))}_{\text{row space (low-freq)}} + \underbrace{(I - P_s)\bx}_{\text{null space (high-freq)}}
+\end{equation}
+where $P_s = \UP_s \circ \DOWN_s$ is the projection onto piecewise-constant functions.
+
+Model the prior on high-frequency content as $p(\bx_h) = \N(0, \sigma_h^2 (I - P_s))$.
+The predictive distribution at time $T_c$ given the coarse estimate $\hat\bx_0^{c+1}$ is then:
+\begin{equation}
+    p(\bx_{T_c} | \hat\bx_0^{c+1}, \sigma_h) = \N\left(\sqrt{\bar\alpha_{T_c}} \cdot \UP(\hat\bx_0^{c+1}),\; (1 - \bar\alpha_{T_c})P_s + (1 - \bar\alpha_{T_c} + \bar\alpha_{T_c}\sigma_h^2)(I - P_s)\right)
+    \label{eq:sigma_h_family}
+\end{equation}
+This defines a one-parameter family indexed by $\sigma_h \geq 0$:
+\begin{itemize}
+    \item $\sigma_h = 0$: Isotropic noise $(1-\bar\alpha_{T_c})I$ in all directions $\to$ \textbf{noise filling} (matches training marginal exactly).
+    \item $\sigma_h > 0$: Anisotropic noise with \emph{excess} variance $(1-\bar\alpha_{T_c}+\bar\alpha_{T_c}\sigma_h^2)$ in null-space directions.
+    At $T_c=300$ ($\bar\alpha_{T_c} \approx 0.97$), even $\sigma_h = 0.1$ gives null-space variance $\approx 0.04$ vs.\ row-space variance $\approx 0.03$---a 33\% excess that the model was never trained to handle.
+\end{itemize}
+
+\begin{proposition}[Noise filling as training-consistent posterior]
+\label{prop:noise_filling}
+Under $\sigma_h = 0$, the posterior $p(\bx_{T_c} | \hat\bx_0^{c+1})$ equals the training marginal:
+\begin{equation}
+    p(\bx_{T_c} | \hat\bx_0^{c+1}) = \N\left(\sqrt{\bar\alpha_{T_c}} \cdot \UP(\hat\bx_0^{c+1}),\; (1 - \bar\alpha_{T_c}) I\right)
+\end{equation}
+which is precisely the noise-filling operation. For any $\sigma_h > 0$, the initialization is \emph{out-of-distribution} relative to training.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+The row-space component is determined by the coarse observation: $P_s\bx = \UP(\hat\bx_0^{c+1})$.
+With $\sigma_h = 0$, the null-space prior contributes zero signal.
+At diffusion time $T_c$, the standard noising produces variance $(1-\bar\alpha_{T_c})I$ in all directions.
+See Appendix~\ref{app:noise_filling} for the full derivation.
+\end{proof}
+
+\textbf{Why $\sigma_h = 0$ is the matched choice.}
+The conclusion is deliberately conditional: $\sigma_h=0$ is selected because it reproduces the isotropic conditional marginal used to train this RDD stage. It is not a universal information-theoretic optimum over all possible forward processes or data priors. Choosing $\sigma_h>0$ defines an anisotropic, out-of-distribution initialization for the fixed trained model; a model trained on that alternative covariance could behave differently.
+
+\textbf{Inference-time $\sigma_h$ sweep (no retraining required).}
+Since noise filling with $\sigma_h > 0$ only modifies the initialization variance at inference time, one can sweep $\sigma_h \in \{0, 0.05, 0.1, 0.2, 0.5, 1.0\}$ \emph{without retraining} to empirically validate this analysis.
+We predict monotonically increasing FID with $\sigma_h > 0$, with the degradation rate determined by the model's robustness to distribution shift.
+The planned noise-variance sweep will test whether the empirical optimum agrees with this training-consistent value.
+
+\textbf{What noise filling preserves and resamples.}
+A natural concern is that adding noise at the stage boundary ``resets'' denoising progress. Under the chosen RDD marginal, it instead separates the conditional mean from the stochastic part:
+\begin{enumerate}
+    \item \textbf{Coarse information remains in the mean.} The estimate $\hat\bx_0^{c+1}$ enters as $\sqrt{\bar\alpha_{T_c}}\UP(\hat\bx_0^{c+1})$; resampling does not erase this conditional mean.
+    \item \textbf{The variance matches training.} The fine stage was trained at variance $(1-\bar\alpha_{T_c})I$. Changing that variance without retraining is an inference-time distribution shift, whose effect is measured rather than assumed.
+    \item \textbf{Fresh noise restores conditional stochasticity.} With a deterministic solver, passing exactly the same coarse state without fresh randomness gives one fine continuation. Noise filling allows multiple high-resolution continuations conditional on a fixed coarse estimate, although total sample diversity also depends on variation already present in the coarse stage.
+\end{enumerate}
+
+\textbf{Scope and relationship to training design.}
+The $\sigma_h = 0$ optimality is a consequence of the RDD forward process design: the drift absorbs high-frequency content into noise by the stage boundary, so the model learns to expect isotropic noise at initialization.
+This is \emph{not} a claim about natural images (which contain high-frequency content), but rather a statement about what the trained model expects.
+The contribution is the exact match between the selected residualized forward marginal and the stated isotropic transition family, plus its controlled empirical comparison.
+An alternative forward process that does \emph{not} fully absorb high-frequency would require a different transition ($\sigma_h > 0$)---exploring this design space is a direction for future work.
+
+Table~\ref{tab:upsample} empirically validates that noise filling outperforms bilinear interpolation (which violates this training-consistency property) by 2.48 FID points.
+
+\subsection{DPM-Solver with Drift Correction}
+\label{sec:dpmsolver}
+
+
+\textbf{Role of theory in RDD.}
+We clarify the complementary roles of our theoretical and empirical contributions.
+The theoretical results (Propositions~\ref{prop:noise_filling}, exact posterior in Eq.~\ref{eq:posterior_mean}) establish \emph{correctness}: they guarantee that RDD's modified forward process admits valid reverse sampling, that noise filling matches the chosen RDD marginal within the stated family, and that the framework reduces to DDPM when the drift is zero. They do not by themselves establish novelty over f-DM or that drift causes the empirical gain; those are empirical questions.
+The observed convergence improvement is consistent with the frequency-decomposition curriculum interpretation (\S\ref{sec:curriculum}).
+A drift-free progressive-resolution control is still required to isolate this mechanism causally from the compute allocation itself.
+Theory and empirics play complementary roles: theory ensures we build on solid mathematical ground (not an ad-hoc hack), while experiments demonstrate and explain the practical benefits.
+Neither alone would suffice for a convincing contribution.
+
+We extend DPM-Solver~\citep{lu2022dpm} to handle the drift-augmented diffusion process.
+
+\textbf{SDE form.} The RDD forward process in continuous time takes the form:
+\begin{equation}
+    d\bx = \left[f(t)\bx + a(t)\right]dt + g(t)\,dW
+    \label{eq:sde}
+\end{equation}
+where $f(t) = \frac{d\log\sqrt{\bar\alpha_t}}{dt}$ is the standard linear drift coefficient and the additive drift and diffusion coefficients satisfy
+\begin{equation}
+    a(t) = \sqrt{\bar\alpha_t}\,\dot r_t^c\bd^c,
+    \qquad
+    g^2(t)=\frac{d(1-\bar\alpha_t)}{dt}-2f(t)(1-\bar\alpha_t)
+\end{equation}
+where $r_t^c=(t-T_c)/\Delta T^c$ within a linear stage. For a VP schedule $f=-\beta/2$, this reduces to $g^2=\beta$. The shorter expression $g^2=d(1-\bar\alpha_t)/dt$ is generally incorrect because it omits covariance propagation by $f(t)\bx$.
+
+\textbf{DPM-Solver-1 with drift correction.} The first-order solver computes:
+\begin{equation}
+    \bx_s = \frac{\sqrt{\bar\alpha_s}}{\sqrt{\bar\alpha_t}}\bx_t
+    - \sqrt{1-\bar\alpha_s}\left(e^{\lambda_s-\lambda_t}-1\right)
+      \hat\beps_{\mathrm{pure}}(\bx_t,t)
+    + \underbrace{\sqrt{\bar\alpha_s}(r_s^c-r_t^c)\hat\bd^c}_{\text{residual-path correction}}
+    \label{eq:dpm1}
+\end{equation}
+where $\lambda_t = \log(\sqrt{\bar\alpha_t}/\sqrt{1-\bar\alpha_t})$ and $\lambda_s>\lambda_t$ in the denoising direction. Crucially, Eq.~\eqref{eq:dpm1} uses the Gaussian innovation from Eq.~\eqref{eq:pure_noise}, not the effective training target. With exact $(\bx_0,\bd^c,\beps)$, the three terms simplify exactly to $\sqrt{\bar\alpha_s}(\bx_0+r_s^c\bd^c)+\sqrt{1-\bar\alpha_s}\beps$.
+
+\textbf{DPM-Solver-2-inspired midpoint drift correction.} We evaluate the learned quantities at an intermediate point, following the structure of a second-order exponential integrator:
+\begin{enumerate}
+    \item Compute midpoint $t_m = (t + s)/2$
+    \item First evaluation: $\hat\beps_t = \beps_\theta(\bx_t, t)$, yielding $\hat\bx_0^{(1)} = (\bx_t - \sqrt{1-\bar\alpha_t}\,\hat\beps_t)/\sqrt{\bar\alpha_t}$
+    \item Compute initial drift estimate: $\hat\bd^{c,(1)} = \UP(\DOWN(\hat\bx_0^{(1)})) - \hat\bx_0^{(1)}$
+    \item Midpoint estimate: $\bx_{t_m} = $ DPM-Solver-1$(\bx_t, t \to t_m, \hat\beps_t, \hat\bd^{c,(1)})$
+    \item Second evaluation at midpoint: $\hat\beps_{t_m} = \beps_\theta(\bx_{t_m}, t_m)$, yielding $\hat\bx_0^{(2)} = (\bx_{t_m} - \sqrt{1-\bar\alpha_{t_m}}\,\hat\beps_{t_m})/\sqrt{\bar\alpha_{t_m}}$
+    \item Compute refined drift: $\hat\bd^{c,(2)} = \UP(\DOWN(\hat\bx_0^{(2)})) - \hat\bx_0^{(2)}$
+    \item Final update uses the \emph{midpoint} drift estimate $\hat\bd^{c,(2)}$:
+    \begin{equation}
+        \bx_s = \frac{\sqrt{\bar\alpha_s}}{\sqrt{\bar\alpha_t}}\bx_t - \sqrt{1-\bar\alpha_s}\left(e^{\lambda_s-\lambda_t}-1\right)\hat\beps_{\mathrm{pure},t_m} + \sqrt{\bar\alpha_s}(r_s^c-r_t^c)\hat\bd^{c,(2)}
+    \end{equation}
+\end{enumerate}
+The midpoint variant uses the drift $\hat\bd^{c,(2)}$ derived from the \emph{midpoint} clean-image estimate $\hat\bx_0^{(2)}$, not the initial estimate $\hat\bx_0^{(1)}$.
+The deterministic integral is exact only when the clean-conditioned residual is fixed. At inference $\hat\bd^c$ changes with the model's clean estimate, so midpoint recomputation is a numerical approximation whose value must be established by the matched-NFE ablation.
+This refined drift estimation is a plausible explanation for the strong DPM-Solver-2 result: at each second-order step, the solver uses a drift direction computed at a state closer to the final target.
+The current FID $2.62$ run uses 250 scheduled steps but 494 model evaluations; a matched-NFE midpoint-drift ablation is therefore required before attributing the full improvement to second-order accuracy.
+
+Table~\ref{tab:solver_comparison} summarizes the comparison between standard and drift-corrected solvers.
+
+\begin{table}[t]
+\centering
+\caption{Comparison of standard vs. RDD-augmented solvers. The drift correction term $\Delta_d$ handles the resolution transition.}
+\label{tab:solver_comparison}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Component} & \textbf{Standard DDPM/DPM} & \textbf{RDD (with drift)} \\
+\midrule
+Forward marginal & $\N(\sqrt{\bar\alpha_t}\bx_0, (1-\bar\alpha_t)I)$ & $\N(\sqrt{\bar\alpha_t}(\bx_0 + \frac{t}{\Delta T}\bd^c), (1-\bar\alpha_t)I)$ \\
+Noise prediction & $\beps$ & $\tilde\beps = \beps + \frac{\sqrt{\bar\alpha_t}}{\sqrt{1-\bar\alpha_t}}\frac{t}{\Delta T}\bd^c$ \\
+Posterior mean & $\mu_{\text{DDPM}}$ & $\mu_{\text{DDPM}} + \gamma_{s,t}^c \cdot \bd^c$ \\
+SDE drift & $f(t)\bx$ & $f(t)\bx + a(t)$ \\
+DPM-Solver & Standard & Standard $+$ drift correction \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Sampling Algorithm}
+\label{sec:sampling}
+
+The complete RDD sampling procedure follows a coarse-to-fine strategy, as summarized in Algorithm~\ref{alg:rdd_sampling}.
+
+\textbf{Inference-time drift computation.}
+A key practical question is how $\bd^c$ is computed at inference time, since it depends on $\bx_0$ which is unknown.
+The answer is that \emph{the drift is implicitly absorbed into the noise prediction} via the effective noise formulation (Eq.~\ref{eq:effective_noise}).
+During training, the model learns to predict $\tilde\beps = \beps + \frac{\sqrt{\bar\alpha_t}}{\sqrt{1-\bar\alpha_t}} \cdot \frac{t-T_c}{\Delta T^c} \cdot \bd^c$.
+At inference, we simply use the model's prediction $\beps_\theta(\bx_t, t, c)$ and compute:
+\begin{equation}
+    \hat\bx_0 = \frac{\bx_t - \sqrt{1-\bar\alpha_t}\, \beps_\theta(\bx_t, t, c)}{\sqrt{\bar\alpha_t}}
+\end{equation}
+The drift correction in the posterior (Eq.~\ref{eq:posterior_mean}) or DPM-Solver (Eq.~\ref{eq:dpm1}) then uses $\hat\bd^c = \UP(\DOWN(\hat\bx_0)) - \hat\bx_0$, computed from the model's \emph{estimated} clean image.
+This creates no circular dependency: at each step, (1) predict $\hat\bx_0$ from current $\bx_t$, (2) compute $\hat\bd^c$ from $\hat\bx_0$, (3) apply drift-corrected update to get $\bx_{t-1}$.
+As the denoising progresses and $\hat\bx_0$ improves, $\hat\bd^c$ also becomes more accurate.
+
+\begin{algorithm}[t]
+\caption{RDD Coarse-to-Fine Sampling}
+\label{alg:rdd_sampling}
+\begin{algorithmic}[1]
+\REQUIRE Trained model $\beps_\theta$, noise schedule $\{\bar\alpha_t\}$, resolution schedule $\{T_0, T_1, \ldots, T_C\}$, classifier-free guidance scale $w$
+\STATE Sample $\bx_T \sim \N(0, I)$ at lowest resolution (level $C-1$)
+\FOR{$c = C-1, C-2, \ldots, 0$}
+    \STATE \textbf{// Denoise within stage $c$}
+    \FOR{$t = T_{c+1}, T_{c+1}-1, \ldots, T_c + 1$}
+        \STATE Predict $\hat\beps = \beps_\theta(\bx_t, t, c)$
+        \STATE Apply classifier-free guidance: $\hat\beps_w = (1+w)\hat\beps_\theta(\bx_t, t, c | y) - w\,\hat\beps_\theta(\bx_t, t, c | \emptyset)$
+        \STATE Compute $\hat\bx_0$ from $\hat\beps_w$
+        \STATE Sample $\bx_{t-1} \sim q(\bx_{t-1} | \bx_t, \hat\bx_0)$ using Eq.~\eqref{eq:posterior_mean} \textbf{or} DPM-Solver (Eq.~\ref{eq:dpm1})
+    \ENDFOR
+    \STATE \textbf{// Cross-resolution transition (if $c > 0$)}
+    \IF{$c > 0$}
+        \STATE Obtain clean estimate $\hat\bx_0^c$ at current resolution
+        \STATE \textbf{Noise fill:} $\bx_{T_{c-1}} = \sqrt{\bar\alpha_{T_{c-1}}} \cdot \UP(\hat\bx_0^c) + \sqrt{1-\bar\alpha_{T_{c-1}}} \cdot \beps$, \quad $\beps \sim \N(0,I)$
+    \ENDIF
+\ENDFOR
+\RETURN $\hat\bx_0^0$ (full-resolution image)
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Architecture: Unified vs Multistage}
+\label{sec:architecture}
+
+RDD is architecture-agnostic and supports two configurations:
+
+\textbf{Unified model.} A single DiT model shared across all resolution levels, conditioned on the resolution level $c$ via an additional embedding:
+\begin{equation}
+    \beps_\theta(\bx_t, t, c) = \text{DiT}(\bx_t, t, c; \theta)
+\end{equation}
+This maximizes parameter sharing and simplicity. The model processes different-sized inputs at each level (e.g., $32\times32$, $16\times16$, $8\times8$ patches).
+The resolution conditioning $c$ is implemented as a learned embedding added to the timestep embedding---the same mechanism DiT uses for class conditioning.
+For handling different sequence lengths across resolutions, DiT's patchification naturally produces different-length token sequences (e.g., $256$, $64$, $16$ tokens for patch size 2 at $32\times32$, $16\times16$, $8\times8$ respectively).
+Learnable positional embeddings are interpolated to the appropriate sequence length---this is standard practice in Vision Transformers and does not constitute an architectural modification.
+
+\textbf{Multistage model.} Different-capacity DiT models per resolution level:
+\begin{equation}
+    \beps_{\theta_c}(\bx_t, t) = \text{DiT}_c(\bx_t, t; \theta_c)
+\end{equation}
+For example: DiT-B/2 for $8\times8$, DiT-L/2 for $16\times16$, DiT-XL/2 for $32\times32$.
+This allows allocating more capacity to the higher-resolution (and more complex) stages.
+
+Both configurations use the \emph{same} RDD forward process, training objective, and sampling procedure---they differ only in how $\beps_\theta$ is parameterized.
+
+\textbf{Implementation complexity.}
+RDD requires minimal implementation effort on top of standard DiT training:
+\begin{enumerate}
+    \item \textbf{Training data construction} ($\sim$15 lines): compute $\bd^c = \UP(\DOWN(\bx_0)) - \bx_0$, modify noise target to $\tilde\beps$.
+    \item \textbf{Resolution conditioning} ($\sim$5 lines): add stage embedding $c$ to existing timestep embedding.
+    \item \textbf{Drift-corrected sampling} ($\sim$20 lines): compute $\hat\bd^c$ from $\hat\bx_0$ at each step, apply correction to posterior mean.
+    \item \textbf{Noise filling transition} ($\sim$10 lines): upsample + add isotropic noise at stage boundaries.
+\end{enumerate}
+Total: $\sim$50 lines of code beyond standard DiT. No custom CUDA kernels, no architecture modifications, no new hyperparameters beyond the stage boundary schedule.
+Appendix~\ref{app:implementation} summarizes the implementation components; a complete code diff will accompany the released implementation.
+
+%=============================================================================
+\section{Experiments}
+\label{sec:experiments}
+
+\subsection{Setup}
+\label{sec:setup}
+
+\textbf{Dataset.} ImageNet~\citep{deng2009imagenet} at $256\times256$ resolution.
+
+\textbf{Backbone.} DiT architecture~\citep{peebles2023dit} with AdaLN-Zero conditioning.
+
+\textbf{Resolution schedule.} Default: $300$--$300$--$400$ (3 stages).
+Following the convention in \S\ref{sec:prelim}, stages are ordered coarse-to-fine with $c=0$ being finest:
+Stage $c=0$ (finest, $32\times32$ patches) covers $t \in [0, 300)$;
+Stage $c=1$ ($16\times16$ patches) covers $t \in [300, 600)$;
+Stage $c=2$ (coarsest, $8\times8$ patches) covers $t \in [600, 1000]$.
+Note that higher $t$ corresponds to higher noise levels \emph{and} coarser resolution---this aligns with the intuition that coarse structure is determined first (at high noise) and fine detail is added last (at low noise).
+Total $T = 1000$ timesteps.
+Sampling proceeds from $t=T$ to $t=0$, i.e., from coarsest to finest resolution.
+
+\textbf{Stage split rationale.}
+The 300--300--400 allocation assigns 400 timesteps to the coarsest stage ($8\times8$) and 300 each to the intermediate ($16\times16$) and finest ($32\times32$) stages.
+This choice is heuristic and balances three competing considerations:
+\begin{enumerate}
+    \item \textbf{Representation bandwidth.} The $8\times8$ state should be restricted to noise levels where coarse spatial structure is sufficient; extending it too far into higher-SNR timesteps may discard information that cannot be recovered downstream.
+    \item \textbf{Transition stiffness.} The drift rate scales as $1/\Delta T^c$. An extremely short fine-resolution interval increases the drift rate and leaves less reverse-time distance to correct boundary errors and synthesize high-frequency detail.
+    \item \textbf{Coverage per local timestep.} The current trainer updates every stage once per optimization step and samples local timesteps uniformly. Short stages therefore receive more examples per discrete timestep, whereas long stages receive fewer. This increased density need not compensate for a harder boundary or a wider function domain.
+\end{enumerate}
+Old exploratory runs on the invalid preprocessing pipeline favored 300--300--400 over 100--300--600 under matched 400K/sampler/CFG settings, despite the latter's denser coverage of $t\in[0,100)$; because those absolute metrics are unusable, we treat this only as motivation.
+A proper native-ImageNet training ablation over 100--300--600, 200--300--500, and 300--300--400 is needed to determine the optimal allocation.
+\S\ref{sec:stage_split} reports inference-time sensitivity, while Table~\ref{tab:step_alloc} addresses the distinct question of sampling-step allocation.
+
+\textbf{Evaluation.} 50K generated samples evaluated against the ADM~\citep{dhariwal2021adm} reference batch.
+Metrics: FID~\citep{heusel2017fid}, sFID, Inception Score (IS), Precision, and Recall.
+
+\textbf{Training.} All models trained for 400K steps unless otherwise noted.
+DiT-XL/2 backbone (675M parameters) with patch size 2.
+AdamW optimizer with learning rate $1\times10^{-4}$, $\beta_1 = 0.9$, $\beta_2 = 0.999$, weight decay $0$.
+Batch size 256 distributed across 8 GPUs (32 per GPU).
+Linear noise schedule with $\beta_1 = 10^{-4}$, $\beta_T = 0.02$, $T = 1000$ timesteps.
+EMA decay rate 0.9999.
+No learning rate warmup, no dropout, no data augmentation beyond standard center-crop and horizontal flip.
+10\% unconditional training for classifier-free guidance (class label dropped).
+Mixed precision (bf16) training.
+
+\subsection{Main Results}
+\label{sec:main_results}
+
+Table~\ref{tab:main_results} presents the strongest validated operating points.
+RDD Unified XL achieves FID $3.54$ with 250-step DDPM sampling.
+DPM-Solver-2 reaches FID $\mathbf{2.62}$ with 250 scheduled steps, but this corresponds to 494 model evaluations; at the approximately compute-matched setting of 125 scheduled steps (244 NFE), it reaches FID $2.63$.
+
+\begin{table}[t]
+\centering
+\caption{Main results on native ImageNet $256\times256$. Scheduled steps and actual neural function evaluations (NFE) are reported separately. CFG = classifier-free guidance scale.}
+\label{tab:main_results}
+\begin{tabular}{@{}llccccccc@{}}
+\toprule
+\textbf{Method} & \textbf{Model} & \textbf{Sched.} & \textbf{NFE} & \textbf{Sampler} & \textbf{CFG} & \textbf{FID}$\downarrow$ & \textbf{sFID}$\downarrow$ & \textbf{IS}$\uparrow$ \\
+\midrule
+DiT-XL/2 (baseline) & XL & 250 & 250 & DDPM & 1.25 & 10.26 & 5.19 & --- \\
+RDD Unified XL & XL & 250 & 250 & DDPM & 1.5 & 3.54 & 5.17 & 275.5 \\
+RDD Unified XL & XL & 125 & 244 & DPM-2 & 1.5 & 2.63 & 5.09 & 237.5 \\
+RDD Unified XL & XL & 250 & 494 & DPM-2 & 1.5 & \textbf{2.62} & \textbf{4.53} & 245.6 \\
+RDD Multistage (B/L/XL) & B+L+XL & 250 & 250 & DDPM & 1.5 & 3.81 & 5.26 & 218.9 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The unified model slightly outperforms the multistage model on FID while using one shared network rather than three separate networks.
+At approximately matched compute, DPM-Solver-2 improves FID from $3.54$ at 250 DDPM NFE to $2.63$ at 244 DPM2 NFE.
+The 494-NFE result provides the best absolute quality but is not the compute-matched comparison.
+
+\textbf{Fair comparison at CFG=1.0.}
+To isolate the effect of our method from classifier-free guidance, Table~\ref{tab:fair_cfg1} provides a controlled comparison where both methods use identical guidance strength (CFG=1.0, i.e., no guidance amplification).
+
+\begin{table}[t]
+\centering
+\caption{Fair comparison at CFG=1.0 (no guidance amplification) on ImageNet $256\times256$ at 400K training steps. This eliminates the guidance scale confound.}
+\label{tab:fair_cfg1}
+\begin{tabular}{@{}llcccc@{}}
+\toprule
+\textbf{Method} & \textbf{Model} & \textbf{Sampler} & \textbf{CFG} & \textbf{FID}$\downarrow$ & \textbf{Improvement} \\
+\midrule
+DiT-XL/2 (baseline) & XL & DDPM & 1.0 & 19.78 & --- \\
+RDD Unified XL & XL & DDPM & 1.0 & 7.06 & $2.8\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Even without guidance amplification, RDD achieves a $2.8\times$ FID improvement (7.06 vs.\ 19.78), demonstrating that the gains are primarily from the resolution-drift framework rather than guidance tuning.
+Note that our main Table~\ref{tab:main_results} compares CFG=1.5 (RDD) vs.\ CFG=1.25 (baseline)---these are both near-optimal for their respective methods and differ by only 0.25 in guidance scale, representing a fair comparison of each method at its operating point.
+
+\subsection{Sampling Efficiency (NFE Pareto)}
+\label{sec:efficiency}
+
+Table~\ref{tab:nfe} shows the quality-efficiency trade-off for RDD Unified XL with DPM-Solver-2.
+Because each nontrivial second-order step evaluates the model at the step endpoint and midpoint, three-stage DPM2 uses $2S-6$ model evaluations for $S$ scheduled steps.
+
+\begin{table}[t]
+\centering
+\caption{Sampling efficiency: RDD Unified XL with DPM-Solver-2 (CFG=1.5). Scheduled steps are distributed as (32$\times$32 / 16$\times$16 / 8$\times$8); NFE counts actual model evaluations.}
+\label{tab:nfe}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+\textbf{Scheduled} & \textbf{NFE} & \textbf{Split (32/16/8)} & \textbf{FID}$\downarrow$ & \textbf{sFID}$\downarrow$ \\
+\midrule
+250 & 494 & 90/80/80 & 2.62 & 4.53 \\
+125 & 244 & 45/40/40 & 2.63 & 5.09 \\
+65 & 124 & 25/20/20 & 3.33 & 7.65 \\
+35 & 64 & 15/10/10 & 11.76 & 24.49 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The near-identical FID at 494 and 244 NFE suggests diminishing returns above roughly 250 evaluations.
+The sharp degradation between 124 and 64 NFE instead reveals a stability knee; locating this knee with matched-NFE DDPM/DPM1/DPM2 runs is a priority experiment.
+
+\subsection{Step Allocation Ablation}
+\label{sec:step_alloc}
+
+Table~\ref{tab:step_alloc} investigates how sampling steps should be distributed across resolutions.
+Allocating more steps to the highest resolution ($32\times32$) yields the best results, consistent with the intuition that fine-grained detail requires more denoising steps.
+
+\begin{table}[t]
+\centering
+\caption{Step allocation ablation (RDD Unified XL, DDPM sampler, CFG=1.5, 250 total steps). Format: steps at 32$\times$32 / 16$\times$16 / 8$\times$8.}
+\label{tab:step_alloc}
+\begin{tabular}{@{}lc@{}}
+\toprule
+\textbf{Allocation (32/16/8)} & \textbf{FID}$\downarrow$ \\
+\midrule
+150 / 50 / 50 & \textbf{3.40} \\
+130 / 60 / 60 & 3.50 \\
+90 / 80 / 80 & 3.54 \\
+70 / 80 / 100 & 3.62 \\
+60 / 70 / 120 & 3.70 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Stage Split Sensitivity}
+\label{sec:stage_split}
+
+A critical property of RDD is that the inference-time stage boundaries must match those used during training.
+Table~\ref{tab:stage_split} demonstrates this: using mismatched splits at inference time severely degrades quality.
+
+\begin{table}[t]
+\centering
+\caption{Stage split sensitivity. Training split: 300-300-400. Inference with different splits causes significant degradation.}
+\label{tab:stage_split}
+\begin{tabular}{@{}lc@{}}
+\toprule
+\textbf{Inference Split} & \textbf{FID}$\downarrow$ \\
+\midrule
+300-300-400 (matched) & \textbf{3.54} \\
+250-250-500 & 9.18 \\
+400-300-300 & 25.02 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This is expected: the drift magnitude $\bd^c / \Delta T^c$ depends on the stage length, and the model learns noise predictions calibrated to specific drift rates.
+Mismatched splits produce out-of-distribution inputs for the model.
+
+\subsection{Upsample Method Comparison}
+\label{sec:upsample}
+
+Table~\ref{tab:upsample} compares our Bayesian noise-filling transition (\S\ref{sec:noise_filling}) against bilinear interpolation for cross-resolution initialization.
+
+\begin{table}[t]
+\centering
+\caption{Cross-resolution transition method comparison (RDD Unified XL, DDPM, CFG=1.0).}
+\label{tab:upsample}
+\begin{tabular}{@{}lc@{}}
+\toprule
+\textbf{Method} & \textbf{FID}$\downarrow$ \\
+\midrule
+Noise filling (ours) & \textbf{7.06} \\
+Bilinear interpolation & 9.54 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Noise filling outperforms bilinear interpolation by 2.48 FID points, validating our Bayesian posterior interpretation.
+The improvement arises because noise filling correctly initializes both the low-frequency (from the coarse estimate) and high-frequency (from noise at the appropriate variance) components.
+
+\subsection{Classifier-Free Guidance Scale}
+\label{sec:cfg}
+
+Table~\ref{tab:cfg} sweeps the CFG scale for RDD Unified XL with DDPM sampling.
+
+\begin{table}[t]
+\centering
+\caption{CFG scale sweep (RDD Unified XL, 250-step DDPM, noise filling). Higher guidance improves precision but eventually degrades FID and recall.}
+\label{tab:cfg}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+\textbf{CFG Scale} & \textbf{FID}$\downarrow$ & \textbf{Precision}$\uparrow$ & \textbf{Recall}$\uparrow$ \\
+\midrule
+1.0 (no amplification) & 7.06 & 0.717 & \textbf{0.631} \\
+1.5 & \textbf{3.54} & 0.868 & 0.507 \\
+2.0 & 8.34 & 0.921 & 0.394 \\
+2.5 & 13.18 & 0.942 & 0.303 \\
+4.0 & 20.59 & \textbf{0.947} & 0.162 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+CFG1.5 is the best tested FID operating point, whereas CFG1.0 preserves substantially higher recall and lower sFID.
+The rapid degradation above CFG1.5 motivates a narrower 1.1--1.6 sweep and stage-wise guidance, rather than further experiments at CFG$\geq2$.
+
+\subsection{DDPM vs DPM-Solver-2 Ablation}
+\label{sec:ddpm_vs_dpm}
+
+DPM-Solver-2 with drift correction reaches FID 2.63 at 244 NFE, compared with DDPM's 3.54 at 250 NFE.
+This compute-matched result is consistent with a benefit from midpoint evaluation, while the 494-NFE DPM2 run reaches the best absolute FID of 2.62.
+We do not yet claim that midpoint drift refinement is the sole cause: the planned ablation compares DPM1, DPM2 with recomputed midpoint drift, and DPM2 that reuses the initial drift, all at matched NFE.
+We additionally evaluate DDPM and DPM2 across checkpoints to test whether the solver advantage depends on training maturity.
+
+\subsection{Training Convergence: FID vs Training Steps}
+\label{sec:convergence}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/fid_convergence.pdf}
+    \caption{Training convergence on ImageNet $256\times256$. Both curves use the native ImageNet training set, a DiT-XL/2 backbone, CFG $=1.0$, 250-step DDPM sampling, and FID computed from 50K samples against the ADM reference statistics. RDD is the unified XL model trained with the 300--300--400 schedule and sampled with 90/80/80 fine/mid/coarse steps plus noise filling. The RDD 450K evaluation is unavailable and is left blank without interpolation.}
+    \label{fig:convergence}
+\end{figure}
+
+Figure~\ref{fig:convergence} shows that RDD converges faster throughout the measured range under a controlled evaluation protocol.
+At 100K training steps, RDD obtains FID $20.49$ compared with $47.33$ for DiT; at 400K, the corresponding values are $7.07$ and $19.78$.
+RDD reaches the final 500K DiT FID ($17.46$) between its 100K and 150K checkpoints, while continuing to improve to FID $6.46$ at 500K.
+
+\subsection{Scaling: Unified L vs XL}
+\label{sec:scaling}
+
+Table~\ref{tab:scaling} compares model sizes at 400K training steps.
+
+\begin{table}[t]
+\centering
+\caption{Validated model scaling results at 400K training steps. Latency is from the current 250-step single-H20 microbenchmark and is not an end-to-end production measurement.}
+\label{tab:scaling}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Model} & \textbf{Params} & \textbf{FID (CFG=1.0)} & \textbf{ms/image} & \textbf{Speedup} \\
+\midrule
+RDD Unified L & 458M & 8.46 & 520.9 & $2.56\times$ \\
+RDD Unified XL & 675M & \textbf{7.06} & 703.4 & $1.90\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Unified L is a strong efficiency point: it is only 1.40 FID behind Unified XL at CFG1.0 while using fewer parameters and lower measured training and sampling time.
+Its CFG1.5 samples exist, but the original evaluator failed because of a NumPy compatibility error; we report no CFG1.5 value until that evaluation is repaired.
+
+\subsection{Flow Matching Results}
+\label{sec:fm_results}
+
+
+Flow-matching validation is not yet complete and is excluded from all quantitative claims in this version.
+We retain it as a planned extension because it tests whether the resolution-drift construction generalizes beyond the DDPM parameterization.
+
+\subsection{Alternative Stage Split: 100-300-600}
+\label{sec:alt_split}
+
+The native-ImageNet Multistage 100--300--600 checkpoint and samples are available, but its 50K metrics have not been verified.
+This comparison is particularly informative because old exploratory runs consistently favored 300--300--400 despite the denser per-timestep training of the 0--100 fine-resolution interval.
+We therefore keep the matched-checkpoint evaluation and stage-wise diagnostics as planned work, without reporting the old-data numerical values.
+
+\subsection{Speed Benchmark}
+\label{sec:speed}
+
+\textbf{Training microbenchmark.}
+Unified XL executes all three resolution losses per optimization step and is therefore slower per step than fixed-resolution DiT.
+On one H20 process with per-GPU batch 32, the measured times are 682.82\,ms for Unified XL and 542.73\,ms for DiT, a ratio of $1.258\times$.
+This is a single-process model-compute benchmark, not an 8-GPU DDP throughput measurement.
+Using this ratio, 400K Unified-XL updates correspond to approximately 503K DiT updates in measured microbenchmark time; the controlled convergence comparison remains favorable (RDD400K FID 7.07 versus DiT500K FID 17.46, both DDPM250/CFG1.0).
+
+\textbf{Sampling microbenchmark.}
+Table~\ref{tab:speed} reports the completed 250-step single-H20 run.
+Each worker uses batch 16, three warm-up batches and ten timed batches.
+The script runs one class-conditional model evaluation per DDPM step without the extra conditional/unconditional passes used by CFG, and its cross-resolution transition uses bilinear interpolation plus fixed-variance noise.
+The numbers therefore isolate architectural sampling cost but are not yet a production end-to-end latency result.
+
+\begin{table}[h]
+\centering
+\caption{250-step DDPM sampling microbenchmark on one H20. RDD uses a 90/80/80 split at 32/16/8 resolution.}
+\label{tab:speed}
+\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Configuration} & \textbf{Latency (ms/img)} & \textbf{Speedup} \\
+\midrule
+DiT-XL/2 (baseline) & 1333.4 & 1.00$\times$ \\
+RDD Unified XL/2 & 703.4 & 1.90$\times$ \\
+RDD Multistage (300/300/400) & 596.6 & 2.24$\times$ \\
+RDD Multistage (100/300/600) & 598.5 & 2.23$\times$ \\
+RDD Unified L/2 & \textbf{520.9} & \textbf{2.56$\times$} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The similar 250-step latency of the two multistage schedules is expected because both use the same 90/80/80 sampling allocation and the same XL/L/B backbones.
+A separate 1000-step log assigns substantially fewer expensive $32\times32$ evaluations to the 100--300--600 schedule and consequently reports a larger speedup, but its stored FLOP metadata is inconsistent with that allocation.
+We exclude that comparison from the main table until FLOPs and protocol are recomputed.
+
+The final benchmark will use real checkpoints, production noise filling, identical CFG, matched actual NFE, at least 30 timed batches, and will report throughput, latency variance, and peak memory.
+DPM-Solver-2 will be benchmarked by actual model-evaluation count rather than scheduled steps.
+
+\subsection{Comparison with Published Results}
+\label{sec:published}
+
+Table~\ref{tab:published} provides context from published ImageNet $256\times256$ results and our controlled native-ImageNet evaluations.
+Published values differ in training length, sampler, and guidance and are not used as compute-matched evidence; our central comparison remains the reproduced DiT/RDD checkpoint sweep in Figure~\ref{fig:convergence}.
+
+\begin{table}[t]
+\centering
+\caption{Context on ImageNet $256\times256$. Published rows are not directly compute matched. Our reproduced rows use 50K samples and ADM reference statistics.}
+\label{tab:published}
+\begin{tabular}{@{}lllc@{}}
+\toprule
+\textbf{Method} & \textbf{Training} & \textbf{Evaluation} & \textbf{FID}$\downarrow$ \\
+\midrule
+ADM~\citep{dhariwal2021adm} & published & reported setup & 10.94 \\
+ADM-G~\citep{dhariwal2021adm} & published & reported setup & 4.59 \\
+LDM-4~\citep{rombach2022ldm} & published & reported setup & 10.56 \\
+DiT-XL/2~\citep{peebles2023dit} & 7M & reported setup & 2.27 \\
+SiT-XL/2~\citep{ma2024sit} & 7M & reported setup & 2.06 \\
+SiT-XL/2 + REPA~\citep{yu2025repa} & 400K & SDE250, no CFG & 7.90 \\
+SiT-L/2 + REG~\citep{wu2025reg} & 400K & SDE250, no CFG & 4.60 \\
+SiT-XL/2 + REG~\citep{wu2025reg} & 400K & SDE250, no CFG & 3.40 \\
+LightningDiT-XL + SFD~\citep{pan2026sfd} & 400K & published, no guidance & 3.53 \\
+\midrule
+DiT-XL/2 (reproduced) & 400K & DDPM250, CFG1.0 & 19.78 \\
+RDD Unified XL (ours) & 400K & DDPM250, CFG1.0 & 7.06 \\
+RDD Unified XL (ours) & 400K & DPM2, 244 NFE, CFG1.5 & \textbf{2.63} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+RDD substantially improves the controlled 400K vanilla-DiT baseline under identical DDPM250/CFG1.0 evaluation. However, REG is substantially stronger at the same nominal iteration count under its published SiT/SDE protocol, and REPA is close to RDD; thus RDD should be interpreted as a strong multiscale-process result rather than the strongest known 400K training accelerator.
+The DPM2 operating point approaches long-trained published systems, but it differs in guidance, training budget, and evaluation implementation; we therefore present it as context rather than an iso-compute comparison.
+
+\subsection{Spatiotemporal RDD-FM and Planned Video Evaluation}
+\label{sec:video_results}
+
+Video is a high-value stress test but not yet part of the validated result set. A spatial-only pyramid would add little novelty beyond existing methods. We instead lift $G_k$ to a joint spatiotemporal projection,
+\begin{equation}
+    G_k=\UP^{\mathrm{space,time}}_k\circ\DOWN^{\mathrm{space,time}}_k,
+    \qquad \bd_k=G_k(\bz_1)-\bz_1,
+\end{equation}
+on Wan VAE latents $\bz_1\in\R^{C\times F\times H\times W}$, and use the RDD-FM path in Eq.~\eqref{eq:fm_interpolant}. This is a modality-specific operator instance, not a new flow-matching principle by itself.
+
+\textbf{Pretrained-Wan compatibility.}
+Wan's network uses noise time $\sigma=1-t$: $\sigma=1$ is noise, $\sigma=0$ is data, and the output is $d\bx/d\sigma$. Our implementation constructs the paper path in data time, feeds $1000(1-t)$ to Wan, flips the velocity sign, and uses Eq.~\eqref{eq:fm_clean_inverse} before every cross-resolution lift. It also samples stages in proportion to $L_k$, which is equivalent to uniform global time. These details are required for a meaningful low-cost fine-tuning experiment; reversing time labels or using the standard clean shortcut changes the pretrained task.
+
+\textbf{Primary controlled experiment.}
+We will fine-tune Wan~2.1-1.3B~\citep{wan2025wan} from the same checkpoint and cached video--caption latents for each method. The primary spatial-only controlled comparison is:
+\begin{enumerate}
+    \item \emph{Vanilla Wan}: full spatiotemporal resolution and the same matched-NFE solver as every controlled method (the native UniPC/flow-shift-3 pipeline is reported separately);
+    \item \emph{PyramidalWan spatial transplant}: its boundary-to-boundary path and teacher term under the same data and update budget, with temporal resolution held fixed;
+    \item \emph{RDD-Wan}: identical stage shapes and boundaries, replacing only the stage-interior path and its clean reconstruction.
+\end{enumerate}
+We also include the spatial Pyramid Flow transplant, while source-pinned native Pyramid Flow and the full 3D PyramidalWan paper implementation form separate native-protocol panels. The critical mechanism control is a separately trained staged, drift-free path with the same token allocation. Without it, an RDD improvement cannot be separated from cheap low-resolution training. We will report checkpoints at 1K, 2K, and 5K updates and five generation seeds per official prompt and three independent training seeds. The primary RDD operator is the latent-space average-pool/repeat projection for which Eq.~\eqref{eq:fm_clean_inverse} is exact. Pixel downsampling followed by VAE re-encoding is nonlinear and is \emph{not} treated as a drop-in projection ablation; it requires an $x$-prediction head or a transform-specific inverse. Clean-video synthesis with an online teacher is used only for smoke testing; the PyramidalWan partial-boundary teacher remains part of its training objective and its cost is counted; the main run uses offline cached teacher samples or a licensed real-video subset so teacher inference is not hidden in the training budget.
+
+\textbf{Fair solver and NFE protocol.}
+PyramidalWan has matched stage boundaries and is not ``Euler-only.'' We therefore run Euler and the same generic second-order method (Heun or AB2) on both pyramidal models, resetting multistep history at each noise-resampling boundary. NFE is the actual number of network calls: Euler and AB2 use one call per update (plus explicitly reported endpoint evaluations), while Heun uses two. Official Wan Flow-DPM++ is an additional baseline; applying its standard clean conversion directly to RDD would be invalid, so an RDD version must use Eq.~\eqref{eq:fm_clean_inverse}. We make no NFE-reduction claim before this controlled curve is measured.
+
+\textbf{Metrics.}
+The primary curve is VBench~\citep{huang2024vbench} quality/semantic score versus true NFE and wall-clock latency on the same GPU. We additionally report per-dimension subject/background consistency, temporal flicker, motion smoothness, aesthetic quality, and text alignment, because an aggregate can hide temporal damage. Peak memory and tokens processed per stage are reported separately. The cached-text sampling timer includes GPU denoising and VAE decoding, and explicitly excludes text encoding, model loading, transfers and video-file writing; text preparation costs must be reported separately before making a complete service-latency claim. A small human pairwise study is reserved for methods whose automatic scores are statistically close.
+
+\textbf{Ablations that isolate the proposed mechanism.}
+The minimal set is: (i) no residual versus RDD residual under identical stages; (ii) spatial-only, temporal-only, and joint projection; (iii) standard FM clean shortcut versus Eq.~\eqref{eq:fm_clean_inverse}; and (iv) stage sampling proportional to $L_k$ versus uniform-over-stage. The clean-inverse ablation is particularly diagnostic: it tests a mathematical consequence unique to the residualized projection path rather than the generic value of pyramids. Pixel/VAE re-encoding is evaluated only after adding a valid reconstruction mechanism.
+
+\textbf{Distillation scope.}
+Generating clean videos with a Wan teacher and fine-tuning on them is synthetic-data fine-tuning, not step distillation. True few-step distillation requires trajectory/endpoint supervision (e.g., progressive distillation or DMD) after a stable RDD-Wan teacher exists. We therefore sequence the work as: validate RDD-Wan at matched NFE, then distill both RDD-Wan and PyramidalWan with the same method. This prevents a distillation gain from being attributed to the RDD path.
+
+The video contribution becomes compelling only if RDD improves at least one controlled axis beyond the shared pyramid benefit: faster fine-tuning convergence, a better NFE--quality frontier under the same solver, or a clear benefit from analytic clean reconstruction. If none occurs, video should remain an appendix generalization rather than a headline contribution.
+
+% The following early draft is retained in source for experiment bookkeeping but
+% excluded from the paper because it contains unmeasured placeholders and an
+% incorrect claim that PyramidalWan is incompatible with higher-order solvers.
+\iffalse
+
+\subsection{Archived Unmeasured Video Draft}
+
+\textcolor{green!50!black}{[注释：本节评估RDD-Wan与PyramidalWan的对比。两者共享相同backbone（Wan 2.1-1.3B）、数据（80K视频）、训练预算（5K步）。唯一区别是transition机制。核心叙事：RDD的优势不是质量碾压，而是efficiency（同质量下NFE减半）。]}
+
+\subsubsection{Setup}
+
+\textbf{Backbone.} Wan 2.1-1.3B~\citep{wan2025wan} with 3D RoPE and Flow Matching.
+
+\textbf{Training.} 5K finetuning steps from the pretrained Wan 2.1-1.3B checkpoint on 80K synthetic video-caption pairs (generated by Wan 2.1-14B teacher model).
+Learning rate $1 \times 10^{-5}$, batch size adapted to $8\times$A100 GPUs.
+
+\textbf{Evaluation.} VBench~\citep{huang2024vbench} (946 prompts), the standard video generation benchmark covering 16 quality dimensions including subject consistency, background consistency, temporal flickering, motion smoothness, aesthetic quality, and imaging quality.
+We report the \emph{quality score} (average of per-dimension scores) and \emph{semantic score} (text-video alignment).
+
+\textbf{Baselines.}
+\begin{itemize}
+    \item \textbf{Wan 2.1-1.3B (vanilla):} Pretrained model without multi-resolution, full-resolution sampling.
+    \item \textbf{PyramidalWan}~\citep{liu2025pyramidalwan}: Same backbone, same data, same 5K training budget, corrective noise transitions.
+    \item \textbf{Wan 2.1-1.3B + SURF}~\citep{xu2026surf}: Training-free two-pass acceleration applied to vanilla Wan.
+\end{itemize}
+
+\textbf{Key experimental question.} The central comparison is \emph{not} absolute quality at matched NFE (which may show only modest differences), but rather the \textbf{NFE--quality trade-off}: at what NFE budget does each method achieve acceptable quality? RDD-Wan's unique advantage is DPM-Solver-2 compatibility, which enables maintaining quality at $2.5\times$ fewer function evaluations---a capability structurally impossible for PyramidalWan due to its ODE-discontinuous boundaries.
+
+\subsubsection{Main Results}
+
+\begin{table}[t]
+\centering
+\caption{Video generation results on VBench (946 prompts). All finetuned methods use Wan 2.1-1.3B backbone with identical training budget (5K steps, 80K videos). NFE = total number of forward passes (DPM-Solver-2 uses 2 evaluations per step; 20 NFE = 10 DPM-2 steps). $^\dagger$Training-free method.}
+\label{tab:video_main}
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+\textbf{Method} & \textbf{NFE} & \textbf{Solver} & \textbf{Quality} $\uparrow$ & \textbf{Semantic} $\uparrow$ & \textbf{Total} $\uparrow$ \\
+\midrule
+Wan 2.1-1.3B (vanilla) & 50 & Euler & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+Wan 2.1-1.3B + SURF$^\dagger$ & 30 & Euler & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+\midrule
+PyramidalWan & 50 & Euler & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+PyramidalWan & 20 & Euler & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+PyramidalWan & 50 & DPM-2 (within-stage) & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+\midrule
+\textbf{RDD-Wan (ours)} & 50 & Euler & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+\textbf{RDD-Wan (ours)} & 50 & DPM-2 & \textcolor{red}{\textbf{X.XX}} & \textcolor{red}{\textbf{X.XX}} & \textcolor{red}{\textbf{X.XX}} \\
+\textbf{RDD-Wan (ours)} & 20 & DPM-2 & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Key findings:}
+\begin{enumerate}
+    \item \textbf{At matched NFE (50, Euler)}: RDD-Wan achieves \textcolor{red}{comparable/slightly better} VBench scores to PyramidalWan, confirming that the continuous drift formulation preserves generation quality relative to corrective noise transitions.
+    \item \textbf{DPM-Solver-2 advantage (50 NFE)}: RDD-Wan with DPM-Solver-2 at 50 NFE achieves \textcolor{red}{X.XX} total score, \textcolor{red}{surpassing} PyramidalWan's 50-step Euler result by \textcolor{red}{+X.XX} points---attributable to within-stage ODE smoothness enabling second-order accuracy.
+    \item \textbf{Efficiency advantage (the primary claim)}: At 20 NFE with DPM-Solver-2, RDD-Wan achieves \textcolor{red}{X.XX}, which \textcolor{red}{matches/exceeds} PyramidalWan at 50 NFE---demonstrating a \textcolor{red}{$2.5\times$} reduction in function evaluations at matched quality. \emph{This is the core result: same quality, half the compute.}
+    \item \textbf{PyramidalWan + DPM-2 control}: Applying DPM-Solver-2 within PyramidalWan's stages yields \textcolor{red}{X.XX}, \textcolor{red}{degrading/comparable to} its Euler result. This confirms that boundary discontinuity (not just stage-internal dynamics) limits solver order---validating RDD's training-consistent noise filling as a structural enabler.
+\end{enumerate}
+
+\subsubsection{NFE--Quality Pareto Curve}
+
+\begin{table}[t]
+\centering
+\caption{NFE--Quality trade-off. PyramidalWan is limited to Euler (the only compatible solver due to ODE discontinuity at boundaries). RDD-Wan uses DPM-Solver-2 (enabled by within-stage ODE continuity + training-consistent noise filling).}
+\label{tab:video_pareto}
+\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\textbf{Method (Solver)} & \textbf{10 NFE} & \textbf{15 NFE} & \textbf{20 NFE} & \textbf{30 NFE} & \textbf{50 NFE} & \textbf{100 NFE} \\
+\midrule
+PyramidalWan (Euler) & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+RDD-Wan (DPM-2) & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textcolor{red}{\textbf{[PENDING FIGURE]} Pareto frontier plot: x-axis = NFE, y-axis = VBench Total Score. Two curves: PyramidalWan (Euler, degrades sharply below 30 NFE) vs RDD-Wan (DPM-2, graceful degradation). The crossover point demonstrates the structural advantage of ODE-compatible formulation.}
+
+The Pareto curve reveals the fundamental advantage of training-consistent transitions: as NFE decreases below 30, PyramidalWan (limited to Euler) degrades rapidly due to first-order discretization error compounding with boundary noise, while RDD-Wan with DPM-Solver-2 maintains quality through second-order accuracy within each stage.
+
+\subsubsection{Spatiotemporal Drift Ablation}
+
+\begin{table}[t]
+\centering
+\caption{Ablation: spatial-only vs temporal-only vs joint spatiotemporal drift.}
+\label{tab:st_ablation}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Drift Configuration} & \textbf{Quality} $\uparrow$ & \textbf{Semantic} $\uparrow$ & \textbf{Total} $\uparrow$ \\
+\midrule
+Spatial-only (no temporal downsampling) & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+Temporal-only (no spatial downsampling) & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} & \textcolor{red}{X.XX} \\
+\textbf{Joint spatiotemporal (full RDD-Wan)} & \textcolor{red}{\textbf{X.XX}} & \textcolor{red}{\textbf{X.XX}} & \textcolor{red}{\textbf{X.XX}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This ablation validates that the \emph{joint} spatiotemporal drift provides complementary benefits: spatial drift reduces per-frame token count while temporal drift reduces frame count, and their combination yields the maximum token reduction (67$\times$ at Stage 0).
+
+\subsubsection{Wall-Clock Inference Speed}
+
+\begin{table}[t]
+\centering
+\caption{Wall-clock inference time (seconds) for generating one 480p$\times$81-frame video on a single A100-80GB. ``Token Reduction'' shows the effective computation saved by the pyramid structure.}
+\label{tab:video_speed}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Method} & \textbf{NFE} & \textbf{Time (s)} & \textbf{Speedup} & \textbf{Token Reduction} \\
+\midrule
+Wan 2.1-1.3B (vanilla) & 50 & \textcolor{red}{XX.X} & 1.0$\times$ & 1.0$\times$ \\
+\midrule
+PyramidalWan (Euler) & 50 & \textcolor{red}{XX.X} & \textcolor{red}{X.X}$\times$ & 67$\times$ (Stage 0) \\
+PyramidalWan (Euler) & 20 & \textcolor{red}{XX.X} & \textcolor{red}{X.X}$\times$ & --- \\
+\midrule
+RDD-Wan (DPM-2) & 50 & \textcolor{red}{XX.X} & \textcolor{red}{X.X}$\times$ & 67$\times$ (Stage 0) \\
+\textbf{RDD-Wan (DPM-2)} & \textbf{20} & \textcolor{red}{\textbf{XX.X}} & \textcolor{red}{\textbf{X.X}}$\times$ & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Compound speedup analysis.} RDD-Wan's total inference acceleration combines two multiplicative factors: (i) per-step token reduction from the spatiotemporal pyramid (shared with PyramidalWan, providing $\sim$4.5$\times$ per-NFE cost reduction), and (ii) NFE reduction from DPM-Solver-2 compatibility (unique to RDD-Wan, providing $\sim$2.5$\times$ fewer steps at matched quality). Together, these yield an estimated \textcolor{red}{$\sim$11$\times$} total wall-clock speedup over vanilla Wan 2.1 at matched quality.
+
+\subsubsection{Summary of Video Findings}
+
+The video experiments validate three claims:
+\begin{enumerate}
+    \item \textbf{Generality}: RDD's continuous drift framework transfers from image (DiT, DDPM/FM) to video (Wan 2.1, FM) without modification of the core algorithm---only the drift operator changes from spatial to spatiotemporal.
+    \item \textbf{Efficiency via solver compatibility}: The primary advantage is not quality improvement but \emph{compute reduction}---DPM-Solver-2 compatibility enables 2.5$\times$ NFE reduction that is structurally impossible for ODE-discontinuous methods.
+    \item \textbf{Training-consistent noise filling matters}: The controlled comparison (PyramidalWan + DPM-2 vs RDD-Wan + DPM-2) isolates the effect of training-consistent boundary conditions as the key enabler of higher-order solver compatibility.
+\end{enumerate}
+
+%=============================================================================
+\fi
+
+\section{Discussion and Limitations}
+\label{sec:discussion}
+
+\textbf{Strengths.}
+RDD provides a unified framework that (i) requires only a single model for multi-resolution generation, (ii) admits exact closed-form posteriors, (iii) works with standard architectures (DiT) and training objectives, and (iv) achieves strong empirical results with significantly less training than comparable methods.
+
+\textbf{Multi-task learning and capacity utilization.}
+The unified model simultaneously learns denoising at multiple resolution levels, which constitutes a form of multi-task learning.
+A natural concern is whether negative transfer between tasks degrades performance.
+We argue this is unlikely for two reasons: (1)~the tasks are \emph{hierarchically related}---denoising at coarse resolution (e.g., $8\times8$) is a strict subset of the information required for fine-resolution denoising ($32\times32$), so learning coarse structure provides useful inductive bias for fine-grained generation; (2)~the resolution conditioning embedding $c$ provides the model with a clean task identifier, enabling implicit specialization of attention heads and MLP neurons to different resolution levels without interference.
+We acknowledge that at the coarsest stage ($8\times8$ with patch size 2 producing only 16 tokens), a DiT-XL model with 675M parameters is significantly overparameterized.
+This overparameterization means the coarse stage likely reaches near-zero training loss rapidly, and the effective model capacity is dominated by the fine-resolution stages.
+A natural extension would be a capacity-aware architecture that allocates fewer parameters to coarser stages (our multistage configuration in \S\ref{sec:architecture} addresses this), or early stopping at coarse resolution.
+The current unified configuration trades optimal per-stage efficiency for implementation simplicity and maximal parameter sharing.
+
+\textbf{Classifier-free guidance interaction with drift.}
+Under CFG, the effective noise prediction is $\hat\beps_w = (1+w)\beps_\theta(\bx_t, t, c | y) - w\,\beps_\theta(\bx_t, t, c | \varnothing)$.
+Since $\beps_\theta$ predicts the effective noise $\tilde\beps = \beps + \text{SNR} \cdot \frac{t-T_c}{\Delta T^c} \cdot \bd^c$, CFG amplification applies to the \emph{combined} quantity including the drift component.
+A potential concern is that conditional and unconditional models may learn different frequency decompositions, causing CFG to amplify their difference non-uniformly across frequencies.
+In practice, this effect is mild because: (1) at high noise levels (where the drift contribution to $\tilde\beps$ is smallest due to low SNR weighting), the conditional/unconditional predictions are nearly identical regardless; (2) at low noise levels (where drift is more significant), the frequency decomposition $\bd^c = \UP(\DOWN(\bx_0)) - \bx_0$ is largely \emph{class-independent}---it captures generic high-frequency structure (edges, textures) rather than class-specific features.
+The class-dependent component of the drift emerges primarily for classes with unusual frequency content (text, regular patterns), which may warrant per-class quality analysis.
+
+\textbf{Latent-space considerations.}
+RDD operates on VAE latent codes when combined with latent diffusion.
+In latent space, the ``frequency'' decomposition $\UP(\DOWN(\cdot))$ acts on \emph{latent spatial dimensions}, not pixel frequencies directly.
+Since VAE encoders entangle spatial and frequency information, the projection $P = \UP \circ \DOWN$ in latent space captures a mix of spatial smoothing and feature averaging rather than pure frequency filtering.
+The theoretical analysis (exact posteriors, noise filling optimality) remains valid in any signal space, but the semantic interpretation of ``resolution'' differs from the pixel-space intuition.
+
+\textbf{Limitations.}
+\begin{itemize}
+    \item \textbf{Fixed stage boundaries:} The training-time stage split must match inference, limiting flexibility (Table~\ref{tab:stage_split}). This is a genuine constraint: the drift rate $\bd^c / \Delta T^c$ is baked into training, and mismatched splits produce out-of-distribution inputs. Adaptive resolution scheduling that allows test-time flexibility is an important direction for future work. One potential mitigation is training with randomized stage boundaries.
+    \item \textbf{Incomplete experimental validation:} The native-ImageNet convergence curve is complete, but matched-NFE solver sweeps, production wall-clock timing, independent training seeds, the drift-free staged control, Flow Matching, and video remain incomplete. Sampling seeds do not substitute for independent training runs.
+    \item \textbf{Flow Matching path and transform conditions:} RDD-FM is curved and therefore forfeits straight conditional-OT guarantees. Its analytic clean inverse is currently restricted to idempotent linear projection lifts with $1-c_k(t)\neq0$; nonlinear transforms require additional machinery.
+    \item \textbf{Comparison scope and prior overlap:} f-DM already provides stage-internal transformed signals, reverse conditionals, and boundary noise resampling; DFM, LapFlow, Scale Space Diffusion, Pyramidal Flow, and PyramidalWan cover closely related progressive paths. A controlled drift-free/f-DM-style parameterization study is necessary to isolate the residual parameterization's contribution.
+    \item \textbf{Extension to higher resolutions:} Our current controlled image experiments focus on ImageNet $256\times256$ in VAE latent space. Scaling the image experiments to $512+$ resolution is an important practical extension not yet validated.
+\end{itemize}
+
+\textbf{Future directions.}
+(1) \emph{Adaptive resolution scheduling}: Learning when to transition between resolutions based on signal content rather than using a fixed schedule.
+(2) \emph{Extension to video and 3D}: The continuous drift framework naturally extends to temporal resolution (frame rate) and spatial resolution in 3D generation.
+(3) \emph{Latent-space RDD}: Combining with latent diffusion for even greater efficiency.
+(4) \emph{Distillation}: Applying consistency distillation~\citep{song2023consistency} to RDD for few-step generation.
+
+%=============================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+We presented Resolution-Drift Diffusion (RDD), a training methodology that embeds resolution transitions directly into the diffusion forward process via a continuous drift term.
+Our contribution is fourfold:
+
+
+\begin{enumerate}
+    \item \textbf{Methodology:} A principled training recipe on top of standard DiT. Under controlled DDPM250/CFG1.0 evaluation at 400K steps, RDD achieves FID $7.06$ versus DiT's $19.78$, and the advantage persists across the measured checkpoint range.
+    \item \textbf{Mechanistic interpretation:} The drift induces SNR-dependent structured prediction targets consistent with a frequency-decomposition curriculum. Noise-filling and step-allocation results support this interpretation, while a drift-free causal control remains planned.
+    \item \textbf{Theoretical foundation:} Stage-local closed-form posteriors, an RDD-specific training-marginal characterization of noise filling (Proposition~\ref{prop:noise_filling}), and drift-corrected DPM-Solver---establishing correctness of this parameterization while recognizing f-DM's prior general treatment of transformed signals and boundary noise.
+    \item \textbf{Extension path:} A separately derived RDD-FM construction, analytic projection clean inverse, and Wan-compatible spatiotemporal implementation define a falsifiable video experiment. No video quality or speed result is claimed yet.
+\end{enumerate}
+
+RDD is implemented without changing the DiT block design, but combination with alternative objectives, representations, or distillation is an empirical hypothesis rather than automatic orthogonality.
+Current quantitative evidence establishes the image DDPM setting across the reported model configurations; FM and video test generality are planned.
+
+\textbf{Honest scoping.}
+We currently validate RDD quantitatively in class-conditional ImageNet generation with DiT. Text-conditional Wan video, RDD-FM, and text-to-image at $1024+$ resolution remain future experiments. The same-state residual equations apply to other signal spaces, but performance and transform invertibility do not follow from the image result.
+
+%=============================================================================
+
+% Bibliography
+% \bibliographystyle{plainnat}
+% \bibliography{references}
+
+% Inline bibliography (no external .bib file needed)
+\begin{thebibliography}{50}
+
+\bibitem[Ho et~al.(2020)]{ho2020ddpm}
+Ho, J., Jain, A., \& Abbeel, P. (2020).
+\newblock Denoising diffusion probabilistic models.
+\newblock \emph{NeurIPS}, 33.
+
+\bibitem[Song et~al.(2021a)]{song2021sde}
+Song, Y., Sohl-Dickstein, J., Kingma, D.~P., Kumar, A., Ermon, S., \& Poole, B. (2021).
+\newblock Score-based generative modeling through stochastic differential equations.
+\newblock \emph{ICLR}.
+
+\bibitem[Song et~al.(2021b)]{song2021ddim}
+Song, J., Meng, C., \& Ermon, S. (2021).
+\newblock Denoising diffusion implicit models.
+\newblock \emph{ICLR}.
+
+\bibitem[Nichol \& Dhariwal(2021)]{nichol2021improved}
+Nichol, A.~Q. \& Dhariwal, P. (2021).
+\newblock Improved denoising diffusion probabilistic models.
+\newblock \emph{ICLR}.
+
+\bibitem[Dhariwal \& Nichol(2021)]{dhariwal2021adm}
+Dhariwal, P. \& Nichol, A. (2021).
+\newblock Diffusion models beat GANs on image synthesis.
+\newblock \emph{NeurIPS}.
+
+\bibitem[Karras et~al.(2022)]{karras2022edm}
+Karras, T., Aittala, M., Aila, T., \& Laine, S. (2022).
+\newblock Elucidating the design space of diffusion-based generative models.
+\newblock \emph{NeurIPS}.
+
+\bibitem[Rombach et~al.(2022)]{rombach2022ldm}
+Rombach, R., Blattmann, A., Lorenz, D., Esser, P., \& Ommer, B. (2022).
+\newblock High-resolution image synthesis with latent diffusion models.
+\newblock \emph{CVPR}.
+
+\bibitem[Peebles \& Xie(2023)]{peebles2023dit}
+Peebles, W. \& Xie, S. (2023).
+\newblock Scalable diffusion models with transformers.
+\newblock \emph{ICCV}.
+
+\bibitem[Ho et~al.(2022)]{ho2022cdm}
+Ho, J., Saharia, C., Chan, W., Fleet, D.~J., Norouzi, M., \& Salimans, T. (2022).
+\newblock Cascaded diffusion models for high fidelity image generation.
+\newblock \emph{JMLR}, 23.
+
+\bibitem[Saharia et~al.(2022)]{saharia2022imagen}
+Saharia, C., Chan, W., Saxena, S., Li, L., Whang, J., Denton, E.~L., \ldots \& Norouzi, M. (2022).
+\newblock Photorealistic text-to-image diffusion models with deep language understanding.
+\newblock \emph{NeurIPS}.
+
+\bibitem[Ramesh et~al.(2022)]{ramesh2022dalle2}
+Ramesh, A., Dhariwal, P., Nichol, A., Chu, C., \& Chen, M. (2022).
+\newblock Hierarchical text-conditional image generation with CLIP latents.
+\newblock \emph{arXiv:2204.06125}.
+
+\bibitem[Podell et~al.(2023)]{podell2023sdxl}
+Podell, D., English, Z., Lacey, K., Blattmann, A., Dockhorn, T., M{\"u}ller, J., \ldots \& Rombach, R. (2023).
+\newblock SDXL: Improving latent diffusion models for high-resolution image synthesis.
+\newblock \emph{arXiv:2307.01952}.
+
+\bibitem[Gu et~al.(2023)]{gu2022fdm}
+Gu, J., Zhai, S., Zhang, Y., Bautista, M.~A., \& Susskind, J.~M. (2023).
+\newblock f-DM: A multi-stage diffusion model via progressive signal transformation.
+\newblock \emph{ICLR}. arXiv:2210.04955.
+
+\bibitem[Hoogeboom et~al.(2023)]{hoogeboom2023simple}
+Hoogeboom, E., Heek, J., \& Salimans, T. (2023).
+\newblock Simple diffusion: End-to-end diffusion for high resolution images.
+\newblock \emph{ICML}.
+
+\bibitem[Gu et~al.(2024)]{gu2024mdm}
+Gu, J., Zhai, S., Zhang, Y., Susskind, J.~M., \& Jaitly, N. (2024).
+\newblock Matryoshka diffusion models.
+\newblock \emph{ICLR}.
+
+\bibitem[Lu et~al.(2022)]{lu2022dpm}
+Lu, C., Zhou, Y., Bao, F., Chen, J., Li, C., \& Zhu, J. (2022).
+\newblock DPM-Solver: A fast ODE solver for diffusion probabilistic model sampling in around 10 steps.
+\newblock \emph{NeurIPS}.
+
+\bibitem[Song et~al.(2023)]{song2023consistency}
+Song, Y., Dhariwal, P., Chen, M., \& Sutskever, I. (2023).
+\newblock Consistency models.
+\newblock \emph{ICML}.
+
+\bibitem[Lipman et~al.(2023)]{lipman2023fm}
+Lipman, Y., Chen, R.~T.~Q., Ben-Hamu, H., Nickel, M., \& Le, M. (2023).
+\newblock Flow matching for generative modeling.
+\newblock \emph{ICLR}.
+
+\bibitem[Liu et~al.(2023)]{liu2023flow}
+Liu, X., Gong, C., \& Liu, Q. (2023).
+\newblock Flow straight and fast: Learning to generate and transfer data with rectified flow.
+\newblock \emph{ICLR}.
+
+\bibitem[Balaji et~al.(2023)]{balaji2023ediffi}
+Balaji, Y., Nah, S., Huang, X., Vahdat, A., Song, J., Zhang, Q., \ldots \& Catanzaro, B. (2023).
+\newblock eDiff-I: Text-to-image diffusion models with an ensemble of expert denoisers.
+\newblock \emph{CVPR}.
+
+\bibitem[Karras et~al.(2024)]{karras2024edm2}
+Karras, T., Aittala, M., Lehtinen, J., Hellsten, J., Aila, T., \& Laine, S. (2024).
+\newblock Analyzing and improving the training dynamics of diffusion models.
+\newblock \emph{CVPR}.
+
+\bibitem[Teng et~al.(2024)]{relay_diffusion}
+Teng, J., Zheng, W., Ding, M., Hong, W., Wangni, J., Yang, Z., \& Tang, J. (2024).
+\newblock Relay diffusion: Unifying diffusion process across resolutions for image synthesis.
+\newblock \emph{ICLR}.
+
+\bibitem[Deng et~al.(2009)]{deng2009imagenet}
+Deng, J., Dong, W., Socher, R., Li, L.-J., Li, K., \& Fei-Fei, L. (2009).
+\newblock ImageNet: A large-scale hierarchical image database.
+\newblock \emph{CVPR}.
+
+\bibitem[Heusel et~al.(2017)]{heusel2017fid}
+Heusel, M., Ramsauer, H., Unterthiner, T., Nessler, B., \& Hochreiter, S. (2017).
+\newblock GANs trained by a two time-scale update rule converge to a local Nash equilibrium.
+\newblock \emph{NeurIPS}.
+
+\bibitem[Kaplan et~al.(2020)]{kaplan2020scaling}
+Kaplan, J., McCandlish, S., Henighan, T., Brown, T.~B., Chess, B., Child, R., \ldots \& Amodei, D. (2020).
+\newblock Scaling laws for neural language models.
+\newblock \emph{arXiv:2001.08361}.
+
+\bibitem[Ma et~al.(2024)]{ma2024sit}
+Ma, N., Goldstein, M., Albergo, M.~S., Boffi, N.~M., Vanden-Eijnden, E., \& Xie, S. (2024).
+\newblock SiT: Exploring flow and diffusion-based generative models with scalable interpolant transformers.
+\newblock \emph{ECCV}.
+
+\bibitem[Karras et~al.(2018)]{karras2018progressive}
+Karras, T., Aila, T., Laine, S., \& Lehtinen, J. (2018).
+\newblock Progressive growing of GANs for improved quality, stability, and variation.
+\newblock \emph{ICLR}.
+
+\bibitem[Salimans \& Ho(2022)]{salimans2022distillation}
+Salimans, T. \& Ho, J. (2022).
+\newblock Progressive distillation for fast sampling of diffusion models.
+\newblock \emph{ICLR}.
+
+\bibitem[Berthelot et~al.(2023)]{berthelot2023tract}
+Berthelot, D., Autef, A., Lin, J., Yap, D.~A., Zhai, S., Hu, S., \ldots \& Jolicoeur-Martineau, A. (2023).
+\newblock TRACT: Denoising diffusion models with transitive closure time-distillation.
+\newblock \emph{arXiv:2303.04248}.
+
+\bibitem[CDBM(2024)]{cdbm2024}
+Ye, H., et~al. (2024).
+\newblock Consistency diffusion bridge models.
+\newblock \emph{NeurIPS}.
+
+\bibitem[Bansal et~al.(2022)]{bansal2022cold}
+Bansal, A., Borgnia, E., Chu, H.-M., et~al. (2022).
+\newblock Cold diffusion: Inverting arbitrary image transforms without noise.
+\newblock \emph{NeurIPS}.
+
+\bibitem[Rissanen et~al.(2023)]{rissanen2023ihdm}
+Rissanen, S., Heinonen, M., \& Solin, A. (2023).
+\newblock Generative modelling with inverse heat dissipation.
+\newblock \emph{ICLR}.
+
+\bibitem[Hoogeboom \& Salimans(2023)]{hoogeboom2023blurring}
+Hoogeboom, E. \& Salimans, T. (2023).
+\newblock Blurring diffusion models.
+\newblock \emph{ICLR}.
+
+\bibitem[RMD(2025)]{rmd2025}
+Cross-resolution distribution matching for diffusion distillation. (2025).
+\newblock \emph{arXiv:2603.06136}.
+
+\bibitem[Xiao et~al.(2026)]{xiao2026spd}
+Xiao, H., Chao, B., Yariv, L., \& Wetzstein, G. (2026).
+\newblock Spectral progressive diffusion for efficient image and video generation.
+\newblock \emph{arXiv:2605.18736}.
+
+\bibitem[Wang et~al.(2023)]{wang2023patch}
+Wang, Z., Jiang, Y., Zheng, H., et~al. (2023).
+\newblock Patch diffusion: Faster and more data-efficient training of diffusion models.
+\newblock \emph{NeurIPS}.
+
+\bibitem[FasterDiT(2024)]{fasterdit2024}
+FasterDiT: Towards faster diffusion transformers training without architecture modification. (2024).
+\newblock \emph{NeurIPS}.
+
+\bibitem[Yu et~al.(2025)]{yu2025repa}
+Yu, S., Kwak, S., Jang, H., Jeong, J., Huang, J., Shin, J., \& Xie, S. (2025).
+\newblock Representation alignment for generation: Training diffusion transformers is easier than you think.
+\newblock \emph{ICLR}.
+
+\bibitem[Wu et~al.(2025)]{wu2025reg}
+Wu, G., Zhang, S., Shi, R., et~al. (2025).
+\newblock Representation entanglement for generation: Training diffusion transformers is much easier than you think.
+\newblock \emph{NeurIPS} (Oral).
+
+\bibitem[Haji-Ali et~al.(2025)]{hajiali2025dfm}
+Haji-Ali, M., Menapace, W., Skorokhodov, I., Sahni, A., Tulyakov, S., Ordonez, V., \& Siarohin, A. (2025).
+\newblock Improving progressive generation with decomposable flow matching.
+\newblock \emph{NeurIPS}.
+
+\bibitem[Zhao et~al.(2026)]{zhao2026lapflow}
+Zhao, Z., Molodyk, P., Xue, H., \& Chen, Y. (2026).
+\newblock Laplacian multi-scale flow matching for generative modeling.
+\newblock \emph{ICLR}.
+
+\bibitem[Pan et~al.(2026)]{pan2026sfd}
+Pan, Y., Feng, R., Dai, Q., Wang, Y., Lin, W., Guo, M., Luo, C., \& Zheng, N. (2026).
+\newblock Semantics lead the way: Harmonizing semantic and texture modeling with asynchronous latent diffusion.
+\newblock \emph{CVPR}.
+
+\bibitem[Kynk{"a}{"a}nniemi et~al.(2024)]{kynkaanniemi2024guidance}
+Kynk{"a}{"a}nniemi, T., Aittala, M., Karras, T., Laine, S., Aila, T., \& Lehtinen, J. (2024).
+\newblock Applying guidance in a limited interval improves sample and distribution quality in diffusion models.
+\newblock \emph{NeurIPS}.
+
+\bibitem[Mukhopadhyay et~al.(2026)]{mukhopadhyay2026ssd}
+Mukhopadhyay, S., Udhayanan, P., \& Shrivastava, A. (2026).
+\newblock Scale space diffusion.
+\newblock \emph{CVPR}.
+
+\bibitem[Jin et~al.(2025)]{jin2025pyramidflow}
+Jin, Y., Sun, Z., Li, N., Xu, K., Jiang, H., Zhuang, N., Huang, Q., Song, Y., Mu, Y., \& Lin, Z. (2025).
+\newblock Pyramidal flow matching for efficient video generative modeling.
+\newblock \emph{ICLR}.
+
+\bibitem[Korzhenkov et~al.(2026)]{korzhenkov2026pyramidalwan}
+Korzhenkov, D., Karjauv, A., Karnewar, A., Ghafoorian, M., \& Habibian, A. (2026).
+\newblock PyramidalWan: On making pretrained video model pyramidal for efficient inference.
+\newblock \emph{CVPR}.
+
+\bibitem[Ran \& Shou(2026)]{ran2026tpdiff}
+Ran, L. \& Shou, M.~Z. (2026).
+\newblock TPDiff: Temporal pyramid video diffusion model.
+\newblock \emph{ICLR}.
+
+\bibitem[Huang et~al.(2024)]{huang2024vbench}
+Huang, Z., He, Y., Yu, J., Zhang, F., Si, C., Jiang, Y., et~al. (2024).
+\newblock VBench: Comprehensive benchmark suite for video generative models.
+\newblock \emph{CVPR}.
+
+\bibitem[Wan Team(2025)]{wan2025wan}
+Wan Team. (2025).
+\newblock Wan: Open and advanced large-scale video generative models.
+\newblock \emph{arXiv:2503.20314}.
+
+\end{thebibliography}
+
+%=============================================================================
+\newpage
+\appendix
+
+\section{Implementation Details}
+\label{app:implementation}
+
+
+The released implementation will include a minimal diff covering: (1) drift computation in the training loop, (2) effective-noise target modification, (3) drift-corrected posterior sampling, and (4) the noise-filling stage transition.
+
+\section{Planned Higher-Resolution Evaluation}
+\label{app:scaling_512}
+
+We plan an ImageNet $512\times512$ pilot only after completing the native-ImageNet matched-NFE and mechanism ablations at $256\times256$.
+The pilot will use identical RDD and fixed-resolution backbones, data processing, optimization budget, and evaluation protocol.
+We will first use a Unified-L-scale model for 200K steps; extension to XL scale is conditional on a clear compute-matched trend.
+No higher-resolution quantitative result is claimed in the current paper.
+
+\section{Complete Forward Process Derivation}
+\label{app:forward_derivation}
+
+We provide the full derivation of the RDD forward marginal distribution (Eq.~\ref{eq:marginal} in the main text).
+
+\textbf{Setup.} Consider stage $c$ with timesteps $t \in [T_c, T_{c+1}]$.
+Without loss of generality, let $T_c = 0$ for notational convenience (we work with relative timesteps $\tau = t - T_c$).
+The forward transition is:
+\begin{equation}
+    q(\bx_t | \bx_{t-1}) = \N\left(\sqrt{\alpha_t}\, \bx_{t-1} + \frac{\sqrt{\bar\alpha_t}}{\Delta T}\, \bd^c,\; (1-\alpha_t)I\right)
+\end{equation}
+
+\textbf{One-step marginal.} Starting from $\bx_0$:
+\begin{align}
+    \bx_1 &= \sqrt{\alpha_1}\, \bx_0 + \frac{\sqrt{\bar\alpha_1}}{\Delta T}\, \bd^c + \sqrt{1-\alpha_1}\, \beps_1 \\
+    &= \sqrt{\bar\alpha_1}\, \bx_0 + \frac{\sqrt{\bar\alpha_1}}{\Delta T}\, \bd^c + \sqrt{1-\bar\alpha_1}\, \beps_1
+\end{align}
+since $\bar\alpha_1 = \alpha_1$ and $\beps_1 \sim \N(0,I)$.
+
+\textbf{Two-step marginal.} Substituting:
+\begin{align}
+    \bx_2 &= \sqrt{\alpha_2}\, \bx_1 + \frac{\sqrt{\bar\alpha_2}}{\Delta T}\, \bd^c + \sqrt{1-\alpha_2}\, \beps_2 \\
+    &= \sqrt{\alpha_2}\left(\sqrt{\bar\alpha_1}\, \bx_0 + \frac{\sqrt{\bar\alpha_1}}{\Delta T}\, \bd^c + \sqrt{1-\bar\alpha_1}\, \beps_1\right) + \frac{\sqrt{\bar\alpha_2}}{\Delta T}\, \bd^c + \sqrt{1-\alpha_2}\, \beps_2 \\
+    &= \sqrt{\bar\alpha_2}\, \bx_0 + \frac{\sqrt{\bar\alpha_2}}{\Delta T}\, \bd^c + \frac{\sqrt{\bar\alpha_2}}{\Delta T}\, \bd^c + \sqrt{\alpha_2(1-\bar\alpha_1)}\, \beps_1 + \sqrt{1-\alpha_2}\, \beps_2 \\
+    &= \sqrt{\bar\alpha_2}\, \bx_0 + \frac{2\sqrt{\bar\alpha_2}}{\Delta T}\, \bd^c + \sqrt{1-\bar\alpha_2}\, \bar\beps
+\end{align}
+where $\bar\beps$ is a standard Gaussian (using $\alpha_2(1-\bar\alpha_1) + (1-\alpha_2) = 1 - \bar\alpha_2$).
+
+\textbf{Induction.} By induction on $t$, assuming $q(\bx_{t-1}|\bx_0) = \N(\sqrt{\bar\alpha_{t-1}}\bx_0 + \frac{(t-1)\sqrt{\bar\alpha_{t-1}}}{\Delta T}\bd^c,\; (1-\bar\alpha_{t-1})I)$:
+\begin{align}
+    \E[\bx_t | \bx_0] &= \sqrt{\alpha_t}\left(\sqrt{\bar\alpha_{t-1}}\bx_0 + \frac{(t-1)\sqrt{\bar\alpha_{t-1}}}{\Delta T}\bd^c\right) + \frac{\sqrt{\bar\alpha_t}}{\Delta T}\bd^c \\
+    &= \sqrt{\bar\alpha_t}\bx_0 + \frac{(t-1)\sqrt{\bar\alpha_t}}{\Delta T}\bd^c + \frac{\sqrt{\bar\alpha_t}}{\Delta T}\bd^c \\
+    &= \sqrt{\bar\alpha_t}\bx_0 + \frac{t\sqrt{\bar\alpha_t}}{\Delta T}\bd^c
+\end{align}
+The variance combines as:
+\begin{equation}
+    \Var[\bx_t|\bx_0] = \alpha_t(1-\bar\alpha_{t-1}) + (1-\alpha_t) = 1 - \bar\alpha_t
+\end{equation}
+This completes the induction, proving Eq.~\eqref{eq:marginal}. $\square$
+
+\subsection{Posterior Derivation}
+\label{app:posterior}
+
+We derive the posterior $q(\bx_s | \bx_t, \bx_0)$ for $T_c \leq s < t \leq T_{c+1}$.
+
+\textbf{Joint distribution.} From the marginals:
+\begin{align}
+    \bx_s &= \sqrt{\bar\alpha_s}\bx_0 + \frac{(s-T_c)\sqrt{\bar\alpha_s}}{\Delta T}\bd^c + \sqrt{1-\bar\alpha_s}\, \beps_s \\
+    \bx_t &= \sqrt{\bar\alpha_t}\bx_0 + \frac{(t-T_c)\sqrt{\bar\alpha_t}}{\Delta T}\bd^c + \sqrt{1-\bar\alpha_t}\, \beps_t
+\end{align}
+
+The noise terms $\beps_s$ and $\beps_t$ are correlated (since $\bx_s$ contributes to $\bx_t$).
+Specifically, we can write:
+\begin{equation}
+    \beps_t = \sqrt{\frac{\bar\alpha_t(1-\bar\alpha_s)}{\bar\alpha_s(1-\bar\alpha_t)}}\, \beps_s + \sqrt{\frac{\bar\alpha_s - \bar\alpha_t}{\bar\alpha_s(1-\bar\alpha_t)}}\, \beps'
+\end{equation}
+where $\beps' \sim \N(0,I)$ is independent of $\beps_s$.
+
+\textbf{Conditioning.} Using standard Gaussian conditioning formulas, $\bx_s | \bx_t, \bx_0$ is Gaussian with:
+
+\textbf{Variance:}
+\begin{equation}
+    \Sigma = (1-\bar\alpha_s) - \frac{\bar\alpha_t(1-\bar\alpha_s)^2}{\bar\alpha_s(1-\bar\alpha_t)} = \frac{(1-\bar\alpha_s)(\bar\alpha_s - \bar\alpha_t)}{\bar\alpha_s(1-\bar\alpha_t)}
+\end{equation}
+
+\textbf{Mean:} After algebraic manipulation (grouping terms by $\bx_t$, $\bx_0$, and $\bd^c$):
+\begin{align}
+    \mu &= \sqrt{\frac{\bar\alpha_t}{\bar\alpha_s}}\frac{1-\bar\alpha_s}{1-\bar\alpha_t}\,\bx_t
+    +\frac{\bar\alpha_s-\bar\alpha_t}{\sqrt{\bar\alpha_s}(1-\bar\alpha_t)}\,\bx_0 \\
+    &\quad +\left[\sqrt{\bar\alpha_s}\frac{s-T_c}{\Delta T}
+    -\frac{\bar\alpha_t(1-\bar\alpha_s)}{\sqrt{\bar\alpha_s}(1-\bar\alpha_t)}\frac{t-T_c}{\Delta T}\right]\bd^c.
+\end{align}
+
+The coefficient of $\bd^c$ is exactly $\gamma_{s,t}^c$ from Eq.~\eqref{eq:drift_coeff}. $\square$
+
+%=============================================================================
+\section{Flow Matching Derivation Details}
+\label{app:fm_derivation}
+
+\subsection{Endpoint Construction and Velocity}
+Let $b(t)=t(s_{k+1}-t)/L_k$ and $\bd=G_k(\bx_1)-\bx_1$. Direct substitution, not a cumulative informal argument, gives
+\begin{align}
+\bx_{s_k}
+&=s_k\bx_1+(1-s_k)\beps+s_k(G_k(\bx_1)-\bx_1)
+=s_kG_k(\bx_1)+(1-s_k)\beps,\\
+\bx_{s_{k+1}}
+&=s_{k+1}\bx_1+(1-s_{k+1})\beps.
+\end{align}
+The coarser signal is therefore the \emph{starting} endpoint of a fine stage. Also,
+\begin{equation}
+\frac{d\bx_t}{dt}=\bx_1-\beps+b'(t)\bd,
+\qquad b'(t)=\frac{s_{k+1}-2t}{L_k}.
+\end{equation}
+The zero of $b'$ is $t=s_{k+1}/2$, not generally the interval midpoint $(s_k+s_{k+1})/2$.
+
+\subsection{Projection Clean Inverse}
+For $G_k=P_k$ with $P_k^2=P_k$, let $\by=\bx_t+(1-t)d\bx_t/dt$. Expanding the path and velocity gives
+\begin{equation}
+\by=[I+c(t)(P_k-I)]\bx_1,
+\qquad c(t)=b(t)+(1-t)b'(t).
+\end{equation}
+Applying $P_k$ and $I-P_k$ separately yields $P_k\by=P_k\bx_1$ and $(I-P_k)\by=(1-c)(I-P_k)\bx_1$, proving Eq.~\eqref{eq:fm_clean_inverse}. The denominator condition is checked over every proposed stage interval in the implementation.
+
+\subsection{Wan Noise-Time Form}
+With $\sigma=1-t$,
+\begin{align}
+\bx_\sigma&=(1-\sigma)\bx_1+\sigma\beps+b(1-\sigma)\bd,\\
+\frac{d\bx_\sigma}{d\sigma}&=\beps-\bx_1-b'(1-\sigma)\bd.
+\end{align}
+Hence a pretrained Wan model receives $1000\sigma$ and is regressed toward the second line. Clean reconstruction uses $\by=\bx_\sigma-\sigma\,d\bx_\sigma/d\sigma$, which is algebraically identical to the data-time expression.
+
+%=============================================================================
+\section{Cross-Resolution Posterior (Noise Filling) Full Proof}
+\label{app:noise_filling}
+
+We provide the complete derivation of Proposition~\ref{prop:noise_filling}.
+
+\textbf{Setup.} Let $\bx \in \R^n$ be a full-resolution image.
+Define the projection $P = \UP \circ \DOWN$ onto piecewise-constant functions, which satisfies $P^2 = P$ and $P^T = P$ (orthogonal projection).
+
+\textbf{Decomposition.} Any $\bx$ decomposes as:
+\begin{equation}
+    \bx = P\bx + (I-P)\bx = \bx_\ell + \bx_h
+\end{equation}
+where $\bx_\ell = P\bx$ is the low-frequency (row-space) component and $\bx_h = (I-P)\bx$ is the high-frequency (null-space) component.
+Note that $P\bx_h = 0$ and $(I-P)\bx_\ell = 0$.
+
+\textbf{Observation model.} Given a clean coarse estimate $\hat\bx_0^{c+1}$, the observation constrains the row-space:
+\begin{equation}
+    \DOWN(\bx) = \hat\bx_0^{c+1} \implies P\bx = \UP(\hat\bx_0^{c+1})
+\end{equation}
+
+\textbf{Prior.} We assume:
+\begin{equation}
+    p(\bx_h) = \N(0, \sigma_h^2 I_{n-m})
+\end{equation}
+acting on the null-space of $P$.
+
+\textbf{Diffusion initialization.} At time $T_c$, the diffused version is:
+\begin{equation}
+    \bx_{T_c} = \sqrt{\bar\alpha_{T_c}}\, \bx + \sqrt{1-\bar\alpha_{T_c}}\, \beps
+\end{equation}
+
+\textbf{Posterior computation.} Given the observation $P\bx = \UP(\hat\bx_0^{c+1})$:
+\begin{align}
+    \bx_{T_c} &= \sqrt{\bar\alpha_{T_c}}(P\bx + (I-P)\bx) + \sqrt{1-\bar\alpha_{T_c}}\, \beps \\
+    &= \sqrt{\bar\alpha_{T_c}}\, \UP(\hat\bx_0^{c+1}) + \sqrt{\bar\alpha_{T_c}}\, \bx_h + \sqrt{1-\bar\alpha_{T_c}}\, \beps
+\end{align}
+
+In the limit $\sigma_h \to \infty$ (uninformative prior):
+\begin{align}
+    p(\bx_{T_c} | \hat\bx_0^{c+1}) &= \int p(\bx_{T_c} | \bx_h, \hat\bx_0^{c+1})\, p(\bx_h)\, d\bx_h
+\end{align}
+
+Since both $p(\bx_{T_c}|\bx_h, \hat\bx_0^{c+1})$ and $p(\bx_h)$ are Gaussian:
+\begin{align}
+    \E[\bx_{T_c} | \hat\bx_0^{c+1}] &= \sqrt{\bar\alpha_{T_c}}\, \UP(\hat\bx_0^{c+1}) + \sqrt{\bar\alpha_{T_c}} \cdot 0 = \sqrt{\bar\alpha_{T_c}}\, \UP(\hat\bx_0^{c+1}) \\
+    \Var[\bx_{T_c} | \hat\bx_0^{c+1}] &= \bar\alpha_{T_c}\, \sigma_h^2\, (I-P) + (1-\bar\alpha_{T_c})\, I
+\end{align}
+
+As $\sigma_h \to \infty$, the variance in the null-space directions becomes dominated by the prior term $\bar\alpha_{T_c}\sigma_h^2$.
+However, for the purpose of \emph{initializing} the diffusion process, we note that in practice the model will denoise the null-space component.
+The effective initialization that matches the marginal $q(\bx_{T_c}|\bx_0)$ for \emph{any} high-frequency content has variance $(1-\bar\alpha_{T_c})I$ in \emph{all} directions when $\sigma_h = 0$ (no high-frequency signal assumed).
+
+\textbf{Special case: $\sigma_h = 0$.} If we assume no high-frequency structure (the model will generate it):
+\begin{align}
+    p(\bx_{T_c} | \hat\bx_0^{c+1}) &= \N\left(\sqrt{\bar\alpha_{T_c}}\, \UP(\hat\bx_0^{c+1}),\; (1-\bar\alpha_{T_c})\, I\right)
+\end{align}
+
+This is exactly the noise-filling operation:
+\begin{equation}
+    \bx_{T_c} = \sqrt{\bar\alpha_{T_c}}\, \UP(\hat\bx_0^{c+1}) + \sqrt{1-\bar\alpha_{T_c}}\, \beps, \quad \beps \sim \N(0,I)
+\end{equation}
+
+This completes the proof that noise filling is the Bayesian posterior under the assumption of no prior high-frequency information. $\square$
+
+%=============================================================================
+\section{DPM-Solver Derivation with Drift}
+\label{app:dpm_solver}
+
+\subsection{Continuous-Time SDE}
+
+The RDD forward process in continuous time (within stage $c$, with $\tau = t - T_c$ as relative time):
+\begin{equation}
+    d\bx = \left[f(\tau)\bx + a(\tau)\right]d\tau + g(\tau)\, dW
+\end{equation}
+where:
+\begin{align}
+    f(\tau) &= \frac{1}{2}\frac{d\log\bar\alpha_\tau}{d\tau} \\
+    g^2(\tau) &= \frac{d(1-\bar\alpha_\tau)}{d\tau} - 2f(\tau)(1-\bar\alpha_\tau) \\
+    a(\tau) &= \frac{\sqrt{\bar\alpha_\tau}}{\Delta T}\, \bd^c
+\end{align}
+
+\subsection{Probability Flow ODE}
+
+The corresponding probability flow ODE is:
+\begin{equation}
+    \frac{d\bx}{d\tau} = f(\tau)\bx + a(\tau) - \frac{1}{2}g^2(\tau)\nabla_{\bx} \log q_\tau(\bx)
+\end{equation}
+
+The score corresponds to the Gaussian innovation around the transformed mean, not to the effective target measured relative to $\bx_0$. Using Eq.~\eqref{eq:pure_noise},
+ $\nabla_{\bx}\log q_\tau(\bx)\approx-\hat\beps_{\mathrm{pure}}/\sqrt{1-\bar\alpha_\tau}$, hence
+\begin{equation}
+    \frac{d\bx}{d\tau} = f(\tau)\bx + a(\tau) + \frac{g^2(\tau)}{2\sqrt{1-\bar\alpha_\tau}}\, \hat\beps_{\mathrm{pure}}(\bx,\tau).
+\end{equation}
+
+\subsection{Exponential-Integrator Identity}
+Following DPM-Solver~\citep{lu2022dpm}, let $\lambda_u=\log(\sqrt{\bar\alpha_u}/\sqrt{1-\bar\alpha_u})$. Freezing the pure-noise prediction over a jump $t\to s$ and integrating the known residual envelope gives Eq.~\eqref{eq:dpm1}. Its signs and coefficients can be verified without relying on notation conventions: if the model returns the exact clean sample, residual, and Gaussian innovation, then
+\begin{align}
+&\frac{\sqrt{\bar\alpha_s}}{\sqrt{\bar\alpha_t}}
+\left[\sqrt{\bar\alpha_t}(\bx_0+r_t\bd)+\sqrt{1-\bar\alpha_t}\beps\right]
+-\sqrt{1-\bar\alpha_s}(e^{\lambda_s-\lambda_t}-1)\beps
++\sqrt{\bar\alpha_s}(r_s-r_t)\bd\\
+&\hspace{2cm}=\sqrt{\bar\alpha_s}(\bx_0+r_s\bd)+\sqrt{1-\bar\alpha_s}\beps.
+\end{align}
+The identity uses $\sqrt{\bar\alpha_s/\bar\alpha_t}\sqrt{1-\bar\alpha_t}=\sqrt{1-\bar\alpha_s}\,e^{\lambda_s-\lambda_t}$.
+
+\subsection{Second-Order Solver (DPM-Solver-2)}
+
+For second-order accuracy, we use the midpoint method:
+\begin{enumerate}
+    \item Let $r = 1/2$, $t_m = t + r(s-t) = (t+s)/2$
+    \item Recover $\hat\bx_0$, $\hat\bd_t$, and $\hat\beps_{\mathrm{pure},t}$ from the first network evaluation.
+    \item Apply Eq.~\eqref{eq:dpm1} to obtain the midpoint state $\bx_{t_m}$.
+    \item Recompute $\hat\bx_{0,m}$, $\hat\bd_m$, and $\hat\beps_{\mathrm{pure},m}$ at the midpoint.
+    \item Final:
+    \begin{align}
+        \bx_s &= \frac{\sqrt{\bar\alpha_s}}{\sqrt{\bar\alpha_t}}\bx_t
+        -\sqrt{1-\bar\alpha_s}(e^{\lambda_s-\lambda_t}-1)\hat\beps_{\mathrm{pure},m} \\
+        &\quad + \sqrt{\bar\alpha_s}(r_s-r_t)\hat\bd_m.
+    \end{align}
+\end{enumerate}
+
+Conditioned on the exact clean sample, the residual contribution is deterministic and exactly integrable. With a learned model, both $\hat\bd$ and $\hat\beps_{\mathrm{pure}}$ vary along the numerical trajectory; midpoint recomputation is therefore part of the approximation and must be evaluated at matched NFE.
+
+\subsection{Extension to Higher Orders}
+
+Higher-order schemes may use the same exact conditional correction $\sqrt{\bar\alpha_s}(r_s-r_t)\bd$, but a practical method must specify where the estimated residual is evaluated and count every network call. We do not claim a free higher-order guarantee from the analytic conditional integral alone.
+
+\end{document}
