@@ -12,3 +12,5 @@ CPU验证使用随机小DiT和随机小AutoencoderKL，没有下载正式模型�
 为降低GPU恢复峰值，Trainer.load改为先把checkpoint加载到CPU，再由模型/优化器state_dict接口搬到目标设备；CPU训练恢复已验证。GPU内存收益需现场确认。
 
 PNG量化使用旧评估器的`((clip(x,-1,1)+1)/2*255).uint8`截断。新共同采样协议使用固定顺序类别与固定batch；不能宣称与旧随机类别评估逐张相同。所有正式结果以新服务器的run.json、进度和评估记录为准。
+
+指标评估补充：官方Inception GraphDef和ImageNet-256参考URL的HEAD均HTTP200，已固定文件大小/Content-MD5；新shell及内嵌Python通过语法检查。未在本机安装ADM新环境、下载评估模型/参考或实际运行50K指标，必须由新服务器执行。

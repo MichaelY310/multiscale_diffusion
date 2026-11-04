@@ -156,17 +156,16 @@ tmux new -s pf-imagenet
 
 如果FM用了另一个batch，这里也同步。两边共252NFE但仍需报告实际采样时间，不能把调用次数说成完整系统耗时相等。当前PF sampler仅CFG1，显式拒绝其他CFG，避免仅修改metadata却未改变模型输出。
 
-有本地ADM参考统计、Inception图和TensorFlow评估环境后，按根目录评估器分别计算两组50K FID/sFID/IS/precision/recall：
+正式指标评估现已补齐独立环境安装、官方下载、文件校验和评估入口。完整说明见[EVALUATION_ZH.md](EVALUATION_ZH.md)。FM50K完成后先评估FM；PF训练及50K采样完成后用同一协议评估PF：
 
 ```bash
-"$UMDIFF_PYTHON" 2d/png_to_npz.py unified_multires/runs/fm_pf/fm_fresh_cfg1/png \
-  --num-samples 50000 --output /large/disk/fm_fresh_50k.npz
-# 使用单独ADM环境（不是为了采样/训练强装TensorFlow）：
-python guided-diffusion/evaluations/evaluator.py \
-  /path/to/VIRTUAL_imagenet256_labeled.npz /large/disk/fm_fresh_50k.npz
+BOOTSTRAP_PYTHON="$PWD/.venv-fm-pf/bin/python" bash "$EXP/setup_evaluation.sh"
+bash "$EXP/run_adm_evaluation.sh" unified_multires/runs/fm_pf/fm_fresh_cfg1
+# PF训练和采样完成之后：
+bash "$EXP/run_adm_evaluation.sh" unified_multires/runs/fm_pf/pf_400k_cfg1
 ```
 
-PF同样执行，使用同一参考和评估环境。NPZ构造会占较大RAM和磁盘；原评估器缺少本地`classify_image_graph_def.pb`会尝试下载。此次脚本不自动下载这些额外评估资产，也不把PNG生成完成当作FID完成。指标及哈希保存后可清理可重建的临时NPZ；保留模型、必要样本和紧凑报告。
+输出每个run下的`evaluation/metrics.json`和`adm.log`，含FID、sFID、IS、Precision、Recall。下载官方Inception约96MB和参考NPZ约2.04GB；CPU评估环境与训练环境分开，正式NPZ临时文件约9.83GB。只有5项指标保存成功后才清理该临时文件。当前训练和采样仍为单进程单GPU，不支持直接套torchrun。
 
 ## 本地验证范围
 
