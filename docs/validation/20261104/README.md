@@ -2,9 +2,10 @@
 
 These reports were produced in the migrated research workspace on 2026-11-04,
 before publication of this source snapshot. Source hashes, test scope and
-temporary-payload cleanup are retained. The new `umdiff` framework is a separate
-project; this repository contains the old RDD implementation and its archived
-comparison evidence.
+temporary-payload cleanup are retained. The new `umdiff` framework is now in
+`unified_multires/` inside this repository, alongside the old RDD implementation
+and its archived comparison evidence. Integration did not rerun these historical
+reports; see the separate monorepo validation report for migration checks.
 
 | Report | Scope |
 |---|---|

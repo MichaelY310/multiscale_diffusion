@@ -2,6 +2,10 @@
 
 本目录汇集了 RDD (Residual Drift Diffusion) 项目的所有理论推导、调研报告和分析脚本。
 
+新机器运行实验或新 agent 接手，请先看[操作指南](AGENT_GUIDE_ZH.md)和
+[仓库内容及验证范围](REPOSITORY_CONTENTS_ZH.md)。下列理论索引保留历史研究材料，
+不能替代当前代码、实验配置和数值证据。
+
 ---
 
 ## 核心文档索引

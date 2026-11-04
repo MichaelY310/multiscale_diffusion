@@ -16,6 +16,10 @@ repository**. See its [setup and experiment guide](unified_multires/README.md)
 for CPU examples, native RDD reproduction, common-DiT experiments and video
 configuration. The legacy entry points below remain available.
 
+**For a new machine or coding agent:** [AGENTS.md](AGENTS.md) is the automatic
+Codex entry point. The [operator guide](docs/AGENT_GUIDE_ZH.md) covers legacy
+and unified training/sampling, assets, metrics, clock conventions and evidence.
+
 This repository contains the validated ImageNet-256 implementation and the
 experiments summarized below. All formal image metrics use the native
 ImageNet directory loader, 50,000 generated images, and ADM reference

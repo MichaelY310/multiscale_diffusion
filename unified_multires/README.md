@@ -2,6 +2,9 @@
 
 这是旧 RDD 仓库里的新统一训练、采样和对照框架。今后两者一起维护：
 
+新 agent 从仓库根目录的 [AGENTS.md](../AGENTS.md) 自动获得导航；本目录另有
+[开发规则](AGENTS.md)。旧/新入口选择、训练采样和评估约定见[操作指南](../docs/AGENT_GUIDE_ZH.md)。
+
 **新服务器实验入口：** [RDD-FM fresh采样 → ImageNet-256 Pyramid Flow训练](experiments/imagenet256_fm_pf/README_ZH.md)，包含环境安装、固定模型/VAE下载、断点续跑与[给agent的完整prompt](experiments/imagenet256_fm_pf/AGENT_PROMPT_ZH.md)。
 
 ```text
