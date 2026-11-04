@@ -1,0 +1,93 @@
+{
+  "name": "diffusability",
+  "image_shape": [
+    3,
+    256,
+    256
+  ],
+  "model": {
+    "name": "local_autoencoder",
+    "args": {
+      "path": "@vae@"
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "ema_decay": 0.0,
+      "randomness": "native_global"
+    },
+    "data": {
+      "shuffle": true
+    },
+    "time_sampler": {
+      "name": "none"
+    }
+  },
+  "task": "codec",
+  "sampling_shape": [
+    4,
+    32,
+    32
+  ],
+  "codec": {
+    "reconstruction_style": "native",
+    "mse_weight": 0.0,
+    "kl_weight": 0.0,
+    "perceptual": {
+      "weight": 1.0,
+      "model": {
+        "name": "native_perceptual_pyramid",
+        "args": {
+          "checkpoint": "@vgg@",
+          "scales": [
+            1.0,
+            0.5,
+            0.25
+          ],
+          "loss_weights": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      }
+    },
+    "regularizer_ignore_perceptual": false,
+    "regularizers": [
+      {
+        "name": "random_scale_equivariance",
+        "args": {
+          "factors": [
+            2,
+            4
+          ],
+          "weight": 1.0
+        }
+      }
+    ]
+  },
+  "evidence": {
+    "claim": "component_recipe_template_best_run_unidentified",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "diffusability/configs/loss/autoencoder.yaml",
+        "sha256": "f40253e919398cedf4da057858fb8bc441655181f00ece17d1970e7bca8f96f7"
+      },
+      {
+        "file": "diffusability/configs/loss/base.yaml",
+        "sha256": "67ae211665471ca95a7f13cd96cbd005762d7c1430da28589b30b51de7d29b30"
+      }
+    ],
+    "notes": [
+      "SE 2x/4x extension of the released VGG-pyramid codec objective. SE weight, optimizer/budget, dataset and encoder freezing vary across paper experiments; this is a component-complete template, not an identified best run.",
+      "Temporal/tokenizer/discriminator/distillation-AE and downstream generator retraining remain separate pipelines."
+    ],
+    "author_global_batch": null,
+    "author_steps": null
+  }
+}

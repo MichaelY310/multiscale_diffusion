@@ -1,0 +1,163 @@
+{
+  "name": "ssd_image_grid_dit",
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "model": {
+    "name": "ssd_grid",
+    "args": {
+      "model": {
+        "name": "grid_dit",
+        "args": {
+          "channels": 3,
+          "width": 96,
+          "depth": 2,
+          "num_heads": 4,
+          "patch": [
+            1,
+            2,
+            2
+          ],
+          "position": "sincos",
+          "max_stages": 1,
+          "heads": null,
+          "product_order": "coarse_first",
+          "causal_scales": false
+        }
+      }
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "ema_decay": 0.999,
+      "grad_clip": 1.0
+    },
+    "time_sampler": {
+      "name": "discrete",
+      "args": {
+        "steps": 20,
+        "one_for_batch": true
+      }
+    }
+  },
+  "evidence": {
+    "claim": "controlled_common_backbone_mathematical_recipe",
+    "not_a_paper_best_result_recipe": true,
+    "no_asset_downloads": true,
+    "modality": "image",
+    "architecture_transplant": true,
+    "source_method": "ssd"
+  },
+  "batch": {
+    "name": "ssd",
+    "args": {
+      "resolutions": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "betas": [
+        0.001,
+        0.002,
+        0.003,
+        0.004,
+        0.005,
+        0.006,
+        0.006999999999999999,
+        0.008,
+        0.009000000000000001,
+        0.009999999999999998,
+        0.011,
+        0.012,
+        0.012999999999999998,
+        0.013999999999999999,
+        0.015,
+        0.016,
+        0.017,
+        0.018000000000000002,
+        0.019,
+        0.02
+      ],
+      "unet_res_layer_map": {
+        "32": 32,
+        "16": 16
+      }
+    }
+  },
+  "sampler": {
+    "name": "ssd",
+    "args": {
+      "resolutions": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "betas": [
+        0.001,
+        0.002,
+        0.003,
+        0.004,
+        0.005,
+        0.006,
+        0.006999999999999999,
+        0.008,
+        0.009000000000000001,
+        0.009999999999999998,
+        0.011,
+        0.012,
+        0.012999999999999998,
+        0.013999999999999999,
+        0.015,
+        0.016,
+        0.017,
+        0.018000000000000002,
+        0.019,
+        0.02
+      ],
+      "unet_res_layer_map": {
+        "32": 32,
+        "16": 16
+      }
+    }
+  },
+  "prediction_adapter": {
+    "name": "ssd_output"
+  }
+}

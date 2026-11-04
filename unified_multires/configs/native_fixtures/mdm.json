@@ -1,0 +1,105 @@
+{
+  "name": "mdm",
+  "image_shape": [
+    4,
+    16,
+    16
+  ],
+  "model": {
+    "name": "native_mdm"
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "betas": [
+        0.9,
+        0.99
+      ],
+      "weight_decay": 0.01,
+      "ema_decay": 0.99,
+      "grad_clip": 1.0
+    },
+    "time_sampler": {
+      "name": "discrete",
+      "args": {
+        "steps": 16,
+        "offset": 1
+      }
+    },
+    "conditioning": {
+      "conditioning": {
+        "kind": "zeros",
+        "shape": [
+          5,
+          8
+        ]
+      },
+      "cond_mask": {
+        "kind": "ones",
+        "shape": [
+          5
+        ]
+      },
+      "micros": {
+        "kind": "empty_dict"
+      }
+    }
+  },
+  "batch": {
+    "name": "mdm",
+    "args": {
+      "gammas": [
+        1.0,
+        0.9881323575973511,
+        0.9578046202659607,
+        0.9101638793945312,
+        0.8470121622085571,
+        0.7707380652427673,
+        0.6842265725135803,
+        0.5907498598098755,
+        0.49384358525276184,
+        0.39717310667037964,
+        0.3043949007987976,
+        0.2190181314945221,
+        0.1442721039056778,
+        0.08298399299383163,
+        0.037471953779459,
+        0.009457417763769627,
+        9.457417945668567e-06
+      ]
+    }
+  },
+  "prediction_adapter": {
+    "name": "mdm_loss_coordinates"
+  },
+  "sampler": {
+    "name": "mdm",
+    "args": {
+      "gammas": [
+        1.0,
+        0.9881323575973511,
+        0.9578046202659607,
+        0.9101638793945312,
+        0.8470121622085571,
+        0.7707380652427673,
+        0.6842265725135803,
+        0.5907498598098755,
+        0.49384358525276184,
+        0.39717310667037964,
+        0.3043949007987976,
+        0.2190181314945221,
+        0.1442721039056778,
+        0.08298399299383163,
+        0.037471953779459,
+        0.009457417763769627,
+        9.457417945668567e-06
+      ]
+    }
+  },
+  "evidence": {
+    "claim": "native_algorithm_small_architecture_fixture",
+    "not_a_paper_quality_checkpoint": true,
+    "no_downloads": true,
+    "conditioning": "Zero text fixture; real training must switch conditioning/cond_mask to local tensor dataset field inputs."
+  }
+}

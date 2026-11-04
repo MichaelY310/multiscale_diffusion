@@ -1,0 +1,1626 @@
+{
+  "version": 1,
+  "created": "2026-10-10",
+  "full_training_started": false,
+  "fair_rdd": {
+    "dataset": "ImageNet-1K/train",
+    "resolution": 256,
+    "task": "class_conditional",
+    "global_batch": 256,
+    "world_size": 1,
+    "micro_batch": 16,
+    "accumulation": 16,
+    "updates": 400000,
+    "seed": 0,
+    "optimizer": {
+      "optimizer_name": "adamw",
+      "lr": 0.0001,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "weight_decay": 0.0,
+      "ema_decay": 0.9999,
+      "precision": "float32",
+      "grad_clip": null,
+      "lr_schedule": null,
+      "randomness": "native_global"
+    }
+  },
+  "papers": {
+    "relay": {
+      "title": "Relay Diffusion",
+      "arxiv": "2309.03350",
+      "dataset": "ImageNet-256; CelebA-HQ-256",
+      "batch": 4096,
+      "optimizer": "Adam",
+      "lr": 0.0001,
+      "budget": "ImageNet: 1250M training images across the cascade; per-stage allocation not identified",
+      "initialization": "scratch, two separately trained models",
+      "evaluation": "ImageNet FID 1.87; exact low/high checkpoint pair required",
+      "gaps": [
+        "Per-stage best-run image budget not identified; image-count EMA and loss scaling must be retained."
+      ],
+      "repository": {
+        "repo": "https://github.com/zai-org/RelayDiffusion",
+        "commit": "a97877fcee9e7515595e24f7d72bc5f6a722ce6f"
+      },
+      "paper_url": "https://arxiv.org/html/2309.03350"
+    },
+    "ssd": {
+      "title": "Scale Space Diffusion",
+      "arxiv": "2603.08709",
+      "dataset": "CelebA-64/128/256; ImageNet-64",
+      "batch": 64,
+      "optimizer": "AdamW",
+      "lr": 0.0001,
+      "budget": "Released64 checkpoints: 1M updates; CelebA128/256: 300k",
+      "initialization": "scratch Flexi-UNet",
+      "evaluation": "2/4 levels at64,3/5 at128,3/6 at256; source DDPM sampler",
+      "gaps": [
+        "Batch64 is train_ssd.sh:32 per rank times2; best paper row is not uniquely selected.",
+        "Do not use lr_anneal_steps as a stop cap: it changes the LR schedule."
+      ],
+      "repository": {
+        "repo": "https://github.com/prateksha/ScaleSpaceDiffusion",
+        "commit": "68a6961983f0c2e19910b34f77ef16f7c6764130"
+      },
+      "paper_url": "https://arxiv.org/html/2603.08709"
+    },
+    "pixelflow": {
+      "title": "PixelFlow",
+      "arxiv": "2504.07963",
+      "dataset": "ImageNet-256 class conditional",
+      "batch": null,
+      "optimizer": "AdamW",
+      "lr": 0.0001,
+      "budget": null,
+      "initialization": "scratch XL, raw pixels, patch4/head72",
+      "evaluation": "FID1.98: Dopri5, atol1e-6, rtol.001 in code, four-stage CFG max2.4",
+      "gaps": [
+        "Public YAML is 10 epochs and batch4 per rank, not an identified best training run.",
+        "Published best training global batch/budget not identified in the inspected paper/release."
+      ],
+      "repository": {
+        "repo": "https://github.com/ShoufaChen/PixelFlow",
+        "commit": "8805204d1be8df22382280959b3063974ff3d77d"
+      },
+      "paper_url": "https://arxiv.org/html/2504.07963"
+    },
+    "dfm": {
+      "title": "Improving Progressive Generation with Decomposable Flow Matching",
+      "arxiv": "2506.19839",
+      "dataset": "ImageNet-512/1024; Kinetics-700",
+      "batch": 256,
+      "optimizer": "Adam (paper)",
+      "lr": 0.0001,
+      "budget": "512:500k;1024:350k;video:200k; warmup10k",
+      "initialization": "Paper DiT-XL + scale-equivariant FLUX VAE; public release SiT + SD VAE",
+      "evaluation": "Paper40 steps:30+10; thresholds.7/.95; CFG sweep",
+      "gaps": [
+        "Public SiT release explicitly differs from the paper architecture and VAE.",
+        "SE autoencoder/private fine-tuning data and original full best-run recipe are unavailable."
+      ],
+      "repository": {
+        "repo": "https://github.com/snap-research/dfm",
+        "commit": "637fcab6b602686887873ed20e69d083efb26312"
+      },
+      "paper_url": "https://arxiv.org/html/2506.19839"
+    },
+    "lapflow": {
+      "title": "LapFlow",
+      "arxiv": "2602.19461",
+      "dataset": "ImageNet-256; CelebA-HQ-256/512/1024",
+      "batch": 256,
+      "optimizer": "AdamW",
+      "lr": 0.0001,
+      "budget": "ImageNetXL:120epochs; B:1400epochs; HQ:500/1000/2000epochs",
+      "initialization": "ImageNet EQVAE; HQ256 EQVAE,512/1024 SDVAE",
+      "evaluation": "ImageNet XL T=.5, EMA.9999; exact best CFG not identified",
+      "gaps": [
+        "CLI defaults T=.9/LR5e-4/EMA.9 differ from AppendixG.",
+        "HQ uses cosine2e-4 to1e-6, batches256/256/128,3scales at512/1024.",
+        "Released square sampler bug and exact best CFG remain unresolved."
+      ],
+      "repository": {
+        "repo": "https://github.com/sjtuytc/ICLR26_LapFlow_Official",
+        "commit": "388610e8fd09f39f17c7bf5bd64135e6d1ce7d52"
+      },
+      "paper_url": "https://arxiv.org/html/2602.19461"
+    },
+    "ppflow": {
+      "title": "Pyramidal Patchification Flow for Visual Generation",
+      "arxiv": "2506.23543",
+      "dataset": "ImageNet-256/512; mixed text-to-image datasets",
+      "batch": 256,
+      "optimizer": "AdamW",
+      "lr": 0.0001,
+      "budget": "XL256 pretrained:1M updates; XL512:400k; B scratch:11M; FLUX:90k",
+      "initialization": "XL256 starts from SiT-XL/2; SD VAE",
+      "evaluation": "XL2 FID1.99, CFG[1,3]; XL3 FID2.23, CFG[1,3.5,3.75]; source Heun2",
+      "gaps": [
+        "Public CLI defaults1400epochs and lacks an exact max-update/accumulation flag.",
+        "FLUX text-to-image and some paper variants are not released.",
+        "The SiT initialization includes substantial prior training cost."
+      ],
+      "repository": {
+        "repo": "https://github.com/fudan-generative-vision/PPFlow",
+        "commit": "1f4dd1738a6da7feb7279ad9af12c7d93a07dd93"
+      },
+      "paper_url": "https://arxiv.org/html/2506.23543"
+    },
+    "dctdiff": {
+      "title": "DCTdiff",
+      "arxiv": "2412.15032",
+      "dataset": "CIFAR10,CelebA64,ImageNet64,FFHQ128/256/512,AFHQ512",
+      "batch": "256; ImageNet64:1024;512:128",
+      "optimizer": "AdamW",
+      "lr": "2e-4; ImageNet64:3e-4;512:1e-4",
+      "budget": "Per-dataset released Python configs; CelebA64:250k;FFHQ128/256:300k",
+      "initialization": "scratch U-ViT; dataset-specific DCT/EBFR statistics",
+      "evaluation": "Native DPM/EM and exact DCT codec, resize and EBFR",
+      "gaps": [
+        "Paper DiT branches are not released.",
+        "A different dataset requires re-estimated DCT statistics, not copying CIFAR constants."
+      ],
+      "repository": {
+        "repo": "https://github.com/forever208/DCTdiff",
+        "commit": "b915fa1b8ba279e4b74efefe85bced681e3d8ace"
+      },
+      "paper_url": "https://arxiv.org/html/2412.15032"
+    },
+    "mdm": {
+      "title": "Matryoshka Diffusion Models",
+      "arxiv": "2310.15111",
+      "dataset": "Released weights:50M Flickr text-image pairs; configs:CC12M",
+      "batch": null,
+      "optimizer": "Adam",
+      "lr": 5e-05,
+      "budget": "Public CC12M config:1M updates; warmup10k; full Flickr curriculum unidentified",
+      "initialization": "pretrained vision64/256; Flan-T5-XL;1024 inner256 checkpoint",
+      "evaluation": "Nested256/1024;250 resampled steps, CFG7.5, clipping in demo",
+      "gaps": [
+        "Flickr training data/curriculum are not reproduced by CC12M configs.",
+        "Published best global batch not established; commented batch fields are not authoritative.",
+        "Online T5/streaming/DDP curriculum parity is unverified."
+      ],
+      "repository": {
+        "repo": "https://github.com/apple/ml-mdm",
+        "commit": "633659d1db70afb9df9411e98b1b2147fc911d1e"
+      },
+      "paper_url": "https://arxiv.org/html/2310.15111"
+    },
+    "dimr": {
+      "title": "DiMR: Multi-Resolution Diffusion Models",
+      "arxiv": "2406.09416",
+      "dataset": "ImageNet-256/512",
+      "batch": 1024,
+      "optimizer": "AdamW betas(.99,.99),wd.03",
+      "lr": 0.0002,
+      "budget": "Best released256 weights:800epochs; Python config:1M updates; warmup5k",
+      "initialization": "scratch DiMR-G/2R orXL/2R; original SD VAE moments",
+      "evaluation": "G/2R FID1.63; XL/2R1.70;250steps, native guidance scale.4,power-1",
+      "gaps": [
+        "800epochs and1M updates are different budgets; do not label the latter best-run reproduction.",
+        "Source fp16/accelerate16rank lifecycle and real VAE pipeline are not GPU-certified here."
+      ],
+      "repository": {
+        "repo": "https://github.com/qihao067/DiMR",
+        "commit": "fa141ae401cde28fa0fb5d983fe00746e40b7cb1"
+      },
+      "paper_url": "https://arxiv.org/html/2406.09416"
+    },
+    "diffusability": {
+      "title": "Improving the Diffusability of Autoencoders",
+      "arxiv": "2502.14831",
+      "dataset": "ImageNet;Kinetics700; additional codec fine-tuning data",
+      "batch": null,
+      "optimizer": null,
+      "lr": null,
+      "budget": null,
+      "initialization": "pretrained codec, SE2/4 fine-tuning, downstream generator retraining",
+      "evaluation": "Codec SE/VGG loss plus separately retrained generator quality",
+      "gaps": [
+        "Release README still lists training/evaluation instructions and checkpoints as TODO.",
+        "Codec component checks cannot reproduce the full generator-quality main table."
+      ],
+      "repository": {
+        "repo": "https://github.com/snap-research/diffusability",
+        "commit": "d5d51820a773d2eaddd365e71df52bdfa8d60050"
+      },
+      "paper_url": "https://arxiv.org/html/2502.14831"
+    },
+    "rmd": {
+      "title": "Cross-Resolution Distribution Matching for Diffusion Distillation",
+      "arxiv": "2603.06136",
+      "dataset": "Video Wan14B; image SDXL/PixArt/SD3.5",
+      "batch": "Paper video4; image32; release14B64",
+      "optimizer": "AdamW, beta1=0,beta2=.95(video)/.999(image)",
+      "lr": "generator5e-6(video)/4e-6(image); fake2e-5",
+      "budget": "Release14B:max300,warmup15; best paper budget not established",
+      "initialization": "pretrained teacher/student/fake models; two-phase distillation",
+      "evaluation": "Native6-step rollout, CFG5, eta.5, flowshift3; optional GAN separate",
+      "gaps": [
+        "Public14B effective batch=4x8x2=64, not paper video batch4.",
+        "Local full14B/GAN/main-table recipe not certified; source author attribution remains unconfirmed."
+      ],
+      "repository": {
+        "repo": "https://github.com/Skylar-aigc/RMD-Inference-Acceleration",
+        "commit": "213a6691d19abe2463d1c91f4cb9a925a3a13d12"
+      },
+      "paper_url": "https://arxiv.org/html/2603.06136"
+    },
+    "speed": {
+      "title": "Spectral Progressive Diffusion for Efficient Image and Video Generation",
+      "arxiv": "2605.18736",
+      "dataset": "Text-to-image FLUX.1-dev1024 benchmarks",
+      "batch": "inference batch; no training batch",
+      "optimizer": null,
+      "lr": null,
+      "budget": "training-free inference",
+      "initialization": "pretrained FLUX, no training",
+      "evaluation": "Spectral transform/DCT-Haar-FFT, scale schedule and NFE must match each row",
+      "gaps": [
+        "Not a training baseline; needs exact pretrained weights, prompts, metric assets and selected main-table row."
+      ],
+      "repository": {
+        "repo": "https://github.com/howardhx/speed",
+        "commit": "ca7801c9bdffe681742e9592345bcf4885959be5"
+      },
+      "paper_url": "https://arxiv.org/html/2605.18736"
+    },
+    "nami": {
+      "title": "NAMI",
+      "arxiv": "2503.09242",
+      "dataset": "Text-to-image, FLUX-derived progressive model",
+      "batch": "Paper training768; public inference only",
+      "optimizer": null,
+      "lr": null,
+      "budget": "No released training entrypoint",
+      "initialization": "trained NAMI transformer and learned bridge, vendor Diffusers",
+      "evaluation": "Progressive depth/resolution and trained bridge; distinct from plain FLUX",
+      "gaps": [
+        "Published training recipe cannot be recovered from an inference-only release."
+      ],
+      "repository": {
+        "repo": "https://github.com/360CVGroup/NAMI-T2I",
+        "commit": "4aa35bd7f2f76f1f86ce1241eeddc3297e14ef41"
+      },
+      "paper_url": "https://arxiv.org/html/2503.09242"
+    },
+    "mrflow": {
+      "title": "Multi-Resolution Flow Matching",
+      "arxiv": "2607.01642",
+      "dataset": "Text-to-image FLUX/Qwen1024 benchmarks",
+      "batch": "inference batch; no training batch",
+      "optimizer": null,
+      "lr": null,
+      "budget": "training-free inference",
+      "initialization": "pretrained FLUX/Qwen plus exact RealESRGAN",
+      "evaluation": "Low-res flow, PIL/VAE/SR transition, high-res refinement; exact NFE/model required",
+      "gaps": [
+        "Not a scratch-training baseline; evaluate exact full pretrained pipeline and transitions."
+      ],
+      "repository": {
+        "repo": "https://github.com/Xingyu-Zheng/MrFlow",
+        "commit": "108837b95e93fc1f69a69413109ba505dac0f9ab"
+      },
+      "paper_url": "https://arxiv.org/html/2607.01642"
+    },
+    "rdd": {
+      "title": "RDD (migrated local code)",
+      "arxiv": null,
+      "dataset": "ImageNet-256 class conditional",
+      "batch": 256,
+      "optimizer": "AdamW",
+      "lr": 0.0001,
+      "budget": "Historical L reached492000; XL407600; scripts epoch ceiling1400",
+      "initialization": "scratch DiT-L/2 orXL/2; SD VAE ema;32/16/8 latent grids",
+      "evaluation": "300/300/400 stages; EMA.9999; retained source native staged sampler",
+      "gaps": [
+        "400k is a newly chosen common budget, not the exact last step of both historical runs.",
+        "Historical image datasets/weights are not all migrated; do not resume deleted GPU-check payloads."
+      ],
+      "paper_url": null
+    }
+  },
+  "profiles": [
+    {
+      "id": "dctdiff_afhq512_uvit_mid_8by8",
+      "paper": "dctdiff",
+      "config": "dctdiff_afhq512_uvit_mid_8by8.json",
+      "config_sha256": "379ad2b8e958296ff9105172b6cf8e11d4579ee3709d28136b632efe9fbb0d55",
+      "template": "configs/paper_recipes/dctdiff_afhq512_uvit_mid_8by8.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "AFHQ 512x512",
+        "shape": [
+          3,
+          512,
+          512
+        ],
+        "global_batch": 128,
+        "budget": 500000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0001,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 1234,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dctdiff_celeba64_uvit_small_2by2",
+      "paper": "dctdiff",
+      "config": "dctdiff_celeba64_uvit_small_2by2.json",
+      "config_sha256": "db06179bff09eb05f69b8ecf80b4c05ca57f4b68aef522c8632f9eb1cd2f531a",
+      "template": "configs/paper_recipes/dctdiff_celeba64_uvit_small_2by2.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "CelebA 64x64",
+        "shape": [
+          3,
+          64,
+          64
+        ],
+        "global_batch": 256,
+        "budget": 500000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0002,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 1234,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dctdiff_cifar10_uvit_mid_2by2",
+      "paper": "dctdiff",
+      "config": "dctdiff_cifar10_uvit_mid_2by2.json",
+      "config_sha256": "4cc97d3d873b1b9e434c175d2be95ac83d36315b0301d690fd8fcf304ab34d8b",
+      "template": "configs/paper_recipes/dctdiff_cifar10_uvit_mid_2by2.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "CIFAR-10 32x32",
+        "shape": [
+          3,
+          32,
+          32
+        ],
+        "global_batch": 256,
+        "budget": 500000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0002,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 1234,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dctdiff_cifar10_uvit_mid_deep_2by2",
+      "paper": "dctdiff",
+      "config": "dctdiff_cifar10_uvit_mid_deep_2by2.json",
+      "config_sha256": "78be4f8590e2d6ef76d4bf56ad13a385024dcd8b7bff921c1f87a3e55d178e12",
+      "template": "configs/paper_recipes/dctdiff_cifar10_uvit_mid_deep_2by2.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "CIFAR-10 32x32",
+        "shape": [
+          3,
+          32,
+          32
+        ],
+        "global_batch": 256,
+        "budget": 500000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0002,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 1234,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dctdiff_cifar10_uvit_small_2by2",
+      "paper": "dctdiff",
+      "config": "dctdiff_cifar10_uvit_small_2by2.json",
+      "config_sha256": "0fba23fb84206b5b28a6dac27be1a0c9b5188ce8b0cb75751138c813880c864e",
+      "template": "configs/paper_recipes/dctdiff_cifar10_uvit_small_2by2.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "CIFAR-10 32x32",
+        "shape": [
+          3,
+          32,
+          32
+        ],
+        "global_batch": 256,
+        "budget": 500000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0002,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 1234,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dctdiff_ffhq128_uvit_mid_4by4",
+      "paper": "dctdiff",
+      "config": "dctdiff_ffhq128_uvit_mid_4by4.json",
+      "config_sha256": "a004df0e20d191c1fb50ea14bab119c6f362fc8f115eadbda881b7264e907219",
+      "template": "configs/paper_recipes/dctdiff_ffhq128_uvit_mid_4by4.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "FFHQ 128x128",
+        "shape": [
+          3,
+          128,
+          128
+        ],
+        "global_batch": 256,
+        "budget": 500000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0002,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 1234,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dctdiff_ffhq128_uvit_mid_deep_4by4",
+      "paper": "dctdiff",
+      "config": "dctdiff_ffhq128_uvit_mid_deep_4by4.json",
+      "config_sha256": "02f58db376157b39e5ebf4ca7f906173a2bbadcfc40eb7303dcb78d45551d7a1",
+      "template": "configs/paper_recipes/dctdiff_ffhq128_uvit_mid_deep_4by4.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "FFHQ 128x128",
+        "shape": [
+          3,
+          128,
+          128
+        ],
+        "global_batch": 256,
+        "budget": 500000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0002,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 1234,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dctdiff_ffhq128_uvit_small_4by4",
+      "paper": "dctdiff",
+      "config": "dctdiff_ffhq128_uvit_small_4by4.json",
+      "config_sha256": "49d8eb3695d03675a23e745b17fe4e2524c3dd41e629834aa3b12d5a6915eb6c",
+      "template": "configs/paper_recipes/dctdiff_ffhq128_uvit_small_4by4.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "FFHQ 128x128",
+        "shape": [
+          3,
+          128,
+          128
+        ],
+        "global_batch": 256,
+        "budget": 500000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0002,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 1234,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dctdiff_ffhq256_uvit_mid_4by4",
+      "paper": "dctdiff",
+      "config": "dctdiff_ffhq256_uvit_mid_4by4.json",
+      "config_sha256": "eebe659525199fe4dfe40d61b476100889ff0a01007bec3685d4bed584cb1094",
+      "template": "configs/paper_recipes/dctdiff_ffhq256_uvit_mid_4by4.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "FFHQ 256x256",
+        "shape": [
+          3,
+          256,
+          256
+        ],
+        "global_batch": 256,
+        "budget": 500000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0002,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 1234,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dctdiff_ffhq512_uvit_mid_8by8",
+      "paper": "dctdiff",
+      "config": "dctdiff_ffhq512_uvit_mid_8by8.json",
+      "config_sha256": "bf2bd5d87d8172216522783d0e495a26c40dd3f3827ab9c1455695cd538fe8e8",
+      "template": "configs/paper_recipes/dctdiff_ffhq512_uvit_mid_8by8.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "FFHQ 512x512",
+        "shape": [
+          3,
+          512,
+          512
+        ],
+        "global_batch": 128,
+        "budget": 500000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0001,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 1234,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dctdiff_imgnet64_uvit_mid_2by2",
+      "paper": "dctdiff",
+      "config": "dctdiff_imgnet64_uvit_mid_2by2.json",
+      "config_sha256": "5134c117da3cdb9f718efcc60c9319bf9c4603261a5e3042b7681c0e31fea91d",
+      "template": "configs/paper_recipes/dctdiff_imgnet64_uvit_mid_2by2.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "ImageNet 64x64",
+        "shape": [
+          3,
+          64,
+          64
+        ],
+        "global_batch": 1024,
+        "budget": 500000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0003,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 123456,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dctdiff_imgnet64_uvit_mid_deep_2by2",
+      "paper": "dctdiff",
+      "config": "dctdiff_imgnet64_uvit_mid_deep_2by2.json",
+      "config_sha256": "8f93b9db2f50f8d5cb3cfdd359af515f8e08152a5f38bcbdd14f83020fa104d4",
+      "template": "configs/paper_recipes/dctdiff_imgnet64_uvit_mid_deep_2by2.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "ImageNet 64x64",
+        "shape": [
+          3,
+          64,
+          64
+        ],
+        "global_batch": 1024,
+        "budget": 500000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0003,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 123456,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dctdiff_imgnet64_uvit_small_2by2",
+      "paper": "dctdiff",
+      "config": "dctdiff_imgnet64_uvit_small_2by2.json",
+      "config_sha256": "b99793d53d782e393855121c061c9c814afdaec9eb9974afb63301b70563b169",
+      "template": "configs/paper_recipes/dctdiff_imgnet64_uvit_small_2by2.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "ImageNet 64x64",
+        "shape": [
+          3,
+          64,
+          64
+        ],
+        "global_batch": 1024,
+        "budget": 800000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0003,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 123456,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dimr_DiMR-G-2R_imagenet256",
+      "paper": "dimr",
+      "config": "dimr_DiMR-G-2R_imagenet256.json",
+      "config_sha256": "2dbfae3ae501ff95d9bdbb774c25614a9145bbf88b57a7839a940fb5a64558c5",
+      "template": "configs/paper_recipes/dimr_DiMR-G-2R_imagenet256.json",
+      "fair_eligible": true,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          4,
+          32,
+          32
+        ],
+        "global_batch": 1024,
+        "budget": 1000000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0002,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 1234,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dimr_DiMR-XL-2R_imagenet256",
+      "paper": "dimr",
+      "config": "dimr_DiMR-XL-2R_imagenet256.json",
+      "config_sha256": "b78eb28bb7c0b7f227567116c3a48ca5830d3ada611fcef178b01eb0b5e1ea02",
+      "template": "configs/paper_recipes/dimr_DiMR-XL-2R_imagenet256.json",
+      "fair_eligible": true,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          4,
+          32,
+          32
+        ],
+        "global_batch": 1024,
+        "budget": 1000000,
+        "optimizer": {
+          "betas": [
+            0.99,
+            0.99
+          ],
+          "lr": 0.0002,
+          "weight_decay": 0.03,
+          "optimizer_name": "adamw",
+          "ema_decay": 0.9999,
+          "ema_style": "scaled_add",
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 5000,
+            "offset": 0
+          },
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 1234,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "pixelflow_xl_c2i",
+      "paper": "pixelflow",
+      "config": "pixelflow_xl_c2i.json",
+      "config_sha256": "ac79b161ca9d018035fff48e74c4a7e1214e49fa280877454e085973375c2e32",
+      "template": "configs/paper_recipes/pixelflow_xl_c2i.json",
+      "fair_eligible": true,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          3,
+          256,
+          256
+        ],
+        "global_batch": null,
+        "budget": "10 epochs",
+        "optimizer": {
+          "lr": 0.0001,
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "grad_clip": 1.0,
+          "precision": "bfloat16",
+          "randomness": "native_global"
+        },
+        "seed": 42,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "ppflow_xl_2",
+      "paper": "ppflow",
+      "config": "ppflow_xl_2.json",
+      "config_sha256": "e378c445513a2427a9fa4f1e8de4e2fa901340863e28f7bd38f0a6bf37b3c92f",
+      "template": "configs/paper_recipes/ppflow_xl_2.json",
+      "fair_eligible": true,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          4,
+          32,
+          32
+        ],
+        "global_batch": 256,
+        "budget": "1400 epochs",
+        "optimizer": {
+          "lr": 0.0001,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "randomness": "native_global"
+        },
+        "seed": 0,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "ppflow_xl_3",
+      "paper": "ppflow",
+      "config": "ppflow_xl_3.json",
+      "config_sha256": "566085c1256fa16b67115b6a7d304c168fcdfa302b81fe8ee00094b87b9684d5",
+      "template": "configs/paper_recipes/ppflow_xl_3.json",
+      "fair_eligible": true,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          4,
+          32,
+          32
+        ],
+        "global_batch": 256,
+        "budget": "1400 epochs",
+        "optimizer": {
+          "lr": 0.0001,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "randomness": "native_global"
+        },
+        "seed": 0,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dfm_sit_xl",
+      "paper": "dfm",
+      "config": "dfm_sit_xl.json",
+      "config_sha256": "6ddb3820d14a03cf71ce0cb6fd8118e1c129003c5d867d6451b261fefad22572",
+      "template": "configs/paper_recipes/dfm_sit_xl.json",
+      "fair_eligible": true,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          4,
+          32,
+          32
+        ],
+        "global_batch": 256,
+        "budget": 400000,
+        "optimizer": {
+          "lr": 0.0001,
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "grad_clip": 1.0,
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 0,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dfm_sit_xl_repa_localfeatures",
+      "paper": "dfm",
+      "config": "dfm_sit_xl_repa_localfeatures.json",
+      "config_sha256": "9eaeb734391f468d35d7c98290f67243ca8f00ef2a770db84110d6677bf64329",
+      "template": "configs/paper_recipes/dfm_sit_xl_repa_localfeatures.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          4,
+          32,
+          32
+        ],
+        "global_batch": 256,
+        "budget": 400000,
+        "optimizer": {
+          "lr": 0.0001,
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "grad_clip": 1.0,
+          "precision": "float16",
+          "randomness": "native_global"
+        },
+        "seed": 0,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "dfm_sit_b_released_yaml",
+      "paper": "dfm",
+      "config": "dfm_sit_b_released_yaml.json",
+      "config_sha256": "ca1298b2a78e7b12a63db6d47aea098588e4d8721f2b8ff2ad615e0d481def87",
+      "template": "configs/paper_recipes/dfm_sit_b_released_yaml.json",
+      "fair_eligible": true,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          4,
+          32,
+          32
+        ],
+        "global_batch": 256,
+        "budget": 400000,
+        "optimizer": {
+          "lr": 0.0001,
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "grad_clip": 1.0,
+          "precision": "bfloat16",
+          "randomness": "native_global"
+        },
+        "seed": 0,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "lapflow_mot_xl_2",
+      "paper": "lapflow",
+      "config": "lapflow_mot_xl_2.json",
+      "config_sha256": "2676bdd21e5ece546e9c9e550aaf07a1f89d8a53e16e0ebad7bb7c13443fc09f",
+      "template": "configs/paper_recipes/lapflow_mot_xl_2.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          4,
+          32,
+          32
+        ],
+        "global_batch": null,
+        "budget": null,
+        "optimizer": {
+          "lr": 0.0005,
+          "weight_decay": 0.0,
+          "ema_decay": 0.9,
+          "grad_clip": 1.0,
+          "randomness": "native_global"
+        },
+        "seed": 1024,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "lapflow_imagenet_xl_2_paper",
+      "paper": "lapflow",
+      "config": "lapflow_imagenet_xl_2_paper.json",
+      "config_sha256": "42ae81ec1cfc0da81b94d6e69a526192642646895c3b4464b172e1ee3dde6ecf",
+      "template": "configs/paper_recipes/lapflow_imagenet_xl_2_paper.json",
+      "fair_eligible": true,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          4,
+          32,
+          32
+        ],
+        "global_batch": 256,
+        "budget": "120 epochs",
+        "optimizer": {
+          "lr": 0.0001,
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "grad_clip": 1.0,
+          "randomness": "native_global"
+        },
+        "seed": 1024,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "ssd_celeba64",
+      "paper": "ssd",
+      "config": "ssd_celeba64.json",
+      "config_sha256": "649ec4e4ae2d7935790ad358af882f2505ae33822fcc05a195cec44897d65250",
+      "template": "configs/paper_recipes/ssd_celeba64.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "CelebA 64x64, official train split required",
+        "shape": [
+          3,
+          64,
+          64
+        ],
+        "global_batch": 64,
+        "budget": null,
+        "optimizer": {
+          "lr": 0.0001,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "randomness": "native_global"
+        },
+        "seed": null,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "mdm_cc12m256",
+      "paper": "mdm",
+      "config": "mdm_cc12m256.json",
+      "config_sha256": "c19fb54f557f15ae034ed32baa33b75da213c0b29ba04f839d31753d762a4171",
+      "template": "configs/paper_recipes/mdm_cc12m256.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "CC12M released 256 YAML; not the Flickr50M checkpoint run",
+        "shape": [
+          3,
+          256,
+          256
+        ],
+        "global_batch": null,
+        "budget": 1000000,
+        "optimizer": {
+          "lr": 5e-05,
+          "optimizer_name": "adam",
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "grad_clip": 2.0,
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 10000,
+            "offset": 0,
+            "minimum_step": 1
+          },
+          "accumulation_normalization": "sum",
+          "randomness": "native_global"
+        },
+        "seed": null,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "mdm_cc12m1024",
+      "paper": "mdm",
+      "config": "mdm_cc12m1024.json",
+      "config_sha256": "9a7f95b50812e3d47857881a2e5f3e417e9c72e54016d2407a55bb19b035c9ee",
+      "template": "configs/paper_recipes/mdm_cc12m1024.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "CC12M released 1024 YAML; not the Flickr50M checkpoint run",
+        "shape": [
+          3,
+          1024,
+          1024
+        ],
+        "global_batch": null,
+        "budget": 1000000,
+        "optimizer": {
+          "lr": 5e-05,
+          "optimizer_name": "adam",
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "grad_clip": 2.0,
+          "lr_schedule": {
+            "name": "warmup",
+            "warmup_steps": 10000,
+            "offset": 0,
+            "minimum_step": 1
+          },
+          "accumulation_normalization": "mean",
+          "randomness": "native_global",
+          "precision": "float16"
+        },
+        "seed": null,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "rdd_unified_xl_300_300_400",
+      "paper": "rdd",
+      "config": "rdd_unified_xl_300_300_400.json",
+      "config_sha256": "395e022f9332ccae828294b74d9a11a3bc6055fd7c95c44f10a7f6daf0b30d89",
+      "template": "configs/paper_recipes/rdd_unified_xl_300_300_400.json",
+      "fair_eligible": true,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          4,
+          32,
+          32
+        ],
+        "global_batch": null,
+        "budget": null,
+        "optimizer": {
+          "lr": 0.0001,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "randomness": "native_global"
+        },
+        "seed": 0,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "diffusability_se24",
+      "paper": "diffusability",
+      "config": "diffusability_se24.json",
+      "config_sha256": "081bd5e365c0f6a22aedafd11b0e3037912386a849c5ec2f3b6c3e4b7793b5a2",
+      "template": "configs/paper_recipes/diffusability_se24.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "Unbound dataset: SE2/4 codec component, no identified best training run",
+        "shape": [
+          3,
+          256,
+          256
+        ],
+        "global_batch": null,
+        "budget": null,
+        "optimizer": {
+          "lr": 0.0001,
+          "ema_decay": 0.0,
+          "randomness": "native_global"
+        },
+        "seed": null,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "relay_imagenet_low",
+      "paper": "relay",
+      "config": "relay_imagenet_low.json",
+      "config_sha256": "67739c415fbe825d77c543bf63bf364867b75e528a66713c91939bb505234d87",
+      "template": "configs/paper_recipes/relay_imagenet_low.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "ImageNet 64x64 native ZIP",
+        "shape": [
+          3,
+          64,
+          64
+        ],
+        "global_batch": 4096,
+        "budget": null,
+        "optimizer": {
+          "lr": 0.0001,
+          "optimizer_name": "adam",
+          "weight_decay": 0.0,
+          "image_count_multiplier": 8,
+          "accumulation_steps": 16,
+          "ema_style": "source_lerp",
+          "ema_schedule": {
+            "name": "image_halflife",
+            "half_life_images": 50000000,
+            "rampup_ratio": 0.05
+          },
+          "lr_schedule": {
+            "name": "image_warmup",
+            "warmup_images": 10000000
+          },
+          "loss_multiplier": 0.78125,
+          "gradient_repair": {
+            "nan": 0.0,
+            "posinf": 100000.0,
+            "neginf": -100000.0
+          },
+          "loss_reduction": "sum",
+          "randomness": "native_global"
+        },
+        "seed": null,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "relay_imagenet_high",
+      "paper": "relay",
+      "config": "relay_imagenet_high.json",
+      "config_sha256": "c4472a7072835b9398cd614fa7aac79ac5d27ada81e94817b59097e437c329d6",
+      "template": "configs/paper_recipes/relay_imagenet_high.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 native ZIP",
+        "shape": [
+          3,
+          256,
+          256
+        ],
+        "global_batch": 4096,
+        "budget": null,
+        "optimizer": {
+          "lr": 0.0001,
+          "optimizer_name": "adam",
+          "weight_decay": 0.0,
+          "image_count_multiplier": 8,
+          "accumulation_steps": 64,
+          "ema_style": "source_lerp",
+          "ema_schedule": {
+            "name": "image_halflife",
+            "half_life_images": 500000,
+            "rampup_ratio": 0.05
+          },
+          "lr_schedule": {
+            "name": "image_warmup",
+            "warmup_images": 10000000
+          },
+          "loss_multiplier": 0.00390625,
+          "gradient_repair": {
+            "nan": 0.0,
+            "posinf": 100000.0,
+            "neginf": -100000.0
+          },
+          "loss_reduction": "sum",
+          "randomness": "native_global"
+        },
+        "seed": null,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "rmd_wan13b",
+      "paper": "rmd",
+      "config": "rmd_wan13b.json",
+      "config_sha256": "f7fdd9505a5e64d832e5b3e4e6bff5c857b88dc0cc5d2b76996f837f3c7d1011",
+      "template": "configs/paper_recipes/rmd_wan13b.json",
+      "fair_eligible": false,
+      "paper_contract": {
+        "dataset": "Prompt-only input; exact released prompt corpus must be bound, not a real-video dataset",
+        "shape": [
+          16,
+          21,
+          60,
+          104
+        ],
+        "global_batch": 8,
+        "budget": 300,
+        "optimizer": {
+          "lr": 5e-06,
+          "fake_lr": 2e-05,
+          "betas": [
+            0.0,
+            0.95
+          ],
+          "weight_decay": 0.0001,
+          "eps": 1e-08,
+          "grad_clip": 1.0
+        },
+        "seed": null,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "rdd_unified_l_300_300_400",
+      "paper": "rdd",
+      "config": "rdd_unified_l_300_300_400.json",
+      "config_sha256": "762b84c0f8582ba6ed12a87383e9131462418fd2237e4b08c446467c6baa7b7c",
+      "template": "configs/paper_recipes/rdd_unified_xl_300_300_400.json",
+      "fair_eligible": true,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          4,
+          32,
+          32
+        ],
+        "global_batch": null,
+        "budget": null,
+        "optimizer": {
+          "lr": 0.0001,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "randomness": "native_global"
+        },
+        "seed": 0,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    },
+    {
+      "id": "pixelflow_xl_c2i_paper_dopri5",
+      "paper": "pixelflow",
+      "config": "pixelflow_xl_c2i_paper_dopri5.json",
+      "config_sha256": "57c38a2d942e89cf8deca1e3ecab5680a6a662bf090e0488a56b19cfa1d6ea6a",
+      "template": "configs/paper_recipes/pixelflow_xl_c2i.json",
+      "fair_eligible": true,
+      "paper_contract": {
+        "dataset": "ImageNet 256x256 (selected released image profile)",
+        "shape": [
+          3,
+          256,
+          256
+        ],
+        "global_batch": null,
+        "budget": "10 epochs",
+        "optimizer": {
+          "lr": 0.0001,
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "grad_clip": 1.0,
+          "precision": "bfloat16",
+          "randomness": "native_global"
+        },
+        "seed": 42,
+        "world_size": 1,
+        "implementation_scope": "shared lifecycle + pinned author source core; NOT unmodified author CLI"
+      },
+      "full_paper_result_certified": false,
+      "author_cli_lifecycle_certified": false
+    }
+  ],
+  "unreleased": [
+    {
+      "id": "fdm",
+      "title": "f-DM",
+      "paper_url": "https://arxiv.org/abs/2210.04955",
+      "reason": "Author project Code & Data remains coming soon; no executable official implementation confirmed."
+    },
+    {
+      "id": "edify",
+      "title": "Edify Image",
+      "paper_url": "https://arxiv.org/abs/2411.07126",
+      "reason": "No executable official implementation of this technical report confirmed."
+    },
+    {
+      "id": "pddpm",
+      "title": "Pyramidal Denoising Diffusion Probabilistic Models",
+      "paper_url": "https://arxiv.org/abs/2208.01864",
+      "reason": "No executable official implementation confirmed."
+    },
+    {
+      "id": "fresco",
+      "title": "From Sketch to Fresco",
+      "paper_url": "https://arxiv.org/abs/2601.07462",
+      "reason": "Downloaded official repository has README/LICENSE only; executable release pending."
+    },
+    {
+      "id": "avits",
+      "title": "AViTS",
+      "paper_url": "https://arxiv.org/abs/2608.17995",
+      "reason": "Downloaded official repository is README only; executable release pending."
+    },
+    {
+      "id": "ddit",
+      "title": "DDiT",
+      "paper_url": "https://arxiv.org/abs/2602.16968",
+      "reason": "No executable official implementation confirmed."
+    },
+    {
+      "id": "cat",
+      "title": "CAT: Content-Adaptive Image Tokenization",
+      "paper_url": "https://arxiv.org/abs/2501.03120",
+      "reason": "No executable official implementation confirmed."
+    },
+    {
+      "id": "lot",
+      "title": "LoT: Level-of-Token Diffusion",
+      "paper_url": "https://arxiv.org/abs/2610.05816",
+      "reason": "2026-10-05 paper/project; project has no executable code link at audit."
+    }
+  ],
+  "coverage_reference": "PAPER_COVERAGE.json",
+  "policies": {
+    "default_action": "plan",
+    "download_models": false,
+    "download_data": false,
+    "gpu_policy": "Previous authorization expired; CPU only until explicit renewal with deadline.",
+    "best_result_guaranteed": false,
+    "shared_frontend_is_author_cli": false,
+    "limitations": [
+      "Single-process matched-core runner; multi-rank author lifecycle is not certified.",
+      "Fair-rdd preserves each architecture/codec/initialization/target/path/sampler; not a common-backbone ablation.",
+      "Equal updates/global batch imply equal images, NOT equal FLOPs or pretrained cost.",
+      "Small FP32 synthetic checks cannot guarantee full-training FID, BF16/CUDA/DDP equivalence."
+    ]
+  }
+}

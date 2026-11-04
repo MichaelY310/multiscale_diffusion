@@ -1,0 +1,71 @@
+{
+  "name": "pyramid_flow_video_grid_dit",
+  "image_shape": [
+    3,
+    5,
+    32,
+    32
+  ],
+  "model": {
+    "name": "grid_dit",
+    "args": {
+      "channels": 3,
+      "width": 96,
+      "depth": 2,
+      "num_heads": 4,
+      "patch": [
+        1,
+        2,
+        2
+      ],
+      "position": "sincos",
+      "max_stages": 3,
+      "heads": null,
+      "product_order": "coarse_first",
+      "causal_scales": false
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "ema_decay": 0.999,
+      "grad_clip": 1.0
+    },
+    "time_sampler": {
+      "name": "uniform"
+    }
+  },
+  "evidence": {
+    "claim": "controlled_common_backbone_mathematical_recipe",
+    "not_a_paper_best_result_recipe": true,
+    "no_asset_downloads": true,
+    "modality": "video",
+    "architecture_transplant": true,
+    "source_method": "pyramid_flow"
+  },
+  "task": "multires",
+  "grids": [
+    [
+      5,
+      8,
+      8
+    ],
+    [
+      5,
+      16,
+      16
+    ],
+    [
+      5,
+      32,
+      32
+    ]
+  ],
+  "first_frame": false,
+  "process": {
+    "name": "pyramid_flow",
+    "args": {
+      "steps": 20
+    }
+  }
+}

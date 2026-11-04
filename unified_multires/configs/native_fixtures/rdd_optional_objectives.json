@@ -1,0 +1,149 @@
+{
+  "training_stages": [
+    {
+      "input": {
+        "name": "average_pool",
+        "args": {
+          "factor": 1,
+          "detach": false
+        }
+      },
+      "time_sampler": {
+        "name": "loss_second_moment",
+        "args": {
+          "steps": 8,
+          "adaptive": true,
+          "history_per_term": 2
+        }
+      },
+      "method": {
+        "batch": {
+          "name": "rdd_ddpm",
+          "args": {
+            "path": {
+              "betas": [
+                0.011867666559634338,
+                0.030691984667434835,
+                0.04973948605835676,
+                0.06938500062512098,
+                0.09005077025659691,
+                0.11224500519420644,
+                0.13661659784350166,
+                0.16403942906691593
+              ],
+              "timestep_map": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "drift_start": 0,
+              "drift_end": 8
+            },
+            "learned_variance": true,
+            "loss_weighting": "p2",
+            "repa_weight": 0.25
+          }
+        }
+      }
+    },
+    {
+      "input": {
+        "name": "average_pool",
+        "args": {
+          "factor": 2,
+          "detach": true
+        }
+      },
+      "time_sampler": {
+        "name": "loss_second_moment",
+        "args": {
+          "steps": 8,
+          "adaptive": true,
+          "history_per_term": 2
+        }
+      },
+      "method": {
+        "batch": {
+          "name": "rdd_ddpm",
+          "args": {
+            "path": {
+              "betas": [
+                0.1957511920392082,
+                0.23359644720172734,
+                0.28048027775349105,
+                0.3412777981977102,
+                0.42480913269968523,
+                0.5484435949551645,
+                0.7476134459263286,
+                0.999
+              ],
+              "timestep_map": [
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15
+              ],
+              "drift_start": null,
+              "drift_end": null
+            },
+            "learned_variance": true,
+            "loss_weighting": "p2",
+            "repa_weight": 0.25
+          }
+        }
+      }
+    }
+  ],
+  "training_stage_reduction": "sum_stage_means",
+  "name": "RDD optional objective conformance fixture",
+  "model": {
+    "name": "native_rdd_unified",
+    "args": {
+      "patch_size": 2,
+      "in_channels": 4,
+      "hidden_size": 32,
+      "depth": 2,
+      "num_heads": 4,
+      "class_dropout_prob": 0.1,
+      "learn_sigma": true,
+      "base_size": 8,
+      "repa_dim": 8,
+      "repa_depth": 1,
+      "repa_projector_dim": 32
+    }
+  },
+  "image_shape": [
+    4,
+    16,
+    16
+  ],
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "randomness": "native_global"
+    },
+    "time_sampler": {
+      "name": "none"
+    },
+    "conditioning": {
+      "y": {
+        "kind": "labels",
+        "classes": 1000
+      },
+      "teacher_features": {
+        "kind": "field",
+        "field": "teacher_features",
+        "destination": "context"
+      }
+    }
+  }
+}

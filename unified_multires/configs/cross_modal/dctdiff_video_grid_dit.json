@@ -1,0 +1,74 @@
+{
+  "name": "dctdiff_video_grid_dit",
+  "image_shape": [
+    3,
+    5,
+    32,
+    32
+  ],
+  "model": {
+    "name": "grid_dit",
+    "args": {
+      "channels": 24,
+      "width": 96,
+      "depth": 2,
+      "num_heads": 4,
+      "patch": [
+        1,
+        2,
+        2
+      ],
+      "position": "sincos",
+      "max_stages": 1,
+      "heads": null,
+      "product_order": "coarse_first",
+      "causal_scales": false
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "ema_decay": 0.999,
+      "grad_clip": 1.0
+    },
+    "time_sampler": {
+      "name": "uniform"
+    }
+  },
+  "evidence": {
+    "claim": "controlled_common_backbone_mathematical_recipe",
+    "not_a_paper_best_result_recipe": true,
+    "no_asset_downloads": true,
+    "modality": "video",
+    "architecture_transplant": true,
+    "source_method": "dctdiff"
+  },
+  "target": {
+    "name": "joint",
+    "args": {
+      "quantity": "epsilon"
+    }
+  },
+  "representation": {
+    "name": "dct_ycbcr_grid",
+    "args": {
+      "resolution": 32,
+      "block": 4,
+      "frequencies": 4,
+      "bound": 256.0
+    }
+  },
+  "clock": {
+    "name": "linear",
+    "args": {
+      "network_scale": 999.0
+    }
+  },
+  "sampler": {
+    "name": "dctdiff_dpm",
+    "args": {
+      "steps": 20,
+      "snr_scale": 4.0
+    }
+  }
+}

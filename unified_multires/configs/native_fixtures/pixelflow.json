@@ -1,0 +1,67 @@
+{
+  "name": "pixelflow",
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "model": {
+    "name": "adapter",
+    "args": {
+      "model": {
+        "name": "native_pixelflow",
+        "args": {
+          "in_channels": 3,
+          "out_channels": 3,
+          "num_attention_heads": 2,
+          "attention_head_dim": 16,
+          "depth": 2,
+          "patch_size": 2,
+          "num_classes": 1000
+        }
+      },
+      "time_keyword": "timestep"
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "betas": [
+        0.9,
+        0.99
+      ],
+      "weight_decay": 0.01,
+      "ema_decay": 0.99,
+      "grad_clip": 1.0
+    },
+    "time_sampler": {
+      "name": "discrete"
+    },
+    "conditioning": {
+      "class_labels": {
+        "kind": "labels",
+        "classes": 1000,
+        "destination": "context"
+      }
+    }
+  },
+  "batch": {
+    "name": "pixelflow",
+    "args": {
+      "stages": 3
+    }
+  },
+  "sampler": {
+    "name": "pixelflow",
+    "args": {
+      "stages": 3,
+      "steps": 4,
+      "guidance_scale": 0.0
+    }
+  },
+  "evidence": {
+    "claim": "native_algorithm_small_architecture_fixture",
+    "not_a_paper_quality_checkpoint": true,
+    "no_downloads": true
+  }
+}

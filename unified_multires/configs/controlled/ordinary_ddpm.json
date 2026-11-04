@@ -1,0 +1,58 @@
+{
+  "name": "ordinary_ddpm",
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "model": {
+    "name": "tiny_conv",
+    "args": {
+      "channels": 3,
+      "width": 32
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "betas": [
+        0.9,
+        0.99
+      ],
+      "weight_decay": 0.01,
+      "ema_decay": 0.99,
+      "grad_clip": 1.0
+    },
+    "time_sampler": {
+      "name": "discrete",
+      "args": {
+        "steps": 16
+      }
+    }
+  },
+  "batch": {
+    "name": "rdd_ddpm",
+    "args": {
+      "path": {
+        "steps": 16,
+        "beta_start": 0.001,
+        "beta_end": 0.02
+      }
+    }
+  },
+  "sampler": {
+    "name": "rdd_ddpm",
+    "args": {
+      "path": {
+        "steps": 16,
+        "beta_start": 0.001,
+        "beta_end": 0.02
+      }
+    }
+  },
+  "evidence": {
+    "claim": "controlled_backbone_reference",
+    "not_a_paper_quality_checkpoint": true,
+    "no_downloads": true
+  }
+}

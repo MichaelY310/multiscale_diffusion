@@ -1,0 +1,109 @@
+{
+  "name": "pixelflow",
+  "image_shape": [
+    3,
+    256,
+    256
+  ],
+  "model": {
+    "name": "adapter",
+    "args": {
+      "model": {
+        "name": "native_pixelflow",
+        "args": {
+          "num_attention_heads": 16,
+          "attention_head_dim": 72,
+          "in_channels": 3,
+          "out_channels": 3,
+          "depth": 28,
+          "num_classes": 1000,
+          "patch_size": 4,
+          "attention_bias": true
+        }
+      },
+      "time_keyword": "timestep"
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "weight_decay": 0.0,
+      "ema_decay": 0.9999,
+      "grad_clip": 1.0,
+      "precision": "bfloat16",
+      "randomness": "native_global"
+    },
+    "data": {
+      "crop": "pixelflow_random",
+      "horizontal_flip": true,
+      "flip_rng": "torch",
+      "normalization": "torchvision",
+      "expand_ratio": 1.125,
+      "shuffle": true,
+      "drop_last": true
+    },
+    "time_sampler": {
+      "name": "discrete",
+      "args": {
+        "steps": 1000
+      }
+    },
+    "conditioning": {
+      "class_labels": {
+        "kind": "labels",
+        "classes": 1000,
+        "destination": "context"
+      }
+    }
+  },
+  "batch": {
+    "name": "pixelflow",
+    "args": {
+      "stages": 4,
+      "patch": 4,
+      "attention_head_dim": 72
+    }
+  },
+  "sampler": {
+    "name": "pixelflow",
+    "args": {
+      "stages": 4,
+      "steps": [
+        30,
+        30,
+        30,
+        30
+      ],
+      "guidance_scale": 2.4,
+      "solver": "native_dopri5"
+    }
+  },
+  "evidence": {
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "pixelflow/configs/pixelflow_xl_c2i.yaml",
+        "sha256": "d5bdea12b157cf3d2e6bb579970515332474674825fd835abde1117aff5925e1"
+      },
+      {
+        "file": "pixelflow/train.py",
+        "sha256": "afa2ffa19e0b1590aa5f323414ebc56a204804044e59ea65baab66814ea6326d"
+      },
+      {
+        "file": "pixelflow/sample_ddp.py",
+        "sha256": "d7d2128d3d837a4ad74694f7d70a1376cf71fca69caca46ecdbc05656770d624"
+      },
+      {
+        "file": "pixelflow/pixelflow/data_in1k.py",
+        "sha256": "515bf41ce931ccd8f4105cbc741193e7f275dda81fcf4a11ae19e17ea1da0697"
+      }
+    ],
+    "notes": [
+      "Source recipe: 10 epochs, batch4 per rank; sample_ddp.py defaults30 steps per stage and CFG2.4. These public defaults are not certified optimal FID settings. GPU FlashAttention/bf16 is not covered by CPU SDPA parity."
+    ],
+    "author_global_batch": null,
+    "author_steps": "10 epochs"
+  }
+}

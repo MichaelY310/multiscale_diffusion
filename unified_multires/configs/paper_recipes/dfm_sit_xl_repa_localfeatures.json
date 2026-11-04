@@ -1,0 +1,121 @@
+{
+  "name": "dfm",
+  "image_shape": [
+    4,
+    32,
+    32
+  ],
+  "model": {
+    "name": "native_dfm",
+    "args": {
+      "input_size": 32,
+      "in_channels": 4,
+      "hidden_size": 1152,
+      "decoder_hidden_size": 1152,
+      "encoder_depth": 8,
+      "depth": 28,
+      "num_heads": 16,
+      "class_dropout_prob": 0.1,
+      "enable_repa": true,
+      "qk_norm": false,
+      "z_dims": [
+        768
+      ],
+      "projector_dim": 2048
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "weight_decay": 0.0,
+      "ema_decay": 0.9999,
+      "grad_clip": 1.0,
+      "precision": "float16",
+      "randomness": "native_global"
+    },
+    "data": {
+      "shuffle": true,
+      "image_size": 256,
+      "crop": "adm_center",
+      "horizontal_flip": true,
+      "flip_rng": "torch",
+      "normalization": "torchvision",
+      "drop_last": true
+    },
+    "time_sampler": {
+      "name": "dfm"
+    },
+    "conditioning": {
+      "y": {
+        "kind": "labels",
+        "classes": 1000
+      },
+      "teacher_features": {
+        "kind": "field",
+        "field": "teacher_features",
+        "wrap_list": true,
+        "destination": "context",
+        "phase": "train"
+      }
+    }
+  },
+  "batch": {
+    "name": "dfm",
+    "args": {
+      "native_debug_rng": true,
+      "repa_weight": 0.3
+    }
+  },
+  "representation": {
+    "name": "laplacian",
+    "args": {
+      "levels": 2,
+      "up": "bilinear",
+      "order": "coarse_first"
+    }
+  },
+  "clock": {
+    "name": "dfm",
+    "args": {
+      "steps": [
+        40,
+        10
+      ],
+      "thresholds": [
+        0.1
+      ]
+    }
+  },
+  "guidance": {
+    "name": "cfg_window",
+    "args": {
+      "scale": 1.5,
+      "low": 0.0,
+      "high": 1.0
+    }
+  },
+  "evidence": {
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dfm/train.py",
+        "sha256": "66a7e717d3f302545c278c3c6264551c8b774ec7642285614adab3d02d7cf43d"
+      },
+      {
+        "file": "dfm/models/sit_dfm.py",
+        "sha256": "0ba1ccabd64597fc7cfdfbc4a9baba932a794af5237e4071575daa368b3d8ebb"
+      },
+      {
+        "file": "dfm/loss.py",
+        "sha256": "6d0d0ffb21855ad54a3573f36940f9047f26bafd4ed08bdd34d80e026312f47c"
+      }
+    ],
+    "notes": [
+      "Local .pt contains latents, labels, conditions.teacher_features from the desired DINO teacher. This avoids constructing an unverified or downloaded teacher. VAE/teacher feature preprocessing must match the source dataset pipeline."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 400000
+  }
+}

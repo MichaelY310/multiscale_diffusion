@@ -1,0 +1,1009 @@
+{
+  "date": "2026-11-04",
+  "base_commit": "ec68633ffb121a9a8de714351153b8fde7675927",
+  "layout": {
+    "canonical_repository": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+    "unified_directory": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires",
+    "compatibility_symlinks": {
+      "../unified_multires": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires",
+      "../git_checkouts/multiscale_diffusion": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion"
+    }
+  },
+  "pytest": {
+    "existing_passed": 179,
+    "new_passed": 4,
+    "warnings": 97
+  },
+  "cli": {
+    "all_pass": true,
+    "checks": [
+      {
+        "name": "image_cli_train_sample",
+        "pass": true,
+        "shape": [
+          2,
+          3,
+          16,
+          16
+        ],
+        "updates": 2
+      },
+      {
+        "name": "resume_2_plus_2_equals_4",
+        "pass": true,
+        "comparison": "model/EMA/optimizer/samples torch.equal"
+      },
+      {
+        "name": "video_cli_train_sample",
+        "pass": true,
+        "shape": [
+          1,
+          4,
+          3,
+          16,
+          16
+        ],
+        "updates": 2
+      },
+      {
+        "name": "native_ddpm_relocation",
+        "pass": true,
+        "comparison": "model/EMA/optimizer/samples torch.equal",
+        "sample_sha256": "cf9c70f4fbfd15c416f332665eea2e2a79b4f7c11d680b971a7428bc0ddc04d4",
+        "shape": [
+          1,
+          4,
+          32,
+          32
+        ],
+        "configuration": "random width32 depth2; grids32/16/8; steps3/3/3"
+      },
+      {
+        "name": "native_fm_relocation",
+        "pass": true,
+        "comparison": "model/EMA/optimizer/samples torch.equal",
+        "sample_sha256": "faaf39667169fc7fe8540612371463121418efd4ced57fb4a1b816e08dbde315",
+        "shape": [
+          1,
+          4,
+          32,
+          32
+        ],
+        "configuration": "random width32 depth2; grids32/16/8; steps3/3/3"
+      },
+      {
+        "name": "main/ddpm_xl_fixed",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "main/dfm_xl_2",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "main/fdm_xl_5_cosine_assumption",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "main/fdm_xl_5_linear",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "main/flow_xl_fixed",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "main/lapflow_xl_2",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "main/nonuniform_haar_xl_4",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "main/pixelflow_xl_4",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "main/pyramid_flow_xl_3",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "main/pyramidal_wan_path_xl_3",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "main/rdd_ddpm_xl_legacy",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "main/ssd_xl_4_convex",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "controlled/fdm_xl_shared_3",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "controlled/pixelflow_xl_shared_3",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "controlled/pyramid_flow_xl_shared_3",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "controlled/pyramidal_wan_path_xl_shared_3",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "controlled/rdd_ddpm_xl_legacy",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      },
+      {
+        "name": "controlled/ssd_xl_shared_3",
+        "pass": true,
+        "status": "mathematical configuration valid; no network or data loaded"
+      }
+    ],
+    "commands": [
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-c",
+          "from umdiff.locations import rdd_root; print(rdd_root())"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "configure",
+          "--method",
+          "rdd",
+          "--shape",
+          "3,16,16",
+          "--backbone",
+          "grid_dit",
+          "--width",
+          "24",
+          "--depth",
+          "1",
+          "--attention-heads",
+          "3",
+          "--patch",
+          "1,2,2",
+          "--grids",
+          "[[8,8],[16,16]]",
+          "--sampling-steps",
+          "4",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/image.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "train",
+          "--config",
+          "/tmp/umdiff-layout-6jgs2n5g/image.json",
+          "--synthetic",
+          "--batch-size",
+          "2",
+          "--device",
+          "cpu",
+          "--steps",
+          "2",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/image/train"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "sample",
+          "--checkpoint",
+          "/tmp/umdiff-layout-6jgs2n5g/image/train/checkpoint.pt",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/image.pt",
+          "--count",
+          "2",
+          "--seed",
+          "0",
+          "--device",
+          "cpu"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "train",
+          "--config",
+          "/tmp/umdiff-layout-6jgs2n5g/image.json",
+          "--synthetic",
+          "--batch-size",
+          "2",
+          "--device",
+          "cpu",
+          "--steps",
+          "2",
+          "--resume",
+          "/tmp/umdiff-layout-6jgs2n5g/image/train/checkpoint.pt",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/resumed"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "train",
+          "--config",
+          "/tmp/umdiff-layout-6jgs2n5g/image.json",
+          "--synthetic",
+          "--batch-size",
+          "2",
+          "--device",
+          "cpu",
+          "--steps",
+          "4",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/full"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "sample",
+          "--checkpoint",
+          "/tmp/umdiff-layout-6jgs2n5g/resumed/checkpoint.pt",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/resumed.pt",
+          "--count",
+          "1",
+          "--seed",
+          "0",
+          "--device",
+          "cpu"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "sample",
+          "--checkpoint",
+          "/tmp/umdiff-layout-6jgs2n5g/full/checkpoint.pt",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/full.pt",
+          "--count",
+          "1",
+          "--seed",
+          "0",
+          "--device",
+          "cpu"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "configure",
+          "--method",
+          "rdd",
+          "--shape",
+          "4,3,16,16",
+          "--backbone",
+          "grid_dit",
+          "--width",
+          "24",
+          "--depth",
+          "1",
+          "--attention-heads",
+          "3",
+          "--patch",
+          "1,2,2",
+          "--grids",
+          "[[3,8,8],[3,16,16]]",
+          "--sampling-steps",
+          "4",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/video.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "train",
+          "--config",
+          "/tmp/umdiff-layout-6jgs2n5g/video.json",
+          "--synthetic",
+          "--batch-size",
+          "1",
+          "--device",
+          "cpu",
+          "--steps",
+          "2",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/video/train"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "sample",
+          "--checkpoint",
+          "/tmp/umdiff-layout-6jgs2n5g/video/train/checkpoint.pt",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/video.pt",
+          "--count",
+          "1",
+          "--seed",
+          "0",
+          "--device",
+          "cpu"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "train",
+          "--config",
+          "/tmp/umdiff-layout-6jgs2n5g/native_ddpm.json",
+          "--synthetic",
+          "--steps",
+          "2",
+          "--batch-size",
+          "2",
+          "--device",
+          "cpu",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/ddpm_canonical"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "sample",
+          "--checkpoint",
+          "/tmp/umdiff-layout-6jgs2n5g/ddpm_canonical/checkpoint.pt",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/ddpm_canonical/sample.pt",
+          "--count",
+          "1",
+          "--seed",
+          "0",
+          "--device",
+          "cpu",
+          "--labels",
+          "17"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "train",
+          "--config",
+          "/tmp/umdiff-layout-6jgs2n5g/native_ddpm.json",
+          "--synthetic",
+          "--steps",
+          "2",
+          "--batch-size",
+          "2",
+          "--device",
+          "cpu",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/ddpm_relocated"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "sample",
+          "--checkpoint",
+          "/tmp/umdiff-layout-6jgs2n5g/ddpm_relocated/checkpoint.pt",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/ddpm_relocated/sample.pt",
+          "--count",
+          "1",
+          "--seed",
+          "0",
+          "--device",
+          "cpu",
+          "--labels",
+          "17"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "train",
+          "--config",
+          "/tmp/umdiff-layout-6jgs2n5g/native_fm.json",
+          "--synthetic",
+          "--steps",
+          "2",
+          "--batch-size",
+          "2",
+          "--device",
+          "cpu",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/fm_canonical"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "sample",
+          "--checkpoint",
+          "/tmp/umdiff-layout-6jgs2n5g/fm_canonical/checkpoint.pt",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/fm_canonical/sample.pt",
+          "--count",
+          "1",
+          "--seed",
+          "0",
+          "--device",
+          "cpu",
+          "--labels",
+          "17"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "train",
+          "--config",
+          "/tmp/umdiff-layout-6jgs2n5g/native_fm.json",
+          "--synthetic",
+          "--steps",
+          "2",
+          "--batch-size",
+          "2",
+          "--device",
+          "cpu",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/fm_relocated"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/tmp/umdiff-layout-6jgs2n5g/arbitrary_checkout_name",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff",
+          "sample",
+          "--checkpoint",
+          "/tmp/umdiff-layout-6jgs2n5g/fm_relocated/checkpoint.pt",
+          "--output",
+          "/tmp/umdiff-layout-6jgs2n5g/fm_relocated/sample.pt",
+          "--count",
+          "1",
+          "--seed",
+          "0",
+          "--device",
+          "cpu",
+          "--labels",
+          "17"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/main/ddpm_xl_fixed.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/main/dfm_xl_2.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/main/fdm_xl_5_cosine_assumption.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/main/fdm_xl_5_linear.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/main/flow_xl_fixed.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/main/lapflow_xl_2.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/main/nonuniform_haar_xl_4.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/main/pixelflow_xl_4.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/main/pyramid_flow_xl_3.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/main/pyramidal_wan_path_xl_3.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/main/rdd_ddpm_xl_legacy.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/main/ssd_xl_4_convex.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/controlled/fdm_xl_shared_3.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/controlled/pixelflow_xl_shared_3.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/controlled/pyramid_flow_xl_shared_3.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/controlled/pyramidal_wan_path_xl_shared_3.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/controlled/rdd_ddpm_xl_legacy.json"
+        ],
+        "exit_code": 0
+      },
+      {
+        "cwd": "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion",
+        "command": [
+          "/scr/yuheng/bugswarm/FastVideo/.venv/bin/python",
+          "-m",
+          "umdiff.experiment",
+          "plan",
+          "--config",
+          "/scr/yuheng/bugswarm/rdd_workspace_20261005/multiscale_diffusion/unified_multires/configs/comparison_imagenet256/controlled/ssd_xl_shared_3.json"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "temporary_payloads_removed": true,
+    "gpu_used": false,
+    "model_or_dataset_downloads": false,
+    "scope": "Relocation/CLI smoke; not a new author-parity or formal quality certificate"
+  },
+  "source_verification": {
+    "repositories": 23,
+    "files": 2172,
+    "all_existing_verified": true
+  },
+  "syntax": {
+    "python_files": 188,
+    "shell_files": 5
+  },
+  "source_sha256": {
+    "unified_multires/activate.sh": "bfa877f816db992f9df6034648b379802aacb1cb499cbdc97d89eb2d3bfee6d9",
+    "unified_multires/activate_cpu.sh": "dc446b4bb6d3b1f89bb3c4b95149b017332748ce98340c5fb8757a47a13ea004",
+    "unified_multires/examples/__init__.py": "2a302cb09b1f4d514a6f4cf8b9448396aec51c4cefa5c0b20cd832e472754b21",
+    "unified_multires/examples/custom_components.py": "ef874753b02be9e2c1670e270facd882fd9eac38ac2dab891d3ec95cd6d6f049",
+    "unified_multires/prepare_gpu_checks.sh": "01f8b3d33843f5f4458a09c267f3c3056ade1f05937cac677863218232d2556b",
+    "unified_multires/pyproject.toml": "b9063b873cb32ad5bdc34d3175c6e794347d905b6a3d17f94713b67dc2fccb91",
+    "unified_multires/research/rdd_fm_integrator.py": "ae3446ceb4e9057a04ffaad40214869caa1096c32016aae66b8e59030d8627fb",
+    "unified_multires/run_cpu_layer_parity.sh": "47db3674cffcbb7212f7cfa1343f8822727ddc6921eaec3c2911f310d3081eff",
+    "unified_multires/run_original_papers.sh": "f3efa7f1677ab48a19baf9a414b0f05764143ba973d8985ac1cd00dbf604f93a",
+    "unified_multires/run_scoped_cpu_validation.sh": "7f67dc1ad6430a21b36945b6814d1712c08a26da7c0630069af7c25036a36d84",
+    "unified_multires/run_supported_reproduction_checks.sh": "c54ed2399da4c52cbe1113417b648d4d0c71ae7e03c81a72670f47f37c81e30d",
+    "unified_multires/run_unified_papers.sh": "5a1721d065381aabcc7f234682344d92e4c0cec46d4b201d0f3684108b15de03",
+    "unified_multires/tests/test_comparison_models.py": "2cac761aa31599dae1422a4ec847e15470e66dbb2c1b74be2f2ecf3d9396f307",
+    "unified_multires/tests/test_component_contracts.py": "2c9001f94d8ca02660a761b9c56fdbe38bcd5db7369f5a06ce5d9d52058d0c71",
+    "unified_multires/tests/test_cross_modal.py": "a49f33a9ada79c17699bd99dfa731a6d5332ed584562d0fa1639f403538ee4fd",
+    "unified_multires/tests/test_cross_modal_cli.py": "5995d5892ca0ae03aac4aa5befccab1f057ac5a4487278932a57cf70d178e9f8",
+    "unified_multires/tests/test_experiment_entrypoint.py": "2508f73fb271280733c27c5978daaaaec911c77c916217d3a420b854ade5d194",
+    "unified_multires/tests/test_repository_layout.py": "ccf6961c28945d5e12043583837fd8626a0ac6c9f736d28adf2e8dbeb2f1fea4",
+    "unified_multires/tests/test_sampling_rng.py": "a4ae289829a63f949b6067ebf0765f38df2c01808bce8ee0f1b59256df1078ff",
+    "unified_multires/tools/acquire_sources.py": "bba7348798cc85ebed3113ff6c73d07d42b8dd0d9ca0364e0a404d66f3d6eb6f",
+    "unified_multires/tools/activation_trace.py": "14194d1378f68846e89d094e8e5fee143722c734a3f1ccbcb0483ac524c3b7ca",
+    "unified_multires/tools/audit_author_reader_contracts.py": "9bd2e0e3a7c4f1fb91e1d341459379184e413d801ed1daf68006cd377ce190f5",
+    "unified_multires/tools/audit_comparator_negative_controls.py": "75ede1e9a414c1336eba9e1de7558d09d568a2021c07b22392e56fb2a42dcfc3",
+    "unified_multires/tools/audit_compatibility_gaps.py": "31d17b3118daebaa77348c1348145282c991a0bb43cf01c8c19b321ab8f18d6b",
+    "unified_multires/tools/audit_current_profile_configs.py": "ebb3376fd85f34a29484a2a647b362fc2d47a66d069a4f3f195445a1bd0ca49c",
+    "unified_multires/tools/audit_dopri5_sampling.py": "c20dea3192f69cc9ac41baa2cc07b893b95c2b03f9ab38693b1104dd5e24c9d2",
+    "unified_multires/tools/audit_rdd_distributed_sampler.py": "ea2247b0fd6881e8dbffc379232ed90b022c9551fdd8a1515b2bebc5d997d803",
+    "unified_multires/tools/audit_rdd_sampling_scope_20261104.py": "8426f257eeac0e2b2eb591d922de12a3c34487151b9c750243716e1f261916a3",
+    "unified_multires/tools/audit_scoped_source_integrity.py": "9a5547e76cb8a4ab55a068a4f196d1a9d554dd2cf538801e1b72f348f3f8aa7e",
+    "unified_multires/tools/audit_scoped_trace_reports.py": "3d69408545e48f7896cc2d14960d6ea9264ba08ac5369505b5af309aa9fbf36d",
+    "unified_multires/tools/audit_snapshot_compatibility.py": "5eb3e5d3d68aa153455be69a2b09757a57c12bc5eb1b4caa541e99cdd2e8c74d",
+    "unified_multires/tools/audit_supported_profile_configs.py": "c502b417bba05744427c614d0fe4d3fac50de58ce27271f650fc1fa7b6e83420",
+    "unified_multires/tools/author_cli_plans.py": "396c51581635ef53ae4dbabaf7c0a3644844a4eac8f7e412006928da78d87af0",
+    "unified_multires/tools/build_activation_report.py": "57a39a06fbb3518c649717a14cf5e0eda92a78d8010666900ad2bb48ea4fb951",
+    "unified_multires/tools/build_compatibility_audit.py": "103251e32c858ba64d919fa922af38b65a8d00094f433ff1f4cdfc4b7f9c9e01",
+    "unified_multires/tools/build_cpu_completion_report.py": "215ba6a5e017ebae71a15745d76bded96c72a3e243249fec63e3fd6d38038ce4",
+    "unified_multires/tools/build_cross_modal_configs.py": "a762d4aca5d385d1c257febf1858da967bd279688ffd4ddebbc6c948982ebb62",
+    "unified_multires/tools/build_current_profile_report.py": "c856bb20130a5c9a34c1a05fc9d22d86cb53a1b6ef8126346f4bc2e1e2395177",
+    "unified_multires/tools/build_main_comparison.py": "39ef58f50bfc7122d85867785b0cc43cb20776c1e5e8d9f8e679642a3bd7738c",
+    "unified_multires/tools/build_paired_experiment_report.py": "b6f592bfd2d8942ddb8a615f46264b2232c41222d543d6d031474742ee961f5e",
+    "unified_multires/tools/build_paired_experiments.py": "daae359a5622d9ac81575ccfd50fcbbb9642dde3f1e0438076e7af9791888af0",
+    "unified_multires/tools/build_paper_recipes.py": "efde40c7d6bec80aa8b94b50cbbee0fe3339b39a97dbf38c87cfee3db6204fc2",
+    "unified_multires/tools/build_recipe_extension_report.py": "3897b42382b16d01db995d10015f3af241e29bea217aa624bdf044261033ea6e",
+    "unified_multires/tools/build_report.py": "e994f28433e8c77d9e66fd427ed578560ec2903770dc4b7bd0f4b2c6ee6ca0f5",
+    "unified_multires/tools/build_scoped_reproduction_report.py": "e5e531377dd2462e5da322ab37b0e784a4729ac3497663d9ffd3cf4b5df8d564",
+    "unified_multires/tools/build_strict_original_audit.py": "1b29883b0d0b36e0edcc872915960619e05c84cffd8036c15888014d84431292",
+    "unified_multires/tools/check_cross_modal_configs.py": "c860bada15715e66f8144a6b1086d2d9b6a21b81438180a666088997d26f55fb",
+    "unified_multires/tools/check_paper_recipes.py": "3aa5e545a63ad23d4e62eccef3d5eaf6d8ea771fb9bddf9919cadd72f4997e60",
+    "unified_multires/tools/classify_rdd_historical_boundaries_20261104.py": "cd089d8ddaa67521e2658e482c816ea0d9e8860d15bed9dd78fa51f9ea659066",
+    "unified_multires/tools/cleanup_cpu_parity_payloads.py": "b1878288aacfdd3224b1cb84a5735358c43543d3548afa77de82d2c3aee8e40f",
+    "unified_multires/tools/cleanup_paired_validation.py": "c40f47dc0a841ac0274a43a27b89a7f10060f46ae105472aafd8f461884c0a54",
+    "unified_multires/tools/compare_released_profiles.py": "9ee1fab0f298a7ea28ca6cbf5f04b89950f92464bc18c416ba660675862a7c89",
+    "unified_multires/tools/complete_current_cpu_matrix.py": "6009afbcb607e4d509a8ebc2e4391a441933c7d6d3d14813fd99b5911f6a8f26",
+    "unified_multires/tools/conformance.py": "2c92743379eac5a3bca9219b54e48a4ba1310eb2b534279b9a3aebbdf115e944",
+    "unified_multires/tools/conformance_additional.py": "e03c00c85b20f235a8b66a3d0505a41e83f72a5cb71b3ff604fa6ab867de5aaa",
+    "unified_multires/tools/conformance_more.py": "d3ac42ada8d5251b8967dfbb2be60ba55f8ceb9fb22bd14c5b26e02e71e594dd",
+    "unified_multires/tools/fetch_sources.py": "e01501340fed617ed36a4bb8e7288566f543a3aa23a9b3993b20d4ac21a1c3ab",
+    "unified_multires/tools/finalize_audit.py": "d3f12123a65465d1804dbf33a5c0952ed45ce96f2d30bd46612feeb62b291d0c",
+    "unified_multires/tools/import_legacy_rdd_checkpoint.py": "b5e98ba8a3521e29298ee4a82ffd9ae1837a78e3a34b3fbcf29ad2e34b9c1e3a",
+    "unified_multires/tools/import_legacy_rdd_multistage.py": "d9e038c0159e3aca5abb7f7d6690571756fd1808a2e734ba8b13542d510a888d",
+    "unified_multires/tools/make_presets.py": "b9059c1e7a2b70796d9fe47510e6a6e1a0d2d3cb1b3bec0e45054b42eeb7c99d",
+    "unified_multires/tools/paired_experiments.py": "00fd2669c1a6c3b8d10d1fac9db100e25ae6db42c8868a19d6bcaf824d2a2eab",
+    "unified_multires/tools/prepare_dct_statistics.py": "0055147e7e702caab58517b66ecce4b551b9bf78be075d732c8b26d4ce48158d",
+    "unified_multires/tools/prepare_gpu_checks.py": "10b22a9d6268ee88b5de8c773da75a69f1c211710ad8a0970378a60d34d352c3",
+    "unified_multires/tools/probe_parity_claims.py": "e1ef2f3b0ab3e447226d978e895e8e2eb44263370adf904795861ce2b25ff8e3",
+    "unified_multires/tools/profile_comparison_core.py": "ccc3615d7e3e4e13c2fc0f7d73389222db78699d1ddb55de92ae0c115e958067",
+    "unified_multires/tools/record_cpu_parity_environment.py": "cb77313f2f9891b3380c0234dee129f3b17ed6494c2260b2f4fdfd4c0d8297b3",
+    "unified_multires/tools/record_source_review.py": "920f4b12dbaf057a6e0aa1a7bf1419a42106764b38bc63418321b7919ef84e9c",
+    "unified_multires/tools/render_paper_recipe.py": "9c70c2ab8e363d77b6d49c7cd38b014cd84a6b57de4634740e3b1467903c2a97",
+    "unified_multires/tools/run_sampling_parity.py": "cffcd384d37404e22c1230cf5f595f3e48307228f505a03eaf1208cfd4d40f67",
+    "unified_multires/tools/run_scoped_validation.py": "25621552f010c2f111c5fce9f0137b682affa77f2858a2aa2b65f07e7831dac2",
+    "unified_multires/tools/run_supported_reproduction_checks.py": "04426b17a82a56db5a0a4e43b7d3d9530eff2180efd1541ada1df43631bee2c9",
+    "unified_multires/tools/sampling_paper_oracles.py": "65e59c2883376a760fcf33853ebe1814f86e38318fbfdc1e3e8b7401e6d09561",
+    "unified_multires/tools/update_cpu_completion_handoffs.py": "a90d8f1ee8853abd2c8738c17d386a712f7c273a9a6002ace7a1f35282058b8c",
+    "unified_multires/tools/validate_activations.py": "4943744d2efaff0e9a801d3f7649083f60f1f45174527363fd66f88e89cb996f",
+    "unified_multires/tools/validate_all.py": "0427e0b5bdb4a07414001c2db3922517b1ad4252264e595ffdea23e5cb8a2d76",
+    "unified_multires/tools/validate_all_stage_sum.py": "187b4f838216e4d3a9f84906ddef1effdb984f2ab29cde7d5dfff2fed7f608f1",
+    "unified_multires/tools/validate_cat_api_contract.py": "1771ad4f490a0e2af7615509ad22c99f50b1e7986a10318c04332e080efbca58",
+    "unified_multires/tools/validate_cat_published_codec.py": "de77936c50a46143ce17a5cdc0f3efe810a160918c7124458804893752f0f711",
+    "unified_multires/tools/validate_cli.py": "8c2e67a161c8ce207bda41f97fdbecc0827adc52f57aedbf326782c699ec73fd",
+    "unified_multires/tools/validate_codec_boundaries.py": "c16c46dfb04be542c58b8bc763b30ca90b08cfe661a9ceaf42f0631fb70a77af",
+    "unified_multires/tools/validate_codec_fresh_process.py": "3c269434de146976bf1ec32d5c20692e51b53b44ae4f00f23b0b932b1c393651",
+    "unified_multires/tools/validate_comparison_dfm_policy.py": "105d271db43037de62976eac2e2f315531a8c5f02b3c79d2014a69b28bfef3f0",
+    "unified_multires/tools/validate_comparison_positions.py": "4c915ab36697b321c9bcf72f419f5f0c61bd11f47679a019dcf7f97e1144e2ef",
+    "unified_multires/tools/validate_comparison_sampling.py": "406b954be6d5453ef2fd14364da785fd9d2557b7a1658b13d3df4e41dcddc2b7",
+    "unified_multires/tools/validate_cpu_ddp.py": "62045b183d33dff9c604d299c272923b51289992cbab9558edadbe9fae6377d8",
+    "unified_multires/tools/validate_cpu_gap_fixes.py": "34f6c8c70c21a64c9ae658e47c4067383661fff74e5173d6fe6ba2f070334249",
+    "unified_multires/tools/validate_cpu_scaler.py": "c03c2a5dd89de1b03d7c4cfe79740d2b65bda7acf08244bf438caa4694bed47d",
+    "unified_multires/tools/validate_cross_modal.py": "4b68cac9b556a790d3071abf81436423d950c4eda417679a38acb5592a69e0d4",
+    "unified_multires/tools/validate_current_sampling.py": "5b2e98db4fa870bddcc943d0d286245e60bec977f965074d39c42f91b1257719",
+    "unified_multires/tools/validate_data_cli.py": "9dd3c1802b997c5df5ea497052ea82e2022318212b642f8f9d18c35be6b755de",
+    "unified_multires/tools/validate_dfm_current_rng.py": "b9378aa6b357350c8b32974175a0c8b3631abe6c48fb8ea9f9fc6befce126a48",
+    "unified_multires/tools/validate_dfm_rng.py": "09fbb4313b342de8707cdfd47fba6b98d02de22d1819daab062428c98482e6a9",
+    "unified_multires/tools/validate_dimr_rgb_pipeline.py": "f4c513a7378f6a7ca4aa44cde0d2645163bd50c73f3cfa768eb155c26e12f5c4",
+    "unified_multires/tools/validate_fresh_process_lifecycle.py": "745ad878ac949806938fae58e463d2b59c5ffc259cacb446f40c02c1113610dc",
+    "unified_multires/tools/validate_full_forward_backward.py": "536e31ade81c67335fe95ae906c47cd66a811af4556e0678206e10b49b20a49d",
+    "unified_multires/tools/validate_generic_components_current.py": "022f7508188720e1a2de43dfe7c020e4720765c3406b33073bb8ad241fde6306",
+    "unified_multires/tools/validate_gpu_preparation_policy.py": "88424d1c0eac46222fd732e4e483bfc4b6b76cedda4e2bd1cb535ea8ba3658b6",
+    "unified_multires/tools/validate_inference.py": "8d9fc8ab17d9176a8f1cce40261a61b488ad633d711a0fa47d6cd6052ab1b08f",
+    "unified_multires/tools/validate_main_comparison.py": "9cbbd5bedd0c4cef653ae69f45358fec269414220622f38fee1c6728b097f969",
+    "unified_multires/tools/validate_monorepo.py": "0626602de695109de7f450656410e4b48ce0ff920ba2a7af2ca1fc10003afd99",
+    "unified_multires/tools/validate_new_workflows_cli.py": "f699b32bae10f1862e0edaa0975850d7082c24cd41576f0d0dab378a134d4363",
+    "unified_multires/tools/validate_offline_entrypoints.py": "0d4d302b0877155d8c1e8587eff8fc7b3491f466ce2c7cf8d6093fd4ca5be04d",
+    "unified_multires/tools/validate_paired_experiments.py": "6617dad6f6e6d929d3a5e1a14209a03f13f4e49321b5a7f35a5a7ae70c854cd9",
+    "unified_multires/tools/validate_paired_launchers.py": "8e249929e14e122bcff181e7f6f95855ac24fc4a81f5c41eca5d62b0b154dbdf",
+    "unified_multires/tools/validate_ppflow_native_main.py": "ff4ff71b44167c6e39b24925c9e524f3019f290dc465b94806d661237ad4f041",
+    "unified_multires/tools/validate_profile_inference.py": "1b0d743552b33cc6ed6bbdd434773e1f7ca4e72da5adce3fe8513a9bf563d786",
+    "unified_multires/tools/validate_pyramid_rdd_integrators_20261102.py": "2a53880554ab8d14956851d58378ee41a9d5f6c26e28bd924b386b0ae2de2c03",
+    "unified_multires/tools/validate_pyramid_rdd_overlap_20261102.py": "528572fbe3af687d5da2cf511045a998a629509d831feaa3a4580f44f35c9ba8",
+    "unified_multires/tools/validate_pyramid_rdd_tradeoffs_20261103.py": "d519936bbc6c8f3b49afb59a2a2d6a086d647c219cda32f0c3c715a8dc55b61f",
+    "unified_multires/tools/validate_rdd_boundaries_20261104.py": "fd8dd07407d31586ec18b20f8952863232f1f7649a56d850e3a880f5e9592b18",
+    "unified_multires/tools/validate_rdd_checkpoint_import_20261104.py": "7e3afdc3757ecc5fa6f8fc785d6217a3a1ef985979fd5adf6aad3b12efc5967b",
+    "unified_multires/tools/validate_rdd_final_interfaces_20261104.py": "238606f79221fc8a83e1fa08446d29510ed3761cf309fb6dff1185ab462bf47c",
+    "unified_multires/tools/validate_rdd_fm_multistage_20261104.py": "b8b2fc31a467c505270992d628786235ccc68f42b628ffb7b1a310d447d13f92",
+    "unified_multires/tools/validate_rdd_fm_native_20261104.py": "7387f1c9526371cf08ff933bace6ca9300abebc2026c895e73050d5d019e3656",
+    "unified_multires/tools/validate_rdd_fm_solver_20261101.py": "724e832092c890e968811ae35dba06428c295ea0e16d0d326042afe8a2b8c7ed",
+    "unified_multires/tools/validate_rdd_multistage_import_20261104.py": "21381315cbdc97394537d205d65cef529d6131981a69a13b2f790fdc1104be1c",
+    "unified_multires/tools/validate_rdd_multistage_training_20261104.py": "ea884669742b8cd3b4e0f5dfc9b864f086a5cb998709d8d41909dcb44237119c",
+    "unified_multires/tools/validate_rdd_optional_objectives.py": "b96fbfbce167bbf58f17748f79897e1a37768ec67fe40df75951950b714ac7b7",
+    "unified_multires/tools/validate_rdd_pf_boundary_20261103.py": "475e0e37b7dad4fed6932d13176cc688da7641f5a5b3169457e74026a97ac168",
+    "unified_multires/tools/validate_recipe_auxiliary.py": "4cddbd035e5ed278c95217ccd6f137d392378e8b007bf62c4f0c7bf1edba5794",
+    "unified_multires/tools/validate_recipe_entrypoint.py": "d329e05b7a9c1c0d136b2bba1c000c9bbf11e4aad0437b25d6b61c7151491e55",
+    "unified_multires/tools/validate_recipe_extensions.py": "c6fbbbfe4bba1436953240921cf8617004da4b08618b02ed1854810a3d36fd8b",
+    "unified_multires/tools/validate_recipe_runtime.py": "2b2290a7d9c0cd71ceb581a49ec6428bd554bc8d59edae02e47c95eea4847e7c",
+    "unified_multires/tools/validate_remaining_inference.py": "e67167746d38a1af2b25aebd4c04a8696f4ead803cdb461b2f4bef5a0e958fd7",
+    "unified_multires/tools/validate_rmd.py": "cd5d3926560504ab0623f22860ff7d376c5606e79c70054db82b88e9b9e0068f",
+    "unified_multires/tools/validate_rmd_current_profile.py": "cd30a28b690e551a11935eb87a325c34542c00a06c9bd66d1a166c9d5c33f69a",
+    "unified_multires/tools/validate_rmd_fresh_process.py": "7e04b6b170e38c28e5dd31aebe7b5849bda157a51120189cd582fefc447342a4",
+    "unified_multires/tools/validate_rmd_local_assets.py": "26f8f70c8671f87fc788617064c7b3b5a4624fc3aacee494d475b357e4666b4a",
+    "unified_multires/tools/validate_rmd_native_entrypoint.py": "523de760a5d7954004973f2e4dd16ea642399c69f3e87a6b6bdff35295de5b54",
+    "unified_multires/tools/validate_rmd_sampling.py": "01e27fbc347678f906c47a825dc02addb39c0c6b03347983053b59c614ac3843",
+    "unified_multires/tools/validate_source_fixes.py": "90924a5a461990854dddb78b9126348af96f3799e2db39e4edc64a9d1328abf5",
+    "unified_multires/tools/validate_ssd_native_loop.py": "6f15cb32ed28969b73ae0b74336ee1282719dc5e5ed39b8dc315a088b89eb127",
+    "unified_multires/tools/validate_ssd_resolution_branches.py": "0bef238dff759497f04c4dc91cf75e5642a189f473ea0a7d998d15b5d2d9b2fc",
+    "unified_multires/tools/validate_stateful_data.py": "5b1e73518d2e46627ad20e8d81daf6afd616ed6dbb187e00677960d8ed64c71f",
+    "unified_multires/tools/validate_training.py": "a72c6baf3bcd8371ce7041dfbea7eadd505b134791e242254e5a14dcb4fb8866",
+    "unified_multires/tools/validate_training_more.py": "0929d961d54480fabaf9ba03dd62e1a08f50a8a361a94a7ad487ce5d4a4d5586",
+    "unified_multires/tools/verify_cpu_checkpoint_states.py": "933c215a77eb97270c775143cb5d2b84a7217fd071200c5a7b8fc22799420b90",
+    "unified_multires/umdiff/__init__.py": "f5c0a5cf6ac1a59d4c0d7e7f19f2e68610022ad80ca02a74b18da46bf656fda8",
+    "unified_multires/umdiff/__main__.py": "f38fd2f2c920c29c828645e87ed64743d567aaaef7fba7a15d2c7d7f8094f91f",
+    "unified_multires/umdiff/adapters.py": "bfc53fc74b21722c4cdf6d76c0012d2c46a71fcaed0bd0b0ef036ec39867bdea",
+    "unified_multires/umdiff/batches.py": "c553665038fd7e2317a8739f8852fc1eee61a3b622b3607ef260d8aeb95e3b51",
+    "unified_multires/umdiff/boundaries.py": "78e0a235258b7112d2959ab533c1e89202ef633f7b6c50876253c71c201cd5ab",
+    "unified_multires/umdiff/cli.py": "bb5c10a4272f1cff9f326a5b6b63d405dcc7ab13930ced6fc1fdd36fe6ccb73f",
+    "unified_multires/umdiff/clocks.py": "61fdc1b8c659bc6a3a8119ec018f666724e7d53e2b21dd7729e4a58b67513d93",
+    "unified_multires/umdiff/codec_training.py": "38da3e342075d38742063417ff3bd8b33dba3728105ff1b5442a4f5608e6be15",
+    "unified_multires/umdiff/comparison_models.py": "89a4d0533aaedbd58d9d825477fb7c5c73c49fa1e7455b0f0a8f1a47c47cb149",
+    "unified_multires/umdiff/comparison_position.py": "ec02cbef34c403de8a4d9c1c0ee8745e40bdf89edf79e79682305ce70ed8854e",
+    "unified_multires/umdiff/compat/cat_codec.py": "f23047143331b40b0cbebf64cab5edcc72af97dcadf30931321e270f6fd5a9be",
+    "unified_multires/umdiff/compat/dimr_codec.py": "f61801b5a691342fff69334caab2c7508ba25a77fb2e5168d5eed15bd5e8f3f8",
+    "unified_multires/umdiff/compat/offline_backbones.py": "f8c775b2b503fd36dd5c1df3f1dedbdf212ba71a2e417547bcbc56af7c3bdb37",
+    "unified_multires/umdiff/compat/pixelflow_api.py": "2ba8c7f34014e06e9e924bf9f79ae88b236c0a13c9fe268a116ceabc302f0ed3",
+    "unified_multires/umdiff/compat/source_fixes.py": "b6d3195bc0fbfb4aadf69b9839ee677a0154a4404ef3e911b75a1f70a13a0977",
+    "unified_multires/umdiff/compat/speed_routes.py": "7df1d9f9ad967cf738fecb8446e48e672490ee371e597ca336030971d71b548d",
+    "unified_multires/umdiff/cross_modal.py": "77a5fe244c1de8852d4abca9571e6820a637ee3c2e9ddc244ba2c052e78bedda",
+    "unified_multires/umdiff/data_pipeline.py": "ecb2f1ef1c626c84634b5d0a4794145e04d483cadc622a781ff3b478e40d0488",
+    "unified_multires/umdiff/dctcodec.py": "cc70a23791ce05cbc4e0bbec53eac163e55469175511839dc44e645d1f1c7d23",
+    "unified_multires/umdiff/distillation.py": "9f7767bccaae21877d7f29ec1e88ae9840edaadefc114d9732cc6f6e6c4df1f3",
+    "unified_multires/umdiff/distillation_cli.py": "c1f2046b196f4ee56cf65b168219e749186e1d9a7b42d6c46c8406bbde84ca9b",
+    "unified_multires/umdiff/engine.py": "888b29e943c9ae3c40c11e6b2b1dc10573582934c634a5a467aa032878d4310f",
+    "unified_multires/umdiff/experiment.py": "83e6687d76d473b7e8415e9172588e527904ff4f40f5ecb312bc34d9d2d561ac",
+    "unified_multires/umdiff/gaussian_objective.py": "c0efd52df67d5566c9debe94a117c132773d106405ea4558b42a3b20d14dcdc0",
+    "unified_multires/umdiff/grid_models.py": "482816c168e0657b1292d614ea607b86ddd2fbef7325f52e48a05c2edc5abcf7",
+    "unified_multires/umdiff/grid_sampling.py": "a46a29aa4633b8dcd7c7990a290a6d297845a9b0719d0fff423c04cc6697b610",
+    "unified_multires/umdiff/grids.py": "bd2cb54a9039ae2485a51b7540a46366b512e383f4d5c52ddcb2dc049f72baa4",
+    "unified_multires/umdiff/guidance.py": "9dcb900f7cc087fdf1f155ddb624eaa26fa1530001ff1bb14f37dece1265b603",
+    "unified_multires/umdiff/input_transforms.py": "caaa573d618b43100d64ccb36155ef5f69fa8337615408bd078cd29babb91899",
+    "unified_multires/umdiff/locations.py": "252fc6368307c87f154303fea928b2b0efd95e4039b5eec2d44ce848f3966209",
+    "unified_multires/umdiff/models.py": "a777f728d4dcd82f2d2293a87f784f14843fed51f316d50ebecb0c5607dc1844",
+    "unified_multires/umdiff/multires_process.py": "a39d8341c601ae60aa0c145ae717acff8980438e3f56e35a74fd2963c00ab15c",
+    "unified_multires/umdiff/multiscale.py": "94d7866585e912eee896250033433e61b560cce98551ab60b832bacdff7bd902",
+    "unified_multires/umdiff/native.py": "673ca51d60cfe0ad8e99130585e36d0bab4275ab1065302db3ad64ebfd3e8350",
+    "unified_multires/umdiff/native_models.py": "1015a1eb68038e5e78dceffcee552b92680f5712d1da0c2151028ac9acf390e5",
+    "unified_multires/umdiff/noise.py": "932d2c740973d38fa5dbe740664ae03a6eb9d4872db4421b0b832db826fe0ff3",
+    "unified_multires/umdiff/operators.py": "ddf76d4a822a8f8bcc5ee36e5aaf370d8c6968c7750a9d979557de1a670f0dfc",
+    "unified_multires/umdiff/paths.py": "6be616b361166b068a79266675ef7c12c01e33c0a1c4902a3f0f41e1e5f87d52",
+    "unified_multires/umdiff/position.py": "324a3d82ff3dd5b339b1cc0d031f78f242156634734b2cb9d243c49e63c9fed9",
+    "unified_multires/umdiff/randomness.py": "6a0e083c817e6d793ec7c289156b3dadcaa37f67f3b3ac2430dc42a6319df290",
+    "unified_multires/umdiff/rdd_fm_native.py": "8c9d7e36ccbe42c3ad1d424bf8e9f8d2f51e6fe5782304832a2472c2f9d574ed",
+    "unified_multires/umdiff/rdd_multistage.py": "0dc0556e1d477f699273b4914c7d8fc90ab968b6b63be7ef1081458b4968dcd9",
+    "unified_multires/umdiff/rdd_native.py": "25725bba525d8fa27def8d474e16f7898ac130044435fee9f3257ad8a940913f",
+    "unified_multires/umdiff/recipes.py": "59a8f8a80b321a02137bd889db6236a42e409e482f3dc6c67e9cb307749054e0",
+    "unified_multires/umdiff/registry.py": "26231856e9ce1da535671d9d4d6a4fc5c52ab35af05a264468135336f8ca5914",
+    "unified_multires/umdiff/regularizers.py": "7e4c0a3b5c92f6fcd88fee2437dd278558f86ca5c5dd480475dc63333a2451b5",
+    "unified_multires/umdiff/relay.py": "fc197bb37d4ede7a7df8862f06cbaa8b17961c4b4afc3d097219ee744a51e7a1",
+    "unified_multires/umdiff/representations.py": "03a3589509c04f5a7c63e232fad31460e6221287c8452de8c3a79c8fc64613cc",
+    "unified_multires/umdiff/samplers.py": "4da87870ae3e7461a03ac51abc9ea959ed36690296ff1e179888ef1d00a31898",
+    "unified_multires/umdiff/solvers.py": "e75e62b54c15646dbb52312e4210679f02362b2e0c4a36a2db3f5f00036f5148",
+    "unified_multires/umdiff/source_objectives.py": "6ad0a233b3a6b11ec07830cb58545ba02d05936f1ca3cadf0fca67e1c967aa8d",
+    "unified_multires/umdiff/ssd.py": "ee1e860bd235b3786e72eec9e9a1d85a016798675546fd3a7b3499fbeb9d73c5",
+    "unified_multires/umdiff/superresolution.py": "3632f096100f91d2788b860c4f7de76fe9b0e37709717c140905ec8cabc1700f",
+    "unified_multires/umdiff/targets.py": "1663b7b6c9b77bb43f39ecaaeb3134ccdd6a63ef6eb923bb207412c170e6e3a6",
+    "unified_multires/umdiff/time_sampling.py": "3612699d2ab7d887e814a856a11d5ae95f078bf9d605d0f503ccebda745fbf92",
+    "unified_multires/umdiff/training.py": "285f2693b058d3cfe1b5ab861c2dcb10d8c6537d2d1250517485dffc1dcfd4fd",
+    "unified_multires/umdiff/trajectories.py": "a82b348cb9ab75bd87974af46dea5251afeec600beb271596b1126fb9f11bd3d",
+    "unified_multires/umdiff/tree.py": "ba7c03d7435ed86993d1cb185b045ad0f4ba71de5fff0cd0786eed39ff8fc5af",
+    "unified_multires/umdiff/workflows.py": "97be1653ae8efcd5c38161967e048d69d99d68e84e17819eb723914ba5d3d611"
+  },
+  "policy": {
+    "gpu_used": false,
+    "model_or_data_downloaded": false,
+    "large_historical_evidence_retained_locally": true
+  },
+  "scope": "CPU relocation and entry points; prior author parity evidence is separate, no formal quality rerun"
+}

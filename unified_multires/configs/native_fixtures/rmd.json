@@ -1,0 +1,60 @@
+{
+  "name": "rmd",
+  "image_shape": [
+    4,
+    2,
+    4,
+    6
+  ],
+  "model": {
+    "name": "wan_transformer",
+    "args": {
+      "patch_size": [
+        1,
+        2,
+        2
+      ],
+      "num_attention_heads": 2,
+      "attention_head_dim": 16,
+      "in_channels": 4,
+      "out_channels": 4,
+      "text_dim": 8,
+      "freq_dim": 16,
+      "ffn_dim": 64,
+      "num_layers": 1
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 5e-06,
+      "fake_lr": 2e-05,
+      "betas": [
+        0.0,
+        0.95
+      ],
+      "weight_decay": 0.0001,
+      "eps": 1e-08,
+      "grad_clip": 1.0
+    }
+  },
+  "task": "rmd",
+  "distillation": {
+    "k_step": 6,
+    "eta": 0.5,
+    "flow_shift_trans": 1,
+    "low_rs_step": 3,
+    "warmup_step": 3,
+    "split_timestep": true,
+    "t_offset_factor": 0.25,
+    "target_size": [
+      8,
+      12
+    ]
+  },
+  "evidence": {
+    "claim": "native_algorithm_small_architecture_fixture",
+    "not_a_paper_quality_checkpoint": true,
+    "no_downloads": true,
+    "source_provenance": "Repository self-identifies official; paper does not link repository. Numerical claims refer to the pinned release, not independent author-identity confirmation."
+  }
+}

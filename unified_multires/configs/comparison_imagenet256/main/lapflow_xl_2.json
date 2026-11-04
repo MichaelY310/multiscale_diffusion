@@ -1,0 +1,214 @@
+{
+  "format": "umdiff_experiment_v1",
+  "id": "lapflow_xl_2",
+  "suite": "main",
+  "method": {
+    "name": "lapflow_xl_2",
+    "image_shape": [
+      4,
+      32,
+      32
+    ],
+    "model": {
+      "name": "comparison_dit",
+      "args": {
+        "architecture": {
+          "patch_size": 2,
+          "in_channels": 4,
+          "hidden_size": 1152,
+          "depth": 28,
+          "num_heads": 16,
+          "class_dropout_prob": 0.1,
+          "learn_sigma": true,
+          "base_size": 16,
+          "num_classes": 1000
+        },
+        "time_scale": 1000.0,
+        "channels": [
+          4,
+          4
+        ],
+        "product_order": "fine_first",
+        "causal_scales": true,
+        "position": "lapflow_sincos"
+      }
+    },
+    "training": {
+      "optimizer": {
+        "lr": 0.0001,
+        "betas": [
+          0.9,
+          0.999
+        ],
+        "weight_decay": 0.0,
+        "ema_decay": 0.9999,
+        "randomness": "native_global",
+        "optimizer_name": "adamw",
+        "eps": 1e-08,
+        "precision": "float32",
+        "grad_clip": null,
+        "lr_schedule": null,
+        "ema_update_every": 1,
+        "ema_warmup": false,
+        "ema_style": "add_alpha"
+      },
+      "data": {
+        "shuffle": true,
+        "image_size": 256,
+        "crop": "adm_center",
+        "horizontal_flip": true,
+        "flip_rng": "torch",
+        "normalization": "torchvision",
+        "drop_last": true
+      },
+      "input_transform": {
+        "name": "local_vae",
+        "args": {
+          "model": {
+            "name": "local_autoencoder",
+            "args": {
+              "path": "@sd_vae_ema@"
+            }
+          },
+          "scale": 0.18215
+        }
+      },
+      "time_sampler": {
+        "name": "none"
+      },
+      "conditioning": {
+        "y": {
+          "kind": "labels",
+          "classes": 1000
+        }
+      },
+      "input_transform_scope": "microbatch"
+    },
+    "evidence": {
+      "claim": "common_backbone_controlled_transplant",
+      "synthetic_training_allowed": false,
+      "not_a_paper_best_result_recipe": true,
+      "no_asset_downloads": true
+    },
+    "batch": {
+      "name": "lapflow",
+      "args": {
+        "levels": 2,
+        "activations": [
+          0.5,
+          0.0
+        ]
+      }
+    },
+    "sampler": {
+      "name": "lapflow",
+      "args": {
+        "levels": 2,
+        "activations": [
+          0.5,
+          0.0
+        ],
+        "solver": "dopri5",
+        "step_size": 0.01,
+        "atol": 1e-05,
+        "rtol": 1e-05,
+        "guidance_scale": 1.0
+      }
+    },
+    "training_aggregation": {
+      "name": "sum_stage_means",
+      "samplers": [
+        {
+          "name": "lapflow",
+          "args": {
+            "activations": [
+              0.5,
+              0.0
+            ],
+            "stage": 0
+          }
+        },
+        {
+          "name": "lapflow",
+          "args": {
+            "activations": [
+              0.5,
+              0.0
+            ],
+            "stage": 1
+          }
+        }
+      ]
+    }
+  },
+  "run": {
+    "updates": 400000,
+    "global_batch": 256,
+    "micro_batch": 32,
+    "world_size": 1,
+    "seed": 0,
+    "save_every": 5000,
+    "log_every": 100,
+    "allow_tf32": true
+  },
+  "assets": {
+    "dataset": "ImageNet-1K original train; 256 ADM center crop + random flip",
+    "data_env": "IMAGENET_TRAIN_DIR",
+    "vae_env": "SD_VAE_EMA_DIR",
+    "vae_id": "stabilityai/sd-vae-ft-ema",
+    "posterior": "sample_each_visit",
+    "latent_scale": 0.18215,
+    "required_model_domain": [
+      4,
+      32,
+      32
+    ],
+    "precomputed_sampled_latents_are_not_the_legacy_recipe": true
+  },
+  "sampling": {
+    "kind": "dopri5",
+    "activation_fine_first": [
+      0.5,
+      0.0
+    ],
+    "atol": 1e-05,
+    "rtol": 1e-05,
+    "cfg": 1.0
+  },
+  "comparison": {
+    "source": "https://arxiv.org/html/2602.19461#S5.SS1",
+    "changes": [
+      "Replace MoT/expert parameters by shared RDD DiT blocks; retain joint band tokens, necessary per-band interface and causal attention mask.",
+      "Use SD-VAE-ft-ema rather than EQVAE at256; retain delayed linear flow and paper T=.5.",
+      "Native-compatible two-level sampler still computes its unused coarse tail; include those calls in measured cost.",
+      "User-selected RDD rule: visit every training phase for each image; sum phase mean losses with coefficient1, no 1/K or stage-probability factors; one optimizer/EMA update after microbatch accumulation. This intentionally changes the author outer training objective/estimator."
+    ],
+    "common_contract": [
+      "Common ImageNet-256 class conditioning, SD-VAE-ft-ema, shared DiTMultiRes-XL/2 backbone, AdamW and 400K updates.",
+      "Equal data exposure is fixed; equal updates are NOT equal FLOPs. Record training compute/time and compare inference quality versus measured cost.",
+      "This frontend uses one process, micro32 and accumulation8 for global256. Historical RDD used 8 ranks x32; RNG/data order and FP summation are not claimed identical.",
+      "Main files are preregistered starting candidates, not already tuned best-performing configurations."
+    ],
+    "topology_coarse_to_fine": [
+      16,
+      32
+    ],
+    "selection": "Use validation data and an equal tuning-compute budget; do not select on final test scores.",
+    "evaluation": "Primary CFG=1; 50K generated RGB, same ADM reference and preprocessing. Metrics are a separate evaluation step.",
+    "runtime_scope": "CPU/single visible GPU CLI; existing device guard is retained; no GPU authorization in this file.",
+    "position": {
+      "policy": "lapflow_sincos",
+      "scope": "Selected released use_rope=False configuration: separate fixed width-first 2D sin-cos per band. Does not select the optional RoPE ablation."
+    },
+    "training_aggregation": {
+      "name": "rdd_sum_stage_means",
+      "stages": 2,
+      "outer_weights": [
+        1.0,
+        1.0
+      ],
+      "time_policy": "Enumerate native active modes; keep conditional joint clocks, masks, band weights and noise",
+      "noise_policy": "Fresh native noise draw per active mode; within-mode band coupling retained"
+    }
+  }
+}

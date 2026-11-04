@@ -1,0 +1,118 @@
+{
+  "name": "lapflow",
+  "image_shape": [
+    4,
+    32,
+    32
+  ],
+  "model": {
+    "name": "adapter",
+    "args": {
+      "model": {
+        "name": "native_lapflow",
+        "args": {
+          "input_size": [
+            32,
+            16
+          ],
+          "patch_size": 2,
+          "in_channels": 4,
+          "hidden_size": 1152,
+          "depth": 28,
+          "num_heads": 16,
+          "class_dropout_prob": 0.1,
+          "use_mot": true,
+          "use_mask": true
+        }
+      },
+      "time_first": true
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0005,
+      "weight_decay": 0.0,
+      "ema_decay": 0.9,
+      "grad_clip": 1.0,
+      "randomness": "native_global"
+    },
+    "data": {
+      "shuffle": true,
+      "image_size": 256,
+      "crop": "adm_center",
+      "horizontal_flip": true,
+      "flip_rng": "torch",
+      "normalization": "torchvision",
+      "drop_last": true
+    },
+    "input_transform": {
+      "name": "local_vae",
+      "args": {
+        "model": {
+          "name": "local_autoencoder",
+          "args": {
+            "path": "@vae@"
+          }
+        },
+        "scale": 0.18215
+      }
+    },
+    "time_sampler": {
+      "name": "lapflow",
+      "args": {
+        "activations": [
+          0.9,
+          0.0
+        ]
+      }
+    },
+    "conditioning": {
+      "y": {
+        "kind": "labels",
+        "classes": 1000
+      }
+    }
+  },
+  "batch": {
+    "name": "lapflow",
+    "args": {
+      "levels": 2,
+      "activations": [
+        0.9,
+        0.0
+      ]
+    }
+  },
+  "sampler": {
+    "name": "lapflow",
+    "args": {
+      "levels": 2,
+      "activations": [
+        0.9,
+        0.0
+      ],
+      "step_size": 0.01,
+      "guidance_scale": 2.0
+    }
+  },
+  "evidence": {
+    "claim": "component_recipe_template_best_run_unidentified",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "lapflow/feb12_train_ours.py",
+        "sha256": "19f022f40f0b7424c838edaebaed5b71afa2914ae4a811ce4f641bf5d19275db"
+      },
+      {
+        "file": "lapflow/models/MultiScaleDiT.py",
+        "sha256": "42e5087cef7e005d437dd5e95bf26038fec6615de5213ef8254de0eee9668871"
+      }
+    ],
+    "notes": [
+      "CLI default architecture/optimizer profile, not an identified best paper run. Source epoch cosine schedule requires dataset-dependent steps_per_epoch. Broken released square sampling remains explicitly deferred."
+    ],
+    "author_global_batch": null,
+    "author_steps": null
+  }
+}

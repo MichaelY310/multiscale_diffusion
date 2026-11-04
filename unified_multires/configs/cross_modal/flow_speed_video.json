@@ -1,0 +1,97 @@
+{
+  "name": "flow_video_grid_dit",
+  "image_shape": [
+    3,
+    5,
+    32,
+    32
+  ],
+  "model": {
+    "name": "grid_dit",
+    "args": {
+      "channels": 3,
+      "width": 96,
+      "depth": 2,
+      "num_heads": 4,
+      "patch": [
+        1,
+        2,
+        2
+      ],
+      "position": "sincos",
+      "max_stages": 1,
+      "heads": null,
+      "product_order": "coarse_first",
+      "causal_scales": false
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "ema_decay": 0.999,
+      "grad_clip": 1.0
+    },
+    "time_sampler": {
+      "name": "uniform"
+    }
+  },
+  "evidence": {
+    "claim": "controlled_common_backbone_mathematical_recipe",
+    "not_a_paper_best_result_recipe": true,
+    "no_asset_downloads": true,
+    "modality": "video",
+    "architecture_transplant": true,
+    "source_method": "flow",
+    "inference_policy": "speed_core_controlled_schedule",
+    "training_objective": "ordinary flow; no claim of paper-specific fine-tuning"
+  },
+  "path": {
+    "name": "flow",
+    "args": {
+      "orientation": "data_to_noise"
+    }
+  },
+  "target": {
+    "name": "joint",
+    "args": {
+      "quantity": "velocity"
+    }
+  },
+  "clock": {
+    "name": "linear",
+    "args": {
+      "start": 1.0,
+      "end": 0.0
+    }
+  },
+  "sampler": {
+    "name": "speed_grid",
+    "args": {
+      "resolutions": [
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          16
+        ],
+        [
+          32,
+          32
+        ]
+      ],
+      "steps": [
+        20,
+        20,
+        20
+      ],
+      "boundaries": [
+        1.0,
+        0.6,
+        0.3,
+        0.0
+      ]
+    }
+  }
+}

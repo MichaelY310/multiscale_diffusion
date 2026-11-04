@@ -1,0 +1,3628 @@
+{
+  "audited_at_utc": "2026-10-08T23:06:14.315138+00:00",
+  "paper_count": 22,
+  "executable_paper_releases": 14,
+  "established_author_repositories": 13,
+  "self_declared_source_with_identity_limit": 1,
+  "native_skipped_papers": 7,
+  "additional_local_method": "RDD",
+  "axes": [
+    {
+      "id": "E",
+      "description": "codec, color, quantization, normalization and product-state order"
+    },
+    {
+      "id": "Pi",
+      "description": "token/patch layout, position, masks, invertible versus lossy packing"
+    },
+    {
+      "id": "F/A",
+      "description": "stage signal map and time derivative"
+    },
+    {
+      "id": "B/C",
+      "description": "noise transform, covariance, scale-dependent SNR"
+    },
+    {
+      "id": "K",
+      "description": "cross-time/scale joint random coupling and RNG order"
+    },
+    {
+      "id": "phi",
+      "description": "local, global, model and solver time conversion"
+    },
+    {
+      "id": "rho",
+      "description": "time/stage distribution and active/drop masks"
+    },
+    {
+      "id": "H",
+      "description": "backbone, heads, parameter sharing and conditioning"
+    },
+    {
+      "id": "T",
+      "description": "prediction parameterization, variance and inverse decoder"
+    },
+    {
+      "id": "W",
+      "description": "metric, per-image/token reduction and auxiliary objectives"
+    },
+    {
+      "id": "Q",
+      "description": "boundary stochastic kernel, resized state/noise/cache and codec roundtrip"
+    },
+    {
+      "id": "S",
+      "description": "ODE/SDE/discrete solver and actual model/CFG calls"
+    },
+    {
+      "id": "O",
+      "description": "initialization, multiple networks, optimizers, LR, clipping, EMA, precision, checkpoint"
+    },
+    {
+      "id": "D",
+      "description": "data, preprocessing, latent scaling, teacher/decoder assets"
+    }
+  ],
+  "math": "FRAMEWORK_MATH_ZH.md",
+  "methods": [
+    {
+      "id": "fdm",
+      "name": "f-DM",
+      "year": "2022 preprint / ICLR 2023",
+      "paper": "https://arxiv.org/abs/2210.04955",
+      "method_source": "https://arxiv.org/pdf/2210.04955",
+      "relationship": "令 F_t=(1-lambda_t)I+lambda_t P、P=UD，并匹配 alpha/sigma，RDD 阶段内条件边缘分布是 f-DM 插值路径的具体选择。差别集中在投影、预测参数化/损失、SNR 和边界噪声耦合；边缘相同不代表整个采样器或训练完全相同。",
+      "status": "paper_mapping_native_skipped",
+      "source_provenance": "no_executable_official_source_confirmed",
+      "literature_component_map": {
+        "E_representation": "像素/变换空间；逐阶段单状态",
+        "A_signal_path": "α[(1−λ)I+λUD]x",
+        "C_noise_marginal": "σ²I；有 SP/VP 跨尺度 SNR 重标定",
+        "K_coupling_boundary": "丢失噪声维度补采样；附录含平均噪声条件补全",
+        "R_time_scale_allocation": "分段时间与变换 schedule",
+        "T_W_target_loss": "transformed clean + degradation 双目标；加权 MSE",
+        "H_backbone": "shared U-Net，按分辨率进入相应层",
+        "S_solver_cost": "原版 DDPM/DDIM；匹配路径后再比较目标"
+      },
+      "configs": [
+        "configs/controlled/fdm_decoupled_clean.json"
+      ],
+      "paper_quality_verified": false,
+      "skip_reason": "Author project Code & Data remains coming soon; no executable official implementation confirmed.",
+      "implementation": "Literature component mapping / extension interfaces only, not implemented full paper algorithm.",
+      "configured_components": [
+        {
+          "file": "configs/controlled/fdm_decoupled_clean.json",
+          "configuration": {
+            "name": "fdm_decoupled_clean",
+            "image_shape": [
+              3,
+              32,
+              32
+            ],
+            "model": {
+              "name": "tiny_conv",
+              "args": {
+                "channels": 3,
+                "width": 32,
+                "heads": [
+                  "signal",
+                  "residual"
+                ]
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "uniform",
+                "args": {
+                  "start": 0.01,
+                  "end": 0.99
+                }
+              }
+            },
+            "path": {
+              "name": "rdd_flow",
+              "args": {
+                "start": 0.0,
+                "end": 1.0
+              }
+            },
+            "target": {
+              "name": "decoupled_clean"
+            },
+            "evidence": {
+              "claim": "paper_component_transplant_not_native_fdm",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "edify",
+      "name": "Edify Image",
+      "year": "2024",
+      "paper": "https://arxiv.org/abs/2411.07126",
+      "method_source": "https://arxiv.org/html/2411.07126v1",
+      "relationship": "RDD mean = alpha P x + alpha(1-lambda)(I-P)x，恰是两频带独立衰减形式。匹配投影、band schedule 和 noise schedule 可得到同一阶段边缘路径；实际 VP/EDM 参数化、损失预条件和跨尺度 coupling 仍不同。",
+      "status": "paper_mapping_native_skipped",
+      "source_provenance": "no_executable_official_source_confirmed",
+      "literature_component_map": {
+        "E_representation": "像素；Laplacian bands",
+        "A_signal_path": "各 band 单独 α_j(t)；RDD 是可匹配的两带实例",
+        "C_noise_marginal": "EDM/各带幅度；尺度 s 时 σ→sσ",
+        "K_coupling_boundary": "保留 coarse noisy state，补正交高带噪声",
+        "R_time_scale_allocation": "高带先消失，再压缩状态",
+        "T_W_target_loss": "clean denoising；EDM 权重",
+        "H_backbone": "可单模型/专家；实际 suite 多模型",
+        "S_solver_cost": "计入 base 与高分辨率模型，不能只比 head"
+      },
+      "configs": [],
+      "paper_quality_verified": false,
+      "skip_reason": "No executable official implementation of this technical report confirmed.",
+      "implementation": "Literature component mapping / extension interfaces only, not implemented full paper algorithm.",
+      "configured_components": []
+    },
+    {
+      "id": "relay",
+      "name": "Relay Diffusion",
+      "year": "2023 preprint / ICLR 2024",
+      "paper": "https://arxiv.org/abs/2309.03350",
+      "method_source": "https://arxiv.org/pdf/2309.03350",
+      "relationship": "其长时间块内热扩散的极限投影与 average-pool/nearest P 相同，但各块内非 DC 模式按各自频率衰减；RDD 对整个残差子空间使用同一个 (1-lambda)。",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "像素；low/high 两模型",
+        "A_signal_path": "块内 heat/DCT blur 连续路径",
+        "C_noise_marginal": "IID plus overlapping cyclic rolling-window noise; not block-constant repetition.",
+        "K_coupling_boundary": "noisy upsample/随机 refinement",
+        "R_time_scale_allocation": "低尺度生成后交接给高尺度",
+        "T_W_target_loss": "EDM clean target",
+        "H_backbone": "两套独立网络",
+        "S_solver_cost": "原版与共享骨干移植分开"
+      },
+      "configs": [
+        "configs/native_fixtures/relay.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Actual EDMPrecond/DhariwalUNet; heat DCT, rolling-window noise, weighted clean loss, stochastic second-order sampler.",
+      "compatibility_and_limits": "get_alpha_t repeat_dims=64 changed to H/patch for the small geometry; persistence is an identity import shim. Native FFT DCT arithmetic retained. Two-model relay quality/training budget not reproduced.",
+      "source": {
+        "repo": "https://github.com/zai-org/RelayDiffusion",
+        "commit": "a97877fcee9e7515595e24f7d72bc5f6a722ce6f",
+        "fetched_at_utc": "2026-10-08T09:31:39.900967+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "a97877fcee9e7515595e24f7d72bc5f6a722ce6f",
+        "anchors": {
+          "blurring.py": {
+            "sha256": "8b65668c6aba8e92bf75522f5152d8a50e3870104820c98fedd14b5a1bd6183a",
+            "lines": 175
+          },
+          "training/loss.py": {
+            "sha256": "a0ec605a206cef1a86fb85cbe102150c85eabecebcf2248cbfca189c0a502e6c",
+            "lines": 154
+          },
+          "training/networks.py": {
+            "sha256": "a48467cd8f2691c44ff5ec8ea416c68afa4342d6e9e8080b2e6c13ddb4c3c6c7",
+            "lines": 700
+          },
+          "generate_imagenet.py": {
+            "sha256": "8b5cb4980161115f05486ae3e0e573097c52e2ef079bfaca5076ae33dc9c84bb",
+            "lines": 396
+          }
+        },
+        "review": "Block DCT heat blur, EDM clean prediction and preconditioning, truncated lognormal sigma, rolling-window correlated noise, stochastic second-order blur sampler. Noise is overlapping cyclic rolls, NOT block-constant repetition. Preserve redundant RNG draws and fresh corrector noise for seeded parity.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/native_fixtures/relay.json",
+          "configuration": {
+            "name": "relay",
+            "image_shape": [
+              3,
+              16,
+              16
+            ],
+            "model": {
+              "name": "native_relay",
+              "args": {
+                "img_resolution": 16,
+                "img_channels": 3,
+                "model_channels": 64,
+                "channel_mult": [
+                  1,
+                  2
+                ],
+                "num_blocks": 1,
+                "dropout": 0.0,
+                "attn_resolutions": [
+                  8
+                ]
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "uniform"
+              }
+            },
+            "batch": {
+              "name": "relay",
+              "args": {
+                "patch": 4,
+                "block_scale": 0.15
+              }
+            },
+            "target": {
+              "name": "joint",
+              "args": {
+                "quantity": "clean"
+              }
+            },
+            "sampler": {
+              "name": "relay",
+              "args": {
+                "steps": 12,
+                "sigma_max": 2.0,
+                "truncation_sigma": 1.0
+              }
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true
+            }
+          }
+        }
+      ],
+      "executed_backbone_module_activation_audit": {
+        "evidence": "evidence/activation_parity/relay.json",
+        "steps": 128,
+        "variants": 1,
+        "totals": {
+          "forward_input": {
+            "pairs": 12672,
+            "exact": 12672,
+            "byte_exact": 12672,
+            "within_tolerance": 12672,
+            "max_abs": 0.0
+          },
+          "forward_output": {
+            "pairs": 11136,
+            "exact": 11136,
+            "byte_exact": 11136,
+            "within_tolerance": 11136,
+            "max_abs": 0.0
+          },
+          "activation_gradient": {
+            "pairs": 11008,
+            "exact": 11008,
+            "byte_exact": 11008,
+            "within_tolerance": 11008,
+            "max_abs": 0.0
+          },
+          "parameter_gradient": {
+            "pairs": 18432,
+            "exact": 18432,
+            "byte_exact": 18432,
+            "within_tolerance": 18432,
+            "max_abs": 0.0
+          }
+        },
+        "exclusions": [],
+        "scope": "CPU fp32 or author-propagated fp64, reduced random author network, synthetic input, existing native-specific presets, 128 steps per variant. Shared author classes reused; not an independent rewrite of every neural layer."
+      },
+      "full_paper_recipe_coverage": false,
+      "compatibility_findings": [
+        "RELAY-01",
+        "RELAY-02",
+        "COMMON-01",
+        "COMMON-02"
+      ],
+      "compatibility_assessment": "高分辨率blur目标/完整后段sampler已测；欠双模型链与训练/采样共享clock。",
+      "recipe_extension_evidence": "evidence/recipe_extensions/SUMMARY.json",
+      "current_recipe_profile_parity": {
+        "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+        "paper": "Relay Diffusion",
+        "profiles": [
+          "relay_low",
+          "relay_high"
+        ],
+        "selection": "README ImageNet64→256，192/256宽度",
+        "parameters": [
+          295899267,
+          553831171
+        ],
+        "full_backbone_tested": true,
+        "full_input_resolution_tested": true,
+        "training_steps": 2,
+        "executed_shared_module_activation_byte_exact": true,
+        "parameter_gradient_byte_exact": true,
+        "author_best_recipe_fully_executed": false,
+        "paper_quality_verified": false,
+        "limits": "完整双骨干；global4096/8-rank DDP、xformers、FP16与真实数据未执行"
+      },
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "byte_exact_on_tested_contract",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "本地数据入口和共同训练工程是有意替换；未认证原xformers/FP16多卡及最佳两阶段预算。"
+      }
+    },
+    {
+      "id": "ssd",
+      "name": "Scale Space Diffusion",
+      "year": "CVPR 2026",
+      "paper": "https://arxiv.org/abs/2603.08709",
+      "method_source": "https://openaccess.thecvf.com/content/CVPR2026/papers/Mukhopadhyay_Scale_Space_Diffusion_CVPR_2026_paper.pdf",
+      "relationship": "与 RDD 同属线性退化 diffusion；最需要比较后验/边界数学。不能因为边缘方差都是 sigma^2 I 就把 SSD 的后验也设成 isotropic。",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "像素；可跨维度线性状态",
+        "A_signal_path": "一般线性 M_t",
+        "C_noise_marginal": "边缘可 isotropic，后验一般 anisotropic",
+        "K_coupling_boundary": "推导的跨维度线性高斯转移",
+        "R_time_scale_allocation": "连续 scale-space/分辨率变化",
+        "T_W_target_loss": "对应 clean resolution + SNR 类权重",
+        "H_backbone": "Flexi-UNet 支持变输入输出维度",
+        "S_solver_cost": "包括 Lanczos 协方差采样成本"
+      },
+      "configs": [
+        "configs/native_fixtures/ssd.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Actual FlexiUNet; cumulative antialiased bilinear M, true adjoint, previous-resolution clean target, anisotropic posterior, 40-step Lanczos and 20-step power clamp.",
+      "compatibility_and_limits": "Native BilinearOp.MT missing H_out/W_out are assigned in the oracle fixture. Single-process rank/barrier are CPU shims. Mean and covariance arithmetic intentionally differ as in source.",
+      "source": {
+        "repo": "https://github.com/prateksha/ScaleSpaceDiffusion",
+        "commit": "68a6961983f0c2e19910b34f77ef16f7c6764130",
+        "fetched_at_utc": "2026-10-08T09:31:39.920033+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "68a6961983f0c2e19910b34f77ef16f7c6764130",
+        "anchors": {
+          "guided_diffusion/scale_space_diffusion.py": {
+            "sha256": "7f22fb551ed1962ca912923770128d1c83be71d55793f0966ab38c13ce2d4614",
+            "lines": 880
+          },
+          "guided_diffusion/ssd_math_util.py": {
+            "sha256": "2612c720a932e569927aa5fd2ee3af0b8b6862ef55f4b1d1e8d3566a0a1f81d9",
+            "lines": 291
+          },
+          "guided_diffusion/ssd_utils.py": {
+            "sha256": "c83fe88aa79e0b4be4c32e3068b387a06ec549d6023646bfa11e5fbc585982f3",
+            "lines": 172
+          },
+          "guided_diffusion/unet.py": {
+            "sha256": "96e34fc62167546af93982bcbc34f4641fef0a2f6e53b2b8c23cb313624c3be9",
+            "lines": 1367
+          }
+        },
+        "review": "Cumulative antialiased bilinear M, clean target at previous resolution rs, adjoint MT, anisotropic posterior covariance sampled with Lanczos and power-iteration PSD clamp. BilinearOp.MT references missing H_out/W_out attributes: explicit compatibility repair needed. DDP barriers need single-process gloo or isolated no-op communication, not math changes.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/native_fixtures/ssd.json",
+          "configuration": {
+            "name": "ssd",
+            "image_shape": [
+              3,
+              16,
+              16
+            ],
+            "model": {
+              "name": "native_ssd",
+              "args": {
+                "image_size": 16,
+                "in_channels": 3,
+                "model_channels": 32,
+                "out_channels": 3,
+                "num_res_blocks": 1,
+                "attention_resolutions": [
+                  2
+                ],
+                "channel_mult": [
+                  1,
+                  2
+                ],
+                "unet_res_layer_map": {
+                  "8": 8,
+                  "16": 16
+                }
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "discrete",
+                "args": {
+                  "steps": 8,
+                  "one_for_batch": true
+                }
+              }
+            },
+            "batch": {
+              "name": "ssd",
+              "args": {
+                "resolutions": [
+                  16,
+                  16,
+                  16,
+                  16,
+                  8,
+                  8,
+                  8,
+                  8
+                ],
+                "betas": [
+                  0.001,
+                  0.0037142857142857142,
+                  0.0064285714285714285,
+                  0.009142857142857144,
+                  0.011857142857142858,
+                  0.014571428571428572,
+                  0.017285714285714286,
+                  0.02
+                ],
+                "unet_res_layer_map": {
+                  "8": 8,
+                  "16": 16
+                }
+              }
+            },
+            "prediction_adapter": {
+              "name": "ssd_output"
+            },
+            "sampler": {
+              "name": "ssd",
+              "args": {
+                "resolutions": [
+                  16,
+                  16,
+                  16,
+                  16,
+                  8,
+                  8,
+                  8,
+                  8
+                ],
+                "betas": [
+                  0.001,
+                  0.0037142857142857142,
+                  0.0064285714285714285,
+                  0.009142857142857144,
+                  0.011857142857142858,
+                  0.014571428571428572,
+                  0.017285714285714286,
+                  0.02
+                ],
+                "unet_res_layer_map": {
+                  "8": 8,
+                  "16": 16
+                }
+              }
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true
+            }
+          }
+        }
+      ],
+      "executed_backbone_module_activation_audit": {
+        "evidence": "evidence/activation_parity/ssd.json",
+        "steps": 128,
+        "variants": 1,
+        "totals": {
+          "forward_input": {
+            "pairs": 17040,
+            "exact": 17040,
+            "byte_exact": 17040,
+            "within_tolerance": 17040,
+            "max_abs": 0.0
+          },
+          "forward_output": {
+            "pairs": 15328,
+            "exact": 15328,
+            "byte_exact": 15328,
+            "within_tolerance": 15328,
+            "max_abs": 0.0
+          },
+          "activation_gradient": {
+            "pairs": 15328,
+            "exact": 15328,
+            "byte_exact": 15328,
+            "within_tolerance": 15328,
+            "max_abs": 0.0
+          },
+          "parameter_gradient": {
+            "pairs": 12832,
+            "exact": 12832,
+            "byte_exact": 12832,
+            "within_tolerance": 12832,
+            "max_abs": 0.0
+          }
+        },
+        "exclusions": [],
+        "scope": "CPU fp32 or author-propagated fp64, reduced random author network, synthetic input, existing native-specific presets, 128 steps per variant. Shared author classes reused; not an independent rewrite of every neural layer."
+      },
+      "full_paper_recipe_coverage": false,
+      "compatibility_findings": [
+        "SSD-01",
+        "SSD-02",
+        "COMMON-01",
+        "COMMON-02"
+      ],
+      "compatibility_assessment": "累计bilinear算子、真实adjoint、非各向同性posterior/Lanczos/FlexiUNet已包含；默认batch策略与非默认clock漏接。",
+      "recipe_extension_evidence": "evidence/recipe_extensions/SUMMARY.json",
+      "current_recipe_profile_parity": {
+        "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+        "paper": "Scale Space Diffusion",
+        "profiles": [
+          "ssd"
+        ],
+        "selection": "发布 CelebA64/FlexiUNet/ConvexDecay0.5",
+        "parameters": [
+          92256131
+        ],
+        "full_backbone_tested": true,
+        "full_input_resolution_tested": true,
+        "training_steps": 2,
+        "executed_shared_module_activation_byte_exact": true,
+        "parameter_gradient_byte_exact": true,
+        "author_best_recipe_fully_executed": false,
+        "paper_quality_verified": false,
+        "limits": "source未给完整最佳训练预算；真实CelebA/FID未执行"
+      },
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "byte_exact_on_tested_contract",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "当前支持所选配置及已测分辨率分支；其他主表配置不包含。补原BilinearOp尺寸元信息；统一检查点保留原final save缺少的状态。"
+      }
+    },
+    {
+      "id": "speed",
+      "name": "Spectral Progressive Diffusion for Efficient Image and Video Generation",
+      "year": "2026；核对 arXiv v3 (2026-08-17)",
+      "paper": "https://arxiv.org/abs/2605.18736",
+      "method_source": "https://arxiv.org/pdf/2605.18736v3",
+      "relationship": "很接近跨尺度噪声完成组件；DWT/Haar 情形可与投影补全联系，DCT 更换的是子空间基。阶段内 drift、time schedule 及训练 recipe 不能忽略。",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "预训练 latent/像素/视频",
+        "A_signal_path": "在原轨迹上扩频谱；也有 progressive fine-tuning",
+        "C_noise_marginal": "频谱归一化、FM 时间对齐",
+        "K_coupling_boundary": "保留低频系数；新频率补 Gaussian",
+        "R_time_scale_allocation": "由功率谱与误差容忍度决定 schedule",
+        "T_W_target_loss": "training-free 不改；FT 适配 progressive 输入",
+        "H_backbone": "基座架构不改",
+        "S_solver_cost": "需与同 pretrained checkpoint 的方法比较"
+      },
+      "configs": [
+        "configs/inference_only/speed.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Full released FLUX generation and local random VAE; DCT/Haar/FFT expansion, bf16, decoded pixels.",
+      "compatibility_and_limits": "Inference-only release. Author FlowMatch scheduler backend explicitly reused. NumPy fp32 scaling precedes destination cast; native non-Hermitian FFT real-part behavior and RNG order retained. No unpublished fine-tuning recipe claimed.",
+      "source": {
+        "repo": "https://github.com/howardhx/speed",
+        "commit": "ca7801c9bdffe681742e9592345bcf4885959be5",
+        "fetched_at_utc": "2026-10-08T09:31:39.941395+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "ca7801c9bdffe681742e9592345bcf4885959be5",
+        "anchors": {
+          "utils.py": {
+            "sha256": "04ee4607eaff90350bcdaabe62d16f2cca5100128b0c97c3173cc381e3df222a",
+            "lines": 426
+          },
+          "latent_image_gen.py": {
+            "sha256": "44c254adfe1ac49097159f8c0abf2090a762ee8b318cb21eb42fac2643404aaa",
+            "lines": 422
+          },
+          "pixel_image_gen.py": {
+            "sha256": "f49419c0e9f294fb89487bdb2990cf20b1c3bca56e6866692ff7c054ac3d2060",
+            "lines": 509
+          },
+          "comfyui/speed_sampler.py": {
+            "sha256": "82942760d150178d1ce507440cbc2e9d5e7ff2e1d9b75892e0dc1d10b21398c8",
+            "lines": 387
+          }
+        },
+        "review": "Inference-only public release. DCT/Haar/FFT spectral expansion uses NumPy per-leading-index RNG order, float32, scipy/pywt, kappa=r/(1+(r-1)t), aligned t=t*kappa. Public time is noise-oriented. FFT takes real part of non-Hermitian coefficients; do not replace with a different Hermitian noise coupling under an exact-native claim.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/inference_only/speed.json",
+          "configuration": {
+            "name": "speed",
+            "model": {
+              "name": "flux_transformer",
+              "args": {
+                "in_channels": 16,
+                "num_layers": 1,
+                "num_single_layers": 1,
+                "num_attention_heads": 2,
+                "attention_head_dim": 16,
+                "joint_attention_dim": 8,
+                "pooled_projection_dim": 8,
+                "axes_dims_rope": [
+                  4,
+                  6,
+                  6
+                ],
+                "guidance_embeds": true
+              }
+            },
+            "vae": {
+              "name": "autoencoder_kl",
+              "args": {
+                "block_out_channels": [
+                  32,
+                  32
+                ],
+                "down_block_types": [
+                  "DownEncoderBlock2D",
+                  "DownEncoderBlock2D"
+                ],
+                "up_block_types": [
+                  "UpDecoderBlock2D",
+                  "UpDecoderBlock2D"
+                ],
+                "latent_channels": 4,
+                "norm_num_groups": 32,
+                "layers_per_block": 1,
+                "scaling_factor": 0.3611,
+                "shift_factor": 0.1159
+              }
+            },
+            "sampler": {
+              "full_hw": [
+                16,
+                16
+              ],
+              "scales": [
+                0.5,
+                1.0
+              ],
+              "transitions": [
+                0.5
+              ],
+              "steps": 12,
+              "transform": "dct"
+            },
+            "initial_shape": [
+              1,
+              4,
+              8,
+              8
+            ],
+            "dtype": "bfloat16",
+            "synthetic_fixture": true,
+            "synthetic_embedding_shape": [
+              1,
+              3,
+              8
+            ]
+          }
+        }
+      ],
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "not_applicable_no_released_training_objective",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "只有公开推理，无作者训练目标。Wan使用明确CPU适配及随机Diffusers解码器，原生pretrained Wan VAE/MP4未认证。"
+      }
+    },
+    {
+      "id": "pixelflow",
+      "name": "PixelFlow",
+      "year": "2025",
+      "paper": "https://arxiv.org/abs/2504.07963",
+      "method_source": "https://arxiv.org/html/2504.07963v1",
+      "relationship": "共享模型、逐阶段 coarse-to-fine、up/down residual 都很近；RDD-FM 的 drift 系数为 b(t)=t*(b-t)/(b-a)，因此信号 mean 关于全局 t 有二次项；PixelFlow 两 endpoint 的直线 mean 对 tau 为一次，通常不逐点相同。",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "原版像素；逐阶段合成状态",
+        "A_signal_path": "noisy coarse/fine endpoints 间的分段直线",
+        "C_noise_marginal": "阶段内共用 ε，noise amplitude 1−t",
+        "K_coupling_boundary": "参考 Pyramid Flow renoising",
+        "R_time_scale_allocation": "逐阶段增分辨率",
+        "T_W_target_loss": "局部 τ endpoint velocity；转换全局 t 要除 L",
+        "H_backbone": "shared DiT、2D RoPE、resolution embed、packing",
+        "S_solver_cost": "同 P/表示的版本是路径移植，不是原版"
+      },
+      "configs": [
+        "configs/native_fixtures/pixelflow.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Actual packed DiT; heterogeneous resolutions, per-image loss, endpoint path, bilinear D/nearest U, correlated renoising, separate local/global/model clocks and CFG 0/4.",
+      "compatibility_and_limits": "Both paths replace GPU FlashAttention with CPU variable-length SDPA. Diffusers 0.32 NumPy RoPE helper restored under 0.40. No claim of GPU kernel bitwise equivalence. gamma=-1/3 and 1e-6 covariance jitter retained.",
+      "source": {
+        "repo": "https://github.com/ShoufaChen/PixelFlow",
+        "commit": "8805204d1be8df22382280959b3063974ff3d77d",
+        "fetched_at_utc": "2026-10-08T09:31:39.956386+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "8805204d1be8df22382280959b3063974ff3d77d",
+        "anchors": {
+          "pixelflow/data_in1k.py": {
+            "sha256": "515bf41ce931ccd8f4105cbc741193e7f275dda81fcf4a11ae19e17ea1da0697",
+            "lines": 158
+          },
+          "pixelflow/model.py": {
+            "sha256": "fe57210947184d1a44dfdf598bee032e44f6c7082c90acd76164cd91d9058bfa",
+            "lines": 449
+          },
+          "pixelflow/pipeline_pixelflow.py": {
+            "sha256": "a0ed8209a986942ee6b19415d1f4a75e64a3444e11f484bede08d6b468bd68ab",
+            "lines": 276
+          },
+          "pixelflow/scheduling_pixelflow.py": {
+            "sha256": "c767182d4ef9016e9b4db6cba4f4ca556a4384a49afc3ec054798dd4987177d5",
+            "lines": 106
+          },
+          "train.py": {
+            "sha256": "afa2ffa19e0b1590aa5f323414ebc56a204804044e59ea65baab66814ea6326d",
+            "lines": 155
+          }
+        },
+        "review": "Repeated bilinear D without antialias, nearest U, gamma=-1/3 corrected stage start, local tau endpoint difference velocity, packed per-image loss. Native 2x2 block Gaussian has diagonal epsilon jitter 1e-6; iterative sampling is CPU. Scheduler rounds state and dt to fp32. Packed training requires FlashAttention; provide isolated CPU SDPA varlen replacement and quantify kernel difference.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/native_fixtures/pixelflow.json",
+          "configuration": {
+            "name": "pixelflow",
+            "image_shape": [
+              3,
+              32,
+              32
+            ],
+            "model": {
+              "name": "adapter",
+              "args": {
+                "model": {
+                  "name": "native_pixelflow",
+                  "args": {
+                    "in_channels": 3,
+                    "out_channels": 3,
+                    "num_attention_heads": 2,
+                    "attention_head_dim": 16,
+                    "depth": 2,
+                    "patch_size": 2,
+                    "num_classes": 1000
+                  }
+                },
+                "time_keyword": "timestep"
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "discrete"
+              },
+              "conditioning": {
+                "class_labels": {
+                  "kind": "labels",
+                  "classes": 1000,
+                  "destination": "context"
+                }
+              }
+            },
+            "batch": {
+              "name": "pixelflow",
+              "args": {
+                "stages": 3
+              }
+            },
+            "sampler": {
+              "name": "pixelflow",
+              "args": {
+                "stages": 3,
+                "steps": 4,
+                "guidance_scale": 0.0
+              }
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true
+            }
+          }
+        }
+      ],
+      "executed_backbone_module_activation_audit": {
+        "evidence": "evidence/activation_parity/pixelflow.json",
+        "steps": 128,
+        "variants": 1,
+        "totals": {
+          "forward_input": {
+            "pairs": 9472,
+            "exact": 9472,
+            "byte_exact": 9472,
+            "within_tolerance": 9472,
+            "max_abs": 0.0
+          },
+          "forward_output": {
+            "pairs": 7424,
+            "exact": 7424,
+            "byte_exact": 7424,
+            "within_tolerance": 7424,
+            "max_abs": 0.0
+          },
+          "activation_gradient": {
+            "pairs": 7168,
+            "exact": 7168,
+            "byte_exact": 7168,
+            "within_tolerance": 7168,
+            "max_abs": 0.0
+          },
+          "parameter_gradient": {
+            "pairs": 6272,
+            "exact": 6272,
+            "byte_exact": 6272,
+            "within_tolerance": 6272,
+            "max_abs": 0.0
+          }
+        },
+        "exclusions": [],
+        "scope": "CPU fp32 or author-propagated fp64, reduced random author network, synthetic input, existing native-specific presets, 128 steps per variant. Shared author classes reused; not an independent rewrite of every neural layer."
+      },
+      "full_paper_recipe_coverage": false,
+      "compatibility_findings": [
+        "PF-01",
+        "COMMON-01",
+        "COMMON-02"
+      ],
+      "compatibility_assessment": "默认C2I pipeline核心覆盖相对完整；packed batch/per-image reduction/CFG ramp都在。",
+      "recipe_extension_evidence": "evidence/recipe_extensions/SUMMARY.json",
+      "current_recipe_profile_parity": {
+        "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+        "paper": "PixelFlow",
+        "profiles": [
+          "pixelflow"
+        ],
+        "selection": "发布 XL/256，patch4/head72，4 stages",
+        "parameters": [
+          676611120
+        ],
+        "full_backbone_tested": true,
+        "full_input_resolution_tested": true,
+        "training_steps": 2,
+        "executed_shared_module_activation_byte_exact": true,
+        "parameter_gradient_byte_exact": true,
+        "author_best_recipe_fully_executed": false,
+        "paper_quality_verified": false,
+        "limits": "30步/阶段、CFG2.4是公开eval默认；CUDA FlashAttention/BF16未认证"
+      },
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "byte_exact_on_tested_contract",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "CPU SDPA/RoPE适配是有意兼容；未认证原Flash/BF16。公开示例不自动代表最佳训练run。"
+      }
+    },
+    {
+      "id": "dfm",
+      "name": "Improving Progressive Generation with Decomposable Flow Matching",
+      "year": "NeurIPS 2025",
+      "paper": "https://arxiv.org/abs/2506.19839",
+      "method_source": "https://arxiv.org/pdf/2506.19839",
+      "relationship": "所建模细节与 RDD 的 d=Ux_coarse-x_fine 只差符号；状态空间/clock/联合 loss 不同，不能因此称完整生成过程等价。",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "Laplacian/DWT/DCT 的联合多尺度状态",
+        "A_signal_path": "每个分量独立 FM clock，可同时演化",
+        "C_noise_marginal": "各尺度 Gaussian endpoints",
+        "K_coupling_boundary": "联合分量建模；非同一状态反复全空间 refresh",
+        "R_time_scale_allocation": "激活后粗尺度继续；尺度时间可重叠",
+        "T_W_target_loss": "masked per-scale velocity MSE",
+        "H_backbone": "共享 DiT core + 分尺度输入/输出",
+        "S_solver_cost": "公开 repo 明示架构不同的 reimplementation"
+      },
+      "configs": [
+        "configs/native_fixtures/dfm.json",
+        "configs/native_fixtures/dfm_repa.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Actual released SiT with product Laplacian state, independent band noise, time/drop masks, active unnormalized velocity losses; REPA projector with local synthetic teacher features.",
+      "compatibility_and_limits": "Release README states its architecture differs from the paper. Two-level complete sampler passes. Released three-level [3,3,3]/threshold [.6,.3] scheduler rejects positive dt=.14; preserved as expected error. qk_norm=False fixes a newer timm constructor API. Native debug logging consumes NumPy RNG; comparisons explicitly couple stage/time/noise. For continuous global-seed alignment, disable the two random debug-log conditions in loss.py:202/233 or move logging to a separate RNG.",
+      "source": {
+        "repo": "https://github.com/snap-research/dfm",
+        "commit": "637fcab6b602686887873ed20e69d083efb26312",
+        "fetched_at_utc": "2026-10-08T09:31:39.973184+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "637fcab6b602686887873ed20e69d083efb26312",
+        "anchors": {
+          "loss.py": {
+            "sha256": "6d0d0ffb21855ad54a3573f36940f9047f26bafd4ed08bdd34d80e026312f47c",
+            "lines": 262
+          },
+          "dfm_utils/laplacian_decomposer.py": {
+            "sha256": "5b755e46de0261e30c60b8e26d674b6e375ebdf20e6930d8ec8b8c1433b9f80e",
+            "lines": 448
+          },
+          "dfm_utils/samplers_dfm.py": {
+            "sha256": "b310b514999c7807d7ceb84810d2ae0a7ee5d668d5f5ec9a75d9bb91417f5cd5",
+            "lines": 246
+          },
+          "models/sit_dfm.py": {
+            "sha256": "0ba1ccabd64597fc7cfdfbc4a9baba932a794af5237e4071575daa368b3d8ebb",
+            "lines": 409
+          },
+          "README.md": {
+            "sha256": "409cb24b73325e30ec422cfae17404dcbc8e2a9d9e43c9ff4c1a1f081f65ce65",
+            "lines": 213
+          }
+        },
+        "review": "Released SiT/REPA reimplementation, NOT original paper architecture. Bilinear/bilinear Laplacian, product states with independent IID noise at ALL levels, t=1 noise, sampled last-active stage, earlier logit-normal(-2,1), unnormalized sum of active per-scale MSE. Sampler schedule stored fp32 despite intermediate fp64, fp64 Euler state with model dtype restoration. Optional REPA needs a teacher; no teacher downloaded.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/native_fixtures/dfm.json",
+          "configuration": {
+            "name": "dfm",
+            "image_shape": [
+              4,
+              16,
+              16
+            ],
+            "model": {
+              "name": "adapter",
+              "args": {
+                "model": {
+                  "name": "native_dfm",
+                  "args": {
+                    "input_size": 16,
+                    "in_channels": 4,
+                    "hidden_size": 32,
+                    "decoder_hidden_size": 32,
+                    "encoder_depth": 1,
+                    "depth": 2,
+                    "num_heads": 4,
+                    "class_dropout_prob": 0.0,
+                    "enable_repa": false,
+                    "qk_norm": false
+                  }
+                },
+                "output_index": 0
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "uniform"
+              },
+              "conditioning": {
+                "y": {
+                  "kind": "labels",
+                  "classes": 1000
+                }
+              }
+            },
+            "batch": {
+              "name": "dfm"
+            },
+            "representation": {
+              "name": "laplacian",
+              "args": {
+                "levels": 2,
+                "up": "bilinear",
+                "order": "coarse_first"
+              }
+            },
+            "clock": {
+              "name": "dfm"
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true
+            }
+          }
+        },
+        {
+          "file": "configs/native_fixtures/dfm_repa.json",
+          "configuration": {
+            "name": "dfm_repa",
+            "image_shape": [
+              4,
+              16,
+              16
+            ],
+            "model": {
+              "name": "native_dfm",
+              "args": {
+                "input_size": 16,
+                "in_channels": 4,
+                "hidden_size": 32,
+                "decoder_hidden_size": 32,
+                "encoder_depth": 1,
+                "depth": 2,
+                "num_heads": 4,
+                "class_dropout_prob": 0.0,
+                "enable_repa": true,
+                "z_dims": [
+                  8
+                ],
+                "projector_dim": 32,
+                "qk_norm": false
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "uniform"
+              },
+              "conditioning": {
+                "y": {
+                  "kind": "labels",
+                  "classes": 1000
+                },
+                "teacher_features": {
+                  "kind": "zeros",
+                  "shape": [
+                    64,
+                    8
+                  ],
+                  "destination": "context",
+                  "phase": "train"
+                }
+              }
+            },
+            "batch": {
+              "name": "dfm",
+              "args": {
+                "repa_weight": 0.3
+              }
+            },
+            "representation": {
+              "name": "laplacian",
+              "args": {
+                "levels": 2,
+                "up": "bilinear",
+                "order": "coarse_first"
+              }
+            },
+            "clock": {
+              "name": "dfm"
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true,
+              "teacher_features": "Synthetic zero teacher fixture; set kind=field and field=teacher_features with a local tensor dataset for actual REPA training."
+            }
+          }
+        }
+      ],
+      "executed_backbone_module_activation_audit": {
+        "evidence": "evidence/activation_parity/dfm.json",
+        "steps": 128,
+        "variants": 2,
+        "totals": {
+          "forward_input": {
+            "pairs": 23168,
+            "exact": 23168,
+            "byte_exact": 23168,
+            "within_tolerance": 23168,
+            "max_abs": 0.0
+          },
+          "forward_output": {
+            "pairs": 20608,
+            "exact": 20608,
+            "byte_exact": 20608,
+            "within_tolerance": 20608,
+            "max_abs": 0.0
+          },
+          "activation_gradient": {
+            "pairs": 20608,
+            "exact": 20608,
+            "byte_exact": 20608,
+            "within_tolerance": 20608,
+            "max_abs": 0.0
+          },
+          "parameter_gradient": {
+            "pairs": 11264,
+            "exact": 11264,
+            "byte_exact": 11264,
+            "within_tolerance": 11264,
+            "max_abs": 0.0
+          }
+        },
+        "exclusions": [],
+        "scope": "CPU fp32 or author-propagated fp64, reduced random author network, synthetic input, existing native-specific presets, 128 steps per variant. Shared author classes reused; not an independent rewrite of every neural layer."
+      },
+      "full_paper_recipe_coverage": false,
+      "compatibility_findings": [
+        "DFM-01",
+        "DFM-02",
+        "COMMON-01",
+        "COMMON-02"
+      ],
+      "compatibility_assessment": "release的product-state/path/drop mask/REPA已测；guidance缺失且release不同paper。",
+      "recipe_extension_evidence": "evidence/recipe_extensions/SUMMARY.json",
+      "current_recipe_profile_parity": {
+        "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+        "paper": "DFM",
+        "profiles": [
+          "dfm",
+          "dfm_yaml"
+        ],
+        "selection": "公开 SiT-XL 与 B YAML/lognormal",
+        "parameters": [
+          679402388,
+          132476180
+        ],
+        "full_backbone_tested": true,
+        "full_input_resolution_tested": true,
+        "training_steps": 2,
+        "executed_shared_module_activation_byte_exact": true,
+        "parameter_gradient_byte_exact": true,
+        "author_best_recipe_fully_executed": false,
+        "paper_quality_verified": false,
+        "limits": "release明确不同论文架构；真实REPA teacher/原论文最佳配置未认证"
+      },
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "byte_exact_on_tested_contract",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "公开SiT与论文DiT/SE-FLUX架构不同，后者不在承诺范围；REPA比较从明确提供的teacher特征开始。"
+      }
+    },
+    {
+      "id": "lapflow",
+      "name": "LapFlow",
+      "year": "ICLR 2026",
+      "paper": "https://arxiv.org/abs/2602.19461",
+      "method_source": "https://arxiv.org/pdf/2602.19461",
+      "relationship": "其 high band x-U D x = -d_RDD；但多 state、多输出、MoT/causal attention 和同时活动尺度改变了方法。",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "latent Laplacian pyramid 联合状态",
+        "A_signal_path": "各尺度独立 α_k/σ_k 与启动时间",
+        "C_noise_marginal": "2-level: one full IID epsilon Laplacian-decomposed. Default 3-level: full epsilon plus independent coarse epsilon leaves. Native branches differ.",
+        "K_coupling_boundary": "对应子空间相关噪声；无显式 renoising bridge",
+        "R_time_scale_allocation": "粗先细后，并行继续演化",
+        "T_W_target_loss": "各尺度 velocity MSE",
+        "H_backbone": "MoT + coarse-to-fine causal attention",
+        "S_solver_cost": "不能只保留残差而删掉联合注意力后称原版"
+      },
+      "configs": [
+        "configs/native_fixtures/lapflow_2.json",
+        "configs/native_fixtures/lapflow_3.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Actual released MoT (feb12_train_ours / ours_sample), bilinear D/nearest U Laplacian, delayed band paths; 2/3-level components; two-level full 128-update native training and sampling.",
+      "compatibility_and_limits": "Three-level preset has 4-update CLI/resume/sample coverage, not 128-update complete native-loop coverage. Two-level noise decomposes one full epsilon; default three-level uses full epsilon plus independent coarse leaves. Source last-loop head behavior retained. CPU replaces hardcoded time.cuda(); same torchdiffeq backend reused, including unused coarse tail integration.",
+      "source": {
+        "repo": "https://github.com/sjtuytc/ICLR26_LapFlow_Official",
+        "commit": "388610e8fd09f39f17c7bf5bd64135e6d1ce7d52",
+        "fetched_at_utc": "2026-10-08T09:31:40.622636+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "388610e8fd09f39f17c7bf5bd64135e6d1ce7d52",
+        "anchors": {
+          "sampler/ours_sample.py": {
+            "sha256": "493464345a8670c9eda24f1c404aee7a1a5049f513541fd94279c09b66d46fff",
+            "lines": 383
+          },
+          "sampler/edify_image_sample.py": {
+            "sha256": "6e466a7aae41d45bc4357e044a0ebf194964d70893443c2988a54d1b341bb4e9",
+            "lines": 186
+          },
+          "sampler/ours_sample_joint.py": {
+            "sha256": "857f577af4a89cf0de142d460f0a1e01057b9d3f035fac9f33620a423b8e3249",
+            "lines": 166
+          },
+          "models/MultiScaleDiT.py": {
+            "sha256": "42e5087cef7e005d437dd5e95bf26038fec6615de5213ef8254de0eee9668871",
+            "lines": 541
+          },
+          "feb12_train_ours.py": {
+            "sha256": "19f022f40f0b7424c838edaebaed5b71afa2914ae4a811ce4f641bf5d19275db",
+            "lines": 625
+          },
+          "README.md": {
+            "sha256": "419d9655d87dcecaa15b1120fc817d040d152b270caebfd114b84fb4f89bff67",
+            "lines": 207
+          }
+        },
+        "review": "Main entry feb12_train_ours + ours_sample, not historical Pyramid-Flow. Bilinear D without AA and nearest U, fine-to-coarse residual state; 2-level noise is decomposed from one full Gaussian, 3-level public default generate_multiscale_noise instead uses full-resolution plus independent coarse IID. Delayed per-band data alpha=(t-a)/(1-a), sigma=1-t; global-time velocities. MoT forward final_layers uses the final loop i for all outputs (preserve native behavior explicitly, optional corrected-head transplant). CUDA-only time tensors need device compatibility.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/native_fixtures/lapflow_2.json",
+          "configuration": {
+            "name": "lapflow_2",
+            "image_shape": [
+              4,
+              16,
+              16
+            ],
+            "model": {
+              "name": "adapter",
+              "args": {
+                "model": {
+                  "name": "native_lapflow",
+                  "args": {
+                    "input_size": [
+                      16,
+                      8
+                    ],
+                    "patch_size": 2,
+                    "in_channels": 4,
+                    "hidden_size": 32,
+                    "depth": 2,
+                    "num_heads": 4,
+                    "class_dropout_prob": 0.0,
+                    "use_mot": true,
+                    "use_mask": true
+                  }
+                },
+                "time_first": true
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "lapflow",
+                "args": {
+                  "activations": [
+                    0.4,
+                    0.0
+                  ]
+                }
+              },
+              "conditioning": {
+                "y": {
+                  "kind": "labels",
+                  "classes": 1000
+                }
+              }
+            },
+            "batch": {
+              "name": "lapflow",
+              "args": {
+                "levels": 2
+              }
+            },
+            "sampler": {
+              "name": "lapflow",
+              "args": {
+                "levels": 2,
+                "step_size": 0.1
+              }
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true
+            }
+          }
+        },
+        {
+          "file": "configs/native_fixtures/lapflow_3.json",
+          "configuration": {
+            "name": "lapflow_3",
+            "image_shape": [
+              4,
+              16,
+              16
+            ],
+            "model": {
+              "name": "adapter",
+              "args": {
+                "model": {
+                  "name": "native_lapflow",
+                  "args": {
+                    "input_size": [
+                      16,
+                      8,
+                      4
+                    ],
+                    "patch_size": 2,
+                    "in_channels": 4,
+                    "hidden_size": 32,
+                    "depth": 2,
+                    "num_heads": 4,
+                    "class_dropout_prob": 0.0,
+                    "use_mot": true,
+                    "use_mask": true
+                  }
+                },
+                "time_first": true
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "lapflow",
+                "args": {
+                  "activations": [
+                    0.6,
+                    0.3,
+                    0.0
+                  ]
+                }
+              },
+              "conditioning": {
+                "y": {
+                  "kind": "labels",
+                  "classes": 1000
+                }
+              }
+            },
+            "batch": {
+              "name": "lapflow",
+              "args": {
+                "levels": 3
+              }
+            },
+            "sampler": {
+              "name": "lapflow",
+              "args": {
+                "levels": 3,
+                "step_size": 0.1
+              }
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true
+            }
+          }
+        }
+      ],
+      "executed_backbone_module_activation_audit": {
+        "evidence": "evidence/activation_parity/lapflow.json",
+        "steps": 128,
+        "variants": 1,
+        "totals": {
+          "forward_input": {
+            "pairs": 13184,
+            "exact": 13184,
+            "byte_exact": 13184,
+            "within_tolerance": 13184,
+            "max_abs": 0.0
+          },
+          "forward_output": {
+            "pairs": 11904,
+            "exact": 11904,
+            "byte_exact": 11904,
+            "within_tolerance": 11904,
+            "max_abs": 0.0
+          },
+          "activation_gradient": {
+            "pairs": 11904,
+            "exact": 11904,
+            "byte_exact": 11904,
+            "within_tolerance": 11904,
+            "max_abs": 0.0
+          },
+          "parameter_gradient": {
+            "pairs": 7296,
+            "exact": 7296,
+            "byte_exact": 7296,
+            "within_tolerance": 7296,
+            "max_abs": 0.0
+          }
+        },
+        "exclusions": [],
+        "scope": "CPU fp32 or author-propagated fp64, reduced random author network, synthetic input, existing native-specific presets, 128 steps per variant. Shared author classes reused; not an independent rewrite of every neural layer."
+      },
+      "full_paper_recipe_coverage": false,
+      "compatibility_findings": [
+        "LAP-01",
+        "LAP-02",
+        "COMMON-01",
+        "COMMON-02"
+      ],
+      "compatibility_assessment": "两层native及三层组件已覆盖；不要把noise coupling/causal mask误列为缺失。",
+      "recipe_extension_evidence": "evidence/recipe_extensions/SUMMARY.json",
+      "current_recipe_profile_parity": {
+        "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+        "paper": "LapFlow",
+        "profiles": [
+          "lapflow",
+          "lapflow_paper"
+        ],
+        "selection": "公开 MoT-XL；同时测CLI及论文ImageNet训练flags",
+        "parameters": [
+          1347159200,
+          1347159200
+        ],
+        "full_backbone_tested": true,
+        "full_input_resolution_tested": true,
+        "training_steps": 2,
+        "executed_shared_module_activation_byte_exact": true,
+        "parameter_gradient_byte_exact": true,
+        "author_best_recipe_fully_executed": false,
+        "paper_quality_verified": false,
+        "limits": "论文T0.5/LR1e-4/EMA0.9999/EQVAE；最佳CFG和EQVAE资产未认证"
+      },
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "byte_exact_on_tested_contract",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "CLI默认与paper flags分开；不声称HQ512/1024最佳实验。square的原缺陷兼容/修正分开；重构恒等式舍入单列。"
+      }
+    },
+    {
+      "id": "ppflow",
+      "name": "Pyramidal Patchification Flow for Visual Generation",
+      "year": "2025 preprint / ICLR 2026",
+      "paper": "https://arxiv.org/abs/2506.23543",
+      "method_source": "https://github.com/fudan-generative-vision/PPFlow",
+      "relationship": "概率路径并不与 RDD 相同，但能隔离减少早期 token 的贡献。若不优于这类对照，仅比固定分辨率 DiT 好不足以证明 drift 价值。",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "Full degrees of freedom retained by invertible channel↔space and width packing; source layout, not lossy image downsampling.",
+        "A_signal_path": "普通 FM 路径",
+        "C_noise_marginal": "普通 FM noise",
+        "K_coupling_boundary": "无跨尺度状态跳变/renoising",
+        "R_time_scale_allocation": "高噪声大 patch；低噪声小 patch",
+        "T_W_target_loss": "普通 velocity MSE",
+        "H_backbone": "共享 DiT core + 分尺度 patchify/unpatchify",
+        "S_solver_cost": "检验少 token 本身的关键对照"
+      },
+      "configs": [
+        "configs/native_fixtures/ppflow_2.json",
+        "configs/native_fixtures/ppflow_3.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Actual PPFlow DiT, 2/3 stages, invertible channel-to-space and width permutation, velocity loss and entire Euler trajectories.",
+      "compatibility_and_limits": "Balanced batch must divide by 2/4. Native strict rejection mode can undersupply; expected error retained. learn_sigma=False has a source unpatchify channel bug; source-default True retained, variance output ignored by FM. num_steps counts endpoints, hence n-1 updates.",
+      "source": {
+        "repo": "https://github.com/fudan-generative-vision/PPFlow",
+        "commit": "1f4dd1738a6da7feb7279ad9af12c7d93a07dd93",
+        "fetched_at_utc": "2026-10-08T09:31:41.592297+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "1f4dd1738a6da7feb7279ad9af12c7d93a07dd93",
+        "anchors": {
+          "modules/invertible_sample.py": {
+            "sha256": "57d0f22b3f9803118fb9810484f3b53a7c3a9dc5ec5a009f285a71da15f9eb32",
+            "lines": 44
+          },
+          "modules/patch_emb.py": {
+            "sha256": "cd4030d99653636c1136b3205ae2f1d7134e3ae9ba0da0ce83945953d906aff7",
+            "lines": 94
+          },
+          "models.py": {
+            "sha256": "d7f8b63c54ce280e63a08fe9c519b4d3a804fce9b3c4683fe82af88271620e03",
+            "lines": 502
+          },
+          "transport/transport.py": {
+            "sha256": "4e24112d7cf4ae1fd0454939ad61d4be5e4ed2c79c05af5d85cecd0e302503d9",
+            "lines": 502
+          },
+          "transport/path.py": {
+            "sha256": "9783cd621fd9790498ad26290b7edb0ccbe7bb9471167c5abb8d39f4e74843a5",
+            "lines": 192
+          },
+          "transport/integrators.py": {
+            "sha256": "4bddce847040d5bce411fc02b5b879943c978b30ab30edbcfdd6bd1ce76ddc59",
+            "lines": 117
+          }
+        },
+        "review": "Invertible channel-spatial permutation preserves all state dimensions; NOT lossy downsampling. 2/3 stages include width-only layout. No renoising. Ordinary FM in permuted coordinates with global-time target, native packed heterogeneous batches and separate patch heads. Native rejection time sampling may return too few samples for tiny batches; expose both exact-native sampler and an explicitly labeled direct-stratified replacement.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/native_fixtures/ppflow_2.json",
+          "configuration": {
+            "name": "ppflow_2",
+            "image_shape": [
+              4,
+              16,
+              16
+            ],
+            "model": {
+              "name": "native_ppflow",
+              "args": {
+                "input_size": 16,
+                "patch_size": 2,
+                "patch_level": 2,
+                "in_channels": 4,
+                "hidden_size": 32,
+                "depth": 2,
+                "num_heads": 4,
+                "class_dropout_prob": 0.0,
+                "learn_sigma": true
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "none"
+              },
+              "conditioning": {
+                "y": {
+                  "kind": "labels",
+                  "classes": 1000
+                }
+              }
+            },
+            "batch": {
+              "name": "ppflow",
+              "args": {
+                "levels": 2
+              }
+            },
+            "sampler": {
+              "name": "ppflow",
+              "args": {
+                "steps": 12
+              }
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true
+            }
+          }
+        },
+        {
+          "file": "configs/native_fixtures/ppflow_3.json",
+          "configuration": {
+            "name": "ppflow_3",
+            "image_shape": [
+              4,
+              16,
+              16
+            ],
+            "model": {
+              "name": "native_ppflow",
+              "args": {
+                "input_size": 16,
+                "patch_size": 2,
+                "patch_level": 3,
+                "in_channels": 4,
+                "hidden_size": 32,
+                "depth": 2,
+                "num_heads": 4,
+                "class_dropout_prob": 0.0,
+                "learn_sigma": true
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "none"
+              },
+              "conditioning": {
+                "y": {
+                  "kind": "labels",
+                  "classes": 1000
+                }
+              }
+            },
+            "batch": {
+              "name": "ppflow",
+              "args": {
+                "levels": 3
+              }
+            },
+            "sampler": {
+              "name": "ppflow",
+              "args": {
+                "steps": 12
+              }
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true
+            }
+          }
+        }
+      ],
+      "executed_backbone_module_activation_audit": {
+        "evidence": "evidence/activation_parity/ppflow.json",
+        "steps": 128,
+        "variants": 2,
+        "totals": {
+          "forward_input": {
+            "pairs": 23424,
+            "exact": 23424,
+            "byte_exact": 23424,
+            "within_tolerance": 23424,
+            "max_abs": 0.0
+          },
+          "forward_output": {
+            "pairs": 18176,
+            "exact": 18176,
+            "byte_exact": 18176,
+            "within_tolerance": 18176,
+            "max_abs": 0.0
+          },
+          "activation_gradient": {
+            "pairs": 17920,
+            "exact": 17920,
+            "byte_exact": 17920,
+            "within_tolerance": 17920,
+            "max_abs": 0.0
+          },
+          "parameter_gradient": {
+            "pairs": 9728,
+            "exact": 9728,
+            "byte_exact": 9728,
+            "within_tolerance": 9728,
+            "max_abs": 0.0
+          }
+        },
+        "exclusions": [],
+        "scope": "CPU fp32 or author-propagated fp64, reduced random author network, synthetic input, existing native-specific presets, 128 steps per variant. Shared author classes reused; not an independent rewrite of every neural layer."
+      },
+      "full_paper_recipe_coverage": false,
+      "compatibility_findings": [
+        "PPF-01",
+        "PPF-02",
+        "PPF-03",
+        "COMMON-01",
+        "COMMON-02"
+      ],
+      "compatibility_assessment": "2/3级permutation/packing/level embedding在；guided采样和微调初始化缺失。",
+      "recipe_extension_evidence": "evidence/recipe_extensions/SUMMARY.json",
+      "current_recipe_profile_parity": {
+        "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+        "paper": "PPFlow",
+        "profiles": [
+          "ppflow",
+          "ppflow3"
+        ],
+        "selection": "发布 XL-2/XL-3，Heun2/250points",
+        "parameters": [
+          675428128,
+          675688544
+        ],
+        "full_backbone_tested": true,
+        "full_input_resolution_tested": true,
+        "training_steps": 2,
+        "executed_shared_module_activation_byte_exact": true,
+        "parameter_gradient_byte_exact": true,
+        "author_best_recipe_fully_executed": false,
+        "paper_quality_verified": false,
+        "limits": "真实SiT初始化缺失；stage CFG为eval默认/示例；未公开4/5stage/FLUX不覆盖"
+      },
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "byte_exact_on_tested_contract",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "不含未发布FLUX/四五层；no-sigma需显式两处修补。原solver明确复用；真实SiT预训练收益未评估。"
+      }
+    },
+    {
+      "id": "pddpm",
+      "name": "Pyramidal Denoising Diffusion Probabilistic Models",
+      "year": "2022",
+      "paper": "https://arxiv.org/abs/2208.01864",
+      "method_source": "https://arxiv.org/pdf/2208.01864",
+      "relationship": "边界 fresh renoising 形式与 RDD 接近；没有 RDD 阶段内 drift，且先完成 coarse 再重启，不是同一全局轨迹。",
+      "status": "paper_mapping_native_skipped",
+      "source_provenance": "no_executable_official_source_confirmed",
+      "literature_component_map": {
+        "E_representation": "像素；逐尺度单状态",
+        "A_signal_path": "完整 coarse 生成，再局部 forward-noise/refine",
+        "C_noise_marginal": "普通 DDPM Gaussian",
+        "K_coupling_boundary": "clean upsample + fresh Gaussian",
+        "R_time_scale_allocation": "每级局部去噪循环",
+        "T_W_target_loss": "普通 ε/score MSE",
+        "H_backbone": "single CNN + 坐标位置编码",
+        "S_solver_cost": "不是同一个全局 RDD VP stage path"
+      },
+      "configs": [],
+      "paper_quality_verified": false,
+      "skip_reason": "No executable official implementation confirmed.",
+      "implementation": "Literature component mapping / extension interfaces only, not implemented full paper algorithm.",
+      "configured_components": []
+    },
+    {
+      "id": "rmd",
+      "name": "Cross-Resolution Distribution Matching for Diffusion Distillation",
+      "year": "2026；核对 v2 (2026-06-30)",
+      "paper": "https://arxiv.org/abs/2603.06136",
+      "method_source": "https://arxiv.org/html/2603.06136v2",
+      "relationship": "边界噪声混合特别适合做 RDD 的部件消融；a^2+b^2=1 本身不能证明上采样后的 spatial covariance 为 I。",
+      "status": "source_native_small_fixture",
+      "source_provenance": "self_declared_official_not_independently_linked",
+      "literature_component_map": {
+        "E_representation": "预训练图像/视频模型",
+        "A_signal_path": "跨尺度 trajectory distribution matching",
+        "C_noise_marginal": "logSNR 映射 + predicted/fresh noise 混合",
+        "K_coupling_boundary": "混合系数依 resolution gap；不是严格 IID 协方差证明",
+        "R_time_scale_allocation": "few-step student 的分辨率分段",
+        "T_W_target_loss": "teacher/fake-score 蒸馏",
+        "H_backbone": "student + 训练期 teacher/fake-score",
+        "S_solver_cost": "teacher成本计入；不能与 supervised loss 直接归因"
+      },
+      "configs": [
+        "configs/native_fixtures/rmd.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Actual WanTransformer3DModel with released Predictor, loss helpers and phase1/phase2 bodies; flow modes 0/1/2 × eta 0/.5/1, two transition modes trained 128 updates; random Wan VAE decoded pixels.",
+      "compatibility_and_limits": "Repository self-identifies official and metadata matches paper author names, but paper page does not link it; author ownership unconfirmed. Full original train() separately executes 2 CPU steps with actual Accelerator/DataLoader/two optimizers/checkpoint export. Synthetic embeddings/local random loaders and small LATENT_SIZES replace assets/geometry. Optional GAN branch excluded. Width-preserving normalization and phase1 higher-shift behavior retained.",
+      "source": {
+        "repo": "https://github.com/Skylar-aigc/RMD-Inference-Acceleration",
+        "commit": "213a6691d19abe2463d1c91f4cb9a925a3a13d12",
+        "fetched_at_utc": "2026-10-08T11:07:02.018956+00:00"
+      },
+      "preimplementation_review": {
+        "review_completed_at_utc": "2026-10-08T11:08:37.255766+00:00",
+        "rmd_extension_implementation_has_started": false,
+        "repo": "https://github.com/Skylar-aigc/RMD-Inference-Acceleration",
+        "commit": "213a6691d19abe2463d1c91f4cb9a925a3a13d12",
+        "provenance": "Repository self-identifies official, author names and paper match. arXiv paper does not link this repository; independent author ownership confirmation not available. Native claims refer to this pinned released code, not independently verified paper-result provenance.",
+        "review": [
+          "Two optimizers: fake score phase1 followed by generator phase2 using freshly updated fake score. Frozen real teacher, CFG in clean coordinates.",
+          "Ordinary RF velocity conversions clean=z-sigma*v and predicted_noise=z+(1-sigma)*v.",
+          "Sampler draws and discards initial index random draw, reinjects pure fresh Gaussian exactly at resolution switch; eta predicted/fresh mixture at other steps.",
+          "Spatial bilinear flatten B*T, source target geometry replaced only by small local random-Wan fixture.",
+          "Source adaptive normalization reduces axes [1,2,3], leaving width for BCTHW: preserve this released behavior; do not silently substitute per-example norm.",
+          "Source score weighting float64 then float32; pseudo-Huber normalization depends on C*T*H*W, not batch.",
+          "Native top timestep980 and scheduler train_steps1000 retained. Optional GAN omitted as released experimental branch, no text encoder or weights downloads."
+        ],
+        "anchors": {
+          "src/rmd/engines/predictor.py": "f536838dd459e0d2f2be4772dc4729a5f548b11320f233cd7ac803296185419b",
+          "src/rmd/engines/train.py": "3ce61a915e526f4dac02663e724556b5fbf2ea9193261fba2376e84d21342686",
+          "src/rmd/losses/distillation.py": "7ca772122693ef0aef499a155017535b19a721e3684e32d02a3937d39148d784",
+          "src/rmd/models/wan.py": "e777962c713adf8c7f4c777e4babb84ca5f3c2846c8af21de2cc9ebb765fc60d",
+          "configs/train_wan_1_3b.yaml": "df97432a1ecc5523729377f3306294cb367626f6fec18cb60e43426b4f88490e",
+          "docs/method.md": "fed67ca66831a0beaea023e8055dbb55c41d5e1c81f32ad8786d285518c63c96"
+        },
+        "excluded_assets": [
+          ".gitattributes",
+          ".gitignore",
+          "CITATION.cff",
+          "assets/.gitkeep",
+          "assets/rmd_training_framework.png",
+          "assets/user_preference.png",
+          "assets/wan_video_comparison.png",
+          "examples/sample_prompts.txt",
+          "examples/vidprom_prompts_2000.txt"
+        ]
+      },
+      "configured_components": [
+        {
+          "file": "configs/native_fixtures/rmd.json",
+          "configuration": {
+            "name": "rmd",
+            "image_shape": [
+              4,
+              2,
+              4,
+              6
+            ],
+            "model": {
+              "name": "wan_transformer",
+              "args": {
+                "patch_size": [
+                  1,
+                  2,
+                  2
+                ],
+                "num_attention_heads": 2,
+                "attention_head_dim": 16,
+                "in_channels": 4,
+                "out_channels": 4,
+                "text_dim": 8,
+                "freq_dim": 16,
+                "ffn_dim": 64,
+                "num_layers": 1
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 5e-06,
+                "fake_lr": 2e-05,
+                "betas": [
+                  0.0,
+                  0.95
+                ],
+                "weight_decay": 0.0001,
+                "eps": 1e-08,
+                "grad_clip": 1.0
+              }
+            },
+            "task": "rmd",
+            "distillation": {
+              "k_step": 6,
+              "eta": 0.5,
+              "flow_shift_trans": 1,
+              "low_rs_step": 3,
+              "warmup_step": 3,
+              "split_timestep": true,
+              "t_offset_factor": 0.25,
+              "target_size": [
+                8,
+                12
+              ]
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true,
+              "source_provenance": "Repository self-identifies official; paper does not link repository. Numerical claims refer to the pinned release, not independent author-identity confirmation."
+            }
+          }
+        }
+      ],
+      "executed_backbone_module_activation_audit": {
+        "evidence": "evidence/activation_parity/rmd.json",
+        "steps": 128,
+        "variants": 2,
+        "totals": {
+          "forward_input": {
+            "pairs": 159744,
+            "exact": 159744,
+            "byte_exact": 159744,
+            "within_tolerance": 159744,
+            "max_abs": 0.0
+          },
+          "forward_output": {
+            "pairs": 138240,
+            "exact": 138240,
+            "byte_exact": 138240,
+            "within_tolerance": 138240,
+            "max_abs": 0.0
+          },
+          "activation_gradient": {
+            "pairs": 21504,
+            "exact": 21504,
+            "byte_exact": 21504,
+            "within_tolerance": 21504,
+            "max_abs": 0.0
+          },
+          "parameter_gradient": {
+            "pairs": 21504,
+            "exact": 21504,
+            "byte_exact": 21504,
+            "within_tolerance": 21504,
+            "max_abs": 0.0
+          }
+        },
+        "exclusions": [],
+        "scope": "CPU fp32 or author-propagated fp64, reduced random author network, synthetic input, existing native-specific presets, 128 steps per variant. Shared author classes reused; not an independent rewrite of every neural layer."
+      },
+      "full_paper_recipe_coverage": false,
+      "compatibility_findings": [
+        "RMD-01",
+        "COMMON-02"
+      ],
+      "compatibility_assessment": "专用三网络/两优化器目标与两transition已测；归属及paper多backbone范围有限。",
+      "recipe_extension_evidence": "evidence/recipe_extensions/SUMMARY.json",
+      "current_recipe_profile_parity": {
+        "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+        "paper": "RMD",
+        "profiles": [
+          "components/rmd_full_backbone",
+          "components/rmd_released_flags"
+        ],
+        "selection": "发布Wan1.3B配置flags及完整HF骨干",
+        "parameters": [
+          1418996800
+        ],
+        "full_backbone_tested": true,
+        "full_input_resolution_tested": false,
+        "training_steps": 2,
+        "executed_shared_module_activation_byte_exact": true,
+        "parameter_gradient_byte_exact": true,
+        "author_best_recipe_fully_executed": false,
+        "paper_quality_verified": false,
+        "limits": "完整骨干仅小视频网格/FP32；21×60×104→21×90×160、BF16/累积/DDP未合并认证；repo作者归属未确认"
+      },
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "byte_exact_on_tested_contract",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "不含GAN、其他骨干/14B最佳实验；完整1.3B骨干使用小视频网格，合成teacher不能证明蒸馏质量。仓库归属限制保留。"
+      }
+    },
+    {
+      "id": "nami",
+      "name": "NAMI",
+      "year": "2025 preprint / CVPR 2026；核对 v3",
+      "paper": "https://arxiv.org/abs/2503.09242",
+      "method_source": "https://arxiv.org/html/2503.09242v3",
+      "relationship": "与 RDD 都是分辨率/时间阶段，但跨尺度 bridge 和 active depth 不同，是另外两项可控制组件。",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "latent T2I",
+        "A_signal_path": "piecewise rectified flow",
+        "C_noise_marginal": "最新版 learned bridge 对齐阶段",
+        "K_coupling_boundary": "BridgeFlow: W Up(z)+B；另行预训练",
+        "R_time_scale_allocation": "低尺度少层、高尺度加层",
+        "T_W_target_loss": "stage velocity + bridge MSE",
+        "H_backbone": "MM-DiT，渐增深度",
+        "S_solver_cost": "原版数据与规模不同；不能直接比 FID"
+      },
+      "configs": [
+        "configs/inference_only/nami.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Full author-vendored FLUX pipeline, progressive depth, learned nearest affine bridge, native schedule, CFG 1/3; 16-channel 32/64/128 latent geometry and 1024-square decoded pixels.",
+      "compatibility_and_limits": "Inference-only release. Old Transformers FLAX_WEIGHTS_NAME constant restored for import. Vendored pipeline/transformer hashes equal src copies. Native ignores supplied latents and draws full-resolution noise before downsampling; port exposes this full initial noise. No bridge-training objective published/recreated.",
+      "source": {
+        "repo": "https://github.com/360CVGroup/NAMI-T2I",
+        "commit": "4aa35bd7f2f76f1f86ce1241eeddc3297e14ef41",
+        "fetched_at_utc": "2026-10-08T09:31:43.228202+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "4aa35bd7f2f76f1f86ce1241eeddc3297e14ef41",
+        "anchors": {
+          "src/infer.py": {
+            "sha256": "4d7d81b1d7d60d5624e0663f52caae01c0b10816fef69af39fb5a78530fa6cd8",
+            "lines": 314
+          },
+          "src/scheduling_flow_matching.py": {
+            "sha256": "32a34bddee1e3ac7afe69bbbf29ec249e139e35c2839782bb9acfc6463a43749",
+            "lines": 294
+          },
+          "src/pipeline_flux.py": {
+            "sha256": "8f427ce15d4942e3d42058d276e20c0fa4ba6fbf368ad65b5be20a8874476b05",
+            "lines": 524
+          },
+          "src/transformer_flux.py": {
+            "sha256": "6589b13c5b534219e1bdc1010f0e4fb32c569c56aae6e9cf8a929dc0c041c485",
+            "lines": 577
+          }
+        },
+        "review": "Inference source only. Learned BridgeFlow nearest upsample times scalar plus per-pixel learnable shift (16x64x64 and 16x128x128), not additive Gaussian. Separate sigma/local model clocks, correction gamma=+1/3, progressive Flux depth and stage position embeddings. Preserve public scheduler float promotion; no author training pipeline can be compared.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/inference_only/nami.json",
+          "configuration": {
+            "name": "nami",
+            "model": {
+              "name": "native_nami",
+              "args": {
+                "in_channels": 64,
+                "num_layers": 1,
+                "num_single_layers": 3,
+                "num_attention_heads": 1,
+                "attention_head_dim": 16,
+                "joint_attention_dim": 8,
+                "pooled_projection_dim": 8,
+                "axes_dims_rope": [
+                  4,
+                  6,
+                  6
+                ],
+                "stage_singleblock_index": [
+                  1,
+                  2,
+                  3
+                ]
+              }
+            },
+            "vae": {
+              "name": "autoencoder_kl",
+              "args": {
+                "block_out_channels": [
+                  32,
+                  32,
+                  32,
+                  32
+                ],
+                "down_block_types": [
+                  "DownEncoderBlock2D",
+                  "DownEncoderBlock2D",
+                  "DownEncoderBlock2D",
+                  "DownEncoderBlock2D"
+                ],
+                "up_block_types": [
+                  "UpDecoderBlock2D",
+                  "UpDecoderBlock2D",
+                  "UpDecoderBlock2D",
+                  "UpDecoderBlock2D"
+                ],
+                "latent_channels": 16,
+                "norm_num_groups": 32,
+                "layers_per_block": 1,
+                "scaling_factor": 0.3611,
+                "shift_factor": 0.1159
+              }
+            },
+            "sampler": {
+              "steps": [
+                3,
+                3,
+                3
+              ],
+              "guidance_scale": 3.0
+            },
+            "initial_shape": [
+              1,
+              16,
+              128,
+              128
+            ],
+            "synthetic_fixture": true,
+            "synthetic_embedding_shape": [
+              1,
+              3,
+              8
+            ]
+          }
+        }
+      ],
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "not_applicable_no_released_training_objective",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "公开推理范围；没有作者训练器，backward不适用。真实bridge权重必须另供。"
+      }
+    },
+    {
+      "id": "mrflow",
+      "name": "Multi-Resolution Flow Matching",
+      "year": "2026-07",
+      "paper": "https://arxiv.org/abs/2607.01642",
+      "method_source": "https://github.com/Xingyu-Zheng/MrFlow",
+      "relationship": "工程上很接近更换 upsampler 和 restart noise；与 RDD native path 不同，是 inference strategy。",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "latent → pixel → latent",
+        "A_signal_path": "原基座 low-res sampling + 短 refine",
+        "C_noise_marginal": "局部小强度 noise",
+        "K_coupling_boundary": "VAE decode→Real-ESRGAN→VAE encode",
+        "R_time_scale_allocation": "完整粗图后短高尺度阶段",
+        "T_W_target_loss": "无新增基座训练",
+        "H_backbone": "预训练生成器 + 外部 SR",
+        "S_solver_cost": "必须计入 GAN 与 VAE roundtrip"
+      },
+      "configs": [
+        "configs/inference_only/mrflow.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Actual author main with local random FLUX/VAE and actual RRDB architecture from exact RealESRGAN gitlink: generate→decode→PIL uint8→SR→resize→posterior encode→12+1-step sigma .12 refine.",
+      "compatibility_and_limits": "Only asset loaders supply local modules; deprecated cached_download import removed in compatibility namespace. Source tile=192,padding=24,symmetric pad=15,batch=4 and uint8 truncation retained; multi-tile non-square batch=3 tested. Random narrow RRDB is not pretrained SR quality.",
+      "source": {
+        "repo": "https://github.com/Xingyu-Zheng/MrFlow",
+        "commit": "108837b95e93fc1f69a69413109ba505dac0f9ab",
+        "fetched_at_utc": "2026-10-08T09:31:44.794740+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "108837b95e93fc1f69a69413109ba505dac0f9ab",
+        "anchors": {
+          "flux1_mrflow.py": {
+            "sha256": "791cdb4132a5ac6b0ae690be44e8c16333c4992523b9e387e1843121ca3f409e",
+            "lines": 84
+          },
+          "mrflow_utils.py": {
+            "sha256": "2f96fe30eb8acbc40fe0e30b24be202990a973147e49d57b23a5de451652c1c4",
+            "lines": 28
+          },
+          "examples/direct_sigma_refine.py": {
+            "sha256": "8249c3cdee13d673446b946d99f91aa8fe14b64aba55f861959f12bd134b5928",
+            "lines": 33
+          },
+          "README.md": {
+            "sha256": "1fefe0713479b6e3f332e7ca3a43dbea6f0f6c3b8f44134bd0333674cb6e32f9",
+            "lines": 210
+          }
+        },
+        "review": "Inference method, not new training objective. Low-resolution complete Flux sampling, VAE decode to PIL, RealESRGAN x2 then PIL resize, VAE encode and sigma=.12 direct linear refine. Exact pixel pipeline requires supplied VAE/SR weights; test orchestration with explicitly synthetic codec and never claim this is native perceptual parity.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/inference_only/mrflow.json",
+          "configuration": {
+            "name": "mrflow",
+            "model": {
+              "name": "flux_transformer",
+              "args": {
+                "in_channels": 16,
+                "num_layers": 1,
+                "num_single_layers": 1,
+                "num_attention_heads": 2,
+                "attention_head_dim": 16,
+                "joint_attention_dim": 8,
+                "pooled_projection_dim": 8,
+                "axes_dims_rope": [
+                  4,
+                  6,
+                  6
+                ]
+              }
+            },
+            "vae": {
+              "name": "autoencoder_kl",
+              "args": {
+                "block_out_channels": [
+                  32,
+                  32
+                ],
+                "down_block_types": [
+                  "DownEncoderBlock2D",
+                  "DownEncoderBlock2D"
+                ],
+                "up_block_types": [
+                  "UpDecoderBlock2D",
+                  "UpDecoderBlock2D"
+                ],
+                "latent_channels": 4,
+                "norm_num_groups": 32,
+                "layers_per_block": 1,
+                "scaling_factor": 0.3611,
+                "shift_factor": 0.1159
+              }
+            },
+            "sr_model": {
+              "name": "native_rrdb",
+              "args": {
+                "num_in_ch": 3,
+                "num_out_ch": 3,
+                "num_feat": 8,
+                "num_block": 2,
+                "num_grow_ch": 4,
+                "scale": 2
+              }
+            },
+            "sampler": {
+              "low_size": 32,
+              "high_size": 64,
+              "low_steps": 12,
+              "refine_steps": 1,
+              "refine_sigma": 0.12
+            },
+            "synthetic_fixture": true,
+            "synthetic_embedding_shape": [
+              1,
+              3,
+              8
+            ]
+          }
+        }
+      ],
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "not_applicable_no_released_training_objective",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "training-free推理，无作者backward；真实text/模型/VAE/RRDB资产与质量未认证。"
+      }
+    },
+    {
+      "id": "dctdiff",
+      "name": "DCTdiff",
+      "year": "2024 preprint / ICML 2025",
+      "paper": "https://arxiv.org/abs/2412.15032",
+      "method_source": "https://arxiv.org/html/2412.15032v1",
+      "relationship": "适合交代 spectral autoregression 背景或研究频域算子，优先级低于 f-DM/Edify/Relay/SSD。",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "压缩 YCbCr/block-DCT 系数",
+        "A_signal_path": "固定变换空间 diffusion",
+        "C_noise_marginal": "变换表示的 noise/SNR 校准",
+        "K_coupling_boundary": "无 RDD 默认阶段 refresh",
+        "R_time_scale_allocation": "主要是表示压缩，不是逐阶段长大状态",
+        "T_W_target_loss": "变换空间普通 diffusion",
+        "H_backbone": "DCT 表示上的生成器",
+        "S_solver_cost": "属于 representation control，不是最接近路径基线"
+      },
+      "configs": [
+        "configs/native_fixtures/dctdiff.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Actual U-ViT, YCbCr/chroma subsampling/block DCT/zigzag/eta codec, VP objective, native DPM-Solver and decoded uint8 pixels.",
+      "compatibility_and_limits": "DPM-Solver backend explicitly reused (dpm_solver_pytorch, not a substitute DPM-Solver++). Decoder retains coefficient clipping [-2,2], zero omitted frequencies, double IDCT and uint8 truncation.",
+      "source": {
+        "repo": "https://github.com/forever208/DCTdiff",
+        "commit": "b915fa1b8ba279e4b74efefe85bced681e3d8ace",
+        "fetched_at_utc": "2026-10-08T09:31:45.936317+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "b915fa1b8ba279e4b74efefe85bced681e3d8ace",
+        "anchors": {
+          "DCT_utils.py": {
+            "sha256": "57442447e04c94e957f301f2955d5d2b91b851f5e5ec98f01fcbc531b8778804",
+            "lines": 72
+          },
+          "datasets.py": {
+            "sha256": "83b12f0d6878d4707e0a9c96caa9f3b38d1fa0a6be6843fc92c53b07c7ab04d0",
+            "lines": 963
+          },
+          "utils.py": {
+            "sha256": "3041069248fa49c2f4d6d7bb2642c08dfcb72d283f33b559a6344f2a278caafa",
+            "lines": 443
+          },
+          "sde.py": {
+            "sha256": "f8e7084e49fc10d1048e707f347f0eb9ea27e7bdfd8dccb3ef9c2684be9519e3",
+            "lines": 318
+          },
+          "libs/uvit.py": {
+            "sha256": "efbcf09737bc75504e20ad9ca1ab4d0f53e0e4a101c6080817154fecac877751",
+            "lines": 228
+          },
+          "train.py": {
+            "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d",
+            "lines": 303
+          }
+        },
+        "review": "Fixed block-DCT representation: RGB255 to YCbCr, 4:2:0 bilinear chroma, tokens ordered 4Y Cb Cr, divide frequency-specific eta, zigzag truncate, decode clip[-2,2] and uint8. VPSDE scales SNR through modified cumulative beta, U-ViT token architecture. Distinguish token, latent and pixel parity.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/native_fixtures/dctdiff.json",
+          "configuration": {
+            "name": "dctdiff",
+            "image_shape": [
+              3,
+              32,
+              32
+            ],
+            "model": {
+              "name": "native_dctdiff",
+              "args": {
+                "embed_dim": 32,
+                "depth": 2,
+                "num_heads": 4,
+                "tokens": 16,
+                "low_freqs": 4,
+                "num_classes": -1
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "uniform"
+              }
+            },
+            "representation": {
+              "name": "dct_ycbcr",
+              "args": {
+                "resolution": 32,
+                "block": 4,
+                "frequencies": 4,
+                "bound": 256.0
+              }
+            },
+            "path": {
+              "name": "vp",
+              "args": {
+                "snr_scale": 4.0
+              }
+            },
+            "target": {
+              "name": "joint",
+              "args": {
+                "quantity": "epsilon"
+              }
+            },
+            "clock": {
+              "name": "linear",
+              "args": {
+                "network_scale": 999.0
+              }
+            },
+            "sampler": {
+              "name": "dctdiff_dpm",
+              "args": {
+                "steps": 12,
+                "snr_scale": 4.0
+              }
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true
+            }
+          }
+        }
+      ],
+      "executed_backbone_module_activation_audit": {
+        "evidence": "evidence/activation_parity/dctdiff.json",
+        "steps": 128,
+        "variants": 1,
+        "totals": {
+          "forward_input": {
+            "pairs": 6016,
+            "exact": 6016,
+            "byte_exact": 6016,
+            "within_tolerance": 6016,
+            "max_abs": 0.0
+          },
+          "forward_output": {
+            "pairs": 5760,
+            "exact": 5760,
+            "byte_exact": 5760,
+            "within_tolerance": 5760,
+            "max_abs": 0.0
+          },
+          "activation_gradient": {
+            "pairs": 5632,
+            "exact": 5632,
+            "byte_exact": 5632,
+            "within_tolerance": 5632,
+            "max_abs": 0.0
+          },
+          "parameter_gradient": {
+            "pairs": 5376,
+            "exact": 5376,
+            "byte_exact": 5376,
+            "within_tolerance": 5376,
+            "max_abs": 0.0
+          }
+        },
+        "exclusions": [],
+        "scope": "CPU fp32 or author-propagated fp64, reduced random author network, synthetic input, existing native-specific presets, 128 steps per variant. Shared author classes reused; not an independent rewrite of every neural layer."
+      },
+      "full_paper_recipe_coverage": false,
+      "compatibility_findings": [
+        "DCT-01",
+        "DCT-02",
+        "COMMON-01",
+        "COMMON-02"
+      ],
+      "compatibility_assessment": "UViT/codec/VP-SNR/DPM在；默认频率目标权重是明确缺项。",
+      "recipe_extension_evidence": "evidence/recipe_extensions/SUMMARY.json",
+      "current_recipe_profile_parity": {
+        "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+        "paper": "DCTdiff",
+        "profiles": [
+          "dctdiff",
+          "dctdiff_imagenet"
+        ],
+        "selection": "公开 U-ViT mid-deep，CIFAR32/ImageNet64",
+        "parameters": [
+          160690200,
+          146254872
+        ],
+        "full_backbone_tested": true,
+        "full_input_resolution_tested": true,
+        "training_steps": 2,
+        "executed_shared_module_activation_byte_exact": true,
+        "parameter_gradient_byte_exact": true,
+        "author_best_recipe_fully_executed": false,
+        "paper_quality_verified": false,
+        "limits": "公开U-ViT最大配置；未公开DiT、JPEG统计/原FID资产未覆盖"
+      },
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "byte_exact_on_tested_contract",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "不含未公开最强DiT；DPM solver明确复用。真实数据必须绑定自己的统计，质量未评估。"
+      }
+    },
+    {
+      "id": "fresco",
+      "name": "From Sketch to Fresco",
+      "year": 2026,
+      "paper": "https://arxiv.org/abs/2601.07462",
+      "method_source": "https://arxiv.org/html/2601.07462v1",
+      "role": "已覆盖共享噪声与区域逐步上采样",
+      "relationship": "已覆盖共享噪声与区域逐步上采样",
+      "status": "paper_mapping_native_skipped",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "预训练 latent，mixed-resolution tokens",
+        "A_signal_path": "复用基座轨迹",
+        "C_noise_marginal": "coordinate-bound Gaussian field",
+        "K_coupling_boundary": "共享 noise field + Hadamard 扩维；论文声称减小轨迹偏差",
+        "R_time_scale_allocation": "token variance 决定何时细化",
+        "T_W_target_loss": "training-free",
+        "H_backbone": "现有 DiT，需 mixed-resolution 实现",
+        "S_solver_cost": "不能把保留旧噪声单独当 RDD 新贡献"
+      },
+      "configs": [],
+      "paper_quality_verified": false,
+      "skip_reason": "Downloaded official repository has README/LICENSE only; executable release pending.",
+      "implementation": "Literature component mapping / extension interfaces only, not implemented full paper algorithm.",
+      "source": {
+        "repo": "https://github.com/DarrenZheng303/Fresco",
+        "commit": "1e6cb624d87de0b6fd789ddbce9571d63a9f84d4",
+        "fetched_at_utc": "2026-10-08T09:31:46.832984+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "1e6cb624d87de0b6fd789ddbce9571d63a9f84d4",
+        "anchors": {
+          "README.md": {
+            "sha256": "22ea677ee16f0b8a59da1ed36cca574da0872c7cced8166cd585db40b42c7870",
+            "lines": 2
+          }
+        },
+        "review": "Public repository contains README and LICENSE only: no executable author source. Skip native reproduction, retain paper-level component mapping.",
+        "status": "no_executable_release"
+      },
+      "configured_components": []
+    },
+    {
+      "id": "avits",
+      "name": "AViTS",
+      "year": 2026,
+      "paper": "https://arxiv.org/abs/2608.17995",
+      "method_source": "https://arxiv.org/html/2608.17995v1",
+      "role": "已覆盖语义/跨步动态驱动的选择性上采样",
+      "relationship": "已覆盖语义/跨步动态驱动的选择性上采样",
+      "status": "paper_mapping_native_skipped",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "预训练 latent，mixed-resolution tokens",
+        "A_signal_path": "复用基座 FM sampling",
+        "C_noise_marginal": "coordinate-bound noise",
+        "K_coupling_boundary": "正交 upsample + noise reinjection",
+        "R_time_scale_allocation": "text attention + 跨步 feature variance 的选择",
+        "T_W_target_loss": "training-free",
+        "H_backbone": "FLUX/Qwen 等，importance collection",
+        "S_solver_cost": "importance/attention extraction 的真实成本也要计入"
+      },
+      "configs": [],
+      "paper_quality_verified": false,
+      "skip_reason": "Downloaded official repository is README only; executable release pending.",
+      "implementation": "Literature component mapping / extension interfaces only, not implemented full paper algorithm.",
+      "source": {
+        "repo": "https://github.com/QHR69/AViTS",
+        "commit": "c5d4a4c96fbc8f5eff9e8a54294b03bdda59030b",
+        "fetched_at_utc": "2026-10-08T09:31:47.715183+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "c5d4a4c96fbc8f5eff9e8a54294b03bdda59030b",
+        "anchors": {
+          "README.md": {
+            "sha256": "c9a46c518c22832223f6177dd322b5e52b4612875d39ae9049107edca653f430",
+            "lines": 14
+          }
+        },
+        "review": "Public repository README says core inference code pending. Skip native reproduction, retain adaptive layout interface.",
+        "status": "no_executable_release"
+      },
+      "configured_components": []
+    },
+    {
+      "id": "ddit",
+      "name": "DDiT",
+      "year": 2026,
+      "paper": "https://arxiv.org/abs/2602.16968",
+      "method_source": "https://arxiv.org/html/2602.16968v1",
+      "role": "已覆盖基于轨迹变化动态选择 patch",
+      "relationship": "已覆盖基于轨迹变化动态选择 patch",
+      "status": "paper_mapping_native_skipped",
+      "source_provenance": "no_executable_official_source_confirmed",
+      "literature_component_map": {
+        "E_representation": "VAE latent，动态 patch",
+        "A_signal_path": "基座 diffusion 路径",
+        "C_noise_marginal": "基座 noise/schedule",
+        "K_coupling_boundary": "patch/输入输出层切换；非 RDD fresh bridge",
+        "R_time_scale_allocation": "根据 latent evolution 调整 patch size",
+        "T_W_target_loss": "适配 patch 层及预训练模型；目标细节见原文",
+        "H_backbone": "patch-specific embed 与重建层",
+        "S_solver_cost": "与固定 stage RDD 的灵活性不同"
+      },
+      "configs": [],
+      "paper_quality_verified": false,
+      "skip_reason": "No executable official implementation confirmed.",
+      "implementation": "Literature component mapping / extension interfaces only, not implemented full paper algorithm.",
+      "configured_components": []
+    },
+    {
+      "id": "cat",
+      "name": "CAT: Content-Adaptive Image Tokenization",
+      "year": 2025,
+      "paper": "https://arxiv.org/abs/2501.03120",
+      "method_source": "https://arxiv.org/html/2501.03120v1",
+      "role": "已覆盖按图像/文本复杂度分配 token",
+      "relationship": "已覆盖按图像/文本复杂度分配 token",
+      "status": "published_codec_core_parity_partial",
+      "source_provenance": "NeurIPS2025 official Supplemental-Conference.zip, SHA and4Python files recorded",
+      "literature_component_map": {
+        "E_representation": "可变压缩率 latent",
+        "A_signal_path": "表示容量适配，不是 RDD 内部 drift",
+        "C_noise_marginal": "各表示上的生成 noise",
+        "K_coupling_boundary": "tokenizer 的嵌套多尺度表示",
+        "R_time_scale_allocation": "caption 复杂度预测压缩率",
+        "T_W_target_loss": "autoencoder reconstruction + downstream DiT",
+        "H_backbone": "nested tokenizer + 条件压缩率",
+        "S_solver_cost": "新 tokenizer/LLM 成本与生成成本分开"
+      },
+      "configs": [],
+      "paper_quality_verified": false,
+      "skip_reason": "Full diffusion trainer/full codec training objective and best assets absent; published codec forward/KL and diagnostic adjoint now verified.",
+      "implementation": "Explicit CATCodecAdapter; independent encode/posterior/decode/KL assembly reuses published nested codec modules. Reduced and full classification.py512-grid1/2/3/mixed-rate mean/sample verification; no paper training or quality claim.",
+      "configured_components": [
+        {
+          "file": "evidence/forward_backward_20261012/cat_codec_full/cat_codec.json",
+          "configuration": {
+            "sample_size": 512,
+            "in_channels": 3,
+            "out_channels": 3,
+            "down_block_types": [
+              "DownEncoderBlock2D",
+              "DownEncoderBlock2D",
+              "DownEncoderBlock2D",
+              "DownEncoderBlock2D",
+              "DownEncoderBlock2D",
+              "DownEncoderBlock2D"
+            ],
+            "up_block_types": [
+              "UpDecoderBlock2D",
+              "UpDecoderBlock2D",
+              "UpDecoderBlock2D",
+              "UpDecoderBlock2D",
+              "UpDecoderBlock2D",
+              "UpDecoderBlock2D"
+            ],
+            "block_out_channels": [
+              64,
+              128,
+              256,
+              256,
+              512,
+              512
+            ],
+            "layers_per_block": 2,
+            "act_fn": "silu",
+            "latent_channels": 16,
+            "norm_num_groups": 32,
+            "compression_range": 4,
+            "starting_block_idx": 1,
+            "scaling_factor": 0.18215,
+            "mid_block_attention_head_dim": 1,
+            "mid_block_processing": "conv",
+            "num_layers": 8,
+            "metric": "jpeg",
+            "mid_block_supervision": false
+          }
+        },
+        {
+          "file": "evidence/forward_backward_20261012/cat_codec/cat_codec.json",
+          "configuration": {
+            "sample_size": 64,
+            "in_channels": 3,
+            "out_channels": 3,
+            "down_block_types": [
+              "DownEncoderBlock2D",
+              "DownEncoderBlock2D",
+              "DownEncoderBlock2D",
+              "DownEncoderBlock2D",
+              "DownEncoderBlock2D",
+              "DownEncoderBlock2D"
+            ],
+            "up_block_types": [
+              "UpDecoderBlock2D",
+              "UpDecoderBlock2D",
+              "UpDecoderBlock2D",
+              "UpDecoderBlock2D",
+              "UpDecoderBlock2D",
+              "UpDecoderBlock2D"
+            ],
+            "block_out_channels": [
+              32,
+              32,
+              32,
+              32,
+              32,
+              32
+            ],
+            "layers_per_block": 1,
+            "act_fn": "silu",
+            "latent_channels": 16,
+            "norm_num_groups": 32,
+            "compression_range": 4,
+            "starting_block_idx": 1,
+            "scaling_factor": 0.18215,
+            "mid_block_attention_head_dim": 1,
+            "mid_block_processing": "conv",
+            "num_layers": 1,
+            "metric": "jpeg",
+            "mid_block_supervision": false
+          }
+        }
+      ],
+      "source_release": "https://papers.neurips.cc/paper_files/paper/2025/file/014898b821e3ce966ae1db68cb8d9966-Supplemental-Conference.zip",
+      "cpu_evidence": "evidence/forward_backward_20261012/cat_codec/cat_codec.json",
+      "full_cpu_evidence": "evidence/forward_backward_20261012/cat_codec_full/cat_codec.json",
+      "official_training_loss_verified": false,
+      "verified_components": [
+        "published six-block nested codec",
+        "compression rates1/2/3 and mixed batches",
+        "masked posterior mean/sample",
+        "independent codec forward/KL composition"
+      ],
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "diagnostic_adjoint_only_not_author_training",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "仅组件对照；训练目标/trainer未发布。反向是诊断adjoint，不能称作论文训练复现。"
+      }
+    },
+    {
+      "id": "diffusability",
+      "name": "Improving the Diffusability of Autoencoders",
+      "year": 2025,
+      "paper": "https://arxiv.org/abs/2502.14831",
+      "method_source": "https://arxiv.org/html/2502.14831v3",
+      "role": "已覆盖 latent 与 RGB 频谱/尺度对齐",
+      "relationship": "已覆盖 latent 与 RGB 频谱/尺度对齐",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "SE-regularized autoencoder latent",
+        "A_signal_path": "扩散路径可保持原版",
+        "C_noise_marginal": "改变 latent 频谱，不直接改变 RDD noise",
+        "K_coupling_boundary": "decoder(downsample(z)) 对齐 downsample(image)",
+        "R_time_scale_allocation": "训练时多尺度 reconstruction regularization",
+        "T_W_target_loss": "重建 + 缩小图像重建，原文说明 KL 设置",
+        "H_backbone": "微调 encoder/decoder 后训练 downstream generator",
+        "S_solver_cost": "换 VAE 的收益不能归于 RDD drift"
+      },
+      "configs": [
+        "configs/native_fixtures/diffusability.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Actual AutoencoderKL wrapper, stochastic latent/KL, pixel MSE and scale-equivariance coefficient .3 with mean/bilinear downsampling; trained decoder parity.",
+      "compatibility_and_limits": "Codec auxiliary objective, not a new progressive denoising sampler. LPIPS/GAN/DCT-cut/temporal optional branches are excluded; no unpublished full recipe claimed. Mean/logvar contiguous layout matches native BTCHW random-number assignment. Native B×1 reconstruction+B-vector KL broadcasting differs in reduction order; gradients/weights agree.",
+      "source": {
+        "repo": "https://github.com/snap-research/diffusability",
+        "commit": "d5d51820a773d2eaddd365e71df52bdfa8d60050",
+        "fetched_at_utc": "2026-10-08T09:31:48.809364+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "d5d51820a773d2eaddd365e71df52bdfa8d60050",
+        "anchors": {
+          "src/training/loss.py": {
+            "sha256": "52cbe0641006146904d9cc8f6e804f90213633a7b1a23ee3e9ceddedaafc0b30",
+            "lines": 563
+          },
+          "src/training/diffusers_ae.py": {
+            "sha256": "678aa6069e0f5a010396772ac645557be4ff6a029ed71cfc9bf61a00423ce2f8",
+            "lines": 236
+          },
+          "src/utils/training_utils.py": {
+            "sha256": "ad15e24f996a3e834ff7c0f083204a2f17149960e0986ae5f44d7db9dc3e6de0",
+            "lines": 228
+          },
+          "README.md": {
+            "sha256": "0c61addc4b46fc284e455561f4f414f119d4ae5e53b58f714a5f7ad587a592e6",
+            "lines": 21
+          }
+        },
+        "review": "Codec training regularizer, not progressive sampler. Decode resized latent to resized RGB target, mean or align_corners=True bilinear, optional DCT cut. Compare native pixel-reconstruction branch without pretrained LPIPS; full GAN/perceptual training requires user-provided networks/assets. Repository setup references AlphaFlow.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/native_fixtures/diffusability.json",
+          "configuration": {
+            "name": "diffusability",
+            "image_shape": [
+              3,
+              16,
+              16
+            ],
+            "model": {
+              "name": "autoencoder_kl",
+              "args": {
+                "block_out_channels": [
+                  32,
+                  32
+                ],
+                "down_block_types": [
+                  "DownEncoderBlock2D",
+                  "DownEncoderBlock2D"
+                ],
+                "up_block_types": [
+                  "UpDecoderBlock2D",
+                  "UpDecoderBlock2D"
+                ],
+                "latent_channels": 4,
+                "norm_num_groups": 32,
+                "layers_per_block": 1
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "uniform"
+              }
+            },
+            "task": "codec",
+            "sampling_shape": [
+              4,
+              8,
+              8
+            ],
+            "codec": {
+              "mse_weight": 1.0,
+              "kl_weight": 0.0001,
+              "regularizers": [
+                {
+                  "name": "scale_equivariance",
+                  "args": {
+                    "factor": 2,
+                    "mode": "mean",
+                    "weight": 0.3
+                  }
+                }
+              ]
+            },
+            "evidence": {
+              "claim": "source_codec_pixel_mse_branch_no_perceptual_weights",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true
+            }
+          }
+        }
+      ],
+      "executed_backbone_module_activation_audit": {
+        "evidence": "evidence/activation_parity/diffusability.json",
+        "steps": 128,
+        "variants": 2,
+        "totals": {
+          "forward_input": {
+            "pairs": 46592,
+            "exact": 46592,
+            "byte_exact": 46592,
+            "within_tolerance": 46592,
+            "max_abs": 0.0
+          },
+          "forward_output": {
+            "pairs": 46592,
+            "exact": 46592,
+            "byte_exact": 46592,
+            "within_tolerance": 46592,
+            "max_abs": 0.0
+          },
+          "activation_gradient": {
+            "pairs": 46592,
+            "exact": 46592,
+            "byte_exact": 46592,
+            "within_tolerance": 46592,
+            "max_abs": 0.0
+          },
+          "parameter_gradient": {
+            "pairs": 30720,
+            "exact": 30720,
+            "byte_exact": 30720,
+            "within_tolerance": 30720,
+            "max_abs": 0.0
+          }
+        },
+        "exclusions": [
+          "Diffusability: only the author BTCHW wrapper root is excluded; every executed shared VAE submodule is traced. The extra no-loss diagnostic encode is suspended in both alignment and coverage; both actual loss graphs remain unchanged."
+        ],
+        "scope": "CPU fp32 or author-propagated fp64, reduced random author network, synthetic input, existing native-specific presets, 128 steps per variant. Shared author classes reused; not an independent rewrite of every neural layer."
+      },
+      "full_paper_recipe_coverage": false,
+      "compatibility_findings": [
+        "DIFF-01",
+        "COMMON-01",
+        "COMMON-02"
+      ],
+      "compatibility_assessment": "共享VAE内部和单尺度MSE/KL已测；完整SE微调和下游生成链未完成。",
+      "recipe_extension_evidence": "evidence/recipe_extensions/SUMMARY.json",
+      "current_recipe_profile_parity": {
+        "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+        "paper": "Improving the Diffusability of Autoencoders",
+        "profiles": [
+          "components/diffusability"
+        ],
+        "selection": "随机SE2/4+原VGG loss/冻结分支128步",
+        "parameters": [],
+        "full_backbone_tested": false,
+        "full_input_resolution_tested": false,
+        "training_steps": 128,
+        "executed_shared_module_activation_byte_exact": true,
+        "parameter_gradient_byte_exact": true,
+        "author_best_recipe_fully_executed": false,
+        "paper_quality_verified": false,
+        "limits": "best训练说明与checkpoint未公开；仅组件对照，不把自定SE配方称best"
+      },
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "byte_exact_on_tested_contract",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "只承诺codec合同；完整GAN、时序、tokenizer、distillation-AE及下游重训不包括，未伪称为无关trick。"
+      }
+    },
+    {
+      "id": "mdm",
+      "name": "Matryoshka Diffusion Models",
+      "year": "ICLR 2024",
+      "paper": "https://arxiv.org/abs/2310.15111",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "Nested full/coarse product state",
+        "A_signal_path": "Per-level VP path",
+        "C_noise_marginal": "Independent noise; shifted SNR",
+        "K_coupling_boundary": "Joint multiresolution posterior",
+        "R_time_scale_allocation": "Joint training/sampling, not only a boundary resize",
+        "T_W_target_loss": "v parameterization converted to epsilon loss",
+        "H_backbone": "NestedUNet with shared cross-scale computation",
+        "S_solver_cost": "Discrete posterior sampler"
+      },
+      "configs": [
+        "configs/native_fixtures/mdm.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Actual NestedUNet, full/coarse states, independent Gaussian draws, DEEPFLOYD SNR shift, native v→epsilon loss and full 16-step posterior trajectories.",
+      "compatibility_and_limits": "Unused mlx data-reader/torchinfo/S3 imports shimmed on CPU. Source low-noise pooled tensor is overwritten by normal_(), so independent noise is preserved. Legacy residual branch has undefined ratio; default no-residual mode tested. Training index t=1..N maps to model t-1.",
+      "source": {
+        "repo": "https://github.com/apple/ml-mdm",
+        "commit": "633659d1db70afb9df9411e98b1b2147fc911d1e",
+        "fetched_at_utc": "2026-10-08T09:31:49.855754+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "633659d1db70afb9df9411e98b1b2147fc911d1e",
+        "anchors": {
+          "ml-mdm-matryoshka/ml_mdm/diffusion.py": {
+            "sha256": "22275a59152e37304127c0fb80dc58f127a44e9bb7ac2a351b0fc3daf50bff9d",
+            "lines": 387
+          },
+          "ml-mdm-matryoshka/ml_mdm/samplers.py": {
+            "sha256": "0643e2de84fa43bef95975df49e705d0a07ae4f0e237466769a84e67291755ee",
+            "lines": 793
+          },
+          "ml-mdm-matryoshka/ml_mdm/models/nested_unet.py": {
+            "sha256": "34509d2bf4c2adb9bfc41d193fbe2ec3dfecb9a3048c9f573c34d622629334c2",
+            "lines": 244
+          },
+          "ml-mdm-matryoshka/configs/models/cc12m_256x256.yaml": {
+            "sha256": "e02c3628bd64e68f685d702ca6eda35a9ed1817173fa96967df6483c3b339b4f",
+            "lines": 117
+          }
+        },
+        "review": "Joint high-to-low product states, nested UNet, independent redrawn low-resolution noise despite initially pooled noise. Schedule-shift power configurable; model v prediction but released 256 config uses DDPM noise loss after conversion, double loss, no_use_residual=True. Obsolete residual branch references undefined ratio. mlx.data reader dependency can be isolated for synthetic fixtures, without altering model/sampler bodies.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/native_fixtures/mdm.json",
+          "configuration": {
+            "name": "mdm",
+            "image_shape": [
+              4,
+              16,
+              16
+            ],
+            "model": {
+              "name": "native_mdm"
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "discrete",
+                "args": {
+                  "steps": 16,
+                  "offset": 1
+                }
+              },
+              "conditioning": {
+                "conditioning": {
+                  "kind": "zeros",
+                  "shape": [
+                    5,
+                    8
+                  ]
+                },
+                "cond_mask": {
+                  "kind": "ones",
+                  "shape": [
+                    5
+                  ]
+                },
+                "micros": {
+                  "kind": "empty_dict"
+                }
+              }
+            },
+            "batch": {
+              "name": "mdm",
+              "args": {
+                "gammas": [
+                  1.0,
+                  0.9881323575973511,
+                  0.9578046202659607,
+                  0.9101638793945312,
+                  0.8470121622085571,
+                  0.7707380652427673,
+                  0.6842265725135803,
+                  0.5907498598098755,
+                  0.49384358525276184,
+                  0.39717310667037964,
+                  0.3043949007987976,
+                  0.2190181314945221,
+                  0.1442721039056778,
+                  0.08298399299383163,
+                  0.037471953779459,
+                  0.009457417763769627,
+                  9.457417945668567e-06
+                ]
+              }
+            },
+            "prediction_adapter": {
+              "name": "mdm_loss_coordinates"
+            },
+            "sampler": {
+              "name": "mdm",
+              "args": {
+                "gammas": [
+                  1.0,
+                  0.9881323575973511,
+                  0.9578046202659607,
+                  0.9101638793945312,
+                  0.8470121622085571,
+                  0.7707380652427673,
+                  0.6842265725135803,
+                  0.5907498598098755,
+                  0.49384358525276184,
+                  0.39717310667037964,
+                  0.3043949007987976,
+                  0.2190181314945221,
+                  0.1442721039056778,
+                  0.08298399299383163,
+                  0.037471953779459,
+                  0.009457417763769627,
+                  9.457417945668567e-06
+                ]
+              }
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true,
+              "conditioning": "Zero text fixture; real training must switch conditioning/cond_mask to local tensor dataset field inputs."
+            }
+          }
+        }
+      ],
+      "executed_backbone_module_activation_audit": {
+        "evidence": "evidence/activation_parity/mdm.json",
+        "steps": 128,
+        "variants": 1,
+        "totals": {
+          "forward_input": {
+            "pairs": 18688,
+            "exact": 18688,
+            "byte_exact": 18688,
+            "within_tolerance": 18688,
+            "max_abs": 0.0
+          },
+          "forward_output": {
+            "pairs": 15104,
+            "exact": 15104,
+            "byte_exact": 15104,
+            "within_tolerance": 15104,
+            "max_abs": 0.0
+          },
+          "activation_gradient": {
+            "pairs": 15104,
+            "exact": 15104,
+            "byte_exact": 15104,
+            "within_tolerance": 15104,
+            "max_abs": 0.0
+          },
+          "parameter_gradient": {
+            "pairs": 20608,
+            "exact": 20608,
+            "byte_exact": 20608,
+            "within_tolerance": 20608,
+            "max_abs": 0.0
+          }
+        },
+        "exclusions": [],
+        "scope": "CPU fp32 or author-propagated fp64, reduced random author network, synthetic input, existing native-specific presets, 128 steps per variant. Shared author classes reused; not an independent rewrite of every neural layer."
+      },
+      "full_paper_recipe_coverage": false,
+      "compatibility_findings": [
+        "MDM-01",
+        "MDM-02",
+        "COMMON-01",
+        "COMMON-02"
+      ],
+      "compatibility_assessment": "共享NestedUNet、gamma shift、v→epsilon坐标转换在；mixed batch/预训练curriculum/guidance缺失。",
+      "recipe_extension_evidence": "evidence/recipe_extensions/SUMMARY.json",
+      "current_recipe_profile_parity": {
+        "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+        "paper": "MDM",
+        "profiles": [
+          "mdm",
+          "mdm1024"
+        ],
+        "selection": "CC12M256/1024完整2/3级NestedUNet",
+        "parameters": [
+          476613958,
+          480970057
+        ],
+        "full_backbone_tested": true,
+        "full_input_resolution_tested": true,
+        "training_steps": 2,
+        "executed_shared_module_activation_byte_exact": true,
+        "parameter_gradient_byte_exact": true,
+        "author_best_recipe_fully_executed": false,
+        "paper_quality_verified": false,
+        "limits": "1024权重16:4:1/power2；真实inner256预训练/T5/reader/curriculum未认证"
+      },
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "byte_exact_on_tested_contract",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "不含私有Flickr50M最佳课程或云数据服务；实际text/vision/inner权重仍须明确绑定。"
+      }
+    },
+    {
+      "id": "dimr",
+      "name": "DiMR: Multi-Resolution Diffusion Models",
+      "year": "2024",
+      "paper": "https://arxiv.org/abs/2406.09416",
+      "status": "source_native_small_fixture",
+      "source_provenance": "author_repository",
+      "literature_component_map": {
+        "E_representation": "Full latent VP state",
+        "A_signal_path": "Ordinary VP input",
+        "C_noise_marginal": "IID full input; targets downsampled with normalized convolution",
+        "K_coupling_boundary": "No progressive-state boundary in tested release",
+        "R_time_scale_allocation": "Multi-resolution network/targets at each step",
+        "T_W_target_loss": "Weighted multi-resolution epsilon losses",
+        "H_backbone": "MRModel Transformer/ConvNeXt/TDRMSN",
+        "S_solver_cost": "Native DPM-Solver"
+      },
+      "configs": [
+        "configs/native_fixtures/dimr.json"
+      ],
+      "paper_quality_verified": false,
+      "native_scope": "Actual MRModel Transformer/ConvNeXt/TDRMSN, full VP input, normalized-convolution multi-resolution epsilon targets, weights [.25,1], native DPM final latent.",
+      "compatibility_and_limits": "Native DPM backend reused explicitly. Train network clock n/1000*8-4 differs from infer T*N and is preserved. No VAE asset downloaded, so final state is latent, not decoded paper image.",
+      "source": {
+        "repo": "https://github.com/qihao067/DiMR",
+        "commit": "fa141ae401cde28fa0fb5d983fe00746e40b7cb1",
+        "fetched_at_utc": "2026-10-08T09:31:51.276514+00:00"
+      },
+      "preimplementation_review": {
+        "commit": "fa141ae401cde28fa0fb5d983fe00746e40b7cb1",
+        "anchors": {
+          "sde.py": {
+            "sha256": "dbcc5d0b319d76e656d0110b58ca3835f4a9013c24bf3d97283e7734239ee7d5",
+            "lines": 334
+          },
+          "train.py": {
+            "sha256": "33c562c37b5bf1db5bdc2c278a46b523e3829b1a0de87b5e9d66686c63971523",
+            "lines": 352
+          },
+          "libs/core/blocks.py": {
+            "sha256": "436b97e301b32c65d5941c860e5f2e881347a4350c42efd8b60e5c5113af2eee",
+            "lines": 346
+          },
+          "libs/core/sigmoid/module.py": {
+            "sha256": "84d88372a12225322187195725893ed9559c577b452417fcd4e36c686a19862c",
+            "lines": 282
+          },
+          "configs/DiMR-XL-2R_imagenet256.py": {
+            "sha256": "c095ae043a7416f891b1140690988d0b3d9e3505892dc3da34cb960928f0a68b",
+            "lines": 106
+          }
+        },
+        "review": "Multi-resolution backbone, full-resolution VP input; multi-head normalized downsampled epsilon targets, coefficients[.25,1], training log_snr=n/1000*8-4 (not actual logSNR). Native time-dependent normalization has a pure torch custom=False branch. Keep separate training/inference conditioning conventions.",
+        "status": "reviewed_before_framework_implementation"
+      },
+      "configured_components": [
+        {
+          "file": "configs/native_fixtures/dimr.json",
+          "configuration": {
+            "name": "dimr",
+            "image_shape": [
+              2,
+              16,
+              16
+            ],
+            "model": {
+              "name": "adapter",
+              "args": {
+                "model": {
+                  "name": "native_dimr",
+                  "args": {
+                    "config": {
+                      "channels": 2,
+                      "num_classes": 1001,
+                      "block_grad_to_lowres": false,
+                      "norm_type": "TDRMSN",
+                      "stage_configs": [
+                        {
+                          "block_type": "TransformerBlock",
+                          "dim": 32,
+                          "hidden_dim": 64,
+                          "num_attention_heads": 4,
+                          "num_blocks": 1,
+                          "max_height": 8,
+                          "max_width": 8,
+                          "image_input_ratio": 1,
+                          "input_feature_ratio": 2,
+                          "final_kernel_size": 3,
+                          "kernel_size": 3,
+                          "dropout_prob": 0
+                        },
+                        {
+                          "block_type": "ConvNeXtBlock",
+                          "dim": 16,
+                          "hidden_dim": 32,
+                          "num_attention_heads": 4,
+                          "num_blocks": 1,
+                          "max_height": 16,
+                          "max_width": 16,
+                          "image_input_ratio": 1,
+                          "input_feature_ratio": 1,
+                          "final_kernel_size": 3,
+                          "kernel_size": 3,
+                          "dropout_prob": 0
+                        }
+                      ]
+                    }
+                  }
+                },
+                "time_keyword": "log_snr"
+              }
+            },
+            "training": {
+              "optimizer": {
+                "lr": 0.0001,
+                "betas": [
+                  0.9,
+                  0.99
+                ],
+                "weight_decay": 0.01,
+                "ema_decay": 0.99,
+                "grad_clip": 1.0
+              },
+              "time_sampler": {
+                "name": "discrete",
+                "args": {
+                  "steps": 16,
+                  "offset": 1
+                }
+              },
+              "conditioning": {
+                "y": {
+                  "kind": "labels",
+                  "classes": 1000
+                }
+              }
+            },
+            "batch": {
+              "name": "dimr",
+              "args": {
+                "betas": [
+                  0.00085,
+                  0.0011912214611864863,
+                  0.0015898874755368073,
+                  0.0020459980430509637,
+                  0.002559553163728956,
+                  0.003130552837570784,
+                  0.0037589970645764462,
+                  0.004444885844745944,
+                  0.005188219178079277,
+                  0.005988997064576445,
+                  0.00684721950423745,
+                  0.00776288649706229,
+                  0.008735998043050964,
+                  0.009766554142203477,
+                  0.01085455479451982,
+                  0.012
+                ]
+              }
+            },
+            "sampler": {
+              "name": "dimr_dpm",
+              "args": {
+                "betas": [
+                  0.00085,
+                  0.0011912214611864863,
+                  0.0015898874755368073,
+                  0.0020459980430509637,
+                  0.002559553163728956,
+                  0.003130552837570784,
+                  0.0037589970645764462,
+                  0.004444885844745944,
+                  0.005188219178079277,
+                  0.005988997064576445,
+                  0.00684721950423745,
+                  0.00776288649706229,
+                  0.008735998043050964,
+                  0.009766554142203477,
+                  0.01085455479451982,
+                  0.012
+                ],
+                "steps": 12
+              }
+            },
+            "evidence": {
+              "claim": "native_algorithm_small_architecture_fixture",
+              "not_a_paper_quality_checkpoint": true,
+              "no_downloads": true
+            }
+          }
+        }
+      ],
+      "executed_backbone_module_activation_audit": {
+        "evidence": "evidence/activation_parity/dimr.json",
+        "steps": 128,
+        "variants": 1,
+        "totals": {
+          "forward_input": {
+            "pairs": 11136,
+            "exact": 11136,
+            "byte_exact": 11136,
+            "within_tolerance": 11136,
+            "max_abs": 0.0
+          },
+          "forward_output": {
+            "pairs": 12800,
+            "exact": 12800,
+            "byte_exact": 12800,
+            "within_tolerance": 12800,
+            "max_abs": 0.0
+          },
+          "activation_gradient": {
+            "pairs": 9472,
+            "exact": 9472,
+            "byte_exact": 9472,
+            "within_tolerance": 9472,
+            "max_abs": 0.0
+          },
+          "parameter_gradient": {
+            "pairs": 9472,
+            "exact": 9472,
+            "byte_exact": 9472,
+            "within_tolerance": 9472,
+            "max_abs": 0.0
+          }
+        },
+        "exclusions": [],
+        "scope": "CPU fp32 or author-propagated fp64, reduced random author network, synthetic input, existing native-specific presets, 128 steps per variant. Shared author classes reused; not an independent rewrite of every neural layer."
+      },
+      "full_paper_recipe_coverage": false,
+      "compatibility_findings": [
+        "DIMR-01",
+        "DIMR-02",
+        "COMMON-01",
+        "COMMON-02"
+      ],
+      "compatibility_assessment": "TD-LN、特征cascade、噪声尺度校正与DPM在；CFG数据和采样recipe缺失。",
+      "recipe_extension_evidence": "evidence/recipe_extensions/SUMMARY.json",
+      "current_recipe_profile_parity": {
+        "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+        "paper": "DiMR",
+        "profiles": [
+          "dimr"
+        ],
+        "selection": "公开 DiMR-G-2R/ImageNet256",
+        "parameters": [
+          1056352904
+        ],
+        "full_backbone_tested": true,
+        "full_input_resolution_tested": true,
+        "training_steps": 2,
+        "executed_shared_module_activation_byte_exact": true,
+        "parameter_gradient_byte_exact": true,
+        "author_best_recipe_fully_executed": false,
+        "paper_quality_verified": false,
+        "limits": "原VAE moments、FP16/DDP与完整FID未执行"
+      },
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "byte_exact_on_tested_contract",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "从原VAE moments/模型域输入开始对照；真实VAE质量和原16卡FP16不属于CPU认证。"
+      }
+    },
+    {
+      "id": "lot",
+      "name": "LoT: Level-of-Token Diffusion",
+      "year": "2026-10-05",
+      "paper": "https://arxiv.org/abs/2610.05816",
+      "status": "paper_mapping_native_skipped",
+      "source_provenance": "no_executable_official_source_confirmed",
+      "literature_component_map": {
+        "E_representation": "Full-resolution image, adaptive rectangular token layout",
+        "A_signal_path": "Asymmetric flow matching",
+        "C_noise_marginal": "Paper base noise/path",
+        "K_coupling_boundary": "Layout split/merge with reconstruction map",
+        "R_time_scale_allocation": "Learned adaptive rectangular granularity",
+        "T_W_target_loss": "Full-resolution velocity reconstruction",
+        "H_backbone": "Variable-area patch token model",
+        "S_solver_cost": "Reduced tokens; include layout overhead"
+      },
+      "configs": [],
+      "paper_quality_verified": false,
+      "skip_reason": "2026-10-05 paper/project; project has no executable code link at audit.",
+      "implementation": "Literature component mapping / extension interfaces only, not implemented full paper algorithm.",
+      "configured_components": []
+    },
+    {
+      "id": "rdd",
+      "name": "RDD (migrated local code)",
+      "year": "local project",
+      "paper": null,
+      "status": "source_native_small_fixture",
+      "native_scope": "Migrated actual DiT/GaussianDiffusion loss: drift off/on, fixed/learned-range variance, joint/decoupled heads, 6 variants ×128 updates, complete DDPM latent outputs.",
+      "compatibility_and_limits": "Native effective epsilon uses sqrt(alpha_bar/(1-alpha_bar)); learned variance VLB keeps mean detached. Fresh default lift differs from historical dense posterior. Historical factor-two posterior mean/cov/sample independently compared bitwise. No ImageNet quality comparison in this fixture.",
+      "configs": [
+        "configs/native_fixtures/rdd_decoupled.json",
+        "configs/native_fixtures/rdd_decoupled_learnedvar.json",
+        "configs/native_fixtures/rdd_joint.json",
+        "configs/native_fixtures/rdd_joint_learnedvar.json"
+      ],
+      "paper_quality_verified": false,
+      "source_provenance": "migrated_local_repository",
+      "executed_backbone_module_activation_audit": {
+        "evidence": "evidence/activation_parity/rdd.json",
+        "steps": 128,
+        "variants": 6,
+        "totals": {
+          "forward_input": {
+            "pairs": 49408,
+            "exact": 49408,
+            "byte_exact": 49408,
+            "within_tolerance": 49408,
+            "max_abs": 0.0
+          },
+          "forward_output": {
+            "pairs": 45312,
+            "exact": 45312,
+            "byte_exact": 45312,
+            "within_tolerance": 45312,
+            "max_abs": 0.0
+          },
+          "activation_gradient": {
+            "pairs": 45312,
+            "exact": 45312,
+            "byte_exact": 45312,
+            "within_tolerance": 45312,
+            "max_abs": 0.0
+          },
+          "parameter_gradient": {
+            "pairs": 24832,
+            "exact": 24832,
+            "byte_exact": 24832,
+            "within_tolerance": 24832,
+            "max_abs": 0.0
+          }
+        },
+        "exclusions": [],
+        "scope": "CPU fp32 or author-propagated fp64, reduced random author network, synthetic input, existing native-specific presets, 128 steps per variant. Shared author classes reused; not an independent rewrite of every neural layer."
+      },
+      "full_paper_recipe_coverage": false,
+      "compatibility_findings": [
+        "RDD-01",
+        "RDD-02",
+        "COMMON-01",
+        "COMMON-02"
+      ],
+      "compatibility_assessment": "joint/aux drift/learned variance/DDPM已测；respacing网络clock与全stage workflow不足。",
+      "recipe_extension_evidence": "evidence/recipe_extensions/SUMMARY.json",
+      "current_recipe_profile_parity": {
+        "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+        "paper": "RDD",
+        "profiles": [
+          "rdd"
+        ],
+        "selection": "本地统一DiT-XL，32→16→8/300+300+400",
+        "parameters": [
+          674834720
+        ],
+        "full_backbone_tested": true,
+        "full_input_resolution_tested": true,
+        "training_steps": 2,
+        "executed_shared_module_activation_byte_exact": true,
+        "parameter_gradient_byte_exact": true,
+        "author_best_recipe_fully_executed": false,
+        "paper_quality_verified": false,
+        "limits": "本地native实现；非某外部论文best；真实VAE/数据/FID未执行"
+      },
+      "current_scope_acceptance": {
+        "status": "passed",
+        "forward": "byte_exact_on_tested_contract",
+        "backward": "byte_exact_on_tested_contract",
+        "report": "evidence/unified_scope_20261012/AUDIT.json",
+        "intentional_scope_limits_zh": "REPA从固定teacher特征开始。decoupled加非默认权重时，原样漏drift可显式复现；默认保留drift为有意修正。"
+      }
+    }
+  ],
+  "compatibility_detail_audit": "evidence/compatibility_audit/AUDIT.json",
+  "recipe_extensions_20261009": {
+    "report": "evidence/recipe_extensions/REPORT_ZH.md",
+    "summary": "evidence/recipe_extensions/SUMMARY.json",
+    "full_paper_quality_verified": false,
+    "validated_training_variants": 17,
+    "original_tests_retained_as_historical": true
+  },
+  "current_recipe_parity_20261009": {
+    "report": "evidence/current_recipe_parity_20261009/REPORT_ZH.md",
+    "html": "evidence/current_recipe_parity_20261009/REPORT_ZH.html",
+    "summary": "evidence/current_recipe_parity_20261009/SUMMARY.json",
+    "configuration_audit": "evidence/current_recipe_parity_20261009/config_audit.json",
+    "full_image_network_profiles": 16,
+    "full_video_backbone_profiles": 1,
+    "full_network_training_steps": 2,
+    "recipe_templates": 31,
+    "configuration_checks": 159,
+    "gpu_used": false,
+    "paper_quality_verified": false,
+    "all_best_recipes_fully_covered": false,
+    "source_native_scope": "CPU FP32, random constructor weights, synthetic data, executed shared module boundaries; Wan video grid reduced. Reduced nonzero networks separately tested for128 steps; author sampler policy separately compared. Native backbone and some solver modules explicitly reused."
+  },
+  "cpu_verification_20261012": {
+    "report": "CPU_FORWARD_BACKWARD_COMPLETION_20261012_ZH.md",
+    "audit": "evidence/forward_backward_20261012/AUDIT.json",
+    "training_methods": 12,
+    "profiles": 33,
+    "inference_only_methods": 3,
+    "additional_published_codec": "cat",
+    "full_paper_quality_verified": false
+  },
+  "partial_published_codec_releases": 1,
+  "current_scope_acceptance": {
+    "audited_at_utc": "2026-10-12T11:25:14.523935+00:00",
+    "status": "passed",
+    "report": "evidence/unified_scope_20261012/REPORT_ZH.md",
+    "machine_report": "evidence/unified_scope_20261012/AUDIT.json",
+    "contract": "SUPPORTED_REPRODUCTIONS.json",
+    "supported_methods_and_components": 16,
+    "training_core_methods": 12,
+    "inference_only_methods": 3,
+    "published_codec_components": 1,
+    "paper_best_results_reproduced": 0,
+    "historical_fields_note": "Existing per-method status/count fields below retain their historical audit scope; the current supported-contract acceptance is this field and linked reports."
+  }
+}

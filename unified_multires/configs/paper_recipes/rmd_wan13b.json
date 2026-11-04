@@ -1,0 +1,64 @@
+{
+  "name": "rmd",
+  "task": "rmd",
+  "image_shape": [
+    16,
+    21,
+    60,
+    104
+  ],
+  "model": {
+    "name": "local_wan_transformer",
+    "args": {
+      "path": "@wan@"
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 5e-06,
+      "fake_lr": 2e-05,
+      "betas": [
+        0.0,
+        0.95
+      ],
+      "weight_decay": 0.0001,
+      "eps": 1e-08,
+      "grad_clip": 1.0
+    },
+    "precision": "bfloat16",
+    "accumulation_steps": 2
+  },
+  "distillation": {
+    "k_step": 6,
+    "eta": 0.5,
+    "flow_shift": 3.0,
+    "flow_shift_trans": 1,
+    "low_rs_step": 3,
+    "warmup_step": 15,
+    "split_timestep": true,
+    "t_offset_factor": 0.25,
+    "target_size": [
+      90,
+      160
+    ],
+    "cfg": 5.0,
+    "score_weighting_mode": "inverse_sigma"
+  },
+  "evidence": {
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "rmd/configs/train_wan_1_3b.yaml",
+        "sha256": "df97432a1ecc5523729377f3306294cb367626f6fec18cb60e43426b4f88490e"
+      }
+    ],
+    "notes": [
+      "Released Wan2.1 1.3B recipe; supply local prompt embeddings, negative embeddings and Wan transformer. Exact latent dimensions must match the selected source CLI height/width/frame count. BF16/GPU quality, optional GAN and alternative backbones are not certified.",
+      "Repository attribution remains unconfirmed by an author-linked paper URL. Numerical claims concern the pinned release."
+    ],
+    "author_global_batch": 8,
+    "author_steps": 300
+  }
+}

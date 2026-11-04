@@ -1,0 +1,135 @@
+{
+  "name": "dfm",
+  "image_shape": [
+    4,
+    32,
+    32
+  ],
+  "model": {
+    "name": "adapter",
+    "args": {
+      "model": {
+        "name": "native_dfm",
+        "args": {
+          "input_size": 32,
+          "in_channels": 4,
+          "hidden_size": 768,
+          "decoder_hidden_size": 768,
+          "encoder_depth": 8,
+          "depth": 12,
+          "num_heads": 12,
+          "class_dropout_prob": 0.1,
+          "enable_repa": false,
+          "qk_norm": false
+        }
+      },
+      "output_index": 0
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "weight_decay": 0.0,
+      "ema_decay": 0.9999,
+      "grad_clip": 1.0,
+      "precision": "bfloat16",
+      "randomness": "native_global"
+    },
+    "data": {
+      "shuffle": true,
+      "image_size": 256,
+      "crop": "adm_center",
+      "horizontal_flip": true,
+      "flip_rng": "torch",
+      "normalization": "torchvision",
+      "drop_last": true
+    },
+    "input_transform": {
+      "name": "local_vae",
+      "args": {
+        "model": {
+          "name": "local_autoencoder",
+          "args": {
+            "path": "@vae@"
+          }
+        },
+        "scale": 0.18215
+      }
+    },
+    "time_sampler": {
+      "name": "dfm",
+      "args": {
+        "weighting": "lognormal"
+      }
+    },
+    "conditioning": {
+      "y": {
+        "kind": "labels",
+        "classes": 1000
+      }
+    }
+  },
+  "batch": {
+    "name": "dfm",
+    "args": {
+      "native_debug_rng": true,
+      "weighting": "lognormal"
+    }
+  },
+  "representation": {
+    "name": "laplacian",
+    "args": {
+      "levels": 2,
+      "up": "bilinear",
+      "order": "coarse_first"
+    }
+  },
+  "clock": {
+    "name": "dfm",
+    "args": {
+      "steps": [
+        30,
+        10
+      ],
+      "thresholds": [
+        0.1
+      ]
+    }
+  },
+  "guidance": {
+    "name": "cfg_window",
+    "args": {
+      "scale": 1.5,
+      "low": 0.0,
+      "high": 1.0
+    }
+  },
+  "evidence": {
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dfm/experiments/train/dfm_sit_b_256.yaml",
+        "sha256": "f5c67e1642f1e8489302ac1b18cb7d4be1968e1f0cab69605fc663535dfdc60f"
+      },
+      {
+        "file": "dfm/experiments/generation/dfm_sit_b_256.yaml",
+        "sha256": "39a14d1bcd05fc26fdd5f5ca9109ee73623f1a61c8e7844630ba98f601601a2a"
+      },
+      {
+        "file": "dfm/train.py",
+        "sha256": "66a7e717d3f302545c278c3c6264551c8b774ec7642285614adab3d02d7cf43d"
+      },
+      {
+        "file": "dfm/loss.py",
+        "sha256": "6d0d0ffb21855ad54a3573f36940f9047f26bafd4ed08bdd34d80e026312f47c"
+      }
+    ],
+    "notes": [
+      "Exact released B training/generation YAML hyperparameters include lognormal active-stage time sampling and BF16. The native SiT release explicitly differs from the paper architecture; this is not a paper-best architecture claim."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 400000
+  }
+}

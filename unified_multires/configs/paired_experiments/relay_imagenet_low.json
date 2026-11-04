@@ -1,0 +1,130 @@
+{
+  "name": "relay_low",
+  "image_shape": [
+    3,
+    64,
+    64
+  ],
+  "model": {
+    "name": "native_relay",
+    "args": {
+      "img_resolution": 64,
+      "img_channels": 3,
+      "model_type": "DhariwalUNet",
+      "model_channels": 192,
+      "channel_mult": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "num_blocks": 3,
+      "dropout": 0.1,
+      "label_dim": 1000,
+      "augment_dim": 9,
+      "use_fp16": true
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "optimizer_name": "adam",
+      "weight_decay": 0.0,
+      "image_count_multiplier": 8,
+      "accumulation_steps": 16,
+      "ema_style": "source_lerp",
+      "ema_schedule": {
+        "name": "image_halflife",
+        "half_life_images": 50000000,
+        "rampup_ratio": 0.05
+      },
+      "lr_schedule": {
+        "name": "image_warmup",
+        "warmup_images": 10000000
+      },
+      "loss_multiplier": 0.78125,
+      "gradient_repair": {
+        "nan": 0.0,
+        "posinf": 100000.0,
+        "neginf": -100000.0
+      },
+      "loss_reduction": "sum",
+      "randomness": "native_global"
+    },
+    "data": {
+      "shuffle": true
+    },
+    "time_sampler": {
+      "name": "none"
+    },
+    "conditioning": {
+      "class_labels": {
+        "kind": "labels",
+        "classes": 1000,
+        "one_hot": true
+      }
+    }
+  },
+  "batch": {
+    "name": "edm",
+    "args": {
+      "augmentation": {
+        "p": 0.12,
+        "xflip": 100000000.0,
+        "yflip": 1,
+        "scale": 1,
+        "rotate_frac": 1,
+        "aniso": 1,
+        "translate_frac": 1
+      },
+      "native_loss": true
+    }
+  },
+  "sampler": {
+    "name": "edm",
+    "args": {
+      "num_steps": 256,
+      "S_churn": 40,
+      "S_min": 0.05,
+      "S_max": 50,
+      "S_noise": 1.003
+    }
+  },
+  "evidence": {
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "relay/README.md",
+        "sha256": "c946c4a685e3ce008fe534342caa0b204b6fc9a1cd5342de0c47510691648ac6"
+      },
+      {
+        "file": "relay/train.py",
+        "sha256": "290a5dfb1c4f7b0b3d44a73495fd2b2204602eec9c502f732523e900fcfabe1b"
+      },
+      {
+        "file": "relay/generate_imagenet.py",
+        "sha256": "8b5cb4980161115f05486ae3e0e573097c52e2ef079bfaca5076ae33dc9c84bb"
+      },
+      {
+        "file": "relay/training/networks.py",
+        "sha256": "a48467cd8f2691c44ff5ec8ea416c68afa4342d6e9e8080b2e6c13ddb4c3c6c7"
+      },
+      {
+        "file": "relay/training/loss.py",
+        "sha256": "a0ec605a206cef1a86fb85cbe102150c85eabecebcf2248cbfca189c0a502e6c"
+      },
+      {
+        "file": "relay/training/training_loop.py",
+        "sha256": "ac1d2346dc77aa1da7f132936296700fe23d7642869bed15ee2063fe128ab1bc"
+      }
+    ],
+    "notes": [
+      "README ImageNet performance-reproduction architecture/training flags and generate_imagenet.py sampling defaults. Supply original preprocessed data and both pretrained networks for best-result inference.",
+      "Global batch4096 on8 ranks is part of the source recipe. This single-process Trainer still requires distributed image-count/global-batch adaptation before that full recipe is certified; loss_multiplier encodes logical per-rank batch512. Recompute for any different world size/batch. Source nan_to_num gradient repair is explicitly configured."
+    ],
+    "author_global_batch": 4096,
+    "author_steps": null
+  }
+}

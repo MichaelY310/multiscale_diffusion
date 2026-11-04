@@ -1,0 +1,132 @@
+{
+  "name": "dimr",
+  "image_shape": [
+    2,
+    16,
+    16
+  ],
+  "model": {
+    "name": "adapter",
+    "args": {
+      "model": {
+        "name": "native_dimr",
+        "args": {
+          "config": {
+            "channels": 2,
+            "num_classes": 1001,
+            "block_grad_to_lowres": false,
+            "norm_type": "TDRMSN",
+            "stage_configs": [
+              {
+                "block_type": "TransformerBlock",
+                "dim": 32,
+                "hidden_dim": 64,
+                "num_attention_heads": 4,
+                "num_blocks": 1,
+                "max_height": 8,
+                "max_width": 8,
+                "image_input_ratio": 1,
+                "input_feature_ratio": 2,
+                "final_kernel_size": 3,
+                "kernel_size": 3,
+                "dropout_prob": 0
+              },
+              {
+                "block_type": "ConvNeXtBlock",
+                "dim": 16,
+                "hidden_dim": 32,
+                "num_attention_heads": 4,
+                "num_blocks": 1,
+                "max_height": 16,
+                "max_width": 16,
+                "image_input_ratio": 1,
+                "input_feature_ratio": 1,
+                "final_kernel_size": 3,
+                "kernel_size": 3,
+                "dropout_prob": 0
+              }
+            ]
+          }
+        }
+      },
+      "time_keyword": "log_snr"
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "betas": [
+        0.9,
+        0.99
+      ],
+      "weight_decay": 0.01,
+      "ema_decay": 0.99,
+      "grad_clip": 1.0
+    },
+    "time_sampler": {
+      "name": "discrete",
+      "args": {
+        "steps": 16,
+        "offset": 1
+      }
+    },
+    "conditioning": {
+      "y": {
+        "kind": "labels",
+        "classes": 1000
+      }
+    }
+  },
+  "batch": {
+    "name": "dimr",
+    "args": {
+      "betas": [
+        0.00085,
+        0.0011912214611864863,
+        0.0015898874755368073,
+        0.0020459980430509637,
+        0.002559553163728956,
+        0.003130552837570784,
+        0.0037589970645764462,
+        0.004444885844745944,
+        0.005188219178079277,
+        0.005988997064576445,
+        0.00684721950423745,
+        0.00776288649706229,
+        0.008735998043050964,
+        0.009766554142203477,
+        0.01085455479451982,
+        0.012
+      ]
+    }
+  },
+  "sampler": {
+    "name": "dimr_dpm",
+    "args": {
+      "betas": [
+        0.00085,
+        0.0011912214611864863,
+        0.0015898874755368073,
+        0.0020459980430509637,
+        0.002559553163728956,
+        0.003130552837570784,
+        0.0037589970645764462,
+        0.004444885844745944,
+        0.005188219178079277,
+        0.005988997064576445,
+        0.00684721950423745,
+        0.00776288649706229,
+        0.008735998043050964,
+        0.009766554142203477,
+        0.01085455479451982,
+        0.012
+      ],
+      "steps": 12
+    }
+  },
+  "evidence": {
+    "claim": "native_algorithm_small_architecture_fixture",
+    "not_a_paper_quality_checkpoint": true,
+    "no_downloads": true
+  }
+}

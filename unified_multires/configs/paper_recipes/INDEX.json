@@ -1,0 +1,798 @@
+[
+  {
+    "name": "dctdiff_afhq512_uvit_mid_8by8",
+    "path": "configs/paper_recipes/dctdiff_afhq512_uvit_mid_8by8.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/afhq512_uvit_mid_8by8.py",
+        "sha256": "f4fc95cd9f911b36ae1a769dfee513122b4ce276972621ed8fae1f2f7c787fa6"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 128,
+    "author_steps": 500000
+  },
+  {
+    "name": "dctdiff_celeba64_uvit_small_2by2",
+    "path": "configs/paper_recipes/dctdiff_celeba64_uvit_small_2by2.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/celeba64_uvit_small_2by2.py",
+        "sha256": "0f1eb55677938a0d2aa740a110e76e7f0a96677c208b7e3c8e34a00d10d23646"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 500000
+  },
+  {
+    "name": "dctdiff_cifar10_uvit_mid_2by2",
+    "path": "configs/paper_recipes/dctdiff_cifar10_uvit_mid_2by2.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/cifar10_uvit_mid_2by2.py",
+        "sha256": "8090c5a42794bd66a2ee24ff5a8ae111665d4dee5f32113fce7b529d46bf005e"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 500000
+  },
+  {
+    "name": "dctdiff_cifar10_uvit_mid_deep_2by2",
+    "path": "configs/paper_recipes/dctdiff_cifar10_uvit_mid_deep_2by2.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/cifar10_uvit_mid_deep_2by2.py",
+        "sha256": "6800694e6742216740ff839430bce8bcb930de83a7f54ce6628dd843163df054"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 500000
+  },
+  {
+    "name": "dctdiff_cifar10_uvit_small_2by2",
+    "path": "configs/paper_recipes/dctdiff_cifar10_uvit_small_2by2.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/cifar10_uvit_small_2by2.py",
+        "sha256": "756c0a0071faaa769dd672d88dcb2d0e3acd1576e72afc57a6d08c851c08ee58"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 500000
+  },
+  {
+    "name": "dctdiff_ffhq128_uvit_mid_4by4",
+    "path": "configs/paper_recipes/dctdiff_ffhq128_uvit_mid_4by4.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/ffhq128_uvit_mid_4by4.py",
+        "sha256": "d50088bd7a3d04e7b8ca4a82c4f8bb254916cc83271f6faabe156f4b6c0a2aab"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 500000
+  },
+  {
+    "name": "dctdiff_ffhq128_uvit_mid_deep_4by4",
+    "path": "configs/paper_recipes/dctdiff_ffhq128_uvit_mid_deep_4by4.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/ffhq128_uvit_mid_deep_4by4.py",
+        "sha256": "a6d4b3f0498854bdb275be34d59b069dbfa904cc2c3767043a4270630b44a505"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 500000
+  },
+  {
+    "name": "dctdiff_ffhq128_uvit_small_4by4",
+    "path": "configs/paper_recipes/dctdiff_ffhq128_uvit_small_4by4.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/ffhq128_uvit_small_4by4.py",
+        "sha256": "bba15c3e35a865f0534635e1e699090f2946d8a8ff6112b8ac2b55a9fdd137bc"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 500000
+  },
+  {
+    "name": "dctdiff_ffhq256_uvit_mid_4by4",
+    "path": "configs/paper_recipes/dctdiff_ffhq256_uvit_mid_4by4.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/ffhq256_uvit_mid_4by4.py",
+        "sha256": "f077d44613fad0f8bf27e7b9eff6284751586d5bd57bf69a8065f3430cb4579d"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 500000
+  },
+  {
+    "name": "dctdiff_ffhq512_uvit_mid_8by8",
+    "path": "configs/paper_recipes/dctdiff_ffhq512_uvit_mid_8by8.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/ffhq512_uvit_mid_8by8.py",
+        "sha256": "0c07780e960f31e40ff58002345c3e11f84406bd9cd48e13fdec57d8144b1574"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 128,
+    "author_steps": 500000
+  },
+  {
+    "name": "dctdiff_imgnet64_uvit_mid_2by2",
+    "path": "configs/paper_recipes/dctdiff_imgnet64_uvit_mid_2by2.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/imgnet64_uvit_mid_2by2.py",
+        "sha256": "25000ce1f7463017abe3c813c2931619adc0bbe91c69cc3f1288cd57ea41f263"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 1024,
+    "author_steps": 500000
+  },
+  {
+    "name": "dctdiff_imgnet64_uvit_mid_deep_2by2",
+    "path": "configs/paper_recipes/dctdiff_imgnet64_uvit_mid_deep_2by2.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/imgnet64_uvit_mid_deep_2by2.py",
+        "sha256": "5cb9b35a09dd343e3f1667208749bab26144cedb9f7d39e97647443013da97f0"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 1024,
+    "author_steps": 500000
+  },
+  {
+    "name": "dctdiff_imgnet64_uvit_small_2by2",
+    "path": "configs/paper_recipes/dctdiff_imgnet64_uvit_small_2by2.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/imgnet64_uvit_small_2by2.py",
+        "sha256": "67dd8ffb4934126d29206e84a00438726d41d3ffa821c3c8e06f7dc496eb34f6"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 1024,
+    "author_steps": 800000
+  },
+  {
+    "name": "dimr_DiMR-G-2R_imagenet256",
+    "path": "configs/paper_recipes/dimr_DiMR-G-2R_imagenet256.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dimr/configs/DiMR-G-2R_imagenet256.py",
+        "sha256": "d482ce6236eff1751e2def1d915fdb9deafeb14e7b4d1a296500bf244473ffa4"
+      },
+      {
+        "file": "dimr/train.py",
+        "sha256": "33c562c37b5bf1db5bdc2c278a46b523e3829b1a0de87b5e9d66686c63971523"
+      },
+      {
+        "file": "dimr/eval.py",
+        "sha256": "c838a46ac8e24a4535395f4890be25b627bbaa4c9932e23cc0f4da7ea19bff48"
+      }
+    ],
+    "notes": [
+      "Input: native numbered .npy mean/logvar+class records. Latent sampling re-runs every epoch. RGB decoding requires the original local VAE."
+    ],
+    "author_global_batch": 1024,
+    "author_steps": 1000000
+  },
+  {
+    "name": "dimr_DiMR-XL-2R_imagenet256",
+    "path": "configs/paper_recipes/dimr_DiMR-XL-2R_imagenet256.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dimr/configs/DiMR-XL-2R_imagenet256.py",
+        "sha256": "c095ae043a7416f891b1140690988d0b3d9e3505892dc3da34cb960928f0a68b"
+      },
+      {
+        "file": "dimr/train.py",
+        "sha256": "33c562c37b5bf1db5bdc2c278a46b523e3829b1a0de87b5e9d66686c63971523"
+      },
+      {
+        "file": "dimr/eval.py",
+        "sha256": "c838a46ac8e24a4535395f4890be25b627bbaa4c9932e23cc0f4da7ea19bff48"
+      }
+    ],
+    "notes": [
+      "Input: native numbered .npy mean/logvar+class records. Latent sampling re-runs every epoch. RGB decoding requires the original local VAE."
+    ],
+    "author_global_batch": 1024,
+    "author_steps": 1000000
+  },
+  {
+    "name": "pixelflow_xl_c2i",
+    "path": "configs/paper_recipes/pixelflow_xl_c2i.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "pixelflow/configs/pixelflow_xl_c2i.yaml",
+        "sha256": "d5bdea12b157cf3d2e6bb579970515332474674825fd835abde1117aff5925e1"
+      },
+      {
+        "file": "pixelflow/train.py",
+        "sha256": "afa2ffa19e0b1590aa5f323414ebc56a204804044e59ea65baab66814ea6326d"
+      },
+      {
+        "file": "pixelflow/sample_ddp.py",
+        "sha256": "d7d2128d3d837a4ad74694f7d70a1376cf71fca69caca46ecdbc05656770d624"
+      },
+      {
+        "file": "pixelflow/pixelflow/data_in1k.py",
+        "sha256": "515bf41ce931ccd8f4105cbc741193e7f275dda81fcf4a11ae19e17ea1da0697"
+      }
+    ],
+    "notes": [
+      "Source recipe: 10 epochs, batch4 per rank; sample_ddp.py defaults30 steps per stage and CFG2.4. These public defaults are not certified optimal FID settings. GPU FlashAttention/bf16 is not covered by CPU SDPA parity."
+    ],
+    "author_global_batch": null,
+    "author_steps": "10 epochs"
+  },
+  {
+    "name": "ppflow_xl_2",
+    "path": "configs/paper_recipes/ppflow_xl_2.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "ppflow/train.py",
+        "sha256": "b9d0c58475d08d2a2acd0708e0265e296fd4494f4f1728b77269f5faf8334b33"
+      },
+      {
+        "file": "ppflow/models.py",
+        "sha256": "d7f8b63c54ce280e63a08fe9c519b4d3a804fce9b3c4683fe82af88271620e03"
+      },
+      {
+        "file": "ppflow/sample_ddp.py",
+        "sha256": "62b992c974dd28a6d8191c01eb84d147503d8e07c8e71bb2275c7b501de64247"
+      },
+      {
+        "file": "ppflow/train_utils.py",
+        "sha256": "e7ef69d46001a004a5639e3989ee02e688ae9cae14a913ebd2db8766acdfe222"
+      }
+    ],
+    "notes": [
+      "Released 2/3-stage architecture and sample_ddp ODE policy (250 saved points, Heun2). CFG[1,3] is the2-stage eval default; [1,3.5,3.75] is the source3-stage example, not a certified optimal run. Supply author SiT initialization. Unreleased 4/5-stage and FLUX variants are deferred."
+    ],
+    "author_global_batch": 256,
+    "author_steps": "1400 epochs"
+  },
+  {
+    "name": "ppflow_xl_3",
+    "path": "configs/paper_recipes/ppflow_xl_3.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "ppflow/train.py",
+        "sha256": "b9d0c58475d08d2a2acd0708e0265e296fd4494f4f1728b77269f5faf8334b33"
+      },
+      {
+        "file": "ppflow/models.py",
+        "sha256": "d7f8b63c54ce280e63a08fe9c519b4d3a804fce9b3c4683fe82af88271620e03"
+      },
+      {
+        "file": "ppflow/sample_ddp.py",
+        "sha256": "62b992c974dd28a6d8191c01eb84d147503d8e07c8e71bb2275c7b501de64247"
+      },
+      {
+        "file": "ppflow/train_utils.py",
+        "sha256": "e7ef69d46001a004a5639e3989ee02e688ae9cae14a913ebd2db8766acdfe222"
+      }
+    ],
+    "notes": [
+      "Released 2/3-stage architecture and sample_ddp ODE policy (250 saved points, Heun2). CFG[1,3] is the2-stage eval default; [1,3.5,3.75] is the source3-stage example, not a certified optimal run. Supply author SiT initialization. Unreleased 4/5-stage and FLUX variants are deferred."
+    ],
+    "author_global_batch": 256,
+    "author_steps": "1400 epochs"
+  },
+  {
+    "name": "dfm_sit_xl",
+    "path": "configs/paper_recipes/dfm_sit_xl.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dfm/train.py",
+        "sha256": "66a7e717d3f302545c278c3c6264551c8b774ec7642285614adab3d02d7cf43d"
+      },
+      {
+        "file": "dfm/models/sit_dfm.py",
+        "sha256": "0ba1ccabd64597fc7cfdfbc4a9baba932a794af5237e4071575daa368b3d8ebb"
+      },
+      {
+        "file": "dfm/README.md",
+        "sha256": "409cb24b73325e30ec422cfae17404dcbc8e2a9d9e43c9ff4c1a1f081f65ce65"
+      }
+    ],
+    "notes": [
+      "Released SiT reimplementation explicitly differs from the paper architecture. REPA objective/projector is available, but a real local teacher feature pipeline must be provided for REPA experiments."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 400000
+  },
+  {
+    "name": "dfm_sit_xl_repa_localfeatures",
+    "path": "configs/paper_recipes/dfm_sit_xl_repa_localfeatures.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dfm/train.py",
+        "sha256": "66a7e717d3f302545c278c3c6264551c8b774ec7642285614adab3d02d7cf43d"
+      },
+      {
+        "file": "dfm/models/sit_dfm.py",
+        "sha256": "0ba1ccabd64597fc7cfdfbc4a9baba932a794af5237e4071575daa368b3d8ebb"
+      },
+      {
+        "file": "dfm/loss.py",
+        "sha256": "6d0d0ffb21855ad54a3573f36940f9047f26bafd4ed08bdd34d80e026312f47c"
+      }
+    ],
+    "notes": [
+      "Local .pt contains latents, labels, conditions.teacher_features from the desired DINO teacher. This avoids constructing an unverified or downloaded teacher. VAE/teacher feature preprocessing must match the source dataset pipeline."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 400000
+  },
+  {
+    "name": "dfm_sit_b_released_yaml",
+    "path": "configs/paper_recipes/dfm_sit_b_released_yaml.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dfm/experiments/train/dfm_sit_b_256.yaml",
+        "sha256": "f5c67e1642f1e8489302ac1b18cb7d4be1968e1f0cab69605fc663535dfdc60f"
+      },
+      {
+        "file": "dfm/experiments/generation/dfm_sit_b_256.yaml",
+        "sha256": "39a14d1bcd05fc26fdd5f5ca9109ee73623f1a61c8e7844630ba98f601601a2a"
+      },
+      {
+        "file": "dfm/train.py",
+        "sha256": "66a7e717d3f302545c278c3c6264551c8b774ec7642285614adab3d02d7cf43d"
+      },
+      {
+        "file": "dfm/loss.py",
+        "sha256": "6d0d0ffb21855ad54a3573f36940f9047f26bafd4ed08bdd34d80e026312f47c"
+      }
+    ],
+    "notes": [
+      "Exact released B training/generation YAML hyperparameters include lognormal active-stage time sampling and BF16. The native SiT release explicitly differs from the paper architecture; this is not a paper-best architecture claim."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 400000
+  },
+  {
+    "name": "lapflow_mot_xl_2",
+    "path": "configs/paper_recipes/lapflow_mot_xl_2.json",
+    "claim": "component_recipe_template_best_run_unidentified",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "lapflow/feb12_train_ours.py",
+        "sha256": "19f022f40f0b7424c838edaebaed5b71afa2914ae4a811ce4f641bf5d19275db"
+      },
+      {
+        "file": "lapflow/models/MultiScaleDiT.py",
+        "sha256": "42e5087cef7e005d437dd5e95bf26038fec6615de5213ef8254de0eee9668871"
+      }
+    ],
+    "notes": [
+      "CLI default architecture/optimizer profile, not an identified best paper run. Source epoch cosine schedule requires dataset-dependent steps_per_epoch. Broken released square sampling remains explicitly deferred."
+    ],
+    "author_global_batch": null,
+    "author_steps": null
+  },
+  {
+    "name": "lapflow_imagenet_xl_2_paper",
+    "path": "configs/paper_recipes/lapflow_imagenet_xl_2_paper.json",
+    "claim": "component_recipe_template_best_run_unidentified",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "lapflow/feb12_train_ours.py",
+        "sha256": "19f022f40f0b7424c838edaebaed5b71afa2914ae4a811ce4f641bf5d19275db"
+      },
+      {
+        "file": "lapflow/feb12_test_ours.py",
+        "sha256": "945f9546b1f618a6031290d518430d4d9a77ad41391d419f470f5b1228fb3eb4"
+      },
+      {
+        "file": "lapflow/models/MultiScaleDiT.py",
+        "sha256": "42e5087cef7e005d437dd5e95bf26038fec6615de5213ef8254de0eee9668871"
+      }
+    ],
+    "notes": [
+      "Paper AppendixG ImageNet256 XL/2: LR1e-4, constant schedule, EMA.9999, two scales, T=.5, EQVAE, globalbatch256,120epochs. Repo CLI defaults(T=.9/LR5e-4/EMA.9) are NOT this paper profile.",
+      "Paper source: https://arxiv.org/html/2602.19461#A7 . EQVAE must be supplied locally; VAE substitution changes the experiment. CFG2 remains an explicit evaluation choice rather than a certified best-FID scale."
+    ],
+    "author_global_batch": 256,
+    "author_steps": "120 epochs"
+  },
+  {
+    "name": "ssd_celeba64",
+    "path": "configs/paper_recipes/ssd_celeba64.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "ssd/bash_scripts/train_ssd.sh",
+        "sha256": "718a78046c5f31ddec6386bdacb23e6af048b318ce5f5fe8b58a63aa2cde9503"
+      },
+      {
+        "file": "ssd/configs/model.yaml",
+        "sha256": "0e0b92a3ebde6cd5f234c4ce86e545457b673685f7c26ec132fd2bad40d82add"
+      },
+      {
+        "file": "ssd/configs/training.yaml",
+        "sha256": "c7471e8f2b87308e01eb82cdb626f1801167b8aa922f5db9aaf8b006945d31ed"
+      },
+      {
+        "file": "ssd/configs/diffusion.yaml",
+        "sha256": "1d4a4277176c4adef13cf9f3bdd40130a67f71c39c29b106aa83582df596dbbf"
+      },
+      {
+        "file": "ssd/configs/ssd.yaml",
+        "sha256": "fdb88053a8c08f2895ac7e89bb488f9440c58c4ac275c8582bfb64e2b0ab8e16"
+      }
+    ],
+    "notes": [
+      "Source script uses CelebA train split and batch32 per rank on2 ranks (global64); supply that exact split. Source script does not specify a total training budget."
+    ],
+    "author_global_batch": 64,
+    "author_steps": null
+  },
+  {
+    "name": "mdm_cc12m256",
+    "path": "configs/paper_recipes/mdm_cc12m256.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "mdm/ml-mdm-matryoshka/configs/models/cc12m_256x256.yaml",
+        "sha256": "e02c3628bd64e68f685d702ca6eda35a9ed1817173fa96967df6483c3b339b4f"
+      },
+      {
+        "file": "mdm/ml-mdm-matryoshka/ml_mdm/clis/train_parallel.py",
+        "sha256": "05765ce0658bcbbd0257b3d916401d3e06c047856797626e912be28a1c182d0e"
+      },
+      {
+        "file": "mdm/ml-mdm-matryoshka/ml_mdm/clis/generate_sample.py",
+        "sha256": "e364a9bffc56a5b0206fdc8ba39d85bd0afb421616566dfa9df51eadbc7a19d2"
+      }
+    ],
+    "notes": [
+      "Local input .pt: images, conditions.lm_outputs (Flan-T5-XL), conditions.lm_mask. Sampling requires matching negative_lm_outputs/negative_lm_mask. Released demo defaults:250 resampled steps, eta0, CFG7.5, clip; not an identified best FID setting.",
+      "Source starts from a pretrained vision model; add an explicit local training.initialization when reproducing that fine-tuning run. CC12M streaming and original training curriculum are not certified."
+    ],
+    "author_global_batch": null,
+    "author_steps": 1000000
+  },
+  {
+    "name": "mdm_cc12m1024",
+    "path": "configs/paper_recipes/mdm_cc12m1024.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "mdm/ml-mdm-matryoshka/configs/models/cc12m_1024x1024.yaml",
+        "sha256": "712c3c7547461b10eebe879526763ca5cfb5d54fa4151bf90bc489b7d26064fc"
+      },
+      {
+        "file": "mdm/ml-mdm-matryoshka/ml_mdm/models/nested_unet.py",
+        "sha256": "34509d2bf4c2adb9bfc41d193fbe2ec3dfecb9a3048c9f573c34d622629334c2"
+      },
+      {
+        "file": "mdm/ml-mdm-matryoshka/ml_mdm/diffusion.py",
+        "sha256": "22275a59152e37304127c0fb80dc58f127a44e9bb7ac2a351b0fc3daf50bff9d"
+      }
+    ],
+    "notes": [
+      "Released1024 three-level config includes loss weights16:4:1, SNR shift power2 and local inner256 initialization. Supply that exact inner checkpoint and T5 features; random initialization is not a substitute for this curriculum.",
+      "Streaming reader/curriculum/precision and pretrained quality are not certified by meta construction or random-weight short runs."
+    ],
+    "author_global_batch": null,
+    "author_steps": 1000000
+  },
+  {
+    "name": "rdd_unified_xl_300_300_400",
+    "path": "configs/paper_recipes/rdd_unified_xl_300_300_400.json",
+    "claim": "local_rdd_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "root": "workspace",
+        "file": "multiscale_diffusion/2d/train_RDD_imagenet256_unified.py",
+        "sha256": "faf6594950726da01599abdccc76b4e67980d9ffb5106ce91c72651d4fd30e50"
+      },
+      {
+        "root": "workspace",
+        "file": "multiscale_diffusion/2d/sample_fid_unified.py",
+        "sha256": "2b02ad965d3540be84bffad256a4a3dd60a57a7fd57dece2b5d5b542420c4cc5"
+      },
+      {
+        "root": "workspace",
+        "file": "multiscale_diffusion/DiT/models_multires.py",
+        "sha256": "43b3520e5559c1dae385243a767bfe154dc11b05ece52cd14fcd10992666fe92"
+      }
+    ],
+    "notes": [
+      "Local migrated train_RDD_imagenet256_unified.py architecture and unweighted multi-stage objective. Native solver backend explicitly reused. REPA/min-SNR/loss-aware sampling options of the local extended trainer are not all certified here."
+    ],
+    "author_global_batch": null,
+    "author_steps": null
+  },
+  {
+    "name": "diffusability_se24",
+    "path": "configs/paper_recipes/diffusability_se24.json",
+    "claim": "component_recipe_template_best_run_unidentified",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "diffusability/configs/loss/autoencoder.yaml",
+        "sha256": "f40253e919398cedf4da057858fb8bc441655181f00ece17d1970e7bca8f96f7"
+      },
+      {
+        "file": "diffusability/configs/loss/base.yaml",
+        "sha256": "67ae211665471ca95a7f13cd96cbd005762d7c1430da28589b30b51de7d29b30"
+      }
+    ],
+    "notes": [
+      "SE 2x/4x extension of the released VGG-pyramid codec objective. SE weight, optimizer/budget, dataset and encoder freezing vary across paper experiments; this is a component-complete template, not an identified best run.",
+      "Temporal/tokenizer/discriminator/distillation-AE and downstream generator retraining remain separate pipelines."
+    ],
+    "author_global_batch": null,
+    "author_steps": null
+  },
+  {
+    "name": "relay_imagenet_low",
+    "path": "configs/paper_recipes/relay_imagenet_low.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "relay/README.md",
+        "sha256": "c946c4a685e3ce008fe534342caa0b204b6fc9a1cd5342de0c47510691648ac6"
+      },
+      {
+        "file": "relay/train.py",
+        "sha256": "290a5dfb1c4f7b0b3d44a73495fd2b2204602eec9c502f732523e900fcfabe1b"
+      },
+      {
+        "file": "relay/generate_imagenet.py",
+        "sha256": "8b5cb4980161115f05486ae3e0e573097c52e2ef079bfaca5076ae33dc9c84bb"
+      },
+      {
+        "file": "relay/training/networks.py",
+        "sha256": "a48467cd8f2691c44ff5ec8ea416c68afa4342d6e9e8080b2e6c13ddb4c3c6c7"
+      },
+      {
+        "file": "relay/training/loss.py",
+        "sha256": "a0ec605a206cef1a86fb85cbe102150c85eabecebcf2248cbfca189c0a502e6c"
+      },
+      {
+        "file": "relay/training/training_loop.py",
+        "sha256": "ac1d2346dc77aa1da7f132936296700fe23d7642869bed15ee2063fe128ab1bc"
+      }
+    ],
+    "notes": [
+      "README ImageNet performance-reproduction architecture/training flags and generate_imagenet.py sampling defaults. Supply original preprocessed data and both pretrained networks for best-result inference.",
+      "Global batch4096 on8 ranks is part of the source recipe. This single-process Trainer still requires distributed image-count/global-batch adaptation before that full recipe is certified; loss_multiplier encodes logical per-rank batch512. Recompute for any different world size/batch. Source nan_to_num gradient repair is explicitly configured."
+    ],
+    "author_global_batch": 4096,
+    "author_steps": null
+  },
+  {
+    "name": "relay_imagenet_high",
+    "path": "configs/paper_recipes/relay_imagenet_high.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "relay/README.md",
+        "sha256": "c946c4a685e3ce008fe534342caa0b204b6fc9a1cd5342de0c47510691648ac6"
+      },
+      {
+        "file": "relay/train.py",
+        "sha256": "290a5dfb1c4f7b0b3d44a73495fd2b2204602eec9c502f732523e900fcfabe1b"
+      },
+      {
+        "file": "relay/generate_imagenet.py",
+        "sha256": "8b5cb4980161115f05486ae3e0e573097c52e2ef079bfaca5076ae33dc9c84bb"
+      },
+      {
+        "file": "relay/training/networks.py",
+        "sha256": "a48467cd8f2691c44ff5ec8ea416c68afa4342d6e9e8080b2e6c13ddb4c3c6c7"
+      },
+      {
+        "file": "relay/training/loss.py",
+        "sha256": "a0ec605a206cef1a86fb85cbe102150c85eabecebcf2248cbfca189c0a502e6c"
+      },
+      {
+        "file": "relay/training/training_loop.py",
+        "sha256": "ac1d2346dc77aa1da7f132936296700fe23d7642869bed15ee2063fe128ab1bc"
+      }
+    ],
+    "notes": [
+      "README ImageNet performance-reproduction architecture/training flags and generate_imagenet.py sampling defaults. Supply original preprocessed data and both pretrained networks for best-result inference.",
+      "Global batch4096 on8 ranks is part of the source recipe. This single-process Trainer still requires distributed image-count/global-batch adaptation before that full recipe is certified; loss_multiplier encodes logical per-rank batch512. Recompute for any different world size/batch. Source nan_to_num gradient repair is explicitly configured."
+    ],
+    "author_global_batch": 4096,
+    "author_steps": null
+  },
+  {
+    "name": "rmd_wan13b",
+    "path": "configs/paper_recipes/rmd_wan13b.json",
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "rmd/configs/train_wan_1_3b.yaml",
+        "sha256": "df97432a1ecc5523729377f3306294cb367626f6fec18cb60e43426b4f88490e"
+      }
+    ],
+    "notes": [
+      "Released Wan2.1 1.3B recipe; supply local prompt embeddings, negative embeddings and Wan transformer. Exact latent dimensions must match the selected source CLI height/width/frame count. BF16/GPU quality, optional GAN and alternative backbones are not certified.",
+      "Repository attribution remains unconfirmed by an author-linked paper URL. Numerical claims concern the pinned release."
+    ],
+    "author_global_batch": 8,
+    "author_steps": 300
+  }
+]

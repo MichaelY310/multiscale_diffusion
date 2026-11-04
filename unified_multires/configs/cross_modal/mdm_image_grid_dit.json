@@ -1,0 +1,101 @@
+{
+  "name": "mdm_image_grid_dit",
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "model": {
+    "name": "grid_dit",
+    "args": {
+      "channels": 3,
+      "width": 96,
+      "depth": 2,
+      "num_heads": 4,
+      "patch": [
+        1,
+        2,
+        2
+      ],
+      "position": "sincos",
+      "max_stages": 2,
+      "heads": null,
+      "product_order": "fine_first",
+      "causal_scales": false
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "ema_decay": 0.999,
+      "grad_clip": 1.0
+    },
+    "time_sampler": {
+      "name": "discrete",
+      "args": {
+        "steps": 16,
+        "offset": 1
+      }
+    }
+  },
+  "evidence": {
+    "claim": "controlled_common_backbone_mathematical_recipe",
+    "not_a_paper_best_result_recipe": true,
+    "no_asset_downloads": true,
+    "modality": "image",
+    "architecture_transplant": true,
+    "source_method": "mdm",
+    "excluded": "NestedUNet architecture and private data curriculum; joint extended-space objective is retained"
+  },
+  "batch": {
+    "name": "mdm",
+    "args": {
+      "gammas": [
+        1.0,
+        0.9881323575973511,
+        0.9578046202659607,
+        0.9101638793945312,
+        0.8470121622085571,
+        0.7707380652427673,
+        0.6842265725135803,
+        0.5907498598098755,
+        0.49384358525276184,
+        0.39717310667037964,
+        0.3043949007987976,
+        0.2190181314945221,
+        0.1442721039056778,
+        0.08298399299383163,
+        0.037471953779459,
+        0.009457417763769627,
+        9.457417945668567e-06
+      ]
+    }
+  },
+  "sampler": {
+    "name": "mdm",
+    "args": {
+      "gammas": [
+        1.0,
+        0.9881323575973511,
+        0.9578046202659607,
+        0.9101638793945312,
+        0.8470121622085571,
+        0.7707380652427673,
+        0.6842265725135803,
+        0.5907498598098755,
+        0.49384358525276184,
+        0.39717310667037964,
+        0.3043949007987976,
+        0.2190181314945221,
+        0.1442721039056778,
+        0.08298399299383163,
+        0.037471953779459,
+        0.009457417763769627,
+        9.457417945668567e-06
+      ]
+    }
+  },
+  "prediction_adapter": {
+    "name": "mdm_loss_coordinates"
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "name": "dctdiff",
+  "image_shape": [
+    3,
+    256,
+    256
+  ],
+  "model": {
+    "name": "native_dctdiff",
+    "args": {
+      "depth": 16,
+      "embed_dim": 768,
+      "low_freqs": 8,
+      "mlp_ratio": 4,
+      "mlp_time_embed": false,
+      "num_classes": -1,
+      "num_heads": 12,
+      "qkv_bias": false,
+      "tokens": 1024
+    }
+  },
+  "training": {
+    "optimizer": {
+      "betas": [
+        0.99,
+        0.99
+      ],
+      "lr": 0.0002,
+      "weight_decay": 0.03,
+      "optimizer_name": "adamw",
+      "ema_decay": 0.9999,
+      "ema_style": "scaled_add",
+      "lr_schedule": {
+        "name": "warmup",
+        "warmup_steps": 5000,
+        "offset": 0
+      },
+      "precision": "float16",
+      "randomness": "native_global"
+    },
+    "data": {
+      "shuffle": true,
+      "crop": "pre_resized",
+      "horizontal_flip": true,
+      "flip_rng": "torch",
+      "drop_last": true
+    },
+    "time_sampler": {
+      "name": "uniform"
+    }
+  },
+  "representation": {
+    "name": "dct_ycbcr",
+    "args": {
+      "resolution": 256,
+      "block": 4,
+      "frequencies": 8,
+      "bound": [
+        485.0
+      ]
+    }
+  },
+  "path": {
+    "name": "vp",
+    "args": {
+      "snr_scale": 4.0
+    }
+  },
+  "target": {
+    "name": "joint",
+    "args": {
+      "quantity": "epsilon"
+    }
+  },
+  "clock": {
+    "name": "linear",
+    "args": {
+      "network_scale": 999.0
+    }
+  },
+  "metric": {
+    "name": "mse",
+    "args": {
+      "dct_statistics": {
+        "Y_std": [
+          6.543,
+          2.894,
+          1.769,
+          1.197,
+          2.8,
+          1.916,
+          1.458,
+          1.029,
+          1.647,
+          1.386,
+          1.106,
+          0.994,
+          1.107,
+          0.996,
+          0.994,
+          0.996
+        ],
+        "Cb_std": [
+          4.173,
+          1.392,
+          0.992,
+          0.989,
+          1.338,
+          0.991,
+          0.99,
+          0.991,
+          0.992,
+          0.992,
+          0.989,
+          0.991,
+          0.99,
+          0.991,
+          0.991,
+          0.991
+        ],
+        "Cr_std": [
+          4.417,
+          1.52,
+          0.993,
+          0.99,
+          1.473,
+          0.991,
+          0.99,
+          0.991,
+          0.993,
+          0.991,
+          0.989,
+          0.99,
+          0.997,
+          0.991,
+          0.989,
+          0.991
+        ],
+        "block": 4,
+        "frequencies": 8
+      }
+    }
+  },
+  "sampler": {
+    "name": "dctdiff_dpm",
+    "args": {
+      "steps": 100,
+      "snr_scale": 4.0
+    }
+  },
+  "evidence": {
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/ffhq256_uvit_mid_4by4.py",
+        "sha256": "f077d44613fad0f8bf27e7b9eff6284751586d5bd57bf69a8065f3430cb4579d"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 256,
+    "author_steps": 500000
+  }
+}

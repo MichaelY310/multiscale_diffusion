@@ -1,0 +1,55 @@
+{
+  "name": "speed_pixelgen",
+  "model": {
+    "name": "native_pixelgen",
+    "args": {
+      "trained_grid": 8,
+      "input_size": 32,
+      "patch_size": 4,
+      "in_channels": 3,
+      "num_groups": 2,
+      "hidden_size": 32,
+      "num_blocks": 2,
+      "num_text_blocks": 1,
+      "txt_embed_dim": 8,
+      "txt_max_length": 3,
+      "bottleneck_dim": 16
+    }
+  },
+  "vae": {
+    "name": "native_pixelae",
+    "args": {
+      "scale": 0.83,
+      "shift": 0.13
+    }
+  },
+  "sampler": {
+    "full_hw": [
+      32,
+      32
+    ],
+    "scales": [
+      0.5,
+      1.0
+    ],
+    "transitions": [
+      0.5
+    ],
+    "steps": 12,
+    "trained_grid": 8,
+    "transform": "dct"
+  },
+  "initial_shape": [
+    1,
+    3,
+    16,
+    16
+  ],
+  "dtype": "float32",
+  "synthetic_fixture": true,
+  "synthetic_embedding_shape": [
+    1,
+    3,
+    8
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "configs": [
+    {
+      "file": "rdd_ddpm_multistage_xl_l_b_300_300_400_ddpm_cfg1p0_fresh.json",
+      "training_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "sampling_steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "cfg": 1.0,
+      "boundary": "fresh",
+      "models": {
+        "32": "DiT-XL/2",
+        "16": "DiT-L/2",
+        "8": "DiT-B/2"
+      }
+    },
+    {
+      "file": "rdd_ddpm_multistage_xl_l_b_300_300_400_ddpm_cfg1p5_fresh.json",
+      "training_lengths_fine_to_coarse": [
+        300,
+        300,
+        400
+      ],
+      "sampling_steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "cfg": 1.5,
+      "boundary": "fresh",
+      "models": {
+        "32": "DiT-XL/2",
+        "16": "DiT-L/2",
+        "8": "DiT-B/2"
+      }
+    },
+    {
+      "file": "rdd_ddpm_multistage_xl_l_b_100_300_600_ddpm_cfg1p0_fresh.json",
+      "training_lengths_fine_to_coarse": [
+        100,
+        300,
+        600
+      ],
+      "sampling_steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "cfg": 1.0,
+      "boundary": "fresh",
+      "models": {
+        "32": "DiT-XL/2",
+        "16": "DiT-L/2",
+        "8": "DiT-B/2"
+      }
+    },
+    {
+      "file": "rdd_ddpm_multistage_xl_l_b_100_300_600_ddpm_cfg1p5_fresh.json",
+      "training_lengths_fine_to_coarse": [
+        100,
+        300,
+        600
+      ],
+      "sampling_steps_coarse_to_fine": [
+        80,
+        80,
+        90
+      ],
+      "cfg": 1.5,
+      "boundary": "fresh",
+      "models": {
+        "32": "DiT-XL/2",
+        "16": "DiT-L/2",
+        "8": "DiT-B/2"
+      }
+    }
+  ],
+  "weights": "Explicit local per-resolution EMA or model; no implicit download"
+}

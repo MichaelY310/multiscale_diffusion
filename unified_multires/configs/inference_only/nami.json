@@ -1,0 +1,73 @@
+{
+  "name": "nami",
+  "model": {
+    "name": "native_nami",
+    "args": {
+      "in_channels": 64,
+      "num_layers": 1,
+      "num_single_layers": 3,
+      "num_attention_heads": 1,
+      "attention_head_dim": 16,
+      "joint_attention_dim": 8,
+      "pooled_projection_dim": 8,
+      "axes_dims_rope": [
+        4,
+        6,
+        6
+      ],
+      "stage_singleblock_index": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "vae": {
+    "name": "autoencoder_kl",
+    "args": {
+      "block_out_channels": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "down_block_types": [
+        "DownEncoderBlock2D",
+        "DownEncoderBlock2D",
+        "DownEncoderBlock2D",
+        "DownEncoderBlock2D"
+      ],
+      "up_block_types": [
+        "UpDecoderBlock2D",
+        "UpDecoderBlock2D",
+        "UpDecoderBlock2D",
+        "UpDecoderBlock2D"
+      ],
+      "latent_channels": 16,
+      "norm_num_groups": 32,
+      "layers_per_block": 1,
+      "scaling_factor": 0.3611,
+      "shift_factor": 0.1159
+    }
+  },
+  "sampler": {
+    "steps": [
+      3,
+      3,
+      3
+    ],
+    "guidance_scale": 3.0
+  },
+  "initial_shape": [
+    1,
+    16,
+    128,
+    128
+  ],
+  "synthetic_fixture": true,
+  "synthetic_embedding_shape": [
+    1,
+    3,
+    8
+  ]
+}

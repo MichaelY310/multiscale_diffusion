@@ -1,0 +1,113 @@
+{
+  "name": "ppflow",
+  "image_shape": [
+    4,
+    32,
+    32
+  ],
+  "model": {
+    "name": "native_ppflow",
+    "args": {
+      "input_size": 32,
+      "patch_size": 2,
+      "patch_level": 2,
+      "in_channels": 4,
+      "hidden_size": 1152,
+      "depth": 28,
+      "num_heads": 16,
+      "class_dropout_prob": 0.1,
+      "learn_sigma": true
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "weight_decay": 0.0,
+      "ema_decay": 0.9999,
+      "randomness": "native_global"
+    },
+    "data": {
+      "shuffle": true,
+      "image_size": 256,
+      "crop": "adm_center",
+      "horizontal_flip": true,
+      "flip_rng": "torch",
+      "normalization": "torchvision",
+      "drop_last": true
+    },
+    "input_transform": {
+      "name": "local_vae",
+      "args": {
+        "model": {
+          "name": "local_autoencoder",
+          "args": {
+            "path": "@vae@"
+          }
+        },
+        "scale": 0.18215
+      }
+    },
+    "time_sampler": {
+      "name": "none"
+    },
+    "conditioning": {
+      "y": {
+        "kind": "labels",
+        "classes": 1000
+      }
+    },
+    "initialization": {
+      "mode": "ppflow_sit",
+      "path": "@sit@"
+    }
+  },
+  "batch": {
+    "name": "ppflow",
+    "args": {
+      "levels": 2
+    }
+  },
+  "sampler": {
+    "name": "ppflow_native",
+    "args": {
+      "points": 250,
+      "sampling_method": "heun2",
+      "cfg_scales": [
+        1.0,
+        3.0
+      ]
+    }
+  },
+  "evidence": {
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "ppflow/train.py",
+        "sha256": "b9d0c58475d08d2a2acd0708e0265e296fd4494f4f1728b77269f5faf8334b33"
+      },
+      {
+        "file": "ppflow/models.py",
+        "sha256": "d7f8b63c54ce280e63a08fe9c519b4d3a804fce9b3c4683fe82af88271620e03"
+      },
+      {
+        "file": "ppflow/sample_ddp.py",
+        "sha256": "62b992c974dd28a6d8191c01eb84d147503d8e07c8e71bb2275c7b501de64247"
+      },
+      {
+        "file": "ppflow/train_utils.py",
+        "sha256": "e7ef69d46001a004a5639e3989ee02e688ae9cae14a913ebd2db8766acdfe222"
+      }
+    ],
+    "notes": [
+      "Released 2/3-stage architecture and sample_ddp ODE policy (250 saved points, Heun2). CFG[1,3] is the2-stage eval default; [1,3.5,3.75] is the source3-stage example, not a certified optimal run. Supply author SiT initialization. Unreleased 4/5-stage and FLUX variants are deferred."
+    ],
+    "author_global_batch": 256,
+    "author_steps": "1400 epochs"
+  }
+}

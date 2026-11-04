@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unified-multires"
+version = "0.1.0"
+description = "Source-audited composable multiresolution diffusion and flow matching"
+requires-python = ">=3.10"
+dependencies = ["torch>=2.1", "numpy>=1.24", "scipy>=1.10", "Pillow>=9"]
+
+[project.optional-dependencies]
+rdd = ["torchvision", "timm", "einops", "diffusers", "transformers", "accelerate", "safetensors", "tqdm"]
+authors = ["torchvision", "timm", "einops", "diffusers", "transformers", "accelerate", "safetensors", "torchdiffeq", "PyWavelets", "ml_collections", "beartype", "simple_parsing", "omegaconf", "imageio", "tqdm", "requests", "ftfy", "blobfile", "torchdata"]
+test = ["pytest"]
+
+[project.scripts]
+umdiff = "umdiff.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["umdiff*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

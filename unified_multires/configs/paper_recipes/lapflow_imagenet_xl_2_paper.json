@@ -1,0 +1,123 @@
+{
+  "name": "lapflow",
+  "image_shape": [
+    4,
+    32,
+    32
+  ],
+  "model": {
+    "name": "adapter",
+    "args": {
+      "model": {
+        "name": "native_lapflow",
+        "args": {
+          "input_size": [
+            32,
+            16
+          ],
+          "patch_size": 2,
+          "in_channels": 4,
+          "hidden_size": 1152,
+          "depth": 28,
+          "num_heads": 16,
+          "class_dropout_prob": 0.1,
+          "use_mot": true,
+          "use_mask": true
+        }
+      },
+      "time_first": true
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "weight_decay": 0.0,
+      "ema_decay": 0.9999,
+      "grad_clip": 1.0,
+      "randomness": "native_global"
+    },
+    "data": {
+      "shuffle": true,
+      "image_size": 256,
+      "crop": "adm_center",
+      "horizontal_flip": true,
+      "flip_rng": "torch",
+      "normalization": "torchvision",
+      "drop_last": true
+    },
+    "input_transform": {
+      "name": "local_vae",
+      "args": {
+        "model": {
+          "name": "local_autoencoder",
+          "args": {
+            "path": "@eqvae@"
+          }
+        },
+        "scale": 0.18215
+      }
+    },
+    "time_sampler": {
+      "name": "lapflow",
+      "args": {
+        "activations": [
+          0.5,
+          0.0
+        ]
+      }
+    },
+    "conditioning": {
+      "y": {
+        "kind": "labels",
+        "classes": 1000
+      }
+    }
+  },
+  "batch": {
+    "name": "lapflow",
+    "args": {
+      "levels": 2,
+      "activations": [
+        0.5,
+        0.0
+      ]
+    }
+  },
+  "sampler": {
+    "name": "lapflow",
+    "args": {
+      "levels": 2,
+      "activations": [
+        0.5,
+        0.0
+      ],
+      "step_size": 0.01,
+      "guidance_scale": 2.0
+    }
+  },
+  "evidence": {
+    "claim": "component_recipe_template_best_run_unidentified",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "lapflow/feb12_train_ours.py",
+        "sha256": "19f022f40f0b7424c838edaebaed5b71afa2914ae4a811ce4f641bf5d19275db"
+      },
+      {
+        "file": "lapflow/feb12_test_ours.py",
+        "sha256": "945f9546b1f618a6031290d518430d4d9a77ad41391d419f470f5b1228fb3eb4"
+      },
+      {
+        "file": "lapflow/models/MultiScaleDiT.py",
+        "sha256": "42e5087cef7e005d437dd5e95bf26038fec6615de5213ef8254de0eee9668871"
+      }
+    ],
+    "notes": [
+      "Paper AppendixG ImageNet256 XL/2: LR1e-4, constant schedule, EMA.9999, two scales, T=.5, EQVAE, globalbatch256,120epochs. Repo CLI defaults(T=.9/LR5e-4/EMA.9) are NOT this paper profile.",
+      "Paper source: https://arxiv.org/html/2602.19461#A7 . EQVAE must be supplied locally; VAE substitution changes the experiment. CFG2 remains an explicit evaluation choice rather than a certified best-FID scale."
+    ],
+    "author_global_batch": 256,
+    "author_steps": "120 epochs"
+  }
+}

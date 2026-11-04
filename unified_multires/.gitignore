@@ -1,0 +1,16 @@
+# Locally retained dependencies, pinned author checkouts and run payloads.
+/_deps/
+/sources/
+/runs/
+/sites/
+/.env.local.sh
+/.venv*/
+/configs/gpu_checks/plan.json
+
+# Full historical evidence stays local; publish compact summaries and source pins.
+/evidence/*
+!/evidence/sources.json
+!/evidence/monorepo_20261104/
+/evidence/monorepo_20261104/*
+!/evidence/monorepo_20261104/REPORT_ZH.md
+!/evidence/monorepo_20261104/SUMMARY.json

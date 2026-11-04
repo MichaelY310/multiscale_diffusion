@@ -1,0 +1,315 @@
+{
+  "name": "dctdiff",
+  "image_shape": [
+    3,
+    512,
+    512
+  ],
+  "model": {
+    "name": "native_dctdiff",
+    "args": {
+      "depth": 16,
+      "embed_dim": 768,
+      "low_freqs": 18,
+      "mlp_ratio": 4,
+      "mlp_time_embed": false,
+      "num_classes": -1,
+      "num_heads": 12,
+      "qkv_bias": false,
+      "tokens": 1024
+    }
+  },
+  "training": {
+    "optimizer": {
+      "betas": [
+        0.99,
+        0.99
+      ],
+      "lr": 0.0001,
+      "weight_decay": 0.03,
+      "optimizer_name": "adamw",
+      "ema_decay": 0.9999,
+      "ema_style": "scaled_add",
+      "lr_schedule": {
+        "name": "warmup",
+        "warmup_steps": 5000,
+        "offset": 0
+      },
+      "precision": "float16",
+      "randomness": "native_global"
+    },
+    "data": {
+      "shuffle": true,
+      "crop": "pre_resized",
+      "horizontal_flip": true,
+      "flip_rng": "torch",
+      "drop_last": true
+    },
+    "time_sampler": {
+      "name": "uniform"
+    }
+  },
+  "representation": {
+    "name": "dct_ycbcr",
+    "args": {
+      "resolution": 512,
+      "block": 8,
+      "frequencies": 18,
+      "bound": [
+        928.0
+      ]
+    }
+  },
+  "path": {
+    "name": "vp",
+    "args": {
+      "snr_scale": 12.0
+    }
+  },
+  "target": {
+    "name": "joint",
+    "args": {
+      "quantity": "epsilon"
+    }
+  },
+  "clock": {
+    "name": "linear",
+    "args": {
+      "network_scale": 999.0
+    }
+  },
+  "metric": {
+    "name": "mse",
+    "args": {
+      "dct_statistics": {
+        "Y_std": [
+          6.524,
+          3.25,
+          2.206,
+          1.607,
+          1.368,
+          1.495,
+          1.173,
+          0.999,
+          3.218,
+          2.332,
+          1.931,
+          1.682,
+          1.288,
+          1.277,
+          1.088,
+          0.997,
+          2.266,
+          1.974,
+          1.649,
+          1.449,
+          1.621,
+          1.257,
+          0.999,
+          0.998,
+          1.758,
+          1.493,
+          1.533,
+          1.225,
+          1.42,
+          0.997,
+          0.999,
+          0.997,
+          1.326,
+          1.446,
+          1.684,
+          1.4,
+          1.19,
+          0.998,
+          0.999,
+          0.998,
+          1.25,
+          1.068,
+          1.331,
+          1.198,
+          0.999,
+          0.997,
+          0.999,
+          0.997,
+          1.255,
+          1.12,
+          0.999,
+          0.998,
+          0.999,
+          0.998,
+          0.999,
+          0.998,
+          0.999,
+          0.997,
+          0.999,
+          0.997,
+          0.999,
+          0.997,
+          0.999,
+          0.997
+        ],
+        "Cb_std": [
+          4.153,
+          1.415,
+          1.0,
+          0.99,
+          1.0,
+          0.989,
+          0.999,
+          0.991,
+          1.372,
+          1.091,
+          0.995,
+          0.994,
+          0.994,
+          0.994,
+          0.995,
+          0.994,
+          0.996,
+          0.997,
+          0.996,
+          0.999,
+          0.995,
+          0.999,
+          0.995,
+          0.996,
+          0.995,
+          0.994,
+          0.995,
+          0.994,
+          0.994,
+          0.994,
+          0.995,
+          0.994,
+          0.997,
+          0.998,
+          0.995,
+          1.0,
+          0.993,
+          1.0,
+          0.995,
+          0.998,
+          0.995,
+          0.994,
+          0.995,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.995,
+          0.999,
+          0.996,
+          1.0,
+          0.995,
+          1.0,
+          0.996,
+          0.999,
+          0.995,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.994
+        ],
+        "Cr_std": [
+          3.906,
+          1.291,
+          0.999,
+          0.989,
+          0.998,
+          0.988,
+          0.998,
+          0.991,
+          1.246,
+          0.994,
+          0.995,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.996,
+          0.997,
+          0.995,
+          0.999,
+          0.995,
+          0.999,
+          0.995,
+          0.997,
+          0.996,
+          0.994,
+          0.995,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.996,
+          0.999,
+          0.995,
+          1.0,
+          0.995,
+          1.0,
+          0.994,
+          0.999,
+          0.996,
+          0.994,
+          0.995,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.999,
+          0.996,
+          1.0,
+          0.996,
+          1.0,
+          0.996,
+          0.999,
+          0.995,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.994,
+          0.994
+        ],
+        "block": 8,
+        "frequencies": 18
+      }
+    }
+  },
+  "sampler": {
+    "name": "dctdiff_dpm",
+    "args": {
+      "steps": 100,
+      "snr_scale": 12.0
+    }
+  },
+  "evidence": {
+    "claim": "released_recipe_template",
+    "full_recipe_quality_verified": false,
+    "synthetic_training_allowed": false,
+    "source_pins": [
+      {
+        "file": "dctdiff/configs/afhq512_uvit_mid_8by8.py",
+        "sha256": "f4fc95cd9f911b36ae1a769dfee513122b4ce276972621ed8fae1f2f7c787fa6"
+      },
+      {
+        "file": "dctdiff/train.py",
+        "sha256": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d"
+      }
+    ],
+    "notes": [
+      "Original split/augmentation and dataset files must be supplied locally; CIFAR requires an exported local image folder. No claim to reproduce a published FID."
+    ],
+    "author_global_batch": 128,
+    "author_steps": 500000
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "format": "umdiff_experiment_v1",
+  "id": "pyramidal_wan_path_xl_3",
+  "suite": "main",
+  "method": {
+    "name": "pyramidal_wan_path_xl_3",
+    "image_shape": [
+      4,
+      32,
+      32
+    ],
+    "model": {
+      "name": "comparison_dit",
+      "args": {
+        "architecture": {
+          "patch_size": 2,
+          "in_channels": 4,
+          "hidden_size": 1152,
+          "depth": 28,
+          "num_heads": 16,
+          "class_dropout_prob": 0.1,
+          "learn_sigma": true,
+          "base_size": 16,
+          "num_classes": 1000
+        },
+        "time_scale": 1000.0,
+        "position": "wan_rope"
+      }
+    },
+    "training": {
+      "optimizer": {
+        "lr": 0.0001,
+        "betas": [
+          0.9,
+          0.999
+        ],
+        "weight_decay": 0.0,
+        "ema_decay": 0.9999,
+        "randomness": "native_global",
+        "optimizer_name": "adamw",
+        "eps": 1e-08,
+        "precision": "float32",
+        "grad_clip": null,
+        "lr_schedule": null,
+        "ema_update_every": 1,
+        "ema_warmup": false,
+        "ema_style": "add_alpha"
+      },
+      "data": {
+        "shuffle": true,
+        "image_size": 256,
+        "crop": "adm_center",
+        "horizontal_flip": true,
+        "flip_rng": "torch",
+        "normalization": "torchvision",
+        "drop_last": true
+      },
+      "input_transform": {
+        "name": "local_vae",
+        "args": {
+          "model": {
+            "name": "local_autoencoder",
+            "args": {
+              "path": "@sd_vae_ema@"
+            }
+          },
+          "scale": 0.18215
+        }
+      },
+      "time_sampler": {
+        "name": "none"
+      },
+      "conditioning": {
+        "y": {
+          "kind": "labels",
+          "classes": 1000
+        }
+      },
+      "input_transform_scope": "microbatch"
+    },
+    "evidence": {
+      "claim": "common_backbone_controlled_transplant",
+      "synthetic_training_allowed": false,
+      "not_a_paper_best_result_recipe": true,
+      "no_asset_downloads": true
+    },
+    "task": "multires",
+    "grids": [
+      [
+        8,
+        8
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        32,
+        32
+      ]
+    ],
+    "first_frame": false,
+    "process": {
+      "name": "pyramidal_wan_path",
+      "args": {
+        "steps": [
+          20,
+          20,
+          10
+        ],
+        "natural_bounds": [
+          1.0,
+          0.9412,
+          0.5858,
+          0.0
+        ],
+        "stage_weights": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    "training_stage_reduction": "sum_stage_means"
+  },
+  "run": {
+    "updates": 400000,
+    "global_batch": 256,
+    "micro_batch": 32,
+    "world_size": 1,
+    "seed": 0,
+    "save_every": 5000,
+    "log_every": 100,
+    "allow_tf32": true
+  },
+  "assets": {
+    "dataset": "ImageNet-1K original train; 256 ADM center crop + random flip",
+    "data_env": "IMAGENET_TRAIN_DIR",
+    "vae_env": "SD_VAE_EMA_DIR",
+    "vae_id": "stabilityai/sd-vae-ft-ema",
+    "posterior": "sample_each_visit",
+    "latent_scale": 0.18215,
+    "required_model_domain": [
+      4,
+      32,
+      32
+    ],
+    "precomputed_sampled_latents_are_not_the_legacy_recipe": true
+  },
+  "sampling": {
+    "kind": "euler",
+    "steps_coarse_to_fine": [
+      20,
+      20,
+      10
+    ],
+    "cfg": 1.0
+  },
+  "comparison": {
+    "source": "https://arxiv.org/html/2601.04792",
+    "changes": [
+      "Wan/video/pretrained fine-tuning replaced by common class-conditioned DiT trained from scratch on SD-VAE images.",
+      "Retain natural/global clock conversion and orthogonal noise transition; omit temporal compression, first-frame special handling and teacher/DMD.",
+      "Wan-derived natural thresholds are an explicit starting candidate, not re-estimated optimal SD-VAE thresholds; paper implementation, not author-code parity.",
+      "User-selected RDD rule: visit every training phase for each image; sum phase mean losses with coefficient1, no 1/K or stage-probability factors; one optimizer/EMA update after microbatch accumulation. This intentionally changes the author outer training objective/estimator."
+    ],
+    "common_contract": [
+      "Common ImageNet-256 class conditioning, SD-VAE-ft-ema, shared DiTMultiRes-XL/2 backbone, AdamW and 400K updates.",
+      "Equal data exposure is fixed; equal updates are NOT equal FLOPs. Record training compute/time and compare inference quality versus measured cost.",
+      "This frontend uses one process, micro32 and accumulation8 for global256. Historical RDD used 8 ranks x32; RNG/data order and FP summation are not claimed identical.",
+      "Main files are preregistered starting candidates, not already tuned best-performing configurations."
+    ],
+    "topology_coarse_to_fine": [
+      8,
+      16,
+      32
+    ],
+    "selection": "Use validation data and an equal tuning-compute budget; do not select on final test scores.",
+    "evaluation": "Primary CFG=1; 50K generated RGB, same ADM reference and preprocessing. Metrics are a separate evaluation step.",
+    "runtime_scope": "CPU/single visible GPU CLI; existing device guard is retained; no GPU authorization in this file.",
+    "position": {
+      "policy": "wan_rope",
+      "scope": "Official Wan axis RoPE restricted to T=1; allocation follows Wan at the common head dimension. PyramidalWan author code is unavailable; this is a declared Wan-backbone position choice, not PyramidalWan source parity."
+    },
+    "training_aggregation": {
+      "name": "rdd_sum_stage_means",
+      "stages": 3,
+      "outer_weights": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_policy": "Keep each process conditional clock",
+      "noise_policy": "Existing declared process noise coupling retained; this change concerns aggregation only"
+    }
+  }
+}

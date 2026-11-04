@@ -1,0 +1,136 @@
+{
+  "format": "umdiff_comparison_manifest_v1",
+  "entries": [
+    {
+      "id": "rdd_ddpm_xl_legacy",
+      "suite": "main",
+      "file": "main/rdd_ddpm_xl_legacy.json",
+      "sha256": "218d740a2ba8abac60282a2fde309271a313806c027f418addf494caa9ddad1e"
+    },
+    {
+      "id": "ddpm_xl_fixed",
+      "suite": "main",
+      "file": "main/ddpm_xl_fixed.json",
+      "sha256": "30680befe77dbee10e8e101f5fc28dd4d104400ec5fd34401b31c31823b02a7b"
+    },
+    {
+      "id": "flow_xl_fixed",
+      "suite": "main",
+      "file": "main/flow_xl_fixed.json",
+      "sha256": "375fad6a0996faa3209b451eedc626d7b4f35571ef7ee8620a0c605564d65039"
+    },
+    {
+      "id": "fdm_xl_5_cosine_assumption",
+      "suite": "main",
+      "file": "main/fdm_xl_5_cosine_assumption.json",
+      "sha256": "142cddbcebe74e63f99b3c862c8c2a3a68a7ddb580e7a321b7d944462c90def3"
+    },
+    {
+      "id": "fdm_xl_5_linear",
+      "suite": "main",
+      "file": "main/fdm_xl_5_linear.json",
+      "sha256": "310068a1be437d95189329189ed2a40e4fa30c4dae08a55f8f91c40f3fad362a"
+    },
+    {
+      "id": "pyramid_flow_xl_3",
+      "suite": "main",
+      "file": "main/pyramid_flow_xl_3.json",
+      "sha256": "f88c41a02acdb01f7c472f81637a1f1c52bcd1828507c7e28f65751bf68fc2fb"
+    },
+    {
+      "id": "pyramidal_wan_path_xl_3",
+      "suite": "main",
+      "file": "main/pyramidal_wan_path_xl_3.json",
+      "sha256": "41231e3f40a28696f6316bd5dc7b3d095b03f9573c84788c1be2599b60907fef"
+    },
+    {
+      "id": "pixelflow_xl_4",
+      "suite": "main",
+      "file": "main/pixelflow_xl_4.json",
+      "sha256": "57d7d9db53900a41a2ed6bbbcea2576c97fff9596c53ca41157646c0f6fe2608"
+    },
+    {
+      "id": "ssd_xl_4_convex",
+      "suite": "main",
+      "file": "main/ssd_xl_4_convex.json",
+      "sha256": "779eadd4b914c6d78293b4c82bb8bf41772731466227406fcf378a36289cc275"
+    },
+    {
+      "id": "dfm_xl_2",
+      "suite": "main",
+      "file": "main/dfm_xl_2.json",
+      "sha256": "0eeb5cef14fd1f403cd2e625010e095d6850ab5ce559727adf368605e5792141"
+    },
+    {
+      "id": "lapflow_xl_2",
+      "suite": "main",
+      "file": "main/lapflow_xl_2.json",
+      "sha256": "ee3f45d99b1b3d320bb36e6c5b5dcf207fbe7b837522177ef209afedba4b6480"
+    },
+    {
+      "id": "nonuniform_haar_xl_4",
+      "suite": "main",
+      "file": "main/nonuniform_haar_xl_4.json",
+      "sha256": "21921f04923f437c0d1c994dece319e1b1b0a223f9adfe11b384f8041738e992"
+    },
+    {
+      "id": "rdd_ddpm_xl_legacy",
+      "suite": "controlled",
+      "file": "controlled/rdd_ddpm_xl_legacy.json",
+      "sha256": "05bfb589a455c396635eca156e65cfe1c81e5c535d2f3aed7054a3eefb1aacd0"
+    },
+    {
+      "id": "fdm_xl_shared_3",
+      "suite": "controlled",
+      "file": "controlled/fdm_xl_shared_3.json",
+      "sha256": "40f9a199aefc4619b4079ed33a2ab298c1bde78cdba36315499a7ac5df09876f"
+    },
+    {
+      "id": "pyramid_flow_xl_shared_3",
+      "suite": "controlled",
+      "file": "controlled/pyramid_flow_xl_shared_3.json",
+      "sha256": "eba38ee3790b90eb2834588d072738f8da1228465afd9add7a8b6ba59ddc8be5"
+    },
+    {
+      "id": "pyramidal_wan_path_xl_shared_3",
+      "suite": "controlled",
+      "file": "controlled/pyramidal_wan_path_xl_shared_3.json",
+      "sha256": "35d6717114d804be747d04ddfa4a7619e02b8e10a89ed4cdc0230c3889f27c88"
+    },
+    {
+      "id": "pixelflow_xl_shared_3",
+      "suite": "controlled",
+      "file": "controlled/pixelflow_xl_shared_3.json",
+      "sha256": "b84ca7ea8c85386989c485c37bb277387975df765300dc155471bcf69c491254"
+    },
+    {
+      "id": "ssd_xl_shared_3",
+      "suite": "controlled",
+      "file": "controlled/ssd_xl_shared_3.json",
+      "sha256": "951b00fd990528427b7e458845aa94050761bf59be4f8a6d3fe1c784b1e4ff46"
+    }
+  ],
+  "excluded": [
+    "relay",
+    "pddpm",
+    "mrflow",
+    "bottleneck",
+    "edify_full_cascade",
+    "diffusability",
+    "cat"
+  ],
+  "separate_scope": {
+    "speed": "Inference-only extension; not part of the scratch training comparison.",
+    "mdm_dimr_ppflow_nami": "Architecture-centered methods outside the selected fixed-backbone main comparison.",
+    "joint_band_controls": "DFM/LapFlow/Haar are main joint-band rows; not falsely included in the common scalar-clock controlled group."
+  },
+  "rdd_reference": {
+    "config": "configs/paired_experiments/rdd_unified_xl_300_300_400.json",
+    "sha256": "395e022f9332ccae828294b74d9a11a3bc6055fd7c95c44f10a7f6daf0b30d89",
+    "native_trainer": "multiscale_diffusion/2d/train_RDD_imagenet256_unified.py",
+    "legacy_world_size": 8,
+    "legacy_per_rank_batch": 32,
+    "global_batch": 256
+  },
+  "full_training_started": false
+}

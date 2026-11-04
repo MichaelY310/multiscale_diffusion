@@ -13,5 +13,5 @@
 原训练目标没有因改名而变化。fresh与noise_filling是采样边界的两个不同选择，并非同一个算法的两个名字。归一化lift的白噪声结论需要理想Gaussian残差；任意模型预测残差不自动满足，不能声称已解决所有后验分布问题。
 
 训练/采样证据及限制见[仓库内容说明](REPOSITORY_CONTENTS_ZH.md)与[验证报告](validation/20261104/README.md)。
-新unified原生配置位于独立工作区工程`unified_multires/configs/rdd_reproduction/`，不在此旧仓库。
+新unified原生配置现已并入本仓库的[unified_multires/configs/rdd_reproduction/](../unified_multires/configs/rdd_reproduction/README_ZH.md)；目录合并不改变上述边界语义。
 网站：<https://rdd-math-reference.aa3101132006.chatgpt.site/boundaries.html>。

@@ -11,7 +11,10 @@ image DDPM/FM, independent-stage models, video/3D research code, tests and
 experiment launchers. These research branches are folders in this repository;
 they are not all certified production recipes. See the
 [repository contents and validation scope](docs/REPOSITORY_CONTENTS_ZH.md).
-The separate `unified_multires/umdiff` comparison framework is not this repository.
+The new comparison framework now lives in **`unified_multires/` in this same
+repository**. See its [setup and experiment guide](unified_multires/README.md)
+for CPU examples, native RDD reproduction, common-DiT experiments and video
+configuration. The legacy entry points below remain available.
 
 This repository contains the validated ImageNet-256 implementation and the
 experiments summarized below. All formal image metrics use the native
@@ -263,6 +266,7 @@ evaluation logs are archived in the
 | `2d/` | RDD diffusion/FM training, sampling, and evaluation |
 | `DiT/` | Original and resolution-conditioned DiT backbones |
 | `diffusion/` | Diffusion, drift, flow-matching, and transition equations |
+| `unified_multires/` | Configurable multiresolution training, sampling, author comparisons and CPU tests; [guide](unified_multires/README.md) |
 | `guided-diffusion/` | ADM metric implementation |
 | `configs/` | Portable sampling configurations |
 | `rdd_video/` | Wan/video, distillation and acceleration research code |

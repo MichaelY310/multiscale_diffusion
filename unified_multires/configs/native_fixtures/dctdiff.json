@@ -1,0 +1,73 @@
+{
+  "name": "dctdiff",
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "model": {
+    "name": "native_dctdiff",
+    "args": {
+      "embed_dim": 32,
+      "depth": 2,
+      "num_heads": 4,
+      "tokens": 16,
+      "low_freqs": 4,
+      "num_classes": -1
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "betas": [
+        0.9,
+        0.99
+      ],
+      "weight_decay": 0.01,
+      "ema_decay": 0.99,
+      "grad_clip": 1.0
+    },
+    "time_sampler": {
+      "name": "uniform"
+    }
+  },
+  "representation": {
+    "name": "dct_ycbcr",
+    "args": {
+      "resolution": 32,
+      "block": 4,
+      "frequencies": 4,
+      "bound": 256.0
+    }
+  },
+  "path": {
+    "name": "vp",
+    "args": {
+      "snr_scale": 4.0
+    }
+  },
+  "target": {
+    "name": "joint",
+    "args": {
+      "quantity": "epsilon"
+    }
+  },
+  "clock": {
+    "name": "linear",
+    "args": {
+      "network_scale": 999.0
+    }
+  },
+  "sampler": {
+    "name": "dctdiff_dpm",
+    "args": {
+      "steps": 12,
+      "snr_scale": 4.0
+    }
+  },
+  "evidence": {
+    "claim": "native_algorithm_small_architecture_fixture",
+    "not_a_paper_quality_checkpoint": true,
+    "no_downloads": true
+  }
+}

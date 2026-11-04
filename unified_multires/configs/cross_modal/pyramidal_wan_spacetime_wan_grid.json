@@ -1,0 +1,80 @@
+{
+  "name": "pyramidal_wan_path_video_wan_grid",
+  "image_shape": [
+    4,
+    9,
+    32,
+    32
+  ],
+  "model": {
+    "name": "wan_grid",
+    "args": {
+      "architecture": {
+        "patch_size": [
+          1,
+          2,
+          2
+        ],
+        "in_channels": 4,
+        "out_channels": 4,
+        "num_attention_heads": 4,
+        "attention_head_dim": 24,
+        "num_layers": 2,
+        "text_dim": 16,
+        "freq_dim": 32,
+        "ffn_dim": 384
+      },
+      "heads": null,
+      "time_scale": 1000.0
+    }
+  },
+  "training": {
+    "optimizer": {
+      "lr": 0.0001,
+      "ema_decay": 0.999,
+      "grad_clip": 1.0
+    },
+    "time_sampler": {
+      "name": "uniform"
+    },
+    "conditioning": {
+      "text": {
+        "kind": "field",
+        "field": "text_embeddings"
+      }
+    }
+  },
+  "evidence": {
+    "claim": "controlled_common_backbone_mathematical_recipe",
+    "not_a_paper_best_result_recipe": true,
+    "no_asset_downloads": true,
+    "modality": "video",
+    "architecture_transplant": true,
+    "source_method": "pyramidal_wan_path"
+  },
+  "task": "multires",
+  "grids": [
+    [
+      3,
+      8,
+      8
+    ],
+    [
+      5,
+      16,
+      16
+    ],
+    [
+      9,
+      32,
+      32
+    ]
+  ],
+  "first_frame": true,
+  "process": {
+    "name": "pyramidal_wan_path",
+    "args": {
+      "steps": 20
+    }
+  }
+}

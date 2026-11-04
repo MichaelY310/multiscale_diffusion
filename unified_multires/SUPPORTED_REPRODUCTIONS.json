@@ -1,0 +1,584 @@
+{
+  "format": 1,
+  "scope": "Source-faithful core algorithms in a common training framework; not a reconstruction of every original training service or best-paper run.",
+  "unified_components": [
+    "representation/projection",
+    "noise law and cross-scale coupling",
+    "path and time mapping",
+    "prediction target/head",
+    "loss weighting and stage reduction",
+    "boundary transition",
+    "solver/guidance",
+    "explicit conditioning/codec/model interfaces"
+  ],
+  "reused_components": "Author backbones, selected numerical solvers and readers may be reused through declared adapters; no claim of independent backbone reimplementation.",
+  "common_intentional_test_deviations": [
+    "CPU execution with disclosed compatibility substitutions",
+    "Common nonzero random initialization and synthetic inputs; no pretrained-quality claim",
+    "Reduced width/depth in long and resume tests; separate full published backbone checks",
+    "Common optimizer for operator conformance; source-recipe update checks separately identified"
+  ],
+  "acceptance": "Every selected original-vs-unified executed module output, activation gradient and raw parameter gradient is compared by shape/dtype/raw bytes. Sampler states/floating pixels and update/resume are checked separately. No hidden allclose substitution.",
+  "methods": [
+    {
+      "id": "relay",
+      "name": "Relay Diffusion",
+      "kind": "generation",
+      "core_preserved": [
+        "EDM low stage",
+        "heat/DCT high-stage degradation and loss",
+        "rolling/block noise",
+        "native cascade sampling"
+      ],
+      "source_files": [
+        "sources/relay/training/loss.py",
+        "sources/relay/training/training_loop.py",
+        "sources/relay/generate_imagenet.py"
+      ],
+      "profiles": [
+        "relay_imagenet_low",
+        "relay_imagenet_high"
+      ],
+      "intentional_scope_limits": [
+        "Native ZIP reader is optional; local offline datasets may supply identical tensors.",
+        "Original xformers/FP16/multi-rank trajectory is outside CPU proof."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/relay/training/loss.py": "a0ec605a206cef1a86fb85cbe102150c85eabecebcf2248cbfca189c0a502e6c",
+        "sources/relay/training/training_loop.py": "ac1d2346dc77aa1da7f132936296700fe23d7642869bed15ee2063fe128ab1bc",
+        "sources/relay/generate_imagenet.py": "8b5cb4980161115f05486ae3e0e573097c52e2ef079bfaca5076ae33dc9c84bb"
+      },
+      "core_preserved_zh": "低阶段EDM、高阶段DCT/heat目标、block噪声及两网络级联",
+      "intentional_scope_limits_zh": "本地数据入口和共同训练工程是有意替换；未认证原xformers/FP16多卡及最佳两阶段预算。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "ssd",
+      "name": "Scale Space Diffusion",
+      "kind": "generation",
+      "core_preserved": [
+        "resolution-indexed Markov process",
+        "training timestep/resolution sampling",
+        "native weighted objective",
+        "DDPM transition sampler"
+      ],
+      "source_files": [
+        "sources/ssd/guided_diffusion/scale_space_diffusion.py",
+        "sources/ssd/guided_diffusion/train_util.py"
+      ],
+      "profiles": [
+        "ssd_celeba64"
+      ],
+      "intentional_scope_limits": [
+        "Support selected CelebA64 four-resolution recipe and tested resolution branches; other main-table recipes not claimed.",
+        "Missing BilinearOp size metadata is supplied explicitly; original final checkpoint omissions are not reproduced by unified exact resume."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/ssd/guided_diffusion/scale_space_diffusion.py": "7f22fb551ed1962ca912923770128d1c83be71d55793f0966ab38c13ce2d4614",
+        "sources/ssd/guided_diffusion/train_util.py": "afe20c62bd43f5b6cb52cf54d97f5aed5380328983da2142431dd27ce3dd64ba"
+      },
+      "core_preserved_zh": "所选64配置、分辨率Markov路径、重要性抽样、加权目标和DDPM采样",
+      "intentional_scope_limits_zh": "当前支持所选配置及已测分辨率分支；其他主表配置不包含。补原BilinearOp尺寸元信息；统一检查点保留原final save缺少的状态。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "pixelflow",
+      "name": "PixelFlow",
+      "kind": "generation",
+      "core_preserved": [
+        "stage endpoint flow",
+        "packing and time conditioning",
+        "native scalar loss reduction",
+        "correlated boundary noise",
+        "Euler and Dopri5"
+      ],
+      "source_files": [
+        "sources/pixelflow/train.py",
+        "sources/pixelflow/pixelflow/scheduling_pixelflow.py",
+        "sources/pixelflow/pixelflow/pipeline_pixelflow.py"
+      ],
+      "profiles": [
+        "pixelflow_xl_c2i",
+        "pixelflow_xl_c2i_paper_dopri5"
+      ],
+      "intentional_scope_limits": [
+        "CPU SDPA and NumPy RoPE compatibility replace unavailable CUDA kernels; CUDA numerical identity not claimed.",
+        "Published example is not certified as the authors best run."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/pixelflow/train.py": "afa2ffa19e0b1590aa5f323414ebc56a204804044e59ea65baab66814ea6326d",
+        "sources/pixelflow/pixelflow/scheduling_pixelflow.py": "c767182d4ef9016e9b4db6cba4f4ca556a4384a49afc3ec054798dd4987177d5",
+        "sources/pixelflow/pixelflow/pipeline_pixelflow.py": "a0ed8209a986942ee6b19415d1f4a75e64a3444e11f484bede08d6b468bd68ab"
+      },
+      "core_preserved_zh": "多阶段endpoint flow、packing、相关边界噪声、Euler/Dopri5",
+      "intentional_scope_limits_zh": "CPU SDPA/RoPE适配是有意兼容；未认证原Flash/BF16。公开示例不自动代表最佳训练run。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "dfm",
+      "name": "Improving Progressive Generation with Decomposable Flow Matching",
+      "kind": "generation",
+      "core_preserved": [
+        "Laplacian components",
+        "sequential scale clocks",
+        "uniform/lognormal times",
+        "native loss weighting",
+        "optional REPA",
+        "CFG-window sampling"
+      ],
+      "source_files": [
+        "sources/dfm/train.py",
+        "sources/dfm/loss.py",
+        "sources/dfm/dfm_utils/samplers_dfm.py"
+      ],
+      "profiles": [
+        "dfm_sit_xl",
+        "dfm_sit_xl_repa_localfeatures",
+        "dfm_sit_b_released_yaml"
+      ],
+      "intentional_scope_limits": [
+        "Only published SiT/REPA implementation, not unpublished paper DiT/SE-FLUX runs.",
+        "REPA accepts explicit precomputed teacher features; teacher encoder/preprocessing quality is a separate asset contract."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/dfm/train.py": "66a7e717d3f302545c278c3c6264551c8b774ec7642285614adab3d02d7cf43d",
+        "sources/dfm/loss.py": "6d0d0ffb21855ad54a3573f36940f9047f26bafd4ed08bdd34d80e026312f47c",
+        "sources/dfm/dfm_utils/samplers_dfm.py": "b310b514999c7807d7ceb84810d2ae0a7ee5d668d5f5ec9a75d9bb91417f5cd5"
+      },
+      "core_preserved_zh": "公开SiT分支、Laplacian分解、阶段时钟、uniform/lognormal、REPA和CFG",
+      "intentional_scope_limits_zh": "公开SiT与论文DiT/SE-FLUX架构不同，后者不在承诺范围；REPA比较从明确提供的teacher特征开始。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "lapflow",
+      "name": "Laplacian Multi-scale Flow Matching",
+      "kind": "generation",
+      "core_preserved": [
+        "Laplacian state",
+        "two/three-scale target and clock",
+        "variance/noise options",
+        "native scalar reduction",
+        "ODE/CFG sampling"
+      ],
+      "source_files": [
+        "sources/lapflow/feb12_train_ours.py",
+        "sources/lapflow/sampler/ours_sample.py"
+      ],
+      "profiles": [
+        "lapflow_mot_xl_2",
+        "lapflow_imagenet_xl_2_paper"
+      ],
+      "intentional_scope_limits": [
+        "CLI-default and paper-flags recipes remain separate; HQ512/1024 best runs excluded.",
+        "Square sampler source_bug and corrected policies are distinct; default rejects ambiguous square behavior.",
+        "Two FP32 decomposition/reconstruction identity checks have explained roundoff; they are not original-vs-unified training differences."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/lapflow/feb12_train_ours.py": "19f022f40f0b7424c838edaebaed5b71afa2914ae4a811ce4f641bf5d19275db",
+        "sources/lapflow/sampler/ours_sample.py": "493464345a8670c9eda24f1c404aee7a1a5049f513541fd94279c09b66d46fff"
+      },
+      "core_preserved_zh": "两/三尺度目标、噪声/方差选项、linear/cosine/square显式策略、CFG",
+      "intentional_scope_limits_zh": "CLI默认与paper flags分开；不声称HQ512/1024最佳实验。square的原缺陷兼容/修正分开；重构恒等式舍入单列。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "ppflow",
+      "name": "Pyramidal Patchification Flow",
+      "kind": "generation",
+      "core_preserved": [
+        "lossless patch layout changes",
+        "two/three-stage packing",
+        "native interpolation/velocity target",
+        "SiT weight-conversion geometry",
+        "ODE/SDE/CFG solvers"
+      ],
+      "source_files": [
+        "sources/ppflow/train.py",
+        "sources/ppflow/models.py",
+        "sources/ppflow/transport/transport.py"
+      ],
+      "profiles": [
+        "ppflow_xl_2",
+        "ppflow_xl_3"
+      ],
+      "intentional_scope_limits": [
+        "Only public 2/3-level branch; unpublished 4/5-level and FLUX excluded.",
+        "learn_sigma=False requires the documented two-defect compatibility adapter; default released learn_sigma=True branch has no such patch.",
+        "Author solver backend is explicitly reused."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/ppflow/train.py": "b9d0c58475d08d2a2acd0708e0265e296fd4494f4f1728b77269f5faf8334b33",
+        "sources/ppflow/models.py": "d7f8b63c54ce280e63a08fe9c519b4d3a804fce9b3c4683fe82af88271620e03",
+        "sources/ppflow/transport/transport.py": "4e24112d7cf4ae1fd0454939ad61d4be5e4ed2c79c05af5d85cecd0e302503d9"
+      },
+      "core_preserved_zh": "公开两/三层packing与目标、SiT转换几何、ODE/SDE采样",
+      "intentional_scope_limits_zh": "不含未发布FLUX/四五层；no-sigma需显式两处修补。原solver明确复用；真实SiT预训练收益未评估。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "dctdiff",
+      "name": "DCTdiff",
+      "kind": "generation",
+      "core_preserved": [
+        "YCbCr/DCT representation",
+        "dataset frequency normalization and EBFR",
+        "VP epsilon objective",
+        "DPM/EM solver and floating decode"
+      ],
+      "source_files": [
+        "sources/dctdiff/train.py",
+        "sources/dctdiff/sde.py",
+        "sources/dctdiff/dpm_solver_pytorch.py"
+      ],
+      "profiles": [
+        "dctdiff_afhq512_uvit_mid_8by8",
+        "dctdiff_celeba64_uvit_small_2by2",
+        "dctdiff_cifar10_uvit_mid_2by2",
+        "dctdiff_cifar10_uvit_mid_deep_2by2",
+        "dctdiff_cifar10_uvit_small_2by2",
+        "dctdiff_ffhq128_uvit_mid_4by4",
+        "dctdiff_ffhq128_uvit_mid_deep_4by4",
+        "dctdiff_ffhq128_uvit_small_4by4",
+        "dctdiff_ffhq256_uvit_mid_4by4",
+        "dctdiff_ffhq512_uvit_mid_8by8",
+        "dctdiff_imgnet64_uvit_mid_2by2",
+        "dctdiff_imgnet64_uvit_mid_deep_2by2",
+        "dctdiff_imgnet64_uvit_small_2by2"
+      ],
+      "intentional_scope_limits": [
+        "13 released UViT profiles, not unreleased strongest DiT branch.",
+        "Author DPM-Solver backend is explicitly reused; real data frequency statistics must match the selected dataset."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/dctdiff/train.py": "f054d8f79800d44bac88f34684692ca75f34d0e35a8d19e7b9c13026b20a008d",
+        "sources/dctdiff/sde.py": "f8e7084e49fc10d1048e707f347f0eb9ea27e7bdfd8dccb3ef9c2684be9519e3",
+        "sources/dctdiff/dpm_solver_pytorch.py": "170a1a5ba12d77edf90975b98939d06b15413be4ee2bf06d30380657b0302fa0"
+      },
+      "core_preserved_zh": "13个公开UViT配置、DCT/YCbCr、统计/EBFR、VP目标及DPM/EM解码",
+      "intentional_scope_limits_zh": "不含未公开最强DiT；DPM solver明确复用。真实数据必须绑定自己的统计，质量未评估。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "mdm",
+      "name": "Matryoshka Diffusion Models",
+      "kind": "generation",
+      "core_preserved": [
+        "nested multi-resolution prediction",
+        "shifted schedules",
+        "mixed-resolution loss and optional VDM weighting",
+        "negative-first CFG",
+        "DDPM/DDIM resampling"
+      ],
+      "source_files": [
+        "sources/mdm/ml-mdm-matryoshka/ml_mdm/diffusion.py",
+        "sources/mdm/ml-mdm-matryoshka/ml_mdm/samplers.py",
+        "sources/mdm/ml-mdm-matryoshka/ml_mdm/trainer.py"
+      ],
+      "profiles": [
+        "mdm_cc12m256",
+        "mdm_cc12m1024"
+      ],
+      "intentional_scope_limits": [
+        "Public 256/1024 algorithm profiles; private Flickr50M best-run curriculum and online MLX/S3 service not claimed.",
+        "Actual text/vision/inner pretrained initialization remains an external asset contract."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/mdm/ml-mdm-matryoshka/ml_mdm/diffusion.py": "22275a59152e37304127c0fb80dc58f127a44e9bb7ac2a351b0fc3daf50bff9d",
+        "sources/mdm/ml-mdm-matryoshka/ml_mdm/samplers.py": "0643e2de84fa43bef95975df49e705d0a07ae4f0e237466769a84e67291755ee",
+        "sources/mdm/ml-mdm-matryoshka/ml_mdm/trainer.py": "99da293e6d35654747392944c06afb1d90b0c34142885960d87f239b239db8a5"
+      },
+      "core_preserved_zh": "公开256/1024嵌套目标、shift日程、mixed/VDM、CFG及resampling",
+      "intentional_scope_limits_zh": "不含私有Flickr50M最佳课程或云数据服务；实际text/vision/inner权重仍须明确绑定。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "dimr",
+      "name": "DiMR",
+      "kind": "generation",
+      "core_preserved": [
+        "multi-resolution G/XL architecture",
+        "multi-scale targets/loss weights",
+        "time-dependent normalization",
+        "Python CFG dropout",
+        "native DPM guidance",
+        "Random full native VAE RGB encode/moments/posterior/scale and float decode, with independent DiMR training and sampling"
+      ],
+      "source_files": [
+        "sources/dimr/train.py",
+        "sources/dimr/sde.py",
+        "sources/dimr/eval.py"
+      ],
+      "profiles": [
+        "dimr_DiMR-G-2R_imagenet256",
+        "dimr_DiMR-XL-2R_imagenet256"
+      ],
+      "intentional_scope_limits": [
+        "CPU RGB-to-RGB supplemental tests use the full released VAE and reduced DiMR with common random checkpoints; real pretrained quality is not claimed.",
+        "Original 16-rank FP16 execution excluded from CPU proof."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/dimr/train.py": "33c562c37b5bf1db5bdc2c278a46b523e3829b1a0de87b5e9d66686c63971523",
+        "sources/dimr/sde.py": "dbcc5d0b319d76e656d0110b58ca3835f4a9013c24bf3d97283e7734239ee7d5",
+        "sources/dimr/eval.py": "c838a46ac8e24a4535395f4890be25b627bbaa4c9932e23cc0f4da7ea19bff48"
+      },
+      "core_preserved_zh": "公开G/XL、多尺度目标与归约、时间相关归一化、CFG及DPM guidance",
+      "intentional_scope_limits_zh": "新增完整随机原VAE的RGB编解码链路通过；DiMR主体缩小、正式预训练质量及原16卡FP16不在本次CPU范围。",
+      "acceptance_status": "passed",
+      "supplemental_evidence": [
+        "evidence/dimr_rgb_20261012/SUMMARY.json"
+      ]
+    },
+    {
+      "id": "rdd",
+      "name": "RDD local migrated implementation",
+      "kind": "generation",
+      "core_preserved": [
+        "discrete VP and effective epsilon",
+        "joint/decoupled targets",
+        "fine-to-coarse training-stage program",
+        "fresh/isometric boundary variants",
+        "native stage solvers",
+        "optional min-SNR/p2/REPA/adaptive-time objectives"
+      ],
+      "source_files": [
+        "../multiscale_diffusion/2d/train_RDD_imagenet256_unified.py",
+        "../multiscale_diffusion/diffusion/gaussian_diffusion_with_drift.py",
+        "../multiscale_diffusion/diffusion/rdd_improvements.py",
+        "../multiscale_diffusion/DiT/models_multires.py"
+      ],
+      "profiles": [
+        "rdd_unified_xl_300_300_400",
+        "rdd_unified_l_300_300_400"
+      ],
+      "intentional_scope_limits": [
+        "Reference is the local migrated RDD implementation, not an external paper repository.",
+        "For decoupled plus non-none loss weighting, omit_drift_for_native_weighting=true reproduces source helper omission; default retaining mse_d is an intentional correction.",
+        "Synthetic teacher features certify REPA objective, not teacher extraction."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "../multiscale_diffusion/2d/train_RDD_imagenet256_unified.py": "faf6594950726da01599abdccc76b4e67980d9ffb5106ce91c72651d4fd30e50",
+        "../multiscale_diffusion/diffusion/gaussian_diffusion_with_drift.py": "cd90dc41d2eb18560d86fd1a14742c7cbb1ddf9d2408ccfddb3d4489e14217e5",
+        "../multiscale_diffusion/diffusion/rdd_improvements.py": "51bd4b77594fd6fe864a225c7d9e30ec926c37170750db787bc512459c047d07",
+        "../multiscale_diffusion/DiT/models_multires.py": "43b3520e5559c1dae385243a767bfe154dc11b05ece52cd14fcd10992666fe92"
+      },
+      "core_preserved_zh": "本地基础joint/decoupled与多阶段程序、边界/solver；27组新增目标组合",
+      "intentional_scope_limits_zh": "REPA从固定teacher特征开始。decoupled加非默认权重时，原样漏drift可显式复现；默认保留drift为有意修正。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "diffusability",
+      "name": "Improving the Diffusability of Autoencoders",
+      "kind": "codec",
+      "core_preserved": [
+        "published codec forward/posterior",
+        "reconstruction and KL",
+        "scale-equivariance mean/bilinear",
+        "selected perceptual/frequency regularizers"
+      ],
+      "source_files": [
+        "sources/diffusability/src/training/loss.py",
+        "sources/diffusability/src/training/diffusers_ae.py",
+        "sources/diffusability/src/utils/autoencoder_utils.py"
+      ],
+      "profiles": [
+        "diffusability_se24"
+      ],
+      "intentional_scope_limits": [
+        "Codec contract only: not a complete standalone diffusion generator.",
+        "Full GAN/temporal/tokenizer/distillation-AE branches and downstream retraining are excluded; they change the task/objective and are not dismissed as trivial."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/diffusability/src/training/loss.py": "52cbe0641006146904d9cc8f6e804f90213633a7b1a23ee3e9ceddedaafc0b30",
+        "sources/diffusability/src/training/diffusers_ae.py": "678aa6069e0f5a010396772ac645557be4ff6a029ed71cfc9bf61a00423ce2f8",
+        "sources/diffusability/src/utils/autoencoder_utils.py": "054b27f5a76402cdc933ad11c3d598fccfac8447766b03419f383f27e2012eb5"
+      },
+      "core_preserved_zh": "已发布codec重建/KL、尺度等变与所选perceptual/frequency分支",
+      "intentional_scope_limits_zh": "只承诺codec合同；完整GAN、时序、tokenizer、distillation-AE及下游重训不包括，未伪称为无关trick。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "rmd",
+      "name": "Cross-Resolution Distribution Matching",
+      "kind": "distillation",
+      "core_preserved": [
+        "Wan 1.3B public branch",
+        "two cross-resolution transitions",
+        "teacher/fake/student objectives",
+        "warmup and two optimizers"
+      ],
+      "source_files": [
+        "sources/rmd/src/rmd/engines/train.py"
+      ],
+      "profiles": [
+        "rmd_wan13b"
+      ],
+      "intentional_scope_limits": [
+        "No GAN branch or other backbones/14B best-run claim.",
+        "CPU small video grid and synthetic embeddings; actual pretrained teacher is required for useful distillation.",
+        "Repository attribution restriction from prior audit remains."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/rmd/src/rmd/engines/train.py": "3ce61a915e526f4dac02663e724556b5fbf2ea9193261fba2376e84d21342686"
+      },
+      "core_preserved_zh": "公开Wan1.3B两transition、teacher/fake/student目标、warmup和双optimizer",
+      "intentional_scope_limits_zh": "不含GAN、其他骨干/14B最佳实验；完整1.3B骨干使用小视频网格，合成teacher不能证明蒸馏质量。仓库归属限制保留。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "speed",
+      "name": "SPEED",
+      "kind": "inference",
+      "core_preserved": [
+        "spectral DCT/DWT/FFT expansion",
+        "time alignment",
+        "FLUX/PixelGen/Wan sampling"
+      ],
+      "source_files": [
+        "sources/speed/latent_image_gen.py",
+        "sources/speed/pixel_image_gen.py",
+        "sources/speed/latent_video_gen.py"
+      ],
+      "profiles": [],
+      "intentional_scope_limits": [
+        "The paper defines spectral-transformation fine-tuning in section 4.3; the pinned official code releases training-free inference only. Our supported and tested contract is inference; author-training backward parity is not certified.",
+        "Wan CPU AMP/attention substitutions and random Diffusers Wan decoder are disclosed; native pretrained Wan VAE and MP4 output not certified."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/speed/latent_image_gen.py": "44c254adfe1ac49097159f8c0abf2090a762ee8b318cb21eb42fac2643404aaa",
+        "sources/speed/pixel_image_gen.py": "f49419c0e9f294fb89487bdb2990cf20b1c3bca56e6866692ff7c054ac3d2060",
+        "sources/speed/latent_video_gen.py": "85a4c969d3360e05587fcfab530cbf0fef2fa72d3a8bcb13682cebf1d9129f35"
+      },
+      "core_preserved_zh": "FLUX/PixelGen/Wan谱扩张、时钟对齐及采样",
+      "intentional_scope_limits_zh": "论文第4.3节有频谱变换微调目标；固定的官方代码只发布免训练推理。本项目当前只认证推理，未实现并认证论文微调配方。Wan使用明确CPU适配及随机Diffusers解码器，原生pretrained Wan VAE/MP4未认证。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "nami",
+      "name": "NAMI",
+      "kind": "inference",
+      "core_preserved": [
+        "nested FLUX generation",
+        "learned stage bridge interface",
+        "guidance and VAE output"
+      ],
+      "source_files": [
+        "sources/nami/src/pipeline_flux.py"
+      ],
+      "profiles": [],
+      "intentional_scope_limits": [
+        "Released inference only: no author training objective.",
+        "Bridge must be supplied; random bridge is only a parity fixture."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/nami/src/pipeline_flux.py": "8f427ce15d4942e3d42058d276e20c0fa4ba6fbf368ad65b5be20a8874476b05"
+      },
+      "core_preserved_zh": "公开三阶段FLUX、bridge接口、CFG及浮点解码",
+      "intentional_scope_limits_zh": "公开推理范围；没有作者训练器，backward不适用。真实bridge权重必须另供。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "mrflow",
+      "name": "MrFlow",
+      "kind": "inference",
+      "core_preserved": [
+        "FLUX/Qwen generation",
+        "VAE/PIL conversion",
+        "tiled RRDB super-resolution",
+        "noise reinjection and refinement"
+      ],
+      "source_files": [
+        "sources/mrflow/flux1_mrflow.py",
+        "sources/mrflow/qwen_image_mrflow.py",
+        "sources/mrflow/mrflow_utils.py"
+      ],
+      "profiles": [],
+      "intentional_scope_limits": [
+        "Training-free published routes: backward N/A.",
+        "Text encoder and actual pretrained transformer/VAE/RRDB quality remain external assets."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "sources/mrflow/flux1_mrflow.py": "791cdb4132a5ac6b0ae690be44e8c16333c4992523b9e387e1843121ca3f409e",
+        "sources/mrflow/qwen_image_mrflow.py": "d79bf245374357dc48f5d6bcab25be9f40cf7532763234115c662123286c035c",
+        "sources/mrflow/mrflow_utils.py": "2f96fe30eb8acbc40fe0e30b24be202990a973147e49d57b23a5de451652c1c4"
+      },
+      "core_preserved_zh": "FLUX/Qwen生成、VAE/PIL、RRDB tile超分、再加噪和refinement",
+      "intentional_scope_limits_zh": "training-free推理，无作者backward；真实text/模型/VAE/RRDB资产与质量未认证。",
+      "acceptance_status": "passed"
+    },
+    {
+      "id": "cat",
+      "name": "CAT",
+      "kind": "codec_component",
+      "core_preserved": [
+        "published nested VAE",
+        "compression-rate selection",
+        "posterior and codec output"
+      ],
+      "source_files": [
+        "evidence/forward_backward_20261012/cat_release/code/CAT Supplementary Material/code/downstream tasks/classification.py",
+        "evidence/forward_backward_20261012/cat_release/code/CAT Supplementary Material/code/model/nested_vae.py",
+        "evidence/forward_backward_20261012/cat_release/code/CAT Supplementary Material/code/model/nested_vae_modules.py",
+        "evidence/forward_backward_20261012/cat_release/code/CAT Supplementary Material/code/scoring/example_scoring.py"
+      ],
+      "profiles": [],
+      "intentional_scope_limits": [
+        "Only codec component; complete diffusion trainer/codec training objective unpublished.",
+        "Backward check is explicitly diagnostic adjoint, not author training loss."
+      ],
+      "unresolved_in_scope_failures": [],
+      "claim": "Selected supported contract passed; exclusions retained",
+      "source_file_sha256": {
+        "evidence/forward_backward_20261012/cat_release/code/CAT Supplementary Material/code/downstream tasks/classification.py": "a4bbed0209f4310e68508f3232c8774251bc43bd3a10293f7eae3685a55383d6",
+        "evidence/forward_backward_20261012/cat_release/code/CAT Supplementary Material/code/model/nested_vae.py": "d9f3a9c1430ff22c9ebe2d4a6d1a6d4c9e6d7273d54fa2e02256745614cbcb02",
+        "evidence/forward_backward_20261012/cat_release/code/CAT Supplementary Material/code/model/nested_vae_modules.py": "6332247922ea405a03ecaed5a6750a6bf0ed2b04cf8686ed7f97e88dc71cbffc",
+        "evidence/forward_backward_20261012/cat_release/code/CAT Supplementary Material/code/scoring/example_scoring.py": "69da9462a4cd4167413069d10cc2b95a6ab602a646ee22e99c7ea969b06699fb"
+      },
+      "core_preserved_zh": "公开nested VAE、压缩率选择、posterior和codec输出",
+      "intentional_scope_limits_zh": "仅组件对照；训练目标/trainer未发布。反向是诊断adjoint，不能称作论文训练复现。",
+      "acceptance_status": "passed"
+    }
+  ],
+  "excluded_math_only": [
+    "f-DM",
+    "Edify",
+    "PDDPM",
+    "DDiT",
+    "LoT",
+    "Fresco",
+    "AViTS"
+  ],
+  "separate_project": "Earlier Pyramid Flow/PyramidalWan FastVideo work is outside this image/core-method acceptance matrix; cannot inherit its certificates.",
+  "acceptance_report": "evidence/unified_scope_20261012/AUDIT.json",
+  "accepted_at_utc": "2026-10-12T11:25:14.523935+00:00",
+  "accepted_scope_complete": true
+}
