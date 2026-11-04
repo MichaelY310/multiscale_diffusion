@@ -186,7 +186,7 @@ pf=stage('pyramid_flow',[8,16,32],{'steps':[20,20,20],'stage_range':[0,1/3,2/3,1
                                  'train_steps':1000,'shift':1.,'network_clock':'author','boundary_policy':'native_psd'})
 save('pyramid_flow_xl_3',pf,'https://arxiv.org/abs/2410.05954',
      ['Video DiT replaced by common image DiT; omit temporal pyramid/autoregressive history/text conditioning.',
-      'Use pooled full-resolution SD-VAE latent targets, not RGB resizing followed by separate video-VAE encodings.',
+      'Replace author VAE/latent scale with shared SD-VAE-ft-ema; both construct the spatial pyramid after VAE encoding.',
       'Retain spatial flow endpoints, correlated transition noise and author network-clock mapping.',
       'Explicit native_psd boundary uses a PSD square root for the author singular gamma=1/3 covariance; original Cholesky is undefined. Same noise law, coupled CPU draws.'],
      {'kind':'euler','steps_coarse_to_fine':[20,20,20],'cfg':1.},topology=[8,16,32])

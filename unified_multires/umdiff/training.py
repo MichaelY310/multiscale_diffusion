@@ -158,7 +158,10 @@ class Trainer:
         torch.save(self.state_dict(),temporary);temporary.replace(path)
     def load(self,path):
         # Only load local checkpoints you trust; optimizer RNG includes NumPy.
-        state=torch.load(path,map_location=next(self.model.parameters()).device,weights_only=False)
+        # Loading the whole checkpoint onto CUDA first duplicates model, EMA
+        # and Adam buffers on that GPU. Stage on CPU; state_dict loaders move
+        # parameter/optimizer tensors to their existing destination devices.
+        state=torch.load(path,map_location='cpu',weights_only=False)
         if state['format']!=1 or state['config']!=self.method.config:raise ValueError('Checkpoint method configuration mismatch')
         if self.data_binding is not None and state.get('data_binding')!=self.data_binding:raise ValueError('Checkpoint data identity, batch size or traversal seed mismatch')
         self.data_binding=state.get('data_binding')

@@ -1,0 +1,32 @@
+{
+  "fm": {
+    "repo": "yang335/search_agent_hl_to_i18n_transport",
+    "revision": "848d8a1eccaab8c1807ab792c4ec403dde25288d",
+    "files": [
+      {
+        "remote": "checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+        "local": "fm/checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+        "size": 10797841648,
+        "sha256": "dbbbe1325494295ac17e0a7c33cda733058cadd06e989b2f8c0d9ce9e6e543c2"
+      }
+    ]
+  },
+  "vae": {
+    "repo": "stabilityai/sd-vae-ft-ema",
+    "revision": "f04b2c4b98319346dad8c65879f680b1997b204a",
+    "files": [
+      {
+        "remote": "config.json",
+        "local": "vae/config.json",
+        "size": 547,
+        "git_blob": "0db26717579be63eb0ddbf15b43faa43700dfe5a"
+      },
+      {
+        "remote": "diffusion_pytorch_model.safetensors",
+        "local": "vae/diffusion_pytorch_model.safetensors",
+        "size": 334643276,
+        "sha256": "32db726da04f06c1b6b14c0043ce115cc87a501482945c5add89a40d838fcb46"
+      }
+    ]
+  }
+}

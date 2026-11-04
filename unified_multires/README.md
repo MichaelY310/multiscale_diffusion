@@ -2,6 +2,8 @@
 
 这是旧 RDD 仓库里的新统一训练、采样和对照框架。今后两者一起维护：
 
+**新服务器实验入口：** [RDD-FM fresh采样 → ImageNet-256 Pyramid Flow训练](experiments/imagenet256_fm_pf/README_ZH.md)，包含环境安装、固定模型/VAE下载、断点续跑与[给agent的完整prompt](experiments/imagenet256_fm_pf/AGENT_PROMPT_ZH.md)。
+
 ```text
 multiscale_diffusion/
 ├── 2d/、DiT/、diffusion/       # 旧 RDD 训练、网络、采样实现
