@@ -65,6 +65,16 @@ for c in configs:
         file=ROOT/c['source_path'];line=int(c['source_pointer'].split(':')[-1]);d=json.loads(file.read_text().splitlines()[line-1]);assert legacy_identity(d)==c['identity']
     elif c['origin']=='unified_native_config':assert read(ROOT/c['source_path'])==c['config']
 checks.append(f'{len(configs)} configuration entries match live files or pinned archive records; not promoted to completed runs')
+manifest=ROOT/'unified_multires/configs/rdd_reproduction/manifest.json'
+for entry in read(manifest)['entries']:
+    assert hashlib.sha256((manifest.parent/entry['file']).read_bytes()).hexdigest()==entry['sha256']
+checks.append('18 native reproduction recipe hashes are unchanged')
+metadata=E/'CHECKPOINT_NAMING_METADATA.json'
+if metadata.exists():
+    audit=read(metadata);assert len(audit['checkpoints'])==166
+    assert all(x.get('architecture_matches_canonical_name') for x in audit['checkpoints'])
+    assert audit['counts']=={'clock_not_saved':10,'matches_saved_clock':156}
+    checks.append('166 checkpoint architectures match; 156 multires clocks match saved metadata; 10 ordinary DiT clocks are not saved and rely on source configuration')
 receipt=E/'HF_NAMING_MIGRATION.json'
 if receipt.exists():
     proof=read(receipt);assert proof['all_passed'] and all(x['content_identity_preserved'] for x in proof['checks'])

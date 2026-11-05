@@ -8,6 +8,8 @@
     "50 compatibility links valid; 29 JSON/JSONL contents exactly equal before naming migration; 21 shell syntax checks",
     "Concurrent manifest creation is atomic; 90/80/80 cannot resume an 80/80/90 identity",
     "117 configuration entries match live files or pinned archive records; not promoted to completed runs",
+    "18 native reproduction recipe hashes are unchanged",
+    "166 checkpoint architectures match; 156 multires clocks match saved metadata; 10 ordinary DiT clocks are not saved and rely on source configuration",
     "HF receipt: 257 renamed files retain content identity"
   ],
   "formal_results": 116,

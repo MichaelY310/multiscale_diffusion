@@ -56,6 +56,7 @@ __ckpt-400000__dpm2__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh
 3. 修复了旧结果生成器两处列方向错误：FM-XL TSV 和 interval-proportional TSV 原本已经按低→高，但被放在了高→低列。新表逐格展开；历史输入另存，不覆盖证据。
 4. 所有重命名保持数值配置不变。旧 DDPM 的历史 `noise_filling` 名字实际代表 fresh；FM 的历史 `noise_filling` 则保留残差，两者仍按 [边界定义](BOUNDARY_NAMES_20261104_ZH.md) 区分。
 5. 旧服务器路径、旧 Git 提交、固定 HF revision、论文截图和原始日志不可被当作可以全局重写的当前配置。它们保留旧名，并通过索引查新名。没有足够配置证据的历史记录明确标为未核实，不赋予猜测的分配。
+6. 又逐个读取了 166 份改名权重的 ZIP/pickle 头信息，未读取张量数据：166 份模型宽度/深度全部符合名称，156 份多分辨率 checkpoint 保存的训练区间全部符合新名字。其余 10 份普通 DiT baseline 未保存区间字段，1000 时间步的依据是原训练/采样配置，不能声称来自 checkpoint 自身。见 [逐权重元数据核对](validation/20261104/CHECKPOINT_NAMING_METADATA.json)。
 
 新旧文件名的兼容链接不是另一份实验。新采样入口会打印逐网格配置，并在输出目录写 `resolution_identity.json`；同目录再次运行时若分配改变则报错。这个文件只检查分辨率相关身份，不替代完整 checkpoint、seed、数据和 RNG 的验证。
 

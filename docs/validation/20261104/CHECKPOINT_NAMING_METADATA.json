@@ -1,0 +1,6002 @@
+{
+  "scope": "Bounded metadata-only archive reads. No tensor data or inference. Missing metadata is not silently treated as a verified clock.",
+  "counts": {
+    "clock_not_saved": 10,
+    "matches_saved_clock": 156
+  },
+  "bytes_read_metadata_only": 42982628,
+  "checkpoints": [
+    {
+      "old_path": "checkpoints/DiT-XL-2/0050000.pt",
+      "canonical_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0050000.pt",
+      "sha256": "17171d8c12f9191aacee73498785064724fc3b707eb93416900eaf1d982d38c5",
+      "status": "clock_not_saved",
+      "metadata": {
+        "args": {
+          "model": "DiT-XL/2"
+        }
+      },
+      "metadata_sha256": "afa2bb7ae65ca672f59efa8ec2980c23ed98267ff62cb0fdc0aaea6300480922",
+      "bytes_read_metadata_only": 312677,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0100000.pt",
+      "canonical_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0100000.pt",
+      "sha256": "05aa8bee7972850b6fcdba28d72c003026f077810daf317256b6edceba43401a",
+      "status": "clock_not_saved",
+      "metadata": {
+        "args": {
+          "model": "DiT-XL/2"
+        }
+      },
+      "metadata_sha256": "afa2bb7ae65ca672f59efa8ec2980c23ed98267ff62cb0fdc0aaea6300480922",
+      "bytes_read_metadata_only": 312677,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0150000.pt",
+      "canonical_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0150000.pt",
+      "sha256": "cf7f38698ecc8d3f3884c68254770acf483408b824df481e8b9af95cd3e74bb9",
+      "status": "clock_not_saved",
+      "metadata": {
+        "args": {
+          "model": "DiT-XL/2"
+        }
+      },
+      "metadata_sha256": "afa2bb7ae65ca672f59efa8ec2980c23ed98267ff62cb0fdc0aaea6300480922",
+      "bytes_read_metadata_only": 312677,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0200000.pt",
+      "canonical_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0200000.pt",
+      "sha256": "a210d5387e10019aa7a2138b0083bbafa7db59efdae3c9bebe1cbd35367f2233",
+      "status": "clock_not_saved",
+      "metadata": {
+        "args": {
+          "model": "DiT-XL/2"
+        }
+      },
+      "metadata_sha256": "507dabb9e4554c1ba44e36bdab5dd7f2715a427b0b1cada15961743aabd30db9",
+      "bytes_read_metadata_only": 312677,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0250000.pt",
+      "canonical_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0250000.pt",
+      "sha256": "ba4af30df08e6736086647c7e0b792f19501f5e0de5dfbecb5ed32d93c911994",
+      "status": "clock_not_saved",
+      "metadata": {
+        "args": {
+          "model": "DiT-XL/2"
+        }
+      },
+      "metadata_sha256": "b6b0b85800f58194518db07670024f474e3578fb251d1b9411c98d095cf846a4",
+      "bytes_read_metadata_only": 312677,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0300000.pt",
+      "canonical_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0300000.pt",
+      "sha256": "28b026ecf64949fa377ef83668d5608a3fe0edb27c079e88796f891ba32b5c1a",
+      "status": "clock_not_saved",
+      "metadata": {
+        "args": {
+          "model": "DiT-XL/2"
+        }
+      },
+      "metadata_sha256": "b6b0b85800f58194518db07670024f474e3578fb251d1b9411c98d095cf846a4",
+      "bytes_read_metadata_only": 312677,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0350000.pt",
+      "canonical_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0350000.pt",
+      "sha256": "52f7c181d406203fc424f1835083a2a140e72c10eba64f4a7a86018f2247add7",
+      "status": "clock_not_saved",
+      "metadata": {
+        "args": {
+          "model": "DiT-XL/2"
+        }
+      },
+      "metadata_sha256": "b6b0b85800f58194518db07670024f474e3578fb251d1b9411c98d095cf846a4",
+      "bytes_read_metadata_only": 312677,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0400000.pt",
+      "canonical_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0400000.pt",
+      "sha256": "e1458384ef3d92a2ebaef90a142d8858d2a3d34ff3dd8178acbe66790b7ab95c",
+      "status": "clock_not_saved",
+      "metadata": {
+        "args": {
+          "model": "DiT-XL/2"
+        }
+      },
+      "metadata_sha256": "b6b0b85800f58194518db07670024f474e3578fb251d1b9411c98d095cf846a4",
+      "bytes_read_metadata_only": 312677,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0450000.pt",
+      "canonical_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0450000.pt",
+      "sha256": "bb8adb24ea3b952fff2a8c13ad75393d6652acb97cf2f3f35af3a420a20115fe",
+      "status": "clock_not_saved",
+      "metadata": {
+        "args": {
+          "model": "DiT-XL/2"
+        }
+      },
+      "metadata_sha256": "a9061ae87eb92286293a05a9f9c6d1b1487f2c6653af993027d96f61e7f841d7",
+      "bytes_read_metadata_only": 312677,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0500000.pt",
+      "canonical_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0500000.pt",
+      "sha256": "319f619e8ab2b1298deae19a791be9cea6fa0b2853e35d6696a72ce882f7b121",
+      "status": "clock_not_saved",
+      "metadata": {
+        "args": {
+          "model": "DiT-XL/2"
+        }
+      },
+      "metadata_sha256": "a9061ae87eb92286293a05a9f9c6d1b1487f2c6653af993027d96f61e7f841d7",
+      "bytes_read_metadata_only": 312677,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0050000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0050000.pt",
+      "sha256": "86b12a796ae94a9c76293e40ac55450d2c46d2e9c7ab8b1eeacfa07b30ddc098",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.4,
+          0.7,
+          1.0
+        ],
+        "step": 50000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "d967a03fdcfdcc42e0bd35254cf46d1383512992efd18581e3ea9e96325693e6",
+      "bytes_read_metadata_only": 256786,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0100000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0100000.pt",
+      "sha256": "e0a80b4b937c02d300c5a76dcf802ecfc26a087ceee799a2549b411051efaaf0",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.4,
+          0.7,
+          1.0
+        ],
+        "step": 100000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "450294bb5df9e6dde440f5529e00fe7df52e912580674d7a299d1d40b849f921",
+      "bytes_read_metadata_only": 256788,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0150000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0150000.pt",
+      "sha256": "250e5bd8e897ec51ac3632f037023f68d3327c47250361595839f1ef0a74f5b8",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.4,
+          0.7,
+          1.0
+        ],
+        "step": 150000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "9e96f90c93b21ed5a8ed1f5222567c1eda13c56470cc89b2699e27647b4cca8b",
+      "bytes_read_metadata_only": 256788,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0200000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0200000.pt",
+      "sha256": "4f11dda8cf406142eaa126b7684043b11fcddaa2742ba51f722c94cc748a7727",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.4,
+          0.7,
+          1.0
+        ],
+        "step": 200000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "8fc8868b0fa5b55024008a567faa2fdd980504fb3c743d205bc7eb976ca603a0",
+      "bytes_read_metadata_only": 256788,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0250000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0250000.pt",
+      "sha256": "343628a7e10969af0488fb036f787502bdd7068913195e24782ef18f90ced113",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.4,
+          0.7,
+          1.0
+        ],
+        "step": 250000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "473c478b5cd9bd7de869876436eda1e1163930d654ae6cac94f726ff235ffbb4",
+      "bytes_read_metadata_only": 256788,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0300000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0300000.pt",
+      "sha256": "8319671bb551a74b24b71a19b865048b8f181ec2f3ac1788f0aabe1045ec8e06",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.4,
+          0.7,
+          1.0
+        ],
+        "step": 300000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "79090ece4702d34da67e6ee18bc800dd290dd7db76f213ee2b396399f7204ea3",
+      "bytes_read_metadata_only": 256788,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0350000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0350000.pt",
+      "sha256": "0af8fc586432c16f95721970806f05fbed961458e745310f63d27f0f110093f5",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.4,
+          0.7,
+          1.0
+        ],
+        "step": 350000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "af241f5b8f785250a9ab2fb016e7bf564b1d86ecdbf9ecaf78760e1d94d5885f",
+      "bytes_read_metadata_only": 259700,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0400000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0400000.pt",
+      "sha256": "819ca1e0f9dd90a7e793acd9874b04e621d969ae9c183b238ce4cf96a10bfcfd",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.4,
+          0.7,
+          1.0
+        ],
+        "step": 400000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "afd4871e107d436812b9d48a9455a35045395a2079a4090128b2723691d67151",
+      "bytes_read_metadata_only": 259700,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0050000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0050000.pt",
+      "sha256": "21455ab6da254ed791d4fef86e86ec7b18450438038bbc2a4c0d3da604e7002f",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 50000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "56cfd9061cfefbd42ad2705eff29a38db193a33016351b22b8a0df8f217378e3",
+      "bytes_read_metadata_only": 256786,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0100000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0100000.pt",
+      "sha256": "dd70ca33d489c11e8513806583b228f6487ca79f68b2269513217b7b97b63a97",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 100000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "467c65000cb7e0957d842e34cf41fbb531f157ca36cd8a66bc791d5e027e41f3",
+      "bytes_read_metadata_only": 259700,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0150000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0150000.pt",
+      "sha256": "e7170443845a8c3e484b770640fd2941c0e385debe3800ffb703a434d4fc6001",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 150000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "859a883c07abc6f620eb8cbd26fca09f00737ce932e179c449c25954baf7c542",
+      "bytes_read_metadata_only": 259700,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0200000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0200000.pt",
+      "sha256": "fb1156b5c807ad09a52b6925af35108bfa481915417a391cda8df3a02c02719f",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 200000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "01ace518ba60c622e3e4f27eb004ab35788f5ef6d49129f9e4e48f9ca85b702d",
+      "bytes_read_metadata_only": 259700,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0250000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0250000.pt",
+      "sha256": "171da1806ac839870133c3b80766e7f0249df391f86a36266fe84c47dd926cbc",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 250000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "478e17ae1fcc69dafc5ae264e3c3c4cd1ca12b1041e5c39db1ee01fce322ddff",
+      "bytes_read_metadata_only": 259700,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0300000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0300000.pt",
+      "sha256": "f9af8cffe6e6b711e69c2118e574c930a35c7140a56e66feee16eb5bf8a78aa7",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 300000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "44284116a9ad5c8a3b2fc8e77014291a2d2b98c6873c7821ca17afe20ae5c1c1",
+      "bytes_read_metadata_only": 259700,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0350000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0350000.pt",
+      "sha256": "c8801bc0c95da138e98d4ab2b61d27ff758f70ef83436c66c53c9e564ed2998d",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 350000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "90c9cfe1e2b5a4cafc93fecb95537b287f9560cda302d8f37fbd06481a1cb27f",
+      "bytes_read_metadata_only": 259700,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0400000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0400000.pt",
+      "sha256": "8ba20debdd8d203456072709f089e070f89b9241fc005cb35c1f66bdfb355036",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 400000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "b944cbd7f316b2efd048ee46ba64958bd001f11b4202dd6f74efe4fb526abc2e",
+      "bytes_read_metadata_only": 259700,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0030000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0030000.pt",
+      "sha256": "d97c89db7fbc6e9438903a4a8d8fa184a307b7abece0fd024af285ffb59caa4d",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 30000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "adcb00c8e12471ddffc345561013ddcd068a7b5d13f236dee8cc23728c7ccea2",
+      "bytes_read_metadata_only": 296402,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0050000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0050000.pt",
+      "sha256": "f787803794f70661b502a809a07afe338837555e523ebd6c2a5a8225c7bcd7e8",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 50000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "87bc18cdbef189b8d76c70622b15e99218f499365e18366510aa1f5bc9e6e5a3",
+      "bytes_read_metadata_only": 299764,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0100000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0100000.pt",
+      "sha256": "ccfe673d574ac4af9590ec821977e55bcbce000c3910904998dc9b889e7dea47",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 100000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "944417e4282cdd7fb3da672f382e92e2d24db1b9460db57eacaaf21bfe6b1586",
+      "bytes_read_metadata_only": 299766,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0150000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0150000.pt",
+      "sha256": "ac15d0ee0663cf27bb2e6723fea1dcc2c4e3ffa92c9b3516ee3316dc66653430",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 150000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "0e056fee5bf9a3ccd1c84b8ae65a46331b104e5d1fc8f101988d333c1f7bb7a6",
+      "bytes_read_metadata_only": 299766,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0200000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0200000.pt",
+      "sha256": "1977770e7e25dc44d24a43623675a9aa1518cf62d3eea2f378a44899e1da4d43",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 200000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "1c7df1f5aa668477a0b4eb98d20f568cae58ee5d3040a0b79d24fc135d2fe4ee",
+      "bytes_read_metadata_only": 299766,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0240000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0240000.pt",
+      "sha256": "3e2a5d4a1213effed0376090c9bc9ccae6f778884346f1951d1dd5a25c5b717b",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 240000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "30580da7e30a8160d8c4a026474d1f821516f8ee57371611c4c0f3becef4bed4",
+      "bytes_read_metadata_only": 299766,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0250000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0250000.pt",
+      "sha256": "4ab8dd23f3feb2dfb9c6c6d0ca858faee6a7415f885bac72b61f279fa221e21d",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 250000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "45c634cc00b7fa47bef89a28b00dbcc6b1212c8f9854e4f06f5fccae3185c057",
+      "bytes_read_metadata_only": 299766,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0285000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0285000.pt",
+      "sha256": "9d402a10b6e98497ec542151498a4cbc69c0531118fdba4174334634e42e4781",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 285000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "f202a06d2344dd45a744c166e62b8c3853d2f5d32fa5484d1d0fc3bcbc3136af",
+      "bytes_read_metadata_only": 299766,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0295000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0295000.pt",
+      "sha256": "9323f1764c06f414f87946d8b714a0a7ca8ecb1451633626dccd0fc8bfbf3192",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 295000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "a7253c6811053f48cae1d40c381eeaa440653e7b622ef0793d770f77e0e5c1d9",
+      "bytes_read_metadata_only": 299766,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0300000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0300000.pt",
+      "sha256": "670de6bba227de97d568bbb564cb182ca5186b76d74240f0b0cde07d894156fc",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 300000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "83c376a4e52c33e74926376da6e0706fc58daba7f74f6596b3e58ce70ac8b49e",
+      "bytes_read_metadata_only": 299766,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0400000.pt",
+      "sha256": "dbbbe1325494295ac17e0a7c33cda733058cadd06e989b2f8c0d9ce9e6e543c2",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 400000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "5af9d94599940ff2ecf7b908a139ab81e10ae82c6e2c150b0c4d7a0b4186e3a3",
+      "bytes_read_metadata_only": 299766,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/checkpoints/0350000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/checkpoints/0350000.pt",
+      "sha256": "9b6d9158a708bb58550986c8db51cac6dd617fbb992d2e9ba70b90e6e21de1fe",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 350000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "266dd1ae35f91f830b1d161027c28bd1c1d5f8795a0027db048756f11d98ea9d",
+      "bytes_read_metadata_only": 299766,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/checkpoints/0370000.pt",
+      "canonical_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/checkpoints/0370000.pt",
+      "sha256": "5db3dfb65efb1a8fa8cfd487e39c07ee411c9b1ef02d9bb301c985f08a24dac4",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "s_boundaries": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "step": 370000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "e293067e3731a2e39b5d545f9eda46992c229ccf48def4bd3b00029b31450c0f",
+      "bytes_read_metadata_only": 299766,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/checkpoints_8x8/0450000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/checkpoints_8x8/0450000.pt",
+      "sha256": "ce23696d1c166f87c5ffc334684e6b97446f72d050bc22bdf7794f2290b24ad7",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "fdbd409bd551c1c6f7e5c30eb347a9c24059c3d76af10d913491e60934837b65",
+      "bytes_read_metadata_only": 135482,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/checkpoints_8x8/0500000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/checkpoints_8x8/0500000.pt",
+      "sha256": "a8945bfb9eb240df6eb3218c2bdc89cf574f09eb927fcc87fe0df080ac7fdb19",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "fdbd409bd551c1c6f7e5c30eb347a9c24059c3d76af10d913491e60934837b65",
+      "bytes_read_metadata_only": 135482,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/checkpoints_8x8/0550000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/checkpoints_8x8/0550000.pt",
+      "sha256": "f3994f2b7d3f3b92804a529b509888e5db318f8c3e672eb0d3158a2099671569",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "fdbd409bd551c1c6f7e5c30eb347a9c24059c3d76af10d913491e60934837b65",
+      "bytes_read_metadata_only": 135482,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/checkpoints_8x8/0600000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/checkpoints_8x8/0600000.pt",
+      "sha256": "e5e19c19e370a54e20df8e58b2b13ad776d6b2fd073b3b8c175159d2276ec9a6",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "fdbd409bd551c1c6f7e5c30eb347a9c24059c3d76af10d913491e60934837b65",
+      "bytes_read_metadata_only": 135482,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0050000.pt",
+      "sha256": "b882d70f822e477b817e696b0fd5f675e75f080470a32a8475ef562ece847b39",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 100,
+        "T_c_plus_1": 400,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "2a0b5b977341c23a5433bff608ff5b83ea9f11cdb5c7f14124662a30457214e9",
+      "bytes_read_metadata_only": 263800,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0070000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0070000.pt",
+      "sha256": "5e57bbb40265af30297b2e7d6f6075523c70426c50710d97766ad49538787eea",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 100,
+        "T_c_plus_1": 400,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "2a0b5b977341c23a5433bff608ff5b83ea9f11cdb5c7f14124662a30457214e9",
+      "bytes_read_metadata_only": 263800,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0100000.pt",
+      "sha256": "8ee5a416e2adaca1730bf173a33394b1f00df06785fcad0129d0a6784b3aae8a",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 100,
+        "T_c_plus_1": 400,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "3318cd2c9ff0aa4e1181d46bfcfdf54c22315b9ab4f9e3a0401c70b22b5e9530",
+      "bytes_read_metadata_only": 267067,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0150000.pt",
+      "sha256": "b5aefbd49b96bdf1d6695d568675e63558ad45603a84ae8a75930d1edb94ba96",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 100,
+        "T_c_plus_1": 400,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "3318cd2c9ff0aa4e1181d46bfcfdf54c22315b9ab4f9e3a0401c70b22b5e9530",
+      "bytes_read_metadata_only": 267067,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0200000.pt",
+      "sha256": "7b2b89219a96c4f152254c391346ca75c4854ddc36ade4b6bfcc64d94fe33ad5",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 100,
+        "T_c_plus_1": 400,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "3318cd2c9ff0aa4e1181d46bfcfdf54c22315b9ab4f9e3a0401c70b22b5e9530",
+      "bytes_read_metadata_only": 267067,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0250000.pt",
+      "sha256": "c2d8e15fccd24bb902184b72d758b1d00add1da6a0d1d2a3ca8236cb679f7292",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 100,
+        "T_c_plus_1": 400,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "3318cd2c9ff0aa4e1181d46bfcfdf54c22315b9ab4f9e3a0401c70b22b5e9530",
+      "bytes_read_metadata_only": 267067,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0300000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0300000.pt",
+      "sha256": "1761c9cf3a5b80b3d088257193be42bfa50cd9443293665cbb910e33529786b9",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 100,
+        "T_c_plus_1": 400,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "3318cd2c9ff0aa4e1181d46bfcfdf54c22315b9ab4f9e3a0401c70b22b5e9530",
+      "bytes_read_metadata_only": 267067,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0315000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0315000.pt",
+      "sha256": "06a49fd4e20972f3521ff5195cb0e07d439c2865f6f91e39bd1c1b0a822de748",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 100,
+        "T_c_plus_1": 400,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "3318cd2c9ff0aa4e1181d46bfcfdf54c22315b9ab4f9e3a0401c70b22b5e9530",
+      "bytes_read_metadata_only": 267067,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0325000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0325000.pt",
+      "sha256": "a2f8d7e9a97b0b1438ec1cca2a29dc16dabc8846eea896a9aec97d50c8d683e8",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 100,
+        "T_c_plus_1": 400,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "3318cd2c9ff0aa4e1181d46bfcfdf54c22315b9ab4f9e3a0401c70b22b5e9530",
+      "bytes_read_metadata_only": 267067,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0335000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0335000.pt",
+      "sha256": "dbd17dfa6d8aa0c2e01990bf6b274ded9fe440528564184cbeccfd63a3d934c2",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 100,
+        "T_c_plus_1": 400,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "3318cd2c9ff0aa4e1181d46bfcfdf54c22315b9ab4f9e3a0401c70b22b5e9530",
+      "bytes_read_metadata_only": 267067,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0350000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0350000.pt",
+      "sha256": "dad0e9a93bb8b69af674f9359a30697d0f35ef6fbba432ffc80b6b90cc1c94a7",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 100,
+        "T_c_plus_1": 400,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "3318cd2c9ff0aa4e1181d46bfcfdf54c22315b9ab4f9e3a0401c70b22b5e9530",
+      "bytes_read_metadata_only": 267067,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0400000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0400000.pt",
+      "sha256": "8bb347f42d7ccf0524970f22e926c2f67d619cbfb800a2cdaff54a34412d8840",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 100,
+        "T_c_plus_1": 400,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "3318cd2c9ff0aa4e1181d46bfcfdf54c22315b9ab4f9e3a0401c70b22b5e9530",
+      "bytes_read_metadata_only": 267067,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0050000.pt",
+      "sha256": "a6506d78022c7a48a61c56e05403c2cea3851f7d94afa71e97ddec4d01ea4be4",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "5098e0939a5f6def9b602a5b34b180ec6236cb6abaa161fa0adfe944f4a0689f",
+      "bytes_read_metadata_only": 309577,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0070000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0070000.pt",
+      "sha256": "6c9208c576d360e33d79fbb97f7a9a92f9a4ac50f8089542efbc497979a86a89",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "5098e0939a5f6def9b602a5b34b180ec6236cb6abaa161fa0adfe944f4a0689f",
+      "bytes_read_metadata_only": 309577,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0100000.pt",
+      "sha256": "898143ff30013d606f90e028cbcfabda093d51c0f9ec5cecb6f8cb904adb0a91",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "c7743c9590a760a30c88206da0319fc01cbb353f23d782e502fcbd9f4a3adc13",
+      "bytes_read_metadata_only": 313284,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0150000.pt",
+      "sha256": "e0a0e56fa4db152e56432b2ad01cf7d7abc9e0dfe04fc4543208e46bf2d8ecdc",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "c7743c9590a760a30c88206da0319fc01cbb353f23d782e502fcbd9f4a3adc13",
+      "bytes_read_metadata_only": 313284,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0200000.pt",
+      "sha256": "f8127dd9241f1054885a70d8e97593c0b3e95c6acccce98d585a2505f520e823",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "c7743c9590a760a30c88206da0319fc01cbb353f23d782e502fcbd9f4a3adc13",
+      "bytes_read_metadata_only": 313284,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0250000.pt",
+      "sha256": "e972f4dcb5e93d0ab6e9f53b76b95118541a969c3c5657a69d35acd0bd744f34",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "c7743c9590a760a30c88206da0319fc01cbb353f23d782e502fcbd9f4a3adc13",
+      "bytes_read_metadata_only": 313284,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0265000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0265000.pt",
+      "sha256": "c1bf6c5d32f599ac13fdad658c58b5efed1e0572dfc90400d27df7604e02c035",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "c7743c9590a760a30c88206da0319fc01cbb353f23d782e502fcbd9f4a3adc13",
+      "bytes_read_metadata_only": 313284,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0300000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0300000.pt",
+      "sha256": "baa5f8aa14fb4df3dc853bc52aba163e39a6f9842f5923705181f810bb6f936c",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "c7743c9590a760a30c88206da0319fc01cbb353f23d782e502fcbd9f4a3adc13",
+      "bytes_read_metadata_only": 313284,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0315000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0315000.pt",
+      "sha256": "5a959a482915f84b6a6bebcee1bc26e34b8e6a1e9cbf468b95a805e5bae2d065",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "c7743c9590a760a30c88206da0319fc01cbb353f23d782e502fcbd9f4a3adc13",
+      "bytes_read_metadata_only": 313284,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0325000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0325000.pt",
+      "sha256": "5ecbb8ac24c3b2a3bf00ca35cdf6ef999c982441f6ded315fc44b8dbdbeef08e",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "c7743c9590a760a30c88206da0319fc01cbb353f23d782e502fcbd9f4a3adc13",
+      "bytes_read_metadata_only": 313284,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0335000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0335000.pt",
+      "sha256": "440711c1f3abe20e1950b99e6363f20557a986e41f8719f4e05851b3e9c5376f",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "c7743c9590a760a30c88206da0319fc01cbb353f23d782e502fcbd9f4a3adc13",
+      "bytes_read_metadata_only": 313284,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0350000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0350000.pt",
+      "sha256": "0288f1d4f5aa4dbca6c9893eb5a0fd4867f75dd3f2399ca79d321e69a3a2c704",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "c7743c9590a760a30c88206da0319fc01cbb353f23d782e502fcbd9f4a3adc13",
+      "bytes_read_metadata_only": 313284,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0400000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0400000.pt",
+      "sha256": "0833013ea27431f2e1dfa19da5989940e2a9d1f18b4be111827dac8427983306",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 100,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "c7743c9590a760a30c88206da0319fc01cbb353f23d782e502fcbd9f4a3adc13",
+      "bytes_read_metadata_only": 313284,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0050000.pt",
+      "sha256": "d2677665ab53cb1c5dfc75971a69216ff20183601c31fdd23506a30330d64921",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "4cb64b6f5623d781600be6d1c249dd1cc48bf838f79263b1f539cff9630e67a5",
+      "bytes_read_metadata_only": 133700,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0070000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0070000.pt",
+      "sha256": "ba7333ad3019e51893c781e80d061c1f9d6cc7bda5c3984c8da952c01e653de5",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "4cb64b6f5623d781600be6d1c249dd1cc48bf838f79263b1f539cff9630e67a5",
+      "bytes_read_metadata_only": 133700,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0100000.pt",
+      "sha256": "8303b69d632a0d438f7ca9e4df2a92ad82045fa30407659e4da5a1af45f9aa14",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "619403164aa41b1857b59ee39cbfe8b608f5a81801730e4da3940a393d245c3d",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0150000.pt",
+      "sha256": "cec8abe587ec0c949371a8f82271dee558e3ca9380fc922b1946763d7266ad28",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "619403164aa41b1857b59ee39cbfe8b608f5a81801730e4da3940a393d245c3d",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0200000.pt",
+      "sha256": "445d8dd19d2d8ec79e69ef366a813bdb86237f1454a7b3ed0085518f960df296",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "619403164aa41b1857b59ee39cbfe8b608f5a81801730e4da3940a393d245c3d",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0250000.pt",
+      "sha256": "5369b4cc6eeaabd104c4bee7d9a81872aa8128de57dc3c66a170450418f3a10e",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "619403164aa41b1857b59ee39cbfe8b608f5a81801730e4da3940a393d245c3d",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0300000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0300000.pt",
+      "sha256": "446c77e371bca68e4404378c896e02253967d6ba51f08f06514aa081835ea8c8",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "619403164aa41b1857b59ee39cbfe8b608f5a81801730e4da3940a393d245c3d",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0310000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0310000.pt",
+      "sha256": "766cd84989bc83162683c2508602f8e9855aa42056e9bb94668ccfe677b0410e",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "619403164aa41b1857b59ee39cbfe8b608f5a81801730e4da3940a393d245c3d",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0325000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0325000.pt",
+      "sha256": "807c99c1feae8d0bed03db8a3e265fd4d74c796a505d64d7888bab3233db5047",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "619403164aa41b1857b59ee39cbfe8b608f5a81801730e4da3940a393d245c3d",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0335000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0335000.pt",
+      "sha256": "a48a1e0bfe9c41c373066f5ea4d7111d0fc1cd4984e146999f71841c3439cd62",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "619403164aa41b1857b59ee39cbfe8b608f5a81801730e4da3940a393d245c3d",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0350000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0350000.pt",
+      "sha256": "a43c8a79e9d23dbfa0423f4388fbae66e419428485a8510ccf88ca99301d7f96",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "619403164aa41b1857b59ee39cbfe8b608f5a81801730e4da3940a393d245c3d",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0400000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0400000.pt",
+      "sha256": "4405531f0747862ff9f30879c371cb933d493428b8a5e048d5e8da975744c0da",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 400,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "619403164aa41b1857b59ee39cbfe8b608f5a81801730e4da3940a393d245c3d",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0050000.pt",
+      "sha256": "faeec6fc5498663ff0f0aed5224ddb7115da442daa6a3f6bace5993001b4c229",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 300,
+        "T_c_plus_1": 600,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "e047385828ab0356b1f9bc1061a9071ee5b1fe67d2ffee93f779da025a2d45e3",
+      "bytes_read_metadata_only": 267068,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0100000.pt",
+      "sha256": "7f6cc4777b458539c1d42dac361f1ec060b2a80015dc7d8cfd22cb72017bc1a5",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 300,
+        "T_c_plus_1": 600,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "e047385828ab0356b1f9bc1061a9071ee5b1fe67d2ffee93f779da025a2d45e3",
+      "bytes_read_metadata_only": 267068,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0150000.pt",
+      "sha256": "00d3dc6f296d333d93f04923b67a692d87352ba478765bbf23c56ee1312d6bc7",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 300,
+        "T_c_plus_1": 600,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "e047385828ab0356b1f9bc1061a9071ee5b1fe67d2ffee93f779da025a2d45e3",
+      "bytes_read_metadata_only": 267068,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0200000.pt",
+      "sha256": "34c138bade73727c744c115354cef1f52d7fd4a84798828b6a2d1618e1170c0e",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 300,
+        "T_c_plus_1": 600,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "9dded177ff8f44d85dabe33f6359e3b8cf8665a017cbd8e2f0908c41b0dc8f72",
+      "bytes_read_metadata_only": 267068,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0250000.pt",
+      "sha256": "1aae4d3f0b38ed43fe5d441b69346a22dbb356d4b9dbdb01e63d5c567bbee8cb",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 300,
+        "T_c_plus_1": 600,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "9dded177ff8f44d85dabe33f6359e3b8cf8665a017cbd8e2f0908c41b0dc8f72",
+      "bytes_read_metadata_only": 267068,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0300000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0300000.pt",
+      "sha256": "64b5ff806b7e7f9275d1ff315a9bf060f2fc051708d3fb3e166f758954237995",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 300,
+        "T_c_plus_1": 600,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "9dded177ff8f44d85dabe33f6359e3b8cf8665a017cbd8e2f0908c41b0dc8f72",
+      "bytes_read_metadata_only": 267068,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0350000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0350000.pt",
+      "sha256": "01b0f563a7cbe3c2a51a5b231519fe4e28853112d30b2dfedd33f2ef67d5ab36",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 300,
+        "T_c_plus_1": 600,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "9dded177ff8f44d85dabe33f6359e3b8cf8665a017cbd8e2f0908c41b0dc8f72",
+      "bytes_read_metadata_only": 267068,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0400000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0400000.pt",
+      "sha256": "386d887cab87a884920f95239eb365ebe5448206ab14919d6c4c05b76c36a16e",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "16x16",
+        "T_c": 300,
+        "T_c_plus_1": 600,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "188ac0fd1ea167da0082d5094261364a04a414a186902f745d6b8033aa0b455e",
+      "bytes_read_metadata_only": 267068,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 252
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0050000.pt",
+      "sha256": "2a9cba0ba1611fc1a22aceb231b2f6749179727d92e8db3d5c9f7901a83ba515",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 300,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "7594724887d592facb50caa46999da29316cb405ff6f768199b234efffe1138a",
+      "bytes_read_metadata_only": 313285,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0100000.pt",
+      "sha256": "1acd9d4d25cae940c3a773d7fcad9ad82b679bf3eb3692f3a768e640dd296650",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 300,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "7594724887d592facb50caa46999da29316cb405ff6f768199b234efffe1138a",
+      "bytes_read_metadata_only": 313285,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0150000.pt",
+      "sha256": "107206a67757199ec3cb70c9c63e029bbb77b7dbba072b20abd847f6f768f0ea",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 300,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "7594724887d592facb50caa46999da29316cb405ff6f768199b234efffe1138a",
+      "bytes_read_metadata_only": 313285,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0200000.pt",
+      "sha256": "afa2584864813915f0fb84a8252fd859a216ee006a6561a71ce558707653788c",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 300,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "7f5ef4263ab16ab1fe7aba39a314dddcc91582a0f13088ca95e437b6f2598551",
+      "bytes_read_metadata_only": 313285,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0250000.pt",
+      "sha256": "b97cfc74127a68809cd8c6cafadf16525e3307ae436a435bdecbb71818651853",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 300,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "7f5ef4263ab16ab1fe7aba39a314dddcc91582a0f13088ca95e437b6f2598551",
+      "bytes_read_metadata_only": 313285,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0300000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0300000.pt",
+      "sha256": "38797475102b376f9eb02fe4b50d423fb3557f6f6fe1212f534de6ca40baf834",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 300,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "7f5ef4263ab16ab1fe7aba39a314dddcc91582a0f13088ca95e437b6f2598551",
+      "bytes_read_metadata_only": 313285,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0350000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0350000.pt",
+      "sha256": "2710f588bbc7291adfb951cbd7ceee212d74ad9e2f68196b4847d968168c0007",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 300,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "7f5ef4263ab16ab1fe7aba39a314dddcc91582a0f13088ca95e437b6f2598551",
+      "bytes_read_metadata_only": 313285,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0400000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0400000.pt",
+      "sha256": "ff6db0a320e401528dc287f38837ed5b34b523e95d9e9d33ee6bc3aeb6599a1f",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "32x32",
+        "T_c": 0,
+        "T_c_plus_1": 300,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "38bfc0ffd10b832c03a7d115932d95a8f932ca48cc13a68eec26ad68b82334f6",
+      "bytes_read_metadata_only": 313285,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 292
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0050000.pt",
+      "sha256": "11c35f04dfdd9372e844b810daf55f200f9254fde0fcf75f803b86a2ae0f3fcf",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 600,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "536e36d8097a57598d43d389798c9703da9a5b8d5fd0d5031215cc97429dddd5",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0100000.pt",
+      "sha256": "1bbc6693db60741848736a2e7c0d11184fdbf9d9399f8466a9e3ffb073210fce",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 600,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "536e36d8097a57598d43d389798c9703da9a5b8d5fd0d5031215cc97429dddd5",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0150000.pt",
+      "sha256": "20285d51b25772adea2bcac3edc759f770e9df97fe988f178e756aa698bf21ad",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 600,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "536e36d8097a57598d43d389798c9703da9a5b8d5fd0d5031215cc97429dddd5",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0200000.pt",
+      "sha256": "f781c2117f717be028b3d9ea46c01ba3c6f930a84f1ebfeccb87382bb80b9a74",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 600,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "471a1ff8a2158971609640f2567b0342b290816eec0f65eef733202a11bdba33",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0250000.pt",
+      "sha256": "1b4abd954f42369b9c69e78b90e26f2995579073779715e9e8d2d65ed7f4ec35",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 600,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "471a1ff8a2158971609640f2567b0342b290816eec0f65eef733202a11bdba33",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0300000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0300000.pt",
+      "sha256": "56bfb5e7539f492af454c4502074852bd6f7ef3e357dc60e96962eace664b03b",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 600,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "471a1ff8a2158971609640f2567b0342b290816eec0f65eef733202a11bdba33",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0350000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0350000.pt",
+      "sha256": "122f49f7e0311986fb3489baaf546ae89fa75de6e4136900ce364e0c5d4ee7fa",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 600,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "471a1ff8a2158971609640f2567b0342b290816eec0f65eef733202a11bdba33",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0400000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0400000.pt",
+      "sha256": "b72d14f2bffba2d91dc44fc04d487ccf9a54e8e590f1ae9e64fce338dacc56e5",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "resolution": "8x8",
+        "T_c": 600,
+        "T_c_plus_1": 1000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "e3e970380c21baad0746e42caf30d545cbeda533eae061cfae9976cd197e6822",
+      "bytes_read_metadata_only": 135647,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            768,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 12,
+        "parameter_entries": 132
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0050000.pt",
+      "sha256": "72b3e6e3da35ff65f0dc753585ec9a3fe6b27ff4fc45ba6cea813187334f67a0",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          100,
+          300,
+          600
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 50000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "9c2ffc3e8ee9d6ed10f36923b10fda4d5a2dc4bdd4a59468fdcd6d0dfd76307d",
+      "bytes_read_metadata_only": 259789,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0100000.pt",
+      "sha256": "81600a273f804a93ecd9a71f6042a4cf24ce306d02fb107151491de0173e8bcd",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          100,
+          300,
+          600
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 100000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "a4cf403e437a6bd38dab99b8a9902dfbcbc24a1b945548ff7217bafe22b5f47a",
+      "bytes_read_metadata_only": 259792,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0150000.pt",
+      "sha256": "d9b7a0af4382cad863a620821b69df0a3bdee7098e7ec19a264453177d1abd7c",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          100,
+          300,
+          600
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 150000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "774d3dca98b197ea9aa312459cfc7c9b4468caec26a639e37cf03d59b51b59fe",
+      "bytes_read_metadata_only": 259791,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0200000.pt",
+      "sha256": "34d95db9bb7c8f88a0b844a1102b843be99839b5874f63f7370a1265c21ddcaa",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          100,
+          300,
+          600
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 200000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "df4e4d00b87f5bfbfa56a2a59cbabe136f03321374772fd78e3791251e550ead",
+      "bytes_read_metadata_only": 259792,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0250000.pt",
+      "sha256": "94ff9c5c48f629288448aa215536735cf0355d322161c7a7ddb55073fb70e55b",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          100,
+          300,
+          600
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 250000,
+        "args": {
+          "stage_lengths": "100,300,600",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "e6617dc51f35d82bf5f9b4e1556072b421238658518f837f890ab0862bcc0f23",
+      "bytes_read_metadata_only": 259791,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0050000.pt",
+      "sha256": "9e489430454927a4b27013ce7ead63161e1ce860c22fe6c210c8e7e8653ee12a",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          16
+        ],
+        "step": 50000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,16",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "29d98c9dac26a75b42c730cdf6fe239aee514f94fe28c795738c2e08e97eaf3a",
+      "bytes_read_metadata_only": 259789,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0100000.pt",
+      "sha256": "2c039a15b3b2fdd6e6c93602f18a696f832184f0e37cc80d0aa9c69bce1cf795",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          16
+        ],
+        "step": 100000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,16",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "9623cde6f987e0278a468b2b0588b58d3b98ba4c26d61027d740967c8e6e2d54",
+      "bytes_read_metadata_only": 259791,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0150000.pt",
+      "sha256": "8fb6e80effd4db7b1d1be420d42f01b8d997e5e8c6593d92c056ea3f59e3320e",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          16
+        ],
+        "step": 150000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,16",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "b88af8d043ee186683841819d1f3157cfed8e66824a076e8791447ca7cc29799",
+      "bytes_read_metadata_only": 259791,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0200000.pt",
+      "sha256": "5b9724a65c382951145f950e8ce352b686244838f4398e8e36843bf6fd77c6ea",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          16
+        ],
+        "step": 200000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,16",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "fa99cb409cf79a3d0b497615facf3f114501d069d5cbe74cf556f496c1e42f9e",
+      "bytes_read_metadata_only": 259791,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0250000.pt",
+      "sha256": "54863e1fd60ba1103b40bf1b92a620757da0126bfb05459127c881ef2e677d1a",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          16
+        ],
+        "step": 250000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,16",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "2b61745d224ba4e16ceff00ed458a9131f3bd131c7867cf467dd48046f9d8b65",
+      "bytes_read_metadata_only": 259791,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0300000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0300000.pt",
+      "sha256": "29399a5e2b683388769c6ac0e2ee62323c2ca01e824b675a72f8c3854f1227a4",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          16
+        ],
+        "step": 300000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,16",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "bb2153d04b289fc494ef1ff1394f53804e7a7effa8872392f98bcfbb9e9fde19",
+      "bytes_read_metadata_only": 259790,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0350000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0350000.pt",
+      "sha256": "1389e042030fcc2676385766d1fb1e2f5299c7422c7ff15cf6dc7d3e39d1c022",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          16
+        ],
+        "step": 350000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,16",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "77a4f397b39670ef029bb8e4ffd3bdb3faefe997abc92494105833f8a7cbd3fb",
+      "bytes_read_metadata_only": 259791,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0400000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0400000.pt",
+      "sha256": "308a00070e5312119d8ca89ddc522d429d7982293705a6ec5ad8fd54edcdbf95",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          16
+        ],
+        "step": 400000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,16",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "8badd2ad3fd876c3a529df89f9260c17e49efd14cdf8265d93b8e385e0743933",
+      "bytes_read_metadata_only": 259790,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0050000.pt",
+      "sha256": "95ede778d701cc2547e5b780ad7e9bb966f58752761515ab865aa6bc920b2fb3",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          8
+        ],
+        "step": 50000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "b6fea70ddd266846562ab76ae32bb627e72c0320813c8e59608cc0a0e199a5e8",
+      "bytes_read_metadata_only": 259806,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0100000.pt",
+      "sha256": "b5c63530a577b2ab30e1b7eaca5de47d266c3eec6ab85d818b7dd33261e2be5d",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          8
+        ],
+        "step": 100000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "656b14696a0c222e2f00db03ca8f9bb61c69a10683c3223ba594ca7fc4122cdd",
+      "bytes_read_metadata_only": 259808,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0150000.pt",
+      "sha256": "74fdecd3a20831417ae395f579c435e1344ab55f5a57fd4ae7a357daff75041e",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          8
+        ],
+        "step": 150000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "a8767f4b2f945f452433e1af723609bad1e6c3ad237d7f24877feb52519706ea",
+      "bytes_read_metadata_only": 259808,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0200000.pt",
+      "sha256": "fc1590ce61cc13c85d83082f3380c7c6600eb94a84dd1953cb96547fc272270f",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          8
+        ],
+        "step": 200000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "a9738ebf263277a463bc40d2688c6995e2802d7bb6bcf909ebae08904cf7ccb3",
+      "bytes_read_metadata_only": 259808,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0250000.pt",
+      "sha256": "05eb5897e8ef659709fd3282e146d1497b84f0d14045bf7fea99498d82299089",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          8
+        ],
+        "step": 250000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "bb80090facdcbb957de735357fe678d7f518d693480bf36bdf52859b35d18eb6",
+      "bytes_read_metadata_only": 259808,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0300000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0300000.pt",
+      "sha256": "8f1e0187615a5ae8b1d183f0fc6a761755d349e200f2b95c4c3dcc5f62c51588",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          8
+        ],
+        "step": 300000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "f0c7b3b6163db8460c42ede85c48cafaeeea07b015b3f35c4d9a2f1bd52f66f2",
+      "bytes_read_metadata_only": 259808,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0350000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0350000.pt",
+      "sha256": "b83482f383960799c827a0ee87fd28d68f009abb94ef608cc34f207ca2e2a9a7",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          8
+        ],
+        "step": 350000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "7ef45e7e50a3739773ad54494e999e20ccbcc4d2a88d538e17c5dfcdb2b5eb4b",
+      "bytes_read_metadata_only": 259808,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0400000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0400000.pt",
+      "sha256": "9c4070c8eb616e4838e575140c869c0a3a9bf57dc2548a9f66eded8cc50f4c30",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          500,
+          500
+        ],
+        "resolutions": [
+          32,
+          8
+        ],
+        "step": 400000,
+        "args": {
+          "stage_lengths": "500,500",
+          "resolutions": "32,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "4a5cdec8dcba024c8a4d1e733bede1a909a6b44598846b2dcb6df11c59f8f60c",
+      "bytes_read_metadata_only": 259807,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0050000.pt",
+      "sha256": "17395ecd06190761a7e744a9d1a03edfeefd3e7174024788bcee183a40b7610b",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 50000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "49714e52be412b65172d7bd409f60c62dcb91848ce1dba1d866e391d60747ba6",
+      "bytes_read_metadata_only": 256895,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0100000.pt",
+      "sha256": "f3cf3207af6fc41cc880020478b56e5bcff93010430a5152b6485aa943095609",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 100000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "c06f1fd29c0b497a2605451e598dc2c5d1dfccaa4059e761fe81fd5aa10cf4aa",
+      "bytes_read_metadata_only": 256897,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0150000.pt",
+      "sha256": "c56944d72aa5be25d6b9ebcbf9e244c0db28c9e7aab4c2ad4917f6782fd0a67d",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 150000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "73672de89edb4640adf66a0acd022483a02424f6286b4e64005bf7b2444b4bf7",
+      "bytes_read_metadata_only": 256897,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0200000.pt",
+      "sha256": "6344f0d168e1d371e804c0790f83338cc807ec5ac700f28f971c9d60a8fee2e2",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 200000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "0c5b0d7df24704ebd7a2511c0283c37f968943af39e35de06050ecc1db1f5aa4",
+      "bytes_read_metadata_only": 259793,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0250000.pt",
+      "sha256": "19f5127dd6b6715d4713cb21e490e13cc113100847cf2bb0425905bbc0903d65",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 250000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "7f98b9437f5a2f06a61b8ddcebb6df9367ad3cccad7e1dfa0dfeb08bfcdf3d7f",
+      "bytes_read_metadata_only": 259792,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0300000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0300000.pt",
+      "sha256": "2d2ba7304892de75b9ca109fe28fecddfa205857bfa9a863e0dd5d568010700b",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 300000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "b7e7b839b635e1ce07128975cae0f0ba9dffd5a28fe46920e75c98bd78f91fed",
+      "bytes_read_metadata_only": 259793,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0350000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0350000.pt",
+      "sha256": "df92cd8eaf5a2601a909b2cedc988678aa292ccab6cea22c35cd09457cf29759",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 350000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "20bbf8227588c34b883c8bdaa886076733de79d8aa7502d67172596637f262c0",
+      "bytes_read_metadata_only": 259793,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0400000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0400000.pt",
+      "sha256": "590ed0b0a79cb882524d7522aff93c82120309384545de37f867799cac3f027f",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          400,
+          300,
+          300
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 400000,
+        "args": {
+          "stage_lengths": "400,300,300",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "6fdb95258788a9d206d07391b5cb3c13dffa4a85e5d8a8c02cce0ba8cdfb89a2",
+      "bytes_read_metadata_only": 259793,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0050000.pt",
+      "sha256": "72c397f757434f25f2738e19433fe5f8b8dea4dfa3db1a6a321ff96d5e7b5ac8",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          600,
+          300,
+          100
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 50000,
+        "args": {
+          "stage_lengths": "600,300,100",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "1564948231e98cb0b3ee872f24eae36c9cb50da6aa876ec3112ec57be0f004c8",
+      "bytes_read_metadata_only": 259789,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0100000.pt",
+      "sha256": "413a23e188c60070d02def8c928e205f90698fd1b292841f3be12190e7123e9d",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          600,
+          300,
+          100
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 100000,
+        "args": {
+          "stage_lengths": "600,300,100",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "3cceab5682d0925ca3e2283301919855875d0d66182156186dae563f5944e4c3",
+      "bytes_read_metadata_only": 259792,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0150000.pt",
+      "sha256": "1ac11e506c85075a26138aaa42f248694d6eb98f2d1d7d7ccbd671adbe4ac0b4",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          600,
+          300,
+          100
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 150000,
+        "args": {
+          "stage_lengths": "600,300,100",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "a7ec46a0ef08cb30dd157516acc7710c442626d4a79d7cc5a2e907696792aef4",
+      "bytes_read_metadata_only": 259791,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0200000.pt",
+      "sha256": "4dbbd2d1f0fe7684d893f89c4574e3276a2f60c6d2c5b1b90c84f660bc5948f0",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          600,
+          300,
+          100
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 200000,
+        "args": {
+          "stage_lengths": "600,300,100",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "7d65a9233d3d8617e11a21e2dff6e34bba4380fdb865ea8266078e7e679da4af",
+      "bytes_read_metadata_only": 259792,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0250000.pt",
+      "sha256": "7e2f2a5eeb142c957f3244f533060774e2c099855b711d02ed9e43845de0a992",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          600,
+          300,
+          100
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 250000,
+        "args": {
+          "stage_lengths": "600,300,100",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "7868c5bfb89f3bfbe68ef299c0fbec608358625b9f92f5e98e2a2f412a1f6866",
+      "bytes_read_metadata_only": 259791,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0050000.pt",
+      "sha256": "b00723868159454e5c18fcbe200c39031a2609cbeb068e81f694c85e21063a2d",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 50000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "94c573080392407388e7e6d5de7cf98109bc29f6592be9633b8551f75c377a5a",
+      "bytes_read_metadata_only": 255322,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0100000.pt",
+      "sha256": "161e7afe954759df6f105b0c7f26e9a5a10a5ab8ec06bbea99dd5adf43f320e4",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 100000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "01c9664bb7e2fc557fcb4e9126a9a1d6cb280481c51569a8739d8eb5200097ad",
+      "bytes_read_metadata_only": 255324,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0150000.pt",
+      "sha256": "8e8f7f43ba835cb1579e05b253a554c56bc7df293af4cfb814a67ae85ed7fc5f",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 150000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "784590fe13df559e8502d571fa03ac8bb6b6ca4788dbcc57dcce3787e04231af",
+      "bytes_read_metadata_only": 255324,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0200000.pt",
+      "sha256": "195b85c1c4cb2b3268bbe0d0961d73e36915cffa33e8f089ddf085a9f702779f",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 200000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "9fda78949793f502c1acb7c929c09e6815297396c4862c9bb98df8d27c9ee6b6",
+      "bytes_read_metadata_only": 255324,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0250000.pt",
+      "sha256": "3e988d27e7d02bb2db084b48335edf6e8e2831e82e78cfa332bc540aca0ce78a",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 250000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "80b6bbc323829314c091ccced5e9d24c193384785df35cc6e0b87f2ff22207c9",
+      "bytes_read_metadata_only": 255324,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0300000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0300000.pt",
+      "sha256": "cd9c6d941f1d6e211ab2b9cab567e4b9835769a4a77a950836753f7e9a5d361e",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 300000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "197daa9fde9466b22ab9c9cc2a83304bd07bf18dc2e1072c33412c4284e2b035",
+      "bytes_read_metadata_only": 255324,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0350000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0350000.pt",
+      "sha256": "86bcfbaad58b5ae1587ac095070601ebe11659b0a84c1770e7ce302190227760",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 350000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "3d3469cf3cc31ef4cd64871cac3d87a4b6585f69de74a8747bd444648ef1048b",
+      "bytes_read_metadata_only": 255324,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0400000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0400000.pt",
+      "sha256": "cade56f41317b2d04045431c139b2dd0097346e6392142a39f189274187a0c9f",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 400000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "878ab7e6cba6e2ecbfb334a85c388713098cbcec283db6dea0cb212963134682",
+      "bytes_read_metadata_only": 255324,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0450000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0450000.pt",
+      "sha256": "3fc521773e4ac8e4a5a9d70c654d6d1818b6162adc64956339ab0be982eff86a",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 450000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "721e3002a6b0d62938fa52a6c0cbaac6f80e8cb9bcfed087238d86acccbb1d42",
+      "bytes_read_metadata_only": 255324,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0490000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0490000.pt",
+      "sha256": "dcd8e6a16319ff06ba0dbba7824a998ecda000c436cde2a2eda99d99ae3028f5",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 490000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "0e8b60366ebbcbcb55cc77a9898aada4eda833def868ad7ad12efab565a46f40",
+      "bytes_read_metadata_only": 255324,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0500000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0500000.pt",
+      "sha256": "08c1ff5fe370248ff257b253d8056e6696a792874f4c33497489fd87f4df9d6c",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 500000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "ceaa5b085215f1033e7aff831ec3534b72c9b2800653ead05491b0abf3a4d893",
+      "bytes_read_metadata_only": 255320,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0535000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0535000.pt",
+      "sha256": "2ff5f8d62fbca2260d551c31aefceea3ae0f829ed119b83557d4b7eeab75cc76",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 535000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-L/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "7d5eba875d758e7a81e148a9e1b0a6df143705fa5d5bc661e0aa8a038c247770",
+      "bytes_read_metadata_only": 255320,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1024,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 24,
+        "parameter_entries": 251
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0050000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0050000.pt",
+      "sha256": "90b9eba57296ff1407de1d238377edf2aefc3149a90e4ba0926908c8d413c7d0",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 50000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "b99ae71296a423307fdd8124134fff573272654618315747f885e68f8d5651ce",
+      "bytes_read_metadata_only": 296342,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0100000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0100000.pt",
+      "sha256": "aec7c97f2332a71fc1d89241ff5496d21c12eb43b3f780da87bf1e3d12b78973",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 100000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "f5c2fb16aad548b12dcd9820c595412d7eed26b6d225a6c66e9ee32596b81a83",
+      "bytes_read_metadata_only": 296344,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0150000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0150000.pt",
+      "sha256": "f4354d3c7bd10dbbd076ae0bf2cc87010fbd802c13f193769b19d4f3ccf1479e",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 150000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "fcbb470bb5ec6d786e9b6bb55602bff5909180db7f57b7cacd9f039776b01228",
+      "bytes_read_metadata_only": 296344,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0200000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0200000.pt",
+      "sha256": "431dd15f0ba242521a60442feb366fe9d10c8ecb05482383baaea3bc234883c8",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 200000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "476d9c59dd68e61df3d085237a3203e94282de869149a49c09617d04edae3be0",
+      "bytes_read_metadata_only": 296344,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0250000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0250000.pt",
+      "sha256": "18e31856362549c98011411f81fbb33d4b6096f522fd8336c0455dc842aa6c4b",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 250000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "a6882752a873593b71c988f060f1ca11018fe57139c4d544f34ac2cd71ad19d7",
+      "bytes_read_metadata_only": 299709,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0300000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0300000.pt",
+      "sha256": "127ca9b41416c551f8df2575de693c51dde22a588ad3be40b62699428d73193f",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 300000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "0b54a74eb5612c72f49b60a5f47a39401087d15d56bb5839e42474949de9a151",
+      "bytes_read_metadata_only": 299709,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0350000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0350000.pt",
+      "sha256": "f1a923d4c7d0ce2e5b91f35faca5491c05f90f9faaee12cacb1eb8a78d00ef7e",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 350000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "b4384c97efedd660bbdf4fe0d5b3fa023aca9c51ab603c75f33bcd003e81c27a",
+      "bytes_read_metadata_only": 299709,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0400000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0400000.pt",
+      "sha256": "5c90e03baea7d1ed00ab6e9b8251cd66757e4e64548797e6adc14b9800cb361a",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 400000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "5c34a5be98591c727676e36c5f6774648a2fe2fd9a5e3287b5032c78e409e694",
+      "bytes_read_metadata_only": 299709,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0450000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0450000.pt",
+      "sha256": "a90fad17f5ca9978690f0b79c615f71b3aee345a458b2287d6d042912620c167",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 450000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "acf7aa2129169b0663017335c72b3e3088a501ef326ad2801dd0109f40e6440d",
+      "bytes_read_metadata_only": 299709,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0500000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0500000.pt",
+      "sha256": "0f5b81b7bc970fb09785890771f50ec40ec318ea9cc4743a5adf09aeae01ca3b",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 500000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "9c4b377cd042f3038be3da5f3018f2e42f0a7a95066990a66451b45ef3dba6cc",
+      "bytes_read_metadata_only": 299709,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0550000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0550000.pt",
+      "sha256": "c240264b47e6dcce8d4c5e9474b532af5abb634115deb0cd1c5a977130c20814",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 550000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "d5c082ab039a581580c09d15331e7e1450d9a6a6c848eed03eafb9ca8ce6f255",
+      "bytes_read_metadata_only": 299709,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0600000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0600000.pt",
+      "sha256": "b9a095e15a8c3ed1b9c2116c31d28a9ed811797eba308927b4f12019b2c1e977",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 600000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "d0e054ae8ed1880cc4353ed1da78fcba4c67f27e4dccac3ed7924d8426972ffa",
+      "bytes_read_metadata_only": 299709,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0650000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0650000.pt",
+      "sha256": "9b37d05ec0a8542f72184634de0ce0966ca805360f9d8512286c886c2ac21a7b",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 650000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "4a585d07151f6f1397f02921100008759642786c9abcfabb5e3ddb9caabee864",
+      "bytes_read_metadata_only": 299709,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0700000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0700000.pt",
+      "sha256": "a7b526d8634673621bd51edb8e0f4289062844f1919d830489cef9c2b26da803",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 700000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "b58eddc8efc2819251829f39efc767b752abd18fc5379322b3926e672e861d5f",
+      "bytes_read_metadata_only": 299709,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0750000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0750000.pt",
+      "sha256": "b078140917ca2af7f7c74580a208f1248c74ed0fdb696358aac616d0b019d3d5",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 750000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "34e759c17014d9b6ccd5972d8ee8e6f6b244cb6f4f049b3be58ba0ea25587799",
+      "bytes_read_metadata_only": 299709,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0765000.pt",
+      "canonical_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0765000.pt",
+      "sha256": "317f79b9324b973b3978932e19fabe7d1f6ad0e5e83331d779234de60c53a542",
+      "status": "matches_saved_clock",
+      "metadata": {
+        "stage_lengths": [
+          300,
+          300,
+          400
+        ],
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "step": 765000,
+        "args": {
+          "stage_lengths": "300,300,400",
+          "resolutions": "32,16,8",
+          "model": "DiT-XL/2",
+          "diffusion_steps": 1000
+        }
+      },
+      "metadata_sha256": "59980855488c176feb1797beb43a6f9ec330f5d0143a497ff2d28ab0145020bd",
+      "bytes_read_metadata_only": 299709,
+      "model_structure": {
+        "embedding_weight_shape": [
+          [
+            1152,
+            4,
+            2,
+            2
+          ]
+        ],
+        "transformer_depth": 28,
+        "parameter_entries": 291
+      },
+      "architecture_matches_canonical_name": true
+    }
+  ]
+}
