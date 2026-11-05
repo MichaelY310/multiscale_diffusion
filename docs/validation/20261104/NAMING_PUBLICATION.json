@@ -1,0 +1,25 @@
+{
+  "site": {
+    "project_id": "appgprj_6aea5c83ed8081918e605049fdc6e6dc",
+    "version": 7,
+    "version_id": "appgprj_6aea5c83ed8081918e605049fdc6e6dc~appgver_8a1419b4132881919f84f116dc6f5399",
+    "commit_sha": "a30d73dc4624a5d86f361b33431ea915c5f47799",
+    "deployment_id": "appgdep_6aebcbe317708191a3122c3af258844d",
+    "status": "succeeded",
+    "url": "https://rdd-math-reference.aa3101132006.chatgpt.site/naming.html",
+    "audience": "unchanged: owner-private"
+  },
+  "fastvideo": {
+    "repository": "https://github.com/MichaelY310/FastVideo",
+    "branch": "rdd-c2f",
+    "commit": "02308c6",
+    "validation": "FastVideo_NAMING_VALIDATION.json"
+  },
+  "huggingface_receipt": "HF_NAMING_MIGRATION.json",
+  "cpu_tests": {
+    "command": "pytest -q unified_multires/tests/test_fm_pf_launch.py -k 'asset_integrity or envelope_reuse or fm_sampling_pixels'",
+    "passed": 3,
+    "deselected": 2,
+    "gpu_used": false
+  }
+}

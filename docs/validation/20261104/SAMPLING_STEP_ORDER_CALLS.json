@@ -1,0 +1,180 @@
+{
+  "scope": "CPU execution of native stage loops with a counting zero-output model, batch1, four channels, grids8/16/32. Verifies grid mapping and model-call budgets only; no model quality or parity claim.",
+  "cuda_initialized": false,
+  "cases": [
+    {
+      "solver": "ddpm",
+      "configured_steps_low_to_high": [
+        80,
+        80,
+        90
+      ],
+      "model_calls_by_resolution": {
+        "8": 80,
+        "16": 80,
+        "32": 90
+      },
+      "total_model_calls": 250,
+      "first_last_model_times": {
+        "8": [
+          999.0,
+          600.0
+        ],
+        "16": [
+          599.0,
+          300.0
+        ],
+        "32": [
+          299.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "solver": "ddpm",
+      "configured_steps_low_to_high": [
+        90,
+        80,
+        80
+      ],
+      "model_calls_by_resolution": {
+        "8": 90,
+        "16": 80,
+        "32": 80
+      },
+      "total_model_calls": 250,
+      "first_last_model_times": {
+        "8": [
+          999.0,
+          600.0
+        ],
+        "16": [
+          599.0,
+          300.0
+        ],
+        "32": [
+          299.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "solver": "dpm2",
+      "configured_steps_low_to_high": [
+        80,
+        80,
+        90
+      ],
+      "model_calls_by_resolution": {
+        "8": 158,
+        "16": 158,
+        "32": 178
+      },
+      "total_model_calls": 494,
+      "first_last_model_times": {
+        "8": [
+          999.0,
+          600.0
+        ],
+        "16": [
+          599.0,
+          300.0
+        ],
+        "32": [
+          299.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "solver": "dpm2",
+      "configured_steps_low_to_high": [
+        40,
+        40,
+        45
+      ],
+      "model_calls_by_resolution": {
+        "8": 78,
+        "16": 78,
+        "32": 88
+      },
+      "total_model_calls": 244,
+      "first_last_model_times": {
+        "8": [
+          999.0,
+          600.0
+        ],
+        "16": [
+          599.0,
+          300.0
+        ],
+        "32": [
+          299.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "solver": "fm_euler",
+      "configured_steps_low_to_high": [
+        80,
+        80,
+        90
+      ],
+      "model_calls_by_resolution": {
+        "8": 81,
+        "16": 81,
+        "32": 90
+      },
+      "total_model_calls": 252,
+      "first_last_model_times": {
+        "8": [
+          0.0,
+          300.0
+        ],
+        "16": [
+          300.0,
+          600.0
+        ],
+        "32": [
+          600.0,
+          995.5556030273438
+        ]
+      }
+    },
+    {
+      "solver": "fm_midpoint",
+      "configured_steps_low_to_high": [
+        40,
+        40,
+        45
+      ],
+      "model_calls_by_resolution": {
+        "8": 81,
+        "16": 81,
+        "32": 90
+      },
+      "total_model_calls": 252,
+      "first_last_model_times": {
+        "8": [
+          0.0,
+          300.0
+        ],
+        "16": [
+          300.0,
+          600.0
+        ],
+        "32": [
+          600.0,
+          995.5555419921875
+        ]
+      }
+    }
+  ],
+  "source_sha256": {
+    "unified_multires/umdiff/rdd_native.py": "25725bba525d8fa27def8d474e16f7898ac130044435fee9f3257ad8a940913f",
+    "unified_multires/umdiff/rdd_fm_native.py": "8c9d7e36ccbe42c3ad1d424bf8e9f8d2f51e6fe5782304832a2472c2f9d574ed",
+    "diffusion/gaussian_diffusion_with_drift.py": "62539d3a115653e6aab9ab7eb8566bbcffefa35a7cc5f5aa2c4ecb31a5a098b0",
+    "diffusion/flow_matching_with_drift.py": "19644ccba17326edf555297cab481cc65d819b2b973473bc0d71a802ed27b8a6"
+  }
+}

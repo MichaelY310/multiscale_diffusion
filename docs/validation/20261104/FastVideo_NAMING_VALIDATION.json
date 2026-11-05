@@ -1,0 +1,31 @@
+{
+  "source_commit": "724aeeb37e4cfde790f0aeeb2e383a188befc884",
+  "old_path": "rdd/wan_finetune_300300400.yaml",
+  "canonical_path": "rdd/wan_finetune__train_down4-400_down2-300_down1-300.yaml",
+  "yaml_sha256_before_and_after": "4b5bbb171fe79d2a635b5247866e25d253c49f45440d1a6042a911f4abd70a72",
+  "yaml_bytes_identical": true,
+  "compatibility_symlink": true,
+  "changed_references": [
+    "README_RDD.html",
+    "README_RDD.md",
+    "rdd/launch_finetune_8gpu.sh",
+    "rdd/sample_finetuned_c2f.py"
+  ],
+  "gpu_used": false,
+  "sampler_ast_unchanged_except_config_path_and_output_metadata": true,
+  "precommit": "passed on changed files",
+  "transition_metadata": "fresh; historical noise_filling label retained separately",
+  "training_clock": [
+    0,
+    0.4,
+    0.7,
+    1
+  ],
+  "sampling_updates_coarse_to_fine": [
+    20,
+    15,
+    15
+  ],
+  "evaluations_per_cfg_branch": 52,
+  "conditional_plus_unconditional_calls": 104
+}

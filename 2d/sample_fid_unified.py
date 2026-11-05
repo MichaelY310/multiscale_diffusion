@@ -55,6 +55,7 @@ from models_multires import DiTMultiRes_models
 sys.path.remove(dit_path)
 
 sys.path.insert(0, parent_dir)
+from rdd_identity import legacy_identity, display as display_resolution_steps, write_identity
 from diffusion import create_diffusion_with_drift
 from diffusion.flow_matching_with_drift import (
     FlowMatchingWithDrift,
@@ -960,6 +961,7 @@ def run_experiment(exp: Dict[str, Any], vae, rank: int, world_size: int,
                    seed: int, device: str):
     """Run a single experiment from the JSONL config."""
     model_type = exp["model_type"]
+    resolution_identity = legacy_identity(exp)
     stage_lengths = [int(x) for x in exp["stage_lengths"].split(",")]
     resolutions = [int(x) for x in exp["resolutions"].split(",")]
     num_steps_list = [int(x) for x in exp["num_steps"].split(",")]
@@ -1061,6 +1063,9 @@ def run_experiment(exp: Dict[str, Any], vae, rank: int, world_size: int,
     print(f"\n{'='*70}")
     print(f"  Experiment: model_type={model_type}, resolutions={resolutions}")
     print(f"  stage_lengths={stage_lengths}, num_steps={num_steps_list}, sampler={sampler}")
+    print("  Training duration by latent grid: " + display_resolution_steps(resolution_identity['training_stages'], 'duration'))
+    print("  Sampling budget by latent grid: " + display_resolution_steps(resolution_identity['sampling_stages']))
+    print(f"  Expected native model calls: {resolution_identity['expected_native_nfe']} (not a timing measurement)")
     print(f"  cfg_scale={cfg_scale_raw}, upsample_mode={upsample_mode}")
     print(f"  drift_scale={drift_scale}, sigma_h={sigma_h}")
     print(f"  fdm_rescale_probe={fdm_rescale_probe}")
@@ -1084,6 +1089,7 @@ def run_experiment(exp: Dict[str, Any], vae, rank: int, world_size: int,
     print(f"{'='*70}")
 
     os.makedirs(output_dir, exist_ok=True)
+    write_identity(output_dir, resolution_identity)
 
     # Compute sample indices for this rank
     my_indices = list(range(rank, total_samples, world_size))

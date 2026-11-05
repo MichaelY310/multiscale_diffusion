@@ -1,0 +1,474 @@
+{
+  "date_utc": "2026-11-04T20:12:56.400823+00:00",
+  "claim": "Selected and remotely reported weights are XL-v2 400K EMA; FID33 cause not established",
+  "checkpoint_metadata": {
+    "url": "https://huggingface.co/yang335/search_agent_hl_to_i18n_transport/resolve/848d8a1eccaab8c1807ab792c4ec403dde25288d/checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+    "bytes_read_metadata_only": 299766,
+    "ranges": [
+      [
+        10797841626,
+        10797841647
+      ],
+      [
+        10797841606,
+        10797841625
+      ],
+      [
+        10797841550,
+        10797841605
+      ],
+      [
+        10797738688,
+        10797841549
+      ],
+      [
+        0,
+        29
+      ],
+      [
+        30,
+        45
+      ],
+      [
+        64,
+        196823
+      ]
+    ],
+    "pickle_bytes": 196760,
+    "pickle_sha256": "5af9d94599940ff2ecf7b908a139ab81e10ae82c6e2c150b0c4d7a0b4186e3a3",
+    "keys": [
+      "model",
+      "ema",
+      "opt",
+      "args",
+      "step",
+      "resolutions",
+      "stage_lengths",
+      "s_boundaries"
+    ],
+    "metadata": {
+      "args": {
+        "model": "DiT-XL/2",
+        "resolutions": "32,16,8",
+        "stage_lengths": "300,300,400",
+        "diffusion_steps": 1000,
+        "results_dir": "/mnt/bn/yangyuan-search-agent-rl-hl/mlx/users/yangyuan.335/RDD/ImageNet_original/RDD-FM-Unified-XL-v2",
+        "data_path": "/mnt/bn/yangyuan-search-agent-rl-hl/mlx/users/yangyuan.335/data/imagenet/ILSVRC/Data/CLS-LOC/train",
+        "data_source": "imagenet",
+        "image_size": 256,
+        "epochs": 1400,
+        "global_batch_size": 256,
+        "micro_batch_size": null,
+        "global_seed": 0,
+        "vae": "ema",
+        "num_workers": 4,
+        "no_pin_memory": true,
+        "log_every": 100,
+        "ckpt_every": 5000,
+        "resume": "/mnt/bn/yangyuan-search-agent-rl-hl/mlx/users/yangyuan.335/RDD/ImageNet_original/RDD-FM-Unified-XL-v2/000-imagenet256-fm-unified/checkpoints/0030000.pt"
+      },
+      "step": 400000,
+      "resolutions": [
+        32,
+        16,
+        8
+      ],
+      "stage_lengths": [
+        300,
+        300,
+        400
+      ],
+      "s_boundaries": [
+        0.0,
+        0.3,
+        0.6,
+        1.0
+      ]
+    },
+    "model_keys": 291,
+    "ema_keys": 291,
+    "ema_shapes": {
+      "x_embedder.proj.weight": [
+        1152,
+        4,
+        2,
+        2
+      ],
+      "y_embedder.embedding_table.weight": [
+        1001,
+        1152
+      ],
+      "final_layer.linear.weight": [
+        32,
+        1152
+      ]
+    }
+  },
+  "hf_lfs_identity": {
+    "path": "checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+    "size": 10797841648,
+    "oid": "bcb3fa5d550e3b294b05f372a980661b97211659",
+    "lfs": {
+      "oid": "dbbbe1325494295ac17e0a7c33cda733058cadd06e989b2f8c0d9ce9e6e543c2",
+      "size": 10797841648,
+      "pointerSize": 136
+    },
+    "api_url": "https://huggingface.co/api/models/yang335/search_agent_hl_to_i18n_transport/tree/848d8a1eccaab8c1807ab792c4ec403dde25288d/checkpoints/RDD-FM-Unified-XL-v2?expand=true"
+  },
+  "historical_sampling_config": {
+    "path": "eval_results/configs/rddfm_unixl_v2_400k_main.jsonl",
+    "sha256": "201be575df5e6e86909e9e1528ae27ba5616846e20aee917a03a3b86f43211dd",
+    "bytes": 1268,
+    "records": [
+      {
+        "model_type": "fm_unified",
+        "stage_lengths": "300,300,400",
+        "resolutions": "32,16,8",
+        "model": "DiT-XL/2",
+        "ckpt": "/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+        "num_steps": "80,80,90",
+        "sampler": "euler",
+        "cfg_scale": 1.0,
+        "upsample_mode": "noise_filling",
+        "output_dir": "/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/samples/rddfm_unixl_v2_400k_808090_euler_cfg1_noisefilling"
+      },
+      {
+        "model_type": "fm_unified",
+        "stage_lengths": "300,300,400",
+        "resolutions": "32,16,8",
+        "model": "DiT-XL/2",
+        "ckpt": "/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+        "num_steps": "80,80,90",
+        "sampler": "euler",
+        "cfg_scale": 1.5,
+        "upsample_mode": "noise_filling",
+        "output_dir": "/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/samples/rddfm_unixl_v2_400k_808090_euler_cfg15_noisefilling"
+      },
+      {
+        "model_type": "fm_unified",
+        "stage_lengths": "300,300,400",
+        "resolutions": "32,16,8",
+        "model": "DiT-XL/2",
+        "ckpt": "/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+        "num_steps": "40,40,45",
+        "sampler": "midpoint",
+        "cfg_scale": 1.5,
+        "upsample_mode": "noise_filling",
+        "output_dir": "/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/samples/rddfm_unixl_v2_400k_404045_midpoint_cfg15_noisefilling"
+      }
+    ]
+  },
+  "source_comparison": {
+    "historical_source_commit": "c90213b1acfef13248f721986a28f9ac6a014f0a",
+    "checks": [
+      {
+        "path": "diffusion/flow_matching_with_drift.py",
+        "object": "FlowMatchingWithDrift",
+        "executable_ast_equal": true
+      },
+      {
+        "path": "diffusion/flow_matching_with_drift.py",
+        "object": "upsample_with_noise_fm",
+        "executable_ast_equal": true
+      },
+      {
+        "path": "diffusion/flow_matching_with_drift.py",
+        "object": "noise_filling_transition_fm",
+        "executable_ast_equal": true
+      },
+      {
+        "path": "DiT/models_multires.py",
+        "object": "entire module",
+        "executable_ast_equal": true
+      }
+    ]
+  },
+  "current_cpu_parity": {
+    "scope": "Current native frontend versus frozen pre-renaming old FM, random nonzero small DiT, full 8/16/32 grids; not pretrained quality",
+    "sampling": [
+      {
+        "name": "sample_0p3_fresh_euler_cfg1p0",
+        "status": "passed",
+        "bounds": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "boundary": "fresh",
+        "solver": "euler",
+        "cfg": 1.0,
+        "steps_coarse_to_fine": [
+          80,
+          80,
+          90
+        ],
+        "nfe": 252,
+        "stage_nfe": [
+          81,
+          81,
+          90
+        ],
+        "model_input_calls": 252,
+        "layer_tensor_pairs": 27468,
+        "all_byte_exact": true,
+        "final_latent_sha256": "904806d7b3c25ba6782e677928a07a29f05168ae4915b10a6feb2ef618a881bf",
+        "rng_byte_exact": true,
+        "outer_rng_unchanged": true,
+        "trace_digest": "cc4803f3b8ea1735be93368d784651052498e876dd3429a08dc97cf28c85d123"
+      },
+      {
+        "name": "sample_0p3_noise_filling_euler_cfg1p0",
+        "status": "passed",
+        "bounds": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "boundary": "noise_filling",
+        "solver": "euler",
+        "cfg": 1.0,
+        "steps_coarse_to_fine": [
+          80,
+          80,
+          90
+        ],
+        "nfe": 252,
+        "stage_nfe": [
+          81,
+          81,
+          90
+        ],
+        "model_input_calls": 252,
+        "layer_tensor_pairs": 27468,
+        "all_byte_exact": true,
+        "final_latent_sha256": "72146ae2852f872c23eb2147ee04220c8b8748f04ee84ffb4abe83c2f7dc39bf",
+        "rng_byte_exact": true,
+        "outer_rng_unchanged": true,
+        "trace_digest": "cd49aeed7f645fcb6eec6fc52373b8a682cfcd8e225bdbdeac266e9ae8bb6010"
+      }
+    ],
+    "fresh_and_filling_outputs_equal": false,
+    "fresh_vs_filling_max_abs": 1.709212064743042,
+    "cuda_initialized": false,
+    "seconds": 5.256518509238958,
+    "temporary_layer_payloads_deleted": true
+  },
+  "remote_record_validation": {
+    "record_origin": "User-supplied remote-server tensor/hash audit, not independently executed on remote server here",
+    "attachment_sha256": "c3f3c7c11570a197edb3d8edc23b4e68f1260e41e3886f3bef9983a33fba2100",
+    "checks": {
+      "source_checkpoint_sha_matches_lock": true,
+      "run_uses_recorded_import": true,
+      "method_matches_bundle": true,
+      "selected_weights_ema": true,
+      "step400k": true,
+      "vae_weights_matches_lock": true,
+      "vae_config_matches_pinned_remote": true,
+      "importer_source_matches_this_checkout": false
+    },
+    "vae_config_url": "https://huggingface.co/stabilityai/sd-vae-ft-ema/resolve/f04b2c4b98319346dad8c65879f680b1997b204a/config.json",
+    "vae_config_sha256": "92d3dfb746fca211a2c9e019e285f8597412211728dce3c5bcf4eda0f2d62e7e",
+    "identity_required_checks_passed": true,
+    "importer_difference_scope": "The user-supplied audit compares all 291 imported tensors directly with the original EMA. A differing importer source hash does not undo that tensor-level evidence; its source changes are not available here."
+  },
+  "remote_reported_tensor_checks": {
+    "ema_tensors_equal_to_raw_ema": 291,
+    "total_ema_tensors": 291,
+    "tensors_different_from_raw_training_model": 291,
+    "current_inference_file_matches_formal_run_and_import_hash": true,
+    "current_inference_sha256": "985b9fb14414f970feb6a9bebd7eb83f07576a36b962a1ddaa4297029bfc4e6f"
+  },
+  "remote_run_contract": {
+    "format": "fm_pf_sampling_v1",
+    "kind": "fm",
+    "checkpoint_sha256": "985b9fb14414f970feb6a9bebd7eb83f07576a36b962a1ddaa4297029bfc4e6f",
+    "method": {
+      "task": "rdd_fm_native",
+      "name": "rdd_fm_xl_v2_fresh_cfg1_252nfe",
+      "image_shape": [
+        4,
+        32,
+        32
+      ],
+      "model": {
+        "name": "native_rdd_unified",
+        "args": {
+          "patch_size": 2,
+          "in_channels": 4,
+          "hidden_size": 1152,
+          "depth": 28,
+          "num_heads": 16,
+          "class_dropout_prob": 0.1,
+          "learn_sigma": true,
+          "base_size": 16
+        }
+      },
+      "training": {
+        "optimizer": {
+          "lr": 0.0001,
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "weight_decay": 0.0,
+          "ema_decay": 0.9999,
+          "randomness": "native_global",
+          "optimizer_name": "adamw",
+          "eps": 1e-08,
+          "precision": "float32",
+          "grad_clip": null,
+          "lr_schedule": null,
+          "ema_update_every": 1,
+          "ema_warmup": false,
+          "ema_style": "add_alpha",
+          "accumulation_steps": 8
+        },
+        "data": {
+          "shuffle": true,
+          "image_size": 256,
+          "crop": "adm_center",
+          "horizontal_flip": true,
+          "flip_rng": "torch",
+          "normalization": "torchvision",
+          "drop_last": true
+        },
+        "input_transform": {
+          "name": "local_vae",
+          "args": {
+            "model": {
+              "name": "local_autoencoder",
+              "args": {
+                "path": "@sd_vae_ema@"
+              }
+            },
+            "scale": 0.18215
+          }
+        },
+        "time_sampler": {
+          "name": "none"
+        },
+        "conditioning": {
+          "y": {
+            "kind": "labels",
+            "classes": 1000
+          }
+        },
+        "input_transform_scope": "microbatch",
+        "inference_only": true
+      },
+      "process": {
+        "resolutions": [
+          32,
+          16,
+          8
+        ],
+        "bounds": [
+          0.0,
+          0.3,
+          0.6,
+          1.0
+        ],
+        "steps": [
+          80,
+          80,
+          90
+        ],
+        "solver": "euler",
+        "boundary": "fresh",
+        "cfg_scale": 1.0,
+        "train_eps": 1e-05
+      },
+      "evidence": {
+        "claim": "legacy_rdd_reproduction_recipe",
+        "formal_quality_rerun": false,
+        "historical_setting": false,
+        "notes": [
+          "Full original DiTMultiRes-XL/2; time*1000; extra learned-sigma channels ignored as in old FM.",
+          "FM chronological boundaries 0/.3/.6/1; not the corrected .4/.7 clock.",
+          "Coarse-to-fine sampling steps; both Euler250 and midpoint125 use252 model evaluations.",
+          "Fresh is an explicit new ablation for these historical FM checkpoints; not the reported FM FID setting."
+        ],
+        "prior_and_new_tests": "evidence/rdd_reproduction_20261104/REPORT_ZH.md"
+      }
+    },
+    "vae_sha256": {
+      "config.json": "92d3dfb746fca211a2c9e019e285f8597412211728dce3c5bcf4eda0f2d62e7e",
+      "diffusion_pytorch_model.safetensors": "32db726da04f06c1b6b14c0043ce115cc87a501482945c5add89a40d838fcb46"
+    },
+    "latent_scale": 0.18215,
+    "cfg": 1.0,
+    "seed": 0,
+    "batch_size": 16,
+    "decode_batch": 1,
+    "count": 50000,
+    "labels": "global_image_index %1000",
+    "rng": "RandomStream(seed+batch_start); initial and boundary draws share the stream",
+    "quantization": "((clamp(x,-1,1)+1)/2*255).uint8 (legacy evaluator truncation)",
+    "precision": "float32_tf32_allowed",
+    "device_type": "cuda",
+    "environment": {
+      "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "platform": "Linux-5.15.0-198-generic-x86_64-with-glibc2.35",
+      "packages": {
+        "torch": "2.8.0+cu128",
+        "torchvision": "0.23.0+cu128",
+        "numpy": "2.2.6",
+        "scipy": "1.15.3",
+        "timm": "1.0.19",
+        "diffusers": "0.35.1",
+        "transformers": "4.56.2",
+        "huggingface-hub": "0.35.3",
+        "Pillow": "11.3.0"
+      }
+    },
+    "gpu_name": "NVIDIA RTX 6000 Ada Generation",
+    "torch_cuda": "12.8",
+    "gpu_capability": [
+      8,
+      9
+    ],
+    "execution_backend": "torch.compile(mode=reduce-overhead, fullgraph=True, dynamic=False); original FP32 model",
+    "execution": {
+      "workers": 4,
+      "assignment": "round_robin_global_batches",
+      "png_storage": "hardlinks to verified worker files; no duplicate image storage"
+    }
+  },
+  "remote_import_record": {
+    "source_checkpoint": "/data/home/yuanyang/multiscale_diffusion/checkpoints/fm_pf_assets/fm/checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+    "source_sha256": "dbbbe1325494295ac17e0a7c33cda733058cadd06e989b2f8c0d9ce9e6e543c2",
+    "selected_weights": "ema",
+    "source_step": 400000,
+    "strict_keys_and_shapes": true,
+    "state_dict_entries": 291,
+    "stripped_module_prefix": false,
+    "optimizer_imported": false,
+    "resume_supported": false,
+    "statement": "Inference-only envelope. Both model and ema refer to the selected original weights; no new EMA or optimizer is invented.",
+    "code_sha256": "5a6f5c639fb07afd95cd1a67e7e465bb8795878dcfa206ed0b6c62e21ea74960",
+    "output": "/data/home/yuanyang/multiscale_diffusion/checkpoints/fm_pf_assets/fm_ema_inference.pt",
+    "output_sha256": "985b9fb14414f970feb6a9bebd7eb83f07576a36b962a1ddaa4297029bfc4e6f",
+    "output_bytes": 2699459629
+  },
+  "new_guard_test": {
+    "command": "CUDA_VISIBLE_DEVICES='' UMDIFF_CPU_ONLY=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 PYTHONPATH=unified_multires python -m pytest -q unified_multires/tests/test_fm_pf_launch.py -k 'asset_integrity or envelope_reuse or fm_sampling_pixels'",
+    "result": "3 passed, 2 deselected",
+    "seconds": 10.18
+  },
+  "limitations": [
+    "No GPU run or pretrained full trajectory executed in this audit",
+    "Remote tensor equality is user-provided evidence; only its record consistency and pinned asset identity were checked locally",
+    "Remote torch.compile and four-worker implementation source has not been supplied",
+    "Formal 50K FID33 result was supplied by user, not independently recalculated",
+    "Early prototype original fault cannot be reconstructed conclusively from available resumed logs"
+  ],
+  "local_source_sha256": {
+    "diffusion/flow_matching_with_drift.py": "19644ccba17326edf555297cab481cc65d819b2b973473bc0d71a802ed27b8a6",
+    "DiT/models_multires.py": "2d9d92313e4ba744bd7cea8cd01c0fbfd01d5c302dd97499cd8a9439e03b5bf1",
+    "unified_multires/umdiff/rdd_fm_native.py": "8c9d7e36ccbe42c3ad1d424bf8e9f8d2f51e6fe5782304832a2472c2f9d574ed",
+    "unified_multires/experiments/imagenet256_fm_pf/sampling.py": "d6deb9f4bf2429c0369539d743bb2a7be788b4bee14b1c9649b81864b64015a9",
+    "unified_multires/experiments/imagenet256_fm_pf/workflow.py": "cb9fd6aafbbfe65a4454ed1edcc4a75249c25bbc9e9e55c64158d6a63e48e018"
+  }
+}

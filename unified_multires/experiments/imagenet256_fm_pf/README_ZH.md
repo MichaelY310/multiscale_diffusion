@@ -66,6 +66,8 @@ CUDA_VISIBLE_DEVICES='' UMDIFF_CPU_ONLY=1 \
 
 首次采样严格导入EMA，生成`fm_ema_inference.pt`，约2.7GB；原10.8GB文件含optimizer等状态，不代表DiT需要10.8GB权重。导入只用于推理，不用于PF初始化或训练resume。
 
+复用已有推理文件时，也会检查导入记录必须为 `selected_weights=ema`、`source_step=400000`，并核对源/输出哈希。模型身份与新服务器 fresh 结果核查见[专项报告](../../../docs/validation/20261104/FM_CHECKPOINT_IDENTITY_AUDIT_ZH.md)。该报告确认所选资产是历史 XL-v2；没有把 fresh 的质量认证为历史 noise_filling 的质量。
+
 ## 3. 先跑FM fresh采样
 
 先64张检查，接着50K正式样本：

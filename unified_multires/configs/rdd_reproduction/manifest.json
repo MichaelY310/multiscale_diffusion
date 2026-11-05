@@ -4,7 +4,7 @@
   "entries": [
     {
       "id": "rdd_fm_xl_v2_euler_cfg1p0_fresh",
-      "file": "rdd_fm_xl_v2_euler_cfg1p0_fresh.json",
+      "file": "rdd_fm_xl_v2_euler_cfg1p0_fresh__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
       "sha256": "34bbfd603bf690edb2468b28a037ad33c29e9a9fb4dc5e4dc7c614e3a81bd199",
       "historical_setting": false,
       "notes": [
@@ -16,7 +16,7 @@
     },
     {
       "id": "rdd_fm_xl_v2_euler_cfg1p5_fresh",
-      "file": "rdd_fm_xl_v2_euler_cfg1p5_fresh.json",
+      "file": "rdd_fm_xl_v2_euler_cfg1p5_fresh__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
       "sha256": "3f2e2749b5def9d20f8a8fd57396934f1da97bd3b6004d3525736bcaf6996890",
       "historical_setting": false,
       "notes": [
@@ -28,7 +28,7 @@
     },
     {
       "id": "rdd_fm_xl_v2_midpoint_cfg1p5_fresh",
-      "file": "rdd_fm_xl_v2_midpoint_cfg1p5_fresh.json",
+      "file": "rdd_fm_xl_v2_midpoint_cfg1p5_fresh__train_r8-300_r16-300_r32-400__sample_r8-40_r16-40_r32-45.json",
       "sha256": "1f4645e486ba1e948e39ab697a991f01c71131db27edc5d8525c4e86e637e896",
       "historical_setting": false,
       "notes": [
@@ -40,7 +40,7 @@
     },
     {
       "id": "rdd_fm_xl_v2_euler_cfg1p0_noise_filling",
-      "file": "rdd_fm_xl_v2_euler_cfg1p0_noise_filling.json",
+      "file": "rdd_fm_xl_v2_euler_cfg1p0_noise_filling__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
       "sha256": "7aca464e70d48230c65e8da146c8f7d42d11b658fbbc7078d85c39eb52e97439",
       "historical_setting": true,
       "notes": [
@@ -52,7 +52,7 @@
     },
     {
       "id": "rdd_fm_xl_v2_euler_cfg1p5_noise_filling",
-      "file": "rdd_fm_xl_v2_euler_cfg1p5_noise_filling.json",
+      "file": "rdd_fm_xl_v2_euler_cfg1p5_noise_filling__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
       "sha256": "23ce66f839c3981636a0f897862064ec94fd072a2b5c6811dbc5c0eac2aab7e5",
       "historical_setting": true,
       "notes": [
@@ -64,7 +64,7 @@
     },
     {
       "id": "rdd_fm_xl_v2_midpoint_cfg1p5_noise_filling",
-      "file": "rdd_fm_xl_v2_midpoint_cfg1p5_noise_filling.json",
+      "file": "rdd_fm_xl_v2_midpoint_cfg1p5_noise_filling__train_r8-300_r16-300_r32-400__sample_r8-40_r16-40_r32-45.json",
       "sha256": "091da45d2d5f742cee17c7521c5fc8f3befb6417db3abeeca063ac3d0b41c1ba",
       "historical_setting": true,
       "notes": [
@@ -76,7 +76,7 @@
     },
     {
       "id": "rdd_fm_l_corrected_300_300_400_euler_cfg1p0_noise_filling",
-      "file": "rdd_fm_l_corrected_300_300_400_euler_cfg1p0_noise_filling.json",
+      "file": "rdd_fm_l_corrected_euler_cfg1p0_noise_filling__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json",
       "sha256": "8cdfaf942563ed3a9b5cd7b3acbf25784f86bed5da37477021c683ff09ccfed0",
       "historical_setting": true,
       "notes": [
@@ -87,7 +87,7 @@
     },
     {
       "id": "rdd_fm_l_corrected_300_300_400_euler_cfg1p0_fresh",
-      "file": "rdd_fm_l_corrected_300_300_400_euler_cfg1p0_fresh.json",
+      "file": "rdd_fm_l_corrected_euler_cfg1p0_fresh__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json",
       "sha256": "8fe6642d2d37eee2bf5a0b84aaa5983aa59885cf3a01289051bcb7f000437983",
       "historical_setting": false,
       "notes": [
@@ -98,7 +98,7 @@
     },
     {
       "id": "rdd_fm_l_corrected_400_300_300_euler_cfg1p0_noise_filling",
-      "file": "rdd_fm_l_corrected_400_300_300_euler_cfg1p0_noise_filling.json",
+      "file": "rdd_fm_l_corrected_euler_cfg1p0_noise_filling__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
       "sha256": "1447f1e0acec430f7417b3e79266d5fef18c1a03f7e3498689ee836bace90123",
       "historical_setting": true,
       "notes": [
@@ -109,7 +109,7 @@
     },
     {
       "id": "rdd_fm_l_corrected_400_300_300_euler_cfg1p0_fresh",
-      "file": "rdd_fm_l_corrected_400_300_300_euler_cfg1p0_fresh.json",
+      "file": "rdd_fm_l_corrected_euler_cfg1p0_fresh__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
       "sha256": "bd6667f84e80c51de4966110280e1b0ffe1cf2b180c7a87b071901e3d018f1f6",
       "historical_setting": false,
       "notes": [
@@ -120,7 +120,7 @@
     },
     {
       "id": "rdd_ddpm_xl_300_300_400_ddpm_cfg1p0_fresh",
-      "file": "rdd_ddpm_xl_300_300_400_ddpm_cfg1p0_fresh.json",
+      "file": "rdd_ddpm_xl_ddpm_cfg1p0_fresh__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json",
       "sha256": "d6bb04d8a6654f9dbfe0ff71d2c54918bec0835e67b2ea74f6321d5153b8d775",
       "historical_setting": true,
       "notes": [
@@ -132,7 +132,7 @@
     },
     {
       "id": "rdd_ddpm_xl_300_300_400_ddpm_cfg1p5_fresh",
-      "file": "rdd_ddpm_xl_300_300_400_ddpm_cfg1p5_fresh.json",
+      "file": "rdd_ddpm_xl_ddpm_cfg1p5_fresh__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json",
       "sha256": "1eea73fce9ef7549a5a9fa39a48e8547dc91a144206102b764a623d856e71001",
       "historical_setting": true,
       "notes": [
@@ -144,7 +144,7 @@
     },
     {
       "id": "rdd_ddpm_multistage_xl_l_b_100_300_600_ddpm_cfg1p0_fresh",
-      "file": "rdd_ddpm_multistage_xl_l_b_100_300_600_ddpm_cfg1p0_fresh.json",
+      "file": "rdd_ddpm_multistage_xl_l_b_ddpm_cfg1p0_fresh__train_r8-600_r16-300_r32-100__sample_r8-80_r16-80_r32-90.json",
       "sha256": "86cb5bc791bd7cff1114df4a15beedc60315744a9518e51868fd7a2d8d5ab09f",
       "historical_setting": true,
       "notes": [
@@ -156,7 +156,7 @@
     },
     {
       "id": "rdd_ddpm_multistage_xl_l_b_100_300_600_ddpm_cfg1p5_fresh",
-      "file": "rdd_ddpm_multistage_xl_l_b_100_300_600_ddpm_cfg1p5_fresh.json",
+      "file": "rdd_ddpm_multistage_xl_l_b_ddpm_cfg1p5_fresh__train_r8-600_r16-300_r32-100__sample_r8-80_r16-80_r32-90.json",
       "sha256": "bc99a9912f29460ffa5c23816061a7f4fd015d9dc7c3cb1b664a6fb3d158b900",
       "historical_setting": true,
       "notes": [
@@ -168,7 +168,7 @@
     },
     {
       "id": "rdd_ddpm_multistage_xl_l_b_300_300_400_ddpm_cfg1p0_fresh",
-      "file": "rdd_ddpm_multistage_xl_l_b_300_300_400_ddpm_cfg1p0_fresh.json",
+      "file": "rdd_ddpm_multistage_xl_l_b_ddpm_cfg1p0_fresh__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json",
       "sha256": "0774082ec1c405bd3b16adca6c133c4731c4e4232898f5707d08e6b1811ab1bd",
       "historical_setting": true,
       "notes": [
@@ -180,7 +180,7 @@
     },
     {
       "id": "rdd_ddpm_multistage_xl_l_b_300_300_400_ddpm_cfg1p5_fresh",
-      "file": "rdd_ddpm_multistage_xl_l_b_300_300_400_ddpm_cfg1p5_fresh.json",
+      "file": "rdd_ddpm_multistage_xl_l_b_ddpm_cfg1p5_fresh__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json",
       "sha256": "ebff88003af2d8cdb9ac549d0b94a65c0166b2cef81bfa571fcdb0eb27f0ac19",
       "historical_setting": true,
       "notes": [
@@ -192,7 +192,7 @@
     },
     {
       "id": "rdd_fm_multistage_xl_l_b_euler_cfg1p0_fresh",
-      "file": "rdd_fm_multistage_xl_l_b_euler_cfg1p0_fresh.json",
+      "file": "rdd_fm_multistage_xl_l_b_euler_cfg1p0_fresh__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
       "sha256": "1e4f13732c8c22205e08811e291bb750a15024b05b0a12b66f3ba31b55ceef30",
       "historical_setting": false,
       "notes": [
@@ -202,7 +202,7 @@
     },
     {
       "id": "rdd_fm_multistage_xl_l_b_euler_cfg1p0_noise_filling",
-      "file": "rdd_fm_multistage_xl_l_b_euler_cfg1p0_noise_filling.json",
+      "file": "rdd_fm_multistage_xl_l_b_euler_cfg1p0_noise_filling__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
       "sha256": "43925d94e7fba3dd2682ab249deb53cd2e33978d066a9d289db68028982d2b49",
       "historical_setting": false,
       "notes": [

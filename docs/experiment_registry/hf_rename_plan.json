@@ -1,0 +1,2065 @@
+{
+  "repo_id": "yang335/search_agent_hl_to_i18n_transport",
+  "source_revision": "848d8a1eccaab8c1807ab792c4ec403dde25288d",
+  "status": "applied_and_hash_verified",
+  "operations": [
+    {
+      "old_path": "checkpoints/DiT-XL-2/0050000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0050000.pt",
+      "size": 10800214126,
+      "sha256": "17171d8c12f9191aacee73498785064724fc3b707eb93416900eaf1d982d38c5",
+      "blob_id": "de2a01b24b8ac3b600351f2a7283262b9122ad83",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0100000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0100000.pt",
+      "size": 10800214126,
+      "sha256": "05aa8bee7972850b6fcdba28d72c003026f077810daf317256b6edceba43401a",
+      "blob_id": "fe8288efe1ac570b49c66e35bf6ad1b2731cce83",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0150000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0150000.pt",
+      "size": 10800214126,
+      "sha256": "cf7f38698ecc8d3f3884c68254770acf483408b824df481e8b9af95cd3e74bb9",
+      "blob_id": "e1459990c09a1f57b355d70b7d9f30bc4adc5789",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0200000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0200000.pt",
+      "size": 10800214126,
+      "sha256": "a210d5387e10019aa7a2138b0083bbafa7db59efdae3c9bebe1cbd35367f2233",
+      "blob_id": "688997051b69dd6ffd04b608b76cb8d8ef50a7de",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0250000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0250000.pt",
+      "size": 10800214126,
+      "sha256": "ba4af30df08e6736086647c7e0b792f19501f5e0de5dfbecb5ed32d93c911994",
+      "blob_id": "5013baa396cd874598a071378a4fa1fd5cc12b76",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0300000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0300000.pt",
+      "size": 10800214126,
+      "sha256": "28b026ecf64949fa377ef83668d5608a3fe0edb27c079e88796f891ba32b5c1a",
+      "blob_id": "b88152572b0a325f5f487c8262b88d4405e9f88b",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0350000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0350000.pt",
+      "size": 10800214126,
+      "sha256": "52f7c181d406203fc424f1835083a2a140e72c10eba64f4a7a86018f2247add7",
+      "blob_id": "6604dc59579228be61431c3717323901890bc5cb",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0400000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0400000.pt",
+      "size": 10800214126,
+      "sha256": "e1458384ef3d92a2ebaef90a142d8858d2a3d34ff3dd8178acbe66790b7ab95c",
+      "blob_id": "fe62d586341301d356684f0c3b699b248c28c4f8",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0450000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0450000.pt",
+      "size": 10800214126,
+      "sha256": "bb8adb24ea3b952fff2a8c13ad75393d6652acb97cf2f3f35af3a420a20115fe",
+      "blob_id": "2e459be9cb7c5f2c628cb0776c37b6ae5827462a",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0500000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0500000.pt",
+      "size": 10800214126,
+      "sha256": "319f619e8ab2b1298deae19a791be9cea6fa0b2853e35d6696a72ce882f7b121",
+      "blob_id": "e4897a8cb64185ce8a52a825f1ee6f7c22ca28a5",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0050000.pt",
+      "size": 7325868847,
+      "sha256": "86b12a796ae94a9c76293e40ac55450d2c46d2e9c7ab8b1eeacfa07b30ddc098",
+      "blob_id": "4e24793d63d8442fa689bd0564d9c297bf01fcb1",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0100000.pt",
+      "size": 7325868847,
+      "sha256": "e0a80b4b937c02d300c5a76dcf802ecfc26a087ceee799a2549b411051efaaf0",
+      "blob_id": "7d6550fe9d657d184b2dcb9ca10577a7e2bb6e88",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0150000.pt",
+      "size": 7325868847,
+      "sha256": "250e5bd8e897ec51ac3632f037023f68d3327c47250361595839f1ef0a74f5b8",
+      "blob_id": "afa912fad78805c766e5397e4d98e855ae9f8789",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0200000.pt",
+      "size": 7325868847,
+      "sha256": "4f11dda8cf406142eaa126b7684043b11fcddaa2742ba51f722c94cc748a7727",
+      "blob_id": "7d9bd99dd35e9e19c182f146b411dd4f6aa9e6a7",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0250000.pt",
+      "size": 7325868847,
+      "sha256": "343628a7e10969af0488fb036f787502bdd7068913195e24782ef18f90ced113",
+      "blob_id": "d3bbf466cb915cb3888a7f2a8a75ff51bc54a0fe",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0300000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0300000.pt",
+      "size": 7325868847,
+      "sha256": "8319671bb551a74b24b71a19b865048b8f181ec2f3ac1788f0aabe1045ec8e06",
+      "blob_id": "f85fd352d88f3c9ff3c0dfa4d5ea14729a7a4085",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0350000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0350000.pt",
+      "size": 7325871791,
+      "sha256": "0af8fc586432c16f95721970806f05fbed961458e745310f63d27f0f110093f5",
+      "blob_id": "eb3c5cc5341087940502e02b1392e1839fc3f84f",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0400000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0400000.pt",
+      "size": 7325871791,
+      "sha256": "819ca1e0f9dd90a7e793acd9874b04e621d969ae9c183b238ce4cf96a10bfcfd",
+      "blob_id": "8c8acd342822a3dbd0a555fe466f23e75ec5c2d8",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/log.txt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/log.txt",
+      "size": 375398,
+      "sha256": null,
+      "blob_id": "daec3ceeb90b5a370ba492ff6c99b9506bafcc65",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/timing_log.jsonl",
+      "size": 511879,
+      "sha256": null,
+      "blob_id": "28345d77b98acd4c3df7d1beac8868576457f8e7",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0050000.pt",
+      "size": 7325868847,
+      "sha256": "21455ab6da254ed791d4fef86e86ec7b18450438038bbc2a4c0d3da604e7002f",
+      "blob_id": "8516a1b67b8cb4287723d3db7f40811e95d628ae",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0100000.pt",
+      "size": 7325871791,
+      "sha256": "dd70ca33d489c11e8513806583b228f6487ca79f68b2269513217b7b97b63a97",
+      "blob_id": "a5b7a963843d3bd831a0f2c4cd8deab3f3c6269d",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0150000.pt",
+      "size": 7325871791,
+      "sha256": "e7170443845a8c3e484b770640fd2941c0e385debe3800ffb703a434d4fc6001",
+      "blob_id": "5164b5849c745e57d59eb030d2f7c4706726b7f1",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0200000.pt",
+      "size": 7325871791,
+      "sha256": "fb1156b5c807ad09a52b6925af35108bfa481915417a391cda8df3a02c02719f",
+      "blob_id": "2453f42d416cb87fa0b1721ccd3127f52089c2e3",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0250000.pt",
+      "size": 7325871791,
+      "sha256": "171da1806ac839870133c3b80766e7f0249df391f86a36266fe84c47dd926cbc",
+      "blob_id": "5bc0ac9db0536b3b571549bda85032cf1474dc3d",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0300000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0300000.pt",
+      "size": 7325871791,
+      "sha256": "f9af8cffe6e6b711e69c2118e574c930a35c7140a56e66feee16eb5bf8a78aa7",
+      "blob_id": "304fe7a92d8bad57bccdd3082599b718319dca28",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0350000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0350000.pt",
+      "size": 7325871791,
+      "sha256": "c8801bc0c95da138e98d4ab2b61d27ff758f70ef83436c66c53c9e564ed2998d",
+      "blob_id": "881db362fd41c75ee99a84166f78a062c1235a60",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0400000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0400000.pt",
+      "size": 7325871791,
+      "sha256": "8ba20debdd8d203456072709f089e070f89b9241fc005cb35c1f66bdfb355036",
+      "blob_id": "27a09dd2af54489e13cd812dbfa493fac0af606c",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/log.txt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/log.txt",
+      "size": 397921,
+      "sha256": null,
+      "blob_id": "c4fd1df0d4c6e8556de4d3c803d206584dfd9654",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/timing_log.jsonl",
+      "size": 540781,
+      "sha256": null,
+      "blob_id": "d1cca1fa1c0670eeb8bc04cfb44e273b545ebe4e",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0030000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0030000.pt",
+      "size": 10797838256,
+      "sha256": "d97c89db7fbc6e9438903a4a8d8fa184a307b7abece0fd024af285ffb59caa4d",
+      "blob_id": "73ecddb7d163b1ae6cc59df4155e95be43a6d905",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0050000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0050000.pt",
+      "size": 10797841648,
+      "sha256": "f787803794f70661b502a809a07afe338837555e523ebd6c2a5a8225c7bcd7e8",
+      "blob_id": "2612b2db0a17b948d963d470be3e4244a7c0df34",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0100000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0100000.pt",
+      "size": 10797841648,
+      "sha256": "ccfe673d574ac4af9590ec821977e55bcbce000c3910904998dc9b889e7dea47",
+      "blob_id": "f2e748d9ddd05df589aee3f4717cddc09dc496c4",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0150000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0150000.pt",
+      "size": 10797841648,
+      "sha256": "ac15d0ee0663cf27bb2e6723fea1dcc2c4e3ffa92c9b3516ee3316dc66653430",
+      "blob_id": "6b8e3da92453b43ae73ef8829f3b0e9c6e6a7a44",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0200000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0200000.pt",
+      "size": 10797841648,
+      "sha256": "1977770e7e25dc44d24a43623675a9aa1518cf62d3eea2f378a44899e1da4d43",
+      "blob_id": "45383905094d14b2b31e5a8cf1fe63306597ea93",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0240000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0240000.pt",
+      "size": 10797841648,
+      "sha256": "3e2a5d4a1213effed0376090c9bc9ccae6f778884346f1951d1dd5a25c5b717b",
+      "blob_id": "5331986e7f242aa1ab603dc5591da896040ae8c5",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0250000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0250000.pt",
+      "size": 10797841648,
+      "sha256": "4ab8dd23f3feb2dfb9c6c6d0ca858faee6a7415f885bac72b61f279fa221e21d",
+      "blob_id": "ad77b280233e20b5fe79ce97798c2dda556fe12b",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0285000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0285000.pt",
+      "size": 10797841648,
+      "sha256": "9d402a10b6e98497ec542151498a4cbc69c0531118fdba4174334634e42e4781",
+      "blob_id": "7a474d9e5a456638e5a5bea669bcd3b456e06ccb",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0295000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0295000.pt",
+      "size": 10797841648,
+      "sha256": "9323f1764c06f414f87946d8b714a0a7ca8ecb1451633626dccd0fc8bfbf3192",
+      "blob_id": "de16cd6a3629bf03990df4d7f8b028ed557aeba6",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0300000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0300000.pt",
+      "size": 10797841648,
+      "sha256": "670de6bba227de97d568bbb564cb182ca5186b76d74240f0b0cde07d894156fc",
+      "blob_id": "f36cca677d61c99ebcd26b42367157f2a033fa86",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0400000.pt",
+      "size": 10797841648,
+      "sha256": "dbbbe1325494295ac17e0a7c33cda733058cadd06e989b2f8c0d9ce9e6e543c2",
+      "blob_id": "bcb3fa5d550e3b294b05f372a980661b97211659",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/checkpoints/0350000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/checkpoints/0350000.pt",
+      "size": 10797841648,
+      "sha256": "9b6d9158a708bb58550986c8db51cac6dd617fbb992d2e9ba70b90e6e21de1fe",
+      "blob_id": "8f3098eb2f458181d804e3d0a01a8e0ae8ab0ceb",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/checkpoints/0370000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/checkpoints/0370000.pt",
+      "size": 10797841648,
+      "sha256": "5db3dfb65efb1a8fa8cfd487e39c07ee411c9b1ef02d9bb301c985f08a24dac4",
+      "blob_id": "7ace43b047d2660d7817ceb634811f4fb01d5a71",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/checkpoints_8x8/0450000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/checkpoints_8x8/0450000.pt",
+      "size": 2085370909,
+      "sha256": "ce23696d1c166f87c5ffc334684e6b97446f72d050bc22bdf7794f2290b24ad7",
+      "blob_id": "1679ce3b58965a5033b282758916ab934b99a87a",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/checkpoints_8x8/0500000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/checkpoints_8x8/0500000.pt",
+      "size": 2085370909,
+      "sha256": "a8945bfb9eb240df6eb3218c2bdc89cf574f09eb927fcc87fe0df080ac7fdb19",
+      "blob_id": "aa416847057a8926506056ae13e6ee5b0e6a56b7",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/checkpoints_8x8/0550000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/checkpoints_8x8/0550000.pt",
+      "size": 2085370909,
+      "sha256": "f3994f2b7d3f3b92804a529b509888e5db318f8c3e672eb0d3158a2099671569",
+      "blob_id": "a89583848978aab8e31af842f1f15db96eda9ef4",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/checkpoints_8x8/0600000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/checkpoints_8x8/0600000.pt",
+      "size": 2085370909,
+      "sha256": "e5e19c19e370a54e20df8e58b2b13ad776d6b2fd073b3b8c175159d2276ec9a6",
+      "blob_id": "374c202f50c21662468ac2e4f6b4ccb9564a412d",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/log.txt",
+      "size": 197576,
+      "sha256": null,
+      "blob_id": "9fde9c2ffa696db1660398ff189d4389087c86db",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/timing_log.jsonl",
+      "size": 270412,
+      "sha256": null,
+      "blob_id": "f6804b447dc0b5bf6c0d0d71907bb7d1afdafbdc",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0050000.pt",
+      "size": 7326399846,
+      "sha256": "b882d70f822e477b817e696b0fd5f675e75f080470a32a8475ef562ece847b39",
+      "blob_id": "385be68bb07ff671aae3a8a12cc18d3f74989c66",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0070000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0070000.pt",
+      "size": 7326399846,
+      "sha256": "5e57bbb40265af30297b2e7d6f6075523c70426c50710d97766ad49538787eea",
+      "blob_id": "33456d42f21c7363a573a626e55301a4f8d9b8b9",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0100000.pt",
+      "size": 7326403110,
+      "sha256": "8ee5a416e2adaca1730bf173a33394b1f00df06785fcad0129d0a6784b3aae8a",
+      "blob_id": "eb193016b82b813c3245c2c95f04c863f8c3a895",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0150000.pt",
+      "size": 7326403110,
+      "sha256": "b5aefbd49b96bdf1d6695d568675e63558ad45603a84ae8a75930d1edb94ba96",
+      "blob_id": "562994a2429ed654c42b7cb4dcad2af6a58ed07c",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0200000.pt",
+      "size": 7326403110,
+      "sha256": "7b2b89219a96c4f152254c391346ca75c4854ddc36ade4b6bfcc64d94fe33ad5",
+      "blob_id": "ec36eef31ade21a84b9b41f4324ccf2c9e405797",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0250000.pt",
+      "size": 7326403110,
+      "sha256": "c2d8e15fccd24bb902184b72d758b1d00add1da6a0d1d2a3ca8236cb679f7292",
+      "blob_id": "ee934f6e6178b32ea2d1041d25d8af71b88f677d",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0300000.pt",
+      "size": 7326403110,
+      "sha256": "1761c9cf3a5b80b3d088257193be42bfa50cd9443293665cbb910e33529786b9",
+      "blob_id": "ff4d631e0968c51f8f033f0b08eeeecda86c031d",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0315000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0315000.pt",
+      "size": 7326403110,
+      "sha256": "06a49fd4e20972f3521ff5195cb0e07d439c2865f6f91e39bd1c1b0a822de748",
+      "blob_id": "ef3de97852e1a6a4c8c1fa38ea77738f8a8486ca",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0325000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0325000.pt",
+      "size": 7326403110,
+      "sha256": "a2f8d7e9a97b0b1438ec1cca2a29dc16dabc8846eea896a9aec97d50c8d683e8",
+      "blob_id": "f380fa38bf6c92d2189e7686ad9e266215afaede",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0335000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0335000.pt",
+      "size": 7326403110,
+      "sha256": "dbd17dfa6d8aa0c2e01990bf6b274ded9fe440528564184cbeccfd63a3d934c2",
+      "blob_id": "17131d89aa3bede0666b7da1cae19cb88e5e75da",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0350000.pt",
+      "size": 7326403110,
+      "sha256": "dad0e9a93bb8b69af674f9359a30697d0f35ef6fbba432ffc80b6b90cc1c94a7",
+      "blob_id": "d24dc66f141f916c9394abbe9e3066d032f5194d",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0400000.pt",
+      "size": 7326403110,
+      "sha256": "8bb347f42d7ccf0524970f22e926c2f67d619cbfb800a2cdaff54a34412d8840",
+      "blob_id": "7dcfe101ceb6db6e2faa3e05de4583c830ae2ada",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0050000.pt",
+      "size": 10800210990,
+      "sha256": "a6506d78022c7a48a61c56e05403c2cea3851f7d94afa71e97ddec4d01ea4be4",
+      "blob_id": "c7033753273a0f22aef94ea42b77839a5037f6b4",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0070000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0070000.pt",
+      "size": 10800210990,
+      "sha256": "6c9208c576d360e33d79fbb97f7a9a92f9a4ac50f8089542efbc497979a86a89",
+      "blob_id": "79dd9e2bdb417d3f60fec53304c9a6072e79eacf",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0100000.pt",
+      "size": 10800214702,
+      "sha256": "898143ff30013d606f90e028cbcfabda093d51c0f9ec5cecb6f8cb904adb0a91",
+      "blob_id": "cb689d1753795a64cdd1083df013969bc9fe43cc",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0150000.pt",
+      "size": 10800214702,
+      "sha256": "e0a0e56fa4db152e56432b2ad01cf7d7abc9e0dfe04fc4543208e46bf2d8ecdc",
+      "blob_id": "40db182e56be176c88ffbb89e8e5a8fa0d3263f8",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0200000.pt",
+      "size": 10800214702,
+      "sha256": "f8127dd9241f1054885a70d8e97593c0b3e95c6acccce98d585a2505f520e823",
+      "blob_id": "47584bf2196cde45d3f1539cceb6ec597c296b71",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0250000.pt",
+      "size": 10800214702,
+      "sha256": "e972f4dcb5e93d0ab6e9f53b76b95118541a969c3c5657a69d35acd0bd744f34",
+      "blob_id": "9d9802d6f9838028c50c66e4622eb1fd7d80514c",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0265000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0265000.pt",
+      "size": 10800214702,
+      "sha256": "c1bf6c5d32f599ac13fdad658c58b5efed1e0572dfc90400d27df7604e02c035",
+      "blob_id": "f4e774cc0f49bdad4c6e6238c8422c0fdabbcf41",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0300000.pt",
+      "size": 10800214702,
+      "sha256": "baa5f8aa14fb4df3dc853bc52aba163e39a6f9842f5923705181f810bb6f936c",
+      "blob_id": "3eae23f08e09cb7b51c51b5dd62648b28ab1aff8",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0315000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0315000.pt",
+      "size": 10800214702,
+      "sha256": "5a959a482915f84b6a6bebcee1bc26e34b8e6a1e9cbf468b95a805e5bae2d065",
+      "blob_id": "0349cc9104771c189354a9f7ad4dc21af0022317",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0325000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0325000.pt",
+      "size": 10800214702,
+      "sha256": "5ecbb8ac24c3b2a3bf00ca35cdf6ef999c982441f6ded315fc44b8dbdbeef08e",
+      "blob_id": "17250b159781792c4f9703c50459393ad66be0cd",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0335000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0335000.pt",
+      "size": 10800214702,
+      "sha256": "440711c1f3abe20e1950b99e6363f20557a986e41f8719f4e05851b3e9c5376f",
+      "blob_id": "73791913cc17cc054c2205f01288fe09dea92758",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0350000.pt",
+      "size": 10800214702,
+      "sha256": "0288f1d4f5aa4dbca6c9893eb5a0fd4867f75dd3f2399ca79d321e69a3a2c704",
+      "blob_id": "b7ba42806ce9368b909434284731159dc4da3c95",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0400000.pt",
+      "size": 10800214702,
+      "sha256": "0833013ea27431f2e1dfa19da5989940e2a9d1f18b4be111827dac8427983306",
+      "blob_id": "48ef21c97caf98fa36a530d2f0b5ddbc5ff7f6b4",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0050000.pt",
+      "size": 2085369117,
+      "sha256": "d2677665ab53cb1c5dfc75971a69216ff20183601c31fdd23506a30330d64921",
+      "blob_id": "e057de6f62c8e60440e9b210185f545c7dc6c867",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0070000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0070000.pt",
+      "size": 2085369117,
+      "sha256": "ba7333ad3019e51893c781e80d061c1f9d6cc7bda5c3984c8da952c01e653de5",
+      "blob_id": "40a646b38c8fdd19a1cec2f0e9e8e84851b37a03",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0100000.pt",
+      "size": 2085371101,
+      "sha256": "8303b69d632a0d438f7ca9e4df2a92ad82045fa30407659e4da5a1af45f9aa14",
+      "blob_id": "2974727088f2a0e84dcbcc0dea655df80d686067",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0150000.pt",
+      "size": 2085371101,
+      "sha256": "cec8abe587ec0c949371a8f82271dee558e3ca9380fc922b1946763d7266ad28",
+      "blob_id": "0c352e95c7c94281d1fdc26e200bec8a9eaccef7",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0200000.pt",
+      "size": 2085371101,
+      "sha256": "445d8dd19d2d8ec79e69ef366a813bdb86237f1454a7b3ed0085518f960df296",
+      "blob_id": "c77c6486d523cbc6697f525b38c40e57e0bac43d",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0250000.pt",
+      "size": 2085371101,
+      "sha256": "5369b4cc6eeaabd104c4bee7d9a81872aa8128de57dc3c66a170450418f3a10e",
+      "blob_id": "192cd33be10f9cbf8f01e0197e8475d897991431",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0300000.pt",
+      "size": 2085371101,
+      "sha256": "446c77e371bca68e4404378c896e02253967d6ba51f08f06514aa081835ea8c8",
+      "blob_id": "125deb7390d11424a1398100cd20e7006212f57b",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0310000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0310000.pt",
+      "size": 2085371101,
+      "sha256": "766cd84989bc83162683c2508602f8e9855aa42056e9bb94668ccfe677b0410e",
+      "blob_id": "f0dccb46663aef8645a9439f58c9040be07f9622",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0325000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0325000.pt",
+      "size": 2085371101,
+      "sha256": "807c99c1feae8d0bed03db8a3e265fd4d74c796a505d64d7888bab3233db5047",
+      "blob_id": "23593a3d5a4dc1ec554bb5b44569cc1dc972f6bd",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0335000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0335000.pt",
+      "size": 2085371101,
+      "sha256": "a48a1e0bfe9c41c373066f5ea4d7111d0fc1cd4984e146999f71841c3439cd62",
+      "blob_id": "e690badd0d333edcea2e824be9ede621e3e88240",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0350000.pt",
+      "size": 2085371101,
+      "sha256": "a43c8a79e9d23dbfa0423f4388fbae66e419428485a8510ccf88ca99301d7f96",
+      "blob_id": "50f4f55256e0f929351431728d156e8affc7c59e",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0400000.pt",
+      "size": 2085371101,
+      "sha256": "4405531f0747862ff9f30879c371cb933d493428b8a5e048d5e8da975744c0da",
+      "blob_id": "96a5d19c33d7885137c600c72c40b72b47348266",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0050000.pt",
+      "size": 7326403110,
+      "sha256": "faeec6fc5498663ff0f0aed5224ddb7115da442daa6a3f6bace5993001b4c229",
+      "blob_id": "16f8f6d69cc8fc9c617ef9bf5b3c1c0906d2fe0b",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0100000.pt",
+      "size": 7326403110,
+      "sha256": "7f6cc4777b458539c1d42dac361f1ec060b2a80015dc7d8cfd22cb72017bc1a5",
+      "blob_id": "0bf38bc20e225fa82c143c7b3ba075267194dca2",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0150000.pt",
+      "size": 7326403110,
+      "sha256": "00d3dc6f296d333d93f04923b67a692d87352ba478765bbf23c56ee1312d6bc7",
+      "blob_id": "603111658d6c166cef163f85425344ee8e3aa710",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0200000.pt",
+      "size": 7326403110,
+      "sha256": "34c138bade73727c744c115354cef1f52d7fd4a84798828b6a2d1618e1170c0e",
+      "blob_id": "edc53690687674e290e7a7f5ad481fc3fe91dcb5",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0250000.pt",
+      "size": 7326403110,
+      "sha256": "1aae4d3f0b38ed43fe5d441b69346a22dbb356d4b9dbdb01e63d5c567bbee8cb",
+      "blob_id": "e78376ad81d4071642551a8cc2627265ae8db31a",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0300000.pt",
+      "size": 7326403110,
+      "sha256": "64b5ff806b7e7f9275d1ff315a9bf060f2fc051708d3fb3e166f758954237995",
+      "blob_id": "e55b3e6e39bacb36b3d69ee776aeec2ef9606a8a",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0350000.pt",
+      "size": 7326403110,
+      "sha256": "01b0f563a7cbe3c2a51a5b231519fe4e28853112d30b2dfedd33f2ef67d5ab36",
+      "blob_id": "ffbb9bcf57830b30acb9888976e75047545ff965",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0400000.pt",
+      "size": 7326403110,
+      "sha256": "386d887cab87a884920f95239eb365ebe5448206ab14919d6c4c05b76c36a16e",
+      "blob_id": "69fa4c5d66c2f4a6a0fb1dc3ab2005b85a15e68a",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0050000.pt",
+      "size": 10800214702,
+      "sha256": "2a9cba0ba1611fc1a22aceb231b2f6749179727d92e8db3d5c9f7901a83ba515",
+      "blob_id": "42c38234d158df9e3d23998bb8e8649c8dfac7b6",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0100000.pt",
+      "size": 10800214702,
+      "sha256": "1acd9d4d25cae940c3a773d7fcad9ad82b679bf3eb3692f3a768e640dd296650",
+      "blob_id": "e368fd29db02035d635d0defc3b05f070ac2a837",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0150000.pt",
+      "size": 10800214702,
+      "sha256": "107206a67757199ec3cb70c9c63e029bbb77b7dbba072b20abd847f6f768f0ea",
+      "blob_id": "df745c2716cc9509693f27f4d2f4eb2c45a3d03f",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0200000.pt",
+      "size": 10800214702,
+      "sha256": "afa2584864813915f0fb84a8252fd859a216ee006a6561a71ce558707653788c",
+      "blob_id": "df4a8d4110c68466e9db4ba6cc5bc74ca91bb4a8",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0250000.pt",
+      "size": 10800214702,
+      "sha256": "b97cfc74127a68809cd8c6cafadf16525e3307ae436a435bdecbb71818651853",
+      "blob_id": "6645d42e6ced6f32955413a42ff260d101020f66",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0300000.pt",
+      "size": 10800214702,
+      "sha256": "38797475102b376f9eb02fe4b50d423fb3557f6f6fe1212f534de6ca40baf834",
+      "blob_id": "81bbc0f26252bf4994ba1dcdacc2206917ea0905",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0350000.pt",
+      "size": 10800214702,
+      "sha256": "2710f588bbc7291adfb951cbd7ceee212d74ad9e2f68196b4847d968168c0007",
+      "blob_id": "86a8685a61ab558336f26909f5a6250a6bf33a58",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0400000.pt",
+      "size": 10800214702,
+      "sha256": "ff6db0a320e401528dc287f38837ed5b34b523e95d9e9d33ee6bc3aeb6599a1f",
+      "blob_id": "56909c1837682b6bf5f1b9726c1980ecd0b72838",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0050000.pt",
+      "size": 2085371101,
+      "sha256": "11c35f04dfdd9372e844b810daf55f200f9254fde0fcf75f803b86a2ae0f3fcf",
+      "blob_id": "2e069f4bcbae0725d1b0d9ca450b24d7f4e5b794",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0100000.pt",
+      "size": 2085371101,
+      "sha256": "1bbc6693db60741848736a2e7c0d11184fdbf9d9399f8466a9e3ffb073210fce",
+      "blob_id": "38ec341393711102786388b45155f798b79d4f28",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0150000.pt",
+      "size": 2085371101,
+      "sha256": "20285d51b25772adea2bcac3edc759f770e9df97fe988f178e756aa698bf21ad",
+      "blob_id": "4899bcb97825a9dd8fc840fb7757210c5630a349",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0200000.pt",
+      "size": 2085371101,
+      "sha256": "f781c2117f717be028b3d9ea46c01ba3c6f930a84f1ebfeccb87382bb80b9a74",
+      "blob_id": "1f32094d6f8a53b45abad28afed8bb2fbe7e569b",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0250000.pt",
+      "size": 2085371101,
+      "sha256": "1b4abd954f42369b9c69e78b90e26f2995579073779715e9e8d2d65ed7f4ec35",
+      "blob_id": "668359ecc0cf5035ab4f08f82b90e0d68fc66359",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0300000.pt",
+      "size": 2085371101,
+      "sha256": "56bfb5e7539f492af454c4502074852bd6f7ef3e357dc60e96962eace664b03b",
+      "blob_id": "1df7f0d9edf5b36f5ea3638fb6c0971720e2aea7",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0350000.pt",
+      "size": 2085371101,
+      "sha256": "122f49f7e0311986fb3489baaf546ae89fa75de6e4136900ce364e0c5d4ee7fa",
+      "blob_id": "43e470a24ce027b203d4a89d00cddc7a382f3414",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0400000.pt",
+      "size": 2085371101,
+      "sha256": "b72d14f2bffba2d91dc44fc04d487ccf9a54e8e590f1ae9e64fce338dacc56e5",
+      "blob_id": "89af55625a3093886d80f940d0e92893a6512c13",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified-preflight-20260815T030102Z/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified-preflight-20260815T030102Z/log.txt",
+      "size": 2682,
+      "sha256": null,
+      "blob_id": "146b9b71e1a3a2f1f2fd15c4e8a5699063bd28bc",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified-preflight-20260815T030102Z/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified-preflight-20260815T030102Z/timing_log.jsonl",
+      "size": 503,
+      "sha256": null,
+      "blob_id": "df5f9babd2d37e4534d9b5fbd20d016c328e92fa",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0050000.pt",
+      "size": 7325871855,
+      "sha256": "72b3e6e3da35ff65f0dc753585ec9a3fe6b27ff4fc45ba6cea813187334f67a0",
+      "blob_id": "704ddd329ed0689edf32a28fb997361e64ea757e",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0100000.pt",
+      "size": 7325871855,
+      "sha256": "81600a273f804a93ecd9a71f6042a4cf24ce306d02fb107151491de0173e8bcd",
+      "blob_id": "57c107b7df84365c7e45f7876f0451015ae567b3",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0150000.pt",
+      "size": 7325871855,
+      "sha256": "d9b7a0af4382cad863a620821b69df0a3bdee7098e7ec19a264453177d1abd7c",
+      "blob_id": "4bcf3fdccc734086db45df1487838cbc5ffa0879",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0200000.pt",
+      "size": 7325871855,
+      "sha256": "34d95db9bb7c8f88a0b844a1102b843be99839b5874f63f7370a1265c21ddcaa",
+      "blob_id": "45f333f3533250f221eea251504e6a8beaf2f230",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0250000.pt",
+      "size": 7325871855,
+      "sha256": "94ff9c5c48f629288448aa215536735cf0355d322161c7a7ddb55073fb70e55b",
+      "blob_id": "6d7cafecc94ddf8a177ba368c01d8368099d92d2",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/log.txt",
+      "size": 287398,
+      "sha256": null,
+      "blob_id": "20334fe7f6b24f26154506b4ae3d820e1f73dfa5",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/timing_log.jsonl",
+      "size": 367825,
+      "sha256": null,
+      "blob_id": "d4681e4fbe0f25c3172c3b294255b3a5c7d81bfa",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0050000.pt",
+      "size": 7325871855,
+      "sha256": "9e489430454927a4b27013ce7ead63161e1ce860c22fe6c210c8e7e8653ee12a",
+      "blob_id": "7328d880dc904a5e2d481b6964bc796821128520",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0100000.pt",
+      "size": 7325871855,
+      "sha256": "2c039a15b3b2fdd6e6c93602f18a696f832184f0e37cc80d0aa9c69bce1cf795",
+      "blob_id": "f9c9773788e2b8f5f5a6c8649d83bf0b43e987d2",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0150000.pt",
+      "size": 7325871855,
+      "sha256": "8fb6e80effd4db7b1d1be420d42f01b8d997e5e8c6593d92c056ea3f59e3320e",
+      "blob_id": "17b1aadf07b7527c6f903b7d52719bf0ad3a41cf",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0200000.pt",
+      "size": 7325871855,
+      "sha256": "5b9724a65c382951145f950e8ce352b686244838f4398e8e36843bf6fd77c6ea",
+      "blob_id": "acba6500db2fd3059518c6b74882431006d31d88",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0250000.pt",
+      "size": 7325871855,
+      "sha256": "54863e1fd60ba1103b40bf1b92a620757da0126bfb05459127c881ef2e677d1a",
+      "blob_id": "07598514d75f25597b15365c1fce53511a136661",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0300000.pt",
+      "size": 7325871855,
+      "sha256": "29399a5e2b683388769c6ac0e2ee62323c2ca01e824b675a72f8c3854f1227a4",
+      "blob_id": "2838920a463b7bec8cfaad54f6d7e4cd8bbebc1d",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0350000.pt",
+      "size": 7325871855,
+      "sha256": "1389e042030fcc2676385766d1fb1e2f5299c7422c7ff15cf6dc7d3e39d1c022",
+      "blob_id": "41c1ddf700211ea00a51baa9ee6658af614cbd58",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0400000.pt",
+      "size": 7325871855,
+      "sha256": "308a00070e5312119d8ca89ddc522d429d7982293705a6ec5ad8fd54edcdbf95",
+      "blob_id": "fd946b6b21dcd8ac54f27bb1b29062e0843832ff",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/log.txt",
+      "size": 388244,
+      "sha256": null,
+      "blob_id": "25a025ebd7df2bf9431e9d66e53e8b389a68bcce",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/timing_log.jsonl",
+      "size": 509946,
+      "sha256": null,
+      "blob_id": "04159a8f23983466048e93ba2d078298cfce84c4",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0050000.pt",
+      "size": 7325871919,
+      "sha256": "95ede778d701cc2547e5b780ad7e9bb966f58752761515ab865aa6bc920b2fb3",
+      "blob_id": "6b872ae33d0e350eb4390751b3f728889f3cea6a",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0100000.pt",
+      "size": 7325871919,
+      "sha256": "b5c63530a577b2ab30e1b7eaca5de47d266c3eec6ab85d818b7dd33261e2be5d",
+      "blob_id": "b80ad0fba8112a018671fb1abb57b83f6396c38d",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0150000.pt",
+      "size": 7325871919,
+      "sha256": "74fdecd3a20831417ae395f579c435e1344ab55f5a57fd4ae7a357daff75041e",
+      "blob_id": "3f3dfbb87073cfe91980377a9a58a7388e1e9a74",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0200000.pt",
+      "size": 7325871919,
+      "sha256": "fc1590ce61cc13c85d83082f3380c7c6600eb94a84dd1953cb96547fc272270f",
+      "blob_id": "05671d512ff75ad4769def9d4de0a3f20853d9a0",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0250000.pt",
+      "size": 7325871919,
+      "sha256": "05eb5897e8ef659709fd3282e146d1497b84f0d14045bf7fea99498d82299089",
+      "blob_id": "c13a5813e322f010d3b3dce38c63f4c328ce6436",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0300000.pt",
+      "size": 7325871919,
+      "sha256": "8f1e0187615a5ae8b1d183f0fc6a761755d349e200f2b95c4c3dcc5f62c51588",
+      "blob_id": "a80035190ed51ba77e6f3126928d3c68c4f61fc0",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0350000.pt",
+      "size": 7325871919,
+      "sha256": "b83482f383960799c827a0ee87fd28d68f009abb94ef608cc34f207ca2e2a9a7",
+      "blob_id": "eadd814f41cc4a53b5733d8a6ddf6f22aee28d5c",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0400000.pt",
+      "size": 7325871919,
+      "sha256": "9c4070c8eb616e4838e575140c869c0a3a9bf57dc2548a9f66eded8cc50f4c30",
+      "blob_id": "9f9a88e9839fe4c51d6c29ab682f561381b87b0a",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/log.txt",
+      "size": 377274,
+      "sha256": null,
+      "blob_id": "f8be3b8dfc3608766bac69bd8ed1712ed987a856",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/timing_log.jsonl",
+      "size": 509625,
+      "sha256": null,
+      "blob_id": "78d4e31573ef0fbf685df8086ce864b1f91c9909",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0050000.pt",
+      "size": 7325868975,
+      "sha256": "17395ecd06190761a7e744a9d1a03edfeefd3e7174024788bcee183a40b7610b",
+      "blob_id": "1ab272d6b0c0362fcad45a596db1bbf6624ed0e0",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0100000.pt",
+      "size": 7325868975,
+      "sha256": "f3cf3207af6fc41cc880020478b56e5bcff93010430a5152b6485aa943095609",
+      "blob_id": "072d1a83556bb60914de703eb947608c03e44cb3",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0150000.pt",
+      "size": 7325868975,
+      "sha256": "c56944d72aa5be25d6b9ebcbf9e244c0db28c9e7aab4c2ad4917f6782fd0a67d",
+      "blob_id": "5ac7c0ab839f0aee83fca64717d7c0cc63133df0",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0200000.pt",
+      "size": 7325871855,
+      "sha256": "6344f0d168e1d371e804c0790f83338cc807ec5ac700f28f971c9d60a8fee2e2",
+      "blob_id": "d21691dedf48ed361fa7813c547d0954c8ca3c8d",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0250000.pt",
+      "size": 7325871855,
+      "sha256": "19f5127dd6b6715d4713cb21e490e13cc113100847cf2bb0425905bbc0903d65",
+      "blob_id": "f3644f41191b6f61b13219a8dcff70b8d9f1f755",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0300000.pt",
+      "size": 7325871855,
+      "sha256": "2d2ba7304892de75b9ca109fe28fecddfa205857bfa9a863e0dd5d568010700b",
+      "blob_id": "ec136dcd6d353fb41fa84630cd94060bcc7dcb76",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0350000.pt",
+      "size": 7325871855,
+      "sha256": "df92cd8eaf5a2601a909b2cedc988678aa292ccab6cea22c35cd09457cf29759",
+      "blob_id": "da3e133837e5649782a78a9942a6064d4c8d8897",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0400000.pt",
+      "size": 7325871855,
+      "sha256": "590ed0b0a79cb882524d7522aff93c82120309384545de37f867799cac3f027f",
+      "blob_id": "e4ac4dc1a71a77aef8deaac7dd82f7510364bc86",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/log.txt",
+      "size": 377195,
+      "sha256": null,
+      "blob_id": "fe3d875bc7411811c3d2837c5fde8e6889b6e406",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/timing_log.jsonl",
+      "size": 509795,
+      "sha256": null,
+      "blob_id": "d7a96d447d964cfd1b8b398603f1337476458c27",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified-preflight-20260815T030102Z/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified-preflight-20260815T030102Z/log.txt",
+      "size": 2592,
+      "sha256": null,
+      "blob_id": "add5bf42b9c2fa60205625eaa65597b0ebd9e4a1",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified-preflight-20260815T030102Z/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified-preflight-20260815T030102Z/timing_log.jsonl",
+      "size": 381,
+      "sha256": null,
+      "blob_id": "636e965033514e990afc11036cd382473a9ef020",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0050000.pt",
+      "size": 7325871855,
+      "sha256": "72c397f757434f25f2738e19433fe5f8b8dea4dfa3db1a6a321ff96d5e7b5ac8",
+      "blob_id": "b36096a31af9451ae37b5629faade926894b48b6",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0100000.pt",
+      "size": 7325871855,
+      "sha256": "413a23e188c60070d02def8c928e205f90698fd1b292841f3be12190e7123e9d",
+      "blob_id": "187a5c11a21879fb36cc4691242fd9ec97476988",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0150000.pt",
+      "size": 7325871855,
+      "sha256": "1ac11e506c85075a26138aaa42f248694d6eb98f2d1d7d7ccbd671adbe4ac0b4",
+      "blob_id": "67dff4c66c9abd7b3197719671ea64b4b9faec82",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0200000.pt",
+      "size": 7325871855,
+      "sha256": "4dbbd2d1f0fe7684d893f89c4574e3276a2f60c6d2c5b1b90c84f660bc5948f0",
+      "blob_id": "6de2da1332734a7bc73cf1db95bd0faa2744b91c",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0250000.pt",
+      "size": 7325871855,
+      "sha256": "7e2f2a5eeb142c957f3244f533060774e2c099855b711d02ed9e43845de0a992",
+      "blob_id": "2258e8ec9e546e579c4cb3577a1be4616a885343",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/log.txt",
+      "size": 287759,
+      "sha256": null,
+      "blob_id": "f2ec2e6e22290bade0446be6c4f13ffb9b51cd07",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/timing_log.jsonl",
+      "size": 368349,
+      "sha256": null,
+      "blob_id": "ead59eb94f83b02c925244b76da708a41e383f80",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0050000.pt",
+      "size": 7325866856,
+      "sha256": "b00723868159454e5c18fcbe200c39031a2609cbeb068e81f694c85e21063a2d",
+      "blob_id": "40a40e1ef2427cdc8ed611161d2d5c2436f0fd99",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0100000.pt",
+      "size": 7325866856,
+      "sha256": "161e7afe954759df6f105b0c7f26e9a5a10a5ab8ec06bbea99dd5adf43f320e4",
+      "blob_id": "d47c35327ad77d57612fbf183637b497391b51b9",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0150000.pt",
+      "size": 7325866856,
+      "sha256": "8e8f7f43ba835cb1579e05b253a554c56bc7df293af4cfb814a67ae85ed7fc5f",
+      "blob_id": "02043affef478d03e10c89a6146edc55e1588a8c",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0200000.pt",
+      "size": 7325866856,
+      "sha256": "195b85c1c4cb2b3268bbe0d0961d73e36915cffa33e8f089ddf085a9f702779f",
+      "blob_id": "f0ea80607815d5d531b7699ac6587ee07ffb5df8",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0250000.pt",
+      "size": 7325866856,
+      "sha256": "3e988d27e7d02bb2db084b48335edf6e8e2831e82e78cfa332bc540aca0ce78a",
+      "blob_id": "aa17cbe60ab9f58efa1dc3883658e26b56a2c417",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0300000.pt",
+      "size": 7325866856,
+      "sha256": "cd9c6d941f1d6e211ab2b9cab567e4b9835769a4a77a950836753f7e9a5d361e",
+      "blob_id": "254117314f401d144bca089c807cc0dd8e70e43f",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0350000.pt",
+      "size": 7325866856,
+      "sha256": "86bcfbaad58b5ae1587ac095070601ebe11659b0a84c1770e7ce302190227760",
+      "blob_id": "d27b406d84927f9b689a436b953bc09382816a51",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0400000.pt",
+      "size": 7325866856,
+      "sha256": "cade56f41317b2d04045431c139b2dd0097346e6392142a39f189274187a0c9f",
+      "blob_id": "46f86bdd43b54c3842c81a0f411618c2b4956ea3",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0450000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0450000.pt",
+      "size": 7325866856,
+      "sha256": "3fc521773e4ac8e4a5a9d70c654d6d1818b6162adc64956339ab0be982eff86a",
+      "blob_id": "10e788c5b293fc2ceb4680b94c18e7ff8cde049e",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0490000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0490000.pt",
+      "size": 7325866856,
+      "sha256": "dcd8e6a16319ff06ba0dbba7824a998ecda000c436cde2a2eda99d99ae3028f5",
+      "blob_id": "63ff47b8cc7f2688d2506746d3f11de8de4bfa4f",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0500000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0500000.pt",
+      "size": 7325866856,
+      "sha256": "08c1ff5fe370248ff257b253d8056e6696a792874f4c33497489fd87f4df9d6c",
+      "blob_id": "ac6a3323b2f88423a9da054ed2db813f7b9cea97",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0535000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0535000.pt",
+      "size": 7325866856,
+      "sha256": "2ff5f8d62fbca2260d551c31aefceea3ae0f829ed119b83557d4b7eeab75cc76",
+      "blob_id": "fe7c8ed0d36c528968ec9d4630b5e077f7e26d93",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0050000.pt",
+      "size": 10797838256,
+      "sha256": "90b9eba57296ff1407de1d238377edf2aefc3149a90e4ba0926908c8d413c7d0",
+      "blob_id": "f1b99a072e5770f64197cfbdbfa9257cd48dbcc7",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0100000.pt",
+      "size": 10797838256,
+      "sha256": "aec7c97f2332a71fc1d89241ff5496d21c12eb43b3f780da87bf1e3d12b78973",
+      "blob_id": "4e1251d93ad8f7ece4ff03a2b23e71dd36ffd490",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0150000.pt",
+      "size": 10797838256,
+      "sha256": "f4354d3c7bd10dbbd076ae0bf2cc87010fbd802c13f193769b19d4f3ccf1479e",
+      "blob_id": "2ed4e3591e82332b6ab3c24f19485cb345572329",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0200000.pt",
+      "size": 10797838256,
+      "sha256": "431dd15f0ba242521a60442feb366fe9d10c8ecb05482383baaea3bc234883c8",
+      "blob_id": "3635d4d84e747e6e82700dc52245ce72c8d592b8",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0250000.pt",
+      "size": 10797841584,
+      "sha256": "18e31856362549c98011411f81fbb33d4b6096f522fd8336c0455dc842aa6c4b",
+      "blob_id": "653520d0f4f6417f5da1ad65bd157dc9097e310c",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0300000.pt",
+      "size": 10797841584,
+      "sha256": "127ca9b41416c551f8df2575de693c51dde22a588ad3be40b62699428d73193f",
+      "blob_id": "7078d140a6163521a3dc59f5f98b89ceee1045ab",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0350000.pt",
+      "size": 10797841584,
+      "sha256": "f1a923d4c7d0ce2e5b91f35faca5491c05f90f9faaee12cacb1eb8a78d00ef7e",
+      "blob_id": "3d33b9215e5aa2157316dcbe20dd01d8f31bfe3c",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0400000.pt",
+      "size": 10797841584,
+      "sha256": "5c90e03baea7d1ed00ab6e9b8251cd66757e4e64548797e6adc14b9800cb361a",
+      "blob_id": "ceb1d3b32de1d70609e4464ba5b92f7a732e9efd",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0450000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0450000.pt",
+      "size": 10797841584,
+      "sha256": "a90fad17f5ca9978690f0b79c615f71b3aee345a458b2287d6d042912620c167",
+      "blob_id": "db6835e97efda1ff1d5927c22b896fb680d62426",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0500000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0500000.pt",
+      "size": 10797841584,
+      "sha256": "0f5b81b7bc970fb09785890771f50ec40ec318ea9cc4743a5adf09aeae01ca3b",
+      "blob_id": "16f1dee3976df5039d81611b418d0eceff5c266d",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0550000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0550000.pt",
+      "size": 10797841584,
+      "sha256": "c240264b47e6dcce8d4c5e9474b532af5abb634115deb0cd1c5a977130c20814",
+      "blob_id": "f2024f93b843a25b01214ccde30429ce83aa9b07",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0600000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0600000.pt",
+      "size": 10797841584,
+      "sha256": "b9a095e15a8c3ed1b9c2116c31d28a9ed811797eba308927b4f12019b2c1e977",
+      "blob_id": "4e389a811a7e5d3333c32207099430076c687681",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0650000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0650000.pt",
+      "size": 10797841584,
+      "sha256": "9b37d05ec0a8542f72184634de0ce0966ca805360f9d8512286c886c2ac21a7b",
+      "blob_id": "71144308e4d54ece552bf448b1043c75fe068fc4",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0700000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0700000.pt",
+      "size": 10797841584,
+      "sha256": "a7b526d8634673621bd51edb8e0f4289062844f1919d830489cef9c2b26da803",
+      "blob_id": "ca9731032b9e00ae422ba2f2f69eca2e24a28938",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0750000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0750000.pt",
+      "size": 10797841584,
+      "sha256": "b078140917ca2af7f7c74580a208f1248c74ed0fdb696358aac616d0b019d3d5",
+      "blob_id": "2e43289f0502583b141f6674d678e6757cf87538",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0765000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0765000.pt",
+      "size": 10797841584,
+      "sha256": "317f79b9324b973b3978932e19fabe7d1f6ad0e5e83331d779234de60c53a542",
+      "blob_id": "271bf64afa6da96cff6bb21134d34007c57bd447",
+      "kind": "checkpoint"
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_50K.txt",
+      "new_path": "results/valid-0045/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-50000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "size": 34499,
+      "sha256": null,
+      "blob_id": "97646c8f556caf614e1d5bcfa2a9ebc4ee04af71",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_100K.txt",
+      "new_path": "results/valid-0046/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-100000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "size": 39193,
+      "sha256": null,
+      "blob_id": "5a9083bed1ef4933e6caab1cbe984d8e8878c875",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_150K.txt",
+      "new_path": "results/valid-0047/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-150000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "size": 31508,
+      "sha256": null,
+      "blob_id": "26fe48065dca8d743009f56e08b57349a796f500",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_200K.txt",
+      "new_path": "results/valid-0048/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-200000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "size": 34501,
+      "sha256": null,
+      "blob_id": "5b98e1d1f88c2ee0b36435cee2d3b47cf0ada181",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_250K.txt",
+      "new_path": "results/valid-0049/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-250000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "size": 34501,
+      "sha256": null,
+      "blob_id": "dc55824082964e46677a139846b9c5df9f7fa3fa",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_300K.txt",
+      "new_path": "results/valid-0050/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-300000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "size": 31104,
+      "sha256": null,
+      "blob_id": "12d8a6b89661bf66507d5dd9bde851d4dc38e0fe",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_350K.txt",
+      "new_path": "results/valid-0051/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-350000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "size": 34497,
+      "sha256": null,
+      "blob_id": "80c63cda760b86d680fe3ce85567adc635b66574",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_400K.txt",
+      "new_path": "results/valid-0052/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "size": 27857,
+      "sha256": null,
+      "blob_id": "bf214011826aac5190dee1749eec89b55e9afe1d",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_500K.txt",
+      "new_path": "results/valid-0053/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-500000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "size": 34499,
+      "sha256": null,
+      "blob_id": "1438bdb9343675c64f21beb038b9405a81beeb40",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/dit_50K.txt",
+      "new_path": "results/valid-0054/dit-ddpm-xl2__train_r32-1000__ckpt-50000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "size": 58993,
+      "sha256": null,
+      "blob_id": "622e9eb47d70ee6fccad19217260e1ffca9469f4",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/dit_100K.txt",
+      "new_path": "results/valid-0055/dit-ddpm-xl2__train_r32-1000__ckpt-100000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "size": 74947,
+      "sha256": null,
+      "blob_id": "0ed403016da7b837e26c816297f8632aa235a5f3",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/dit_150K.txt",
+      "new_path": "results/valid-0056/dit-ddpm-xl2__train_r32-1000__ckpt-150000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "size": 206468,
+      "sha256": null,
+      "blob_id": "6d95eb6ee02c2d312a99073f451f4070f5c091f7",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/dit_200K.txt",
+      "new_path": "results/valid-0057/dit-ddpm-xl2__train_r32-1000__ckpt-200000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "size": 58998,
+      "sha256": null,
+      "blob_id": "16c3a30c2177bf1d2e1be86c2e120aba8b063059",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/dit_250K.txt",
+      "new_path": "results/valid-0058/dit-ddpm-xl2__train_r32-1000__ckpt-250000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "size": 58996,
+      "sha256": null,
+      "blob_id": "62ed1b35faf29542b963f1a0b09bad252bbb09fe",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/dit_300K.txt",
+      "new_path": "results/valid-0059/dit-ddpm-xl2__train_r32-1000__ckpt-300000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "size": 58997,
+      "sha256": null,
+      "blob_id": "31c01240e26684e4bdbb08e0ca681c87ddf7dbc7",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/dit_350K.txt",
+      "new_path": "results/valid-0060/dit-ddpm-xl2__train_r32-1000__ckpt-350000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "size": 58993,
+      "sha256": null,
+      "blob_id": "f1f0292484129e4060743d51d3a815211a87de62",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/dit400k_250step_ddpm_cfg0.txt",
+      "new_path": "results/valid-0061/dit-ddpm-xl2__train_r32-1000__ckpt-400000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "2cdc91dd1bd7bca8a588822f34d248928c430212",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/dit_450K.txt",
+      "new_path": "results/valid-0062/dit-ddpm-xl2__train_r32-1000__ckpt-450000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "size": 39192,
+      "sha256": null,
+      "blob_id": "6ead2e86d80c6b0af1d3ee9cbb53f9af03f8cb75",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_exp04/dit_500K.txt",
+      "new_path": "results/valid-0063/dit-ddpm-xl2__train_r32-1000__ckpt-500000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "size": 58997,
+      "sha256": null,
+      "blob_id": "60e24f29ee8895bd7075de6b2bdc22772eae9cc1",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/dit400k_250step_ddpm_cfg1.25.txt",
+      "new_path": "results/valid-0064/dit-ddpm-xl2__train_r32-1000__ckpt-400000__ddpm__sample_r32-250__cfg-1.25__not_applicable.txt",
+      "size": 60280,
+      "sha256": null,
+      "blob_id": "6a94751e61472b66236fc5f0cc977a5322111116",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_dit500k/dit500k_250step_ddpm_cfg1.0.txt",
+      "new_path": "results/valid-0065/dit-ddpm-xl2__train_r32-1000__ckpt-500000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "size": 39192,
+      "sha256": null,
+      "blob_id": "7b119fdbc68b0e43443b24db3bc7fac79c5ec3a7",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_dit500k/dit500k_250step_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0066/dit-ddpm-xl2__train_r32-1000__ckpt-500000__ddpm__sample_r32-250__cfg-1.5__not_applicable.txt",
+      "size": 34501,
+      "sha256": null,
+      "blob_id": "64a615d03b9d8ecb4bc29ac24e7e400da180ffca",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms300_400k_80_80_90_ddpm_cfg15_bilinear.txt",
+      "new_path": "results/valid-0067/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh__clean-bilinear.txt",
+      "size": 59198,
+      "sha256": null,
+      "blob_id": "9602082df9b7998b7f7dbb6503615f98ef526126",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms300_400k_80_80_90_dpm1_cfg15_bilinear.txt",
+      "new_path": "results/valid-0068/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm1__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh__clean-bilinear.txt",
+      "size": 59659,
+      "sha256": null,
+      "blob_id": "11baf77d4eedd3689556d9b80e3fdd16dc02c388",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_120-120-160_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0069/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-160_r16-120_r32-120__cfg-1.5__fresh.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "98f6b5ce61a537b4829fefd5621a8e8a574e538e",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_130-60-60_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0070/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-60_r16-60_r32-130__cfg-1.5__fresh.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "453574a684664bec5e79c48c46e9afa58a28870e",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_150-50-50_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0071/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-50_r16-50_r32-150__cfg-1.5__fresh.txt",
+      "size": 60276,
+      "sha256": null,
+      "blob_id": "8d8289877500add79b4ec33df96ef60c12cf3a77",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_151010_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0072/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-10_r16-10_r32-15__cfg-1.5__fresh.txt",
+      "size": 60279,
+      "sha256": null,
+      "blob_id": "10bb86e86298d37f190fedb7d14dbdc39f96f515",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_200-200-200_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0073/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-200_r16-200_r32-200__cfg-1.5__fresh.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "e94c5b03a3cab52ee25996b67d2bec37a9a9a15e",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_252020_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0074/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-20_r16-20_r32-25__cfg-1.5__fresh.txt",
+      "size": 60276,
+      "sha256": null,
+      "blob_id": "a67228935bd0b1a978bf73992c4938974aa40810",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_40-30-30_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0075/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-30_r16-30_r32-40__cfg-1.5__fresh.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "27563220ffbba407d7ab9ba44855001878bc8bb2",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_454040_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0076/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-40_r16-40_r32-45__cfg-1.5__fresh.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "0da28fc4bf2668a766a897ddeec431db78e0558e",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_50-40-40_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0077/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-40_r16-40_r32-50__cfg-1.5__fresh.txt",
+      "size": 60276,
+      "sha256": null,
+      "blob_id": "0cd669b5f8a1811d0fb27795d4ce1303be9f1ee2",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_60-70-120_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0078/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-120_r16-70_r32-60__cfg-1.5__fresh.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "ebcb2d86cb95f3571228ee3bcde751dc15469d82",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_70-80-100_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0079/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-100_r16-80_r32-70__cfg-1.5__fresh.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "25a246111e56b3b95de18d78d0e5c9ea9bb32674",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_908080_ddpm_cfg1_bilinear.txt",
+      "new_path": "results/valid-0080/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh__clean-bilinear.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "e5efda869cdede9986e29f406bcfb008aea66716",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/multistage300300400_380k_908080_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0081/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh.txt",
+      "size": 60276,
+      "sha256": null,
+      "blob_id": "d5a078153717b4ce16e6e7d9af06bac832e2be6d",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/multistage300300400_380k_908080_ddpm_cfg1.txt",
+      "new_path": "results/valid-0082/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "size": 60275,
+      "sha256": null,
+      "blob_id": "5168de541ccfe764295423f52f93e88a903d5363",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_130-60-60_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0083/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-60_r16-60_r32-130__cfg-1.5__fresh.txt",
+      "size": 60276,
+      "sha256": null,
+      "blob_id": "51e44cbf83e35840a38354f33d57b8e7a2c01d01",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_150-50-50_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0084/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-50_r16-50_r32-150__cfg-1.5__fresh.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "2751284743f9a53fa06c88f348d4d98de62d1e6f",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_151010_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0085/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-10_r16-10_r32-15__cfg-1.5__fresh.txt",
+      "size": 60277,
+      "sha256": null,
+      "blob_id": "49ed571596fd0e51f06c996368066c04b1704635",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_151010_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0086/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-10_r16-10_r32-15__cfg-1.5__fresh.txt",
+      "size": 60280,
+      "sha256": null,
+      "blob_id": "801018b69dd61b6adbb17a770e3ddcfec47c4c5f",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_252020_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0087/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-20_r16-20_r32-25__cfg-1.5__fresh.txt",
+      "size": 60272,
+      "sha256": null,
+      "blob_id": "ec799bf57d727028c50bde2868eb38bb7b1ddd4b",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_252020_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0088/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-20_r16-20_r32-25__cfg-1.5__fresh.txt",
+      "size": 60276,
+      "sha256": null,
+      "blob_id": "11f417e68ef65bda3e6ee09d9c1fd97084b0ca36",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_454040_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0089/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-40_r16-40_r32-45__cfg-1.5__fresh.txt",
+      "size": 60276,
+      "sha256": null,
+      "blob_id": "3981213e306654d17abf58b741f84794867c4380",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_454040_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0090/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-40_r16-40_r32-45__cfg-1.5__fresh.txt",
+      "size": 60273,
+      "sha256": null,
+      "blob_id": "aa6a636e03b42ece125acad5809b5165b51fa2c0",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_60-70-120_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0091/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-120_r16-70_r32-60__cfg-1.5__fresh.txt",
+      "size": 60275,
+      "sha256": null,
+      "blob_id": "208cacde1e3cae819bbe942817ab98e28ff11a36",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_70-80-100_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0092/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-100_r16-80_r32-70__cfg-1.5__fresh.txt",
+      "size": 60276,
+      "sha256": null,
+      "blob_id": "9e0b17c8a7e3edbd2e844781e11f7758741a86a4",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg1.5_split200300500.txt",
+      "new_path": "results/valid-0093/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh__infer_r8-500_r16-300_r32-200.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "898e7ad2971d995f181907beeb05ef8691ba8d46",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg1.5_split250250500.txt",
+      "new_path": "results/valid-0094/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh__infer_r8-500_r16-250_r32-250.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "59afe0a7675a534c0b93e7f4b7504f8a298cea9e",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg1.5_split400300300.txt",
+      "new_path": "results/valid-0095/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh__infer_r8-300_r16-300_r32-400.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "c223b4425e8c57d86124b741d7fc0f629eb45c6b",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg1_bilinear.txt",
+      "new_path": "results/valid-0096/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh__clean-bilinear.txt",
+      "size": 60277,
+      "sha256": null,
+      "blob_id": "eef2cb4fde1974237b936ef36f6a7c393b501c1b",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg2.0.txt",
+      "new_path": "results/valid-0097/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-2.0__fresh.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "a083434dd29f23fe52b8a206c33766dd5dfaae09",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg2.5.txt",
+      "new_path": "results/valid-0098/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-2.5__fresh.txt",
+      "size": 60278,
+      "sha256": null,
+      "blob_id": "ea4930733328c44f7c4a7672a221a399d2197247",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg4.0.txt",
+      "new_path": "results/valid-0099/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-4.0__fresh.txt",
+      "size": 60279,
+      "sha256": null,
+      "blob_id": "cfde2dd48d257d997325ea3a06d6c3d17a76bc74",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0100/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh.txt",
+      "size": 60274,
+      "sha256": null,
+      "blob_id": "2805f091cfb54d2718d056476be429a7ea32cb59",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results_unified/unifiedXL300300400_400000_908080_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0101/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh.txt",
+      "size": 60277,
+      "sha256": null,
+      "blob_id": "24cb3efcc6d3ab05581bfe2c14e9b0ceaba320e1",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results/ms100300600_400k_808090_ddpm_cfg1_noisefilling.txt",
+      "new_path": "results/valid-0108/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "size": 59984,
+      "sha256": null,
+      "blob_id": "e81579a267ba63db2d35e79992fc42619391adec",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results/ms100300600_400k_808090_ddpm_cfg15_noisefilling.txt",
+      "new_path": "results/valid-0109/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh.txt",
+      "size": 59362,
+      "sha256": null,
+      "blob_id": "13791e48a87e2b728b8e8e64f0d0eca6112dfdcc",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results/ms100300600_8x8continued600k_16x32orig400k_808090_ddpm_cfg1_noisefilling.txt",
+      "new_path": "results/valid-0110/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__ckpt-mixed-400K-600K__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "size": 57972,
+      "sha256": null,
+      "blob_id": "49d8d7bf6d77b40276d1c6dc96e11629f31740e7",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results/ms100300600_8x8continued600k_16x32orig400k_808090_ddpm_cfg15_noisefilling.txt",
+      "new_path": "results/valid-0111/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__ckpt-mixed-400K-600K__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh.txt",
+      "size": 57974,
+      "sha256": null,
+      "blob_id": "a15520a2e678ead6c3912e42c79dc37639c17e4a",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results/rdd_fm_unified_l_corrected_300300400_convergence/metrics/rddfm_unifiedL_corrected_300300400_ckpt000050k_808090_euler_cfg1_noisefilling.txt",
+      "new_path": "results/valid-0115/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300__ckpt-50000__euler__sample_r8-80_r16-80_r32-90__cfg-1.0__noise_filling.txt",
+      "size": 57974,
+      "sha256": null,
+      "blob_id": "c95bbaadcf002a78ac18e543ebf1c90434509989",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results/rdd_fm_unified_l_corrected_400300300_convergence/metrics/rddfm_unifiedL_corrected_400300300_ckpt000050k_808090_euler_cfg1_noisefilling.txt",
+      "new_path": "results/valid-0116/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400__ckpt-50000__euler__sample_r8-80_r16-80_r32-90__cfg-1.0__noise_filling.txt",
+      "size": 57974,
+      "sha256": null,
+      "blob_id": "e0b85ef1641a85dcef98afb6748dfe068a16cb98",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results/rddfm_unixl_v2_400k_808090_euler_cfg1_noisefilling.txt",
+      "new_path": "results/valid-0112/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400__ckpt-400000__euler__sample_r8-80_r16-80_r32-90__cfg-1.0__noise_filling.txt",
+      "size": 57972,
+      "sha256": null,
+      "blob_id": "5c53ec2d7f3dba44f08b061c4da4ae1971e9bbb3",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results/rddfm_unixl_v2_400k_808090_euler_cfg15_noisefilling.txt",
+      "new_path": "results/valid-0113/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400__ckpt-400000__euler__sample_r8-80_r16-80_r32-90__cfg-1.5__noise_filling.txt",
+      "size": 57973,
+      "sha256": null,
+      "blob_id": "a2940fe8bbe23e0babc17e8c970c091f26d0e5f0",
+      "kind": "metric"
+    },
+    {
+      "old_path": "eval_results/rddfm_unixl_v2_400k_404045_midpoint_cfg15_noisefilling.txt",
+      "new_path": "results/valid-0114/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400__ckpt-400000__midpoint__sample_r8-40_r16-40_r32-45__cfg-1.5__noise_filling.txt",
+      "size": 57974,
+      "sha256": null,
+      "blob_id": "3f9ddd333565d79fe223888a99e093ccb2f678ff",
+      "kind": "metric"
+    },
+    {
+      "old_path": "2d/exp/diagnose_teacher_unified_l_300300400_400k_ddpm250.jsonl",
+      "new_path": "source/legacy/2d/exp/diagnose_teacher_unified_l_train_r8-400_r16-300_r32-300_400k_ddpm250.jsonl",
+      "size": 417,
+      "sha256": null,
+      "blob_id": "340d218794e598a089a2bb8249f32f25be0394d0",
+      "kind": "archived_source"
+    },
+    {
+      "old_path": "2d/exp/imagenet256_multistage300300400_400000_908080step_ddpm_cfg115.jsonl",
+      "new_path": "source/legacy/2d/exp/imagenet256_multistagetrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.jsonl",
+      "size": 1086,
+      "sha256": null,
+      "blob_id": "4fa2bf971e4d63308500c6b9b8a0e26d7492e5c2",
+      "kind": "archived_source"
+    },
+    {
+      "old_path": "2d/exp/imagenet256_unifiedL300300400_400000_908080step_ddpm_cfg115.jsonl",
+      "new_path": "source/legacy/2d/exp/imagenet256_unifiedLtrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.jsonl",
+      "size": 972,
+      "sha256": null,
+      "blob_id": "3003432188b28c3c6712d97522cb4b8e7f8bcc10",
+      "kind": "archived_source"
+    },
+    {
+      "old_path": "2d/exp/imagenet256_unifiedXL300300400_400000_908080step_ddpm_cfg115.jsonl",
+      "new_path": "source/legacy/2d/exp/imagenet256_unifiedXLtrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.jsonl",
+      "size": 978,
+      "sha256": null,
+      "blob_id": "4866dc2ccbddceaaee71b520aebab096d0926b4c",
+      "kind": "archived_source"
+    },
+    {
+      "old_path": "2d/exp/ms100300600_400k_noisefilling.jsonl",
+      "new_path": "source/legacy/2d/exp/mstrain_r8-600_r16-300_r32-100_400k_noisefilling.jsonl",
+      "size": 1075,
+      "sha256": null,
+      "blob_id": "71048d1269f50cea5f24e451dc11f68ea1840617",
+      "kind": "archived_source"
+    }
+  ],
+  "policy": "Move only identified checkpoint groups, single-result logs and identified source entry points. Original revision remains immutable; grouped raw sources retain legacy names. Unidentified records are not assigned guessed configurations.",
+  "applied_revision": "f64e080c0ccc49af15a65c67aa8fd4ef0f983859"
+}

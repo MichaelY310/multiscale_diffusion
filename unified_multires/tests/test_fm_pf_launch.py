@@ -48,6 +48,28 @@ def test_asset_integrity_and_fair_config(tmp_path):
     assert pf['method']['model']['args']['architecture'] == {**fm['model']['args'], 'num_classes':1000}
 
 
+def test_fm_envelope_reuse_preserves_ema_identity(tmp_path):
+    # The same source checkpoint contains both model and EMA. Its source hash
+    # alone cannot identify which field an existing inference envelope uses.
+    dest = tmp_path/'fm_ema_inference.pt'
+    dest.write_bytes(b'local inference envelope fixture')
+    sidecar = dict(
+        source_sha256=workflow.read(BUNDLE/'assets.lock.json')['fm']['files'][0]['sha256'],
+        output_sha256=workflow.sha256(dest), selected_weights='model', source_step=400000)
+    path = dest.with_suffix('.pt.import.json')
+    workflow.write(path, sidecar)
+    with pytest.raises(ValueError, match='original EMA'):
+        workflow.ensure_fm_envelope(tmp_path)
+    sidecar['selected_weights'] = 'ema'
+    sidecar['source_step'] = 30000
+    workflow.write(path, sidecar)
+    with pytest.raises(ValueError, match='400K'):
+        workflow.ensure_fm_envelope(tmp_path)
+    sidecar['source_step'] = 400000
+    workflow.write(path, sidecar)
+    assert workflow.ensure_fm_envelope(tmp_path) == dest
+
+
 def test_fm_sampling_pixels_resume_and_corruption(tmp_path, codec):
     from umdiff.cli import make_method
     from umdiff.randomness import RandomStream

@@ -1,0 +1,129 @@
+{
+  "status": "passed",
+  "device": "cpu",
+  "equal_coefficient_boundary_checks": [
+    {
+      "coarse_grid": 8,
+      "alpha": 0.3,
+      "sigma": 0.7,
+      "max_abs_error": 0.0,
+      "byte_exact": true,
+      "rng_equal": true
+    },
+    {
+      "coarse_grid": 16,
+      "alpha": 0.6,
+      "sigma": 0.4,
+      "max_abs_error": 0.0,
+      "byte_exact": true,
+      "rng_equal": true
+    }
+  ],
+  "fm_clean_oracle_checks": [
+    {
+      "stage": 0,
+      "times": [
+        0.0,
+        0.15,
+        0.3
+      ],
+      "oracle_clean_max_abs_error": 4.85722573273506e-16
+    },
+    {
+      "stage": 1,
+      "times": [
+        0.3,
+        0.44999999999999996,
+        0.6
+      ],
+      "oracle_clean_max_abs_error": 8.881784197001252e-16
+    },
+    {
+      "stage": 2,
+      "times": [
+        0.6,
+        0.8,
+        1.0
+      ],
+      "oracle_clean_max_abs_error": 4.440892098500626e-16
+    }
+  ],
+  "fm_training_entry_checks": [
+    {
+      "stage": 1,
+      "entry_formula_max_abs_error": 2.220446049250313e-16
+    },
+    {
+      "stage": 2,
+      "entry_formula_max_abs_error": 3.0531133177191805e-16
+    }
+  ],
+  "actual_clocks": [
+    {
+      "grid": 8,
+      "ddpm_model_times": [
+        999,
+        600
+      ],
+      "ddpm_entry_alpha": 0.03949020667518059,
+      "ddpm_entry_sigma": 0.9992199575552679,
+      "ddpm_exit_alpha": 0.993955757590874,
+      "ddpm_exit_sigma": 0.10978138253798708,
+      "training_sampling_alpha_max_abs_error": 3.3306690738754696e-16,
+      "fm_times": [
+        0.0,
+        0.3
+      ],
+      "fm_exit_alpha": 0.3,
+      "fm_exit_sigma": 0.7
+    },
+    {
+      "grid": 16,
+      "ddpm_model_times": [
+        599,
+        300
+      ],
+      "ddpm_entry_alpha": 0.2555049780750457,
+      "ddpm_entry_sigma": 0.966807740028425,
+      "ddpm_exit_alpha": 0.9969573832536796,
+      "ddpm_exit_sigma": 0.07794854697796476,
+      "training_sampling_alpha_max_abs_error": 2.220446049250313e-16,
+      "fm_times": [
+        0.3,
+        0.6
+      ],
+      "fm_exit_alpha": 0.6,
+      "fm_exit_sigma": 0.4
+    },
+    {
+      "grid": 32,
+      "ddpm_model_times": [
+        299,
+        0
+      ],
+      "ddpm_entry_alpha": 0.6296187413492808,
+      "ddpm_entry_sigma": 0.7769042672953647,
+      "ddpm_exit_alpha": 0.9999499987499375,
+      "ddpm_exit_sigma": 0.009999999999999449,
+      "training_sampling_alpha_max_abs_error": 0.0,
+      "fm_times": [
+        0.6,
+        1.0
+      ],
+      "fm_exit_alpha": 1.0,
+      "fm_exit_sigma": 0.0
+    }
+  ],
+  "source_sha256": {
+    "2d/sample_fid_unified.py": "aa613a575aa343901667299e10944284c395444da17e46fc5ba5308e39e8a2eb",
+    "unified_multires/configs/rdd_reproduction/rdd_ddpm_xl_300_300_400_ddpm_cfg1p0_fresh.json": "d6bb04d8a6654f9dbfe0ff71d2c54918bec0835e67b2ea74f6321d5153b8d775",
+    "diffusion/flow_matching_with_drift.py": "19644ccba17326edf555297cab481cc65d819b2b973473bc0d71a802ed27b8a6",
+    "diffusion/respace.py": "e38ba30a8600c780ebf1cc5c8882fe4c498f0a2d1d19c7b409333c744b657564",
+    "diffusion/gaussian_diffusion_with_drift.py": "62539d3a115653e6aab9ab7eb8566bbcffefa35a7cc5f5aa2c4ecb31a5a098b0",
+    "unified_multires/umdiff/rdd_native.py": "25725bba525d8fa27def8d474e16f7898ac130044435fee9f3257ad8a940913f",
+    "unified_multires/umdiff/rdd_fm_native.py": "8c9d7e36ccbe42c3ad1d424bf8e9f8d2f51e6fe5782304832a2472c2f9d574ed",
+    "unified_multires/tools/audit_rdd_fresh_semantics.py": "462079bd5b10dca003b4355d22ca59123f87f9af477cf613f86e9a5f8ed71c8f"
+  },
+  "scope": "Boundary kernel algebra and true coefficients; no learned weights, GPU, complete sampling or FID rerun.",
+  "conclusion": "Same fresh operation for equal coefficients; actual DDPM/FM noise clocks differ. Legacy DDPM cumulative alpha resets per stage in training and sampling."
+}

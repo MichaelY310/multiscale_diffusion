@@ -4,13 +4,13 @@
     {
       "id": "rdd_ddpm_xl_legacy",
       "suite": "main",
-      "file": "main/rdd_ddpm_xl_legacy.json",
+      "file": "main/rdd_ddpm_xl_legacy__train_r8-400_r16-300_r32-300__sample_r8-90_r16-80_r32-80.json",
       "sha256": "218d740a2ba8abac60282a2fde309271a313806c027f418addf494caa9ddad1e"
     },
     {
       "id": "ddpm_xl_fixed",
       "suite": "main",
-      "file": "main/ddpm_xl_fixed.json",
+      "file": "main/ddpm_xl_fixed__train_r32-1000__sample_r32-250.json",
       "sha256": "30680befe77dbee10e8e101f5fc28dd4d104400ec5fd34401b31c31823b02a7b"
     },
     {
@@ -76,7 +76,7 @@
     {
       "id": "rdd_ddpm_xl_legacy",
       "suite": "controlled",
-      "file": "controlled/rdd_ddpm_xl_legacy.json",
+      "file": "controlled/rdd_ddpm_xl_legacy__train_r8-400_r16-300_r32-300__sample_r8-90_r16-80_r32-80.json",
       "sha256": "05bfb589a455c396635eca156e65cfe1c81e5c535d2f3aed7054a3eefb1aacd0"
     },
     {
@@ -125,7 +125,7 @@
     "joint_band_controls": "DFM/LapFlow/Haar are main joint-band rows; not falsely included in the common scalar-clock controlled group."
   },
   "rdd_reference": {
-    "config": "configs/paired_experiments/rdd_unified_xl_300_300_400.json",
+    "config": "configs/paired_experiments/rdd_unified_xl__train_r8-400_r16-300_r32-300__sample_r8-100_r16-75_r32-75.json",
     "sha256": "395e022f9332ccae828294b74d9a11a3bc6055fd7c95c44f10a7f6daf0b30d89",
     "native_trainer": "multiscale_diffusion/2d/train_RDD_imagenet256_unified.py",
     "legacy_world_size": 8,

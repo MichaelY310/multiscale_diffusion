@@ -122,7 +122,7 @@
 
 共同数据/训练：ImageNet原始256 RGB，ADM中心裁剪与随机翻转；本地`stabilityai/sd-vae-ft-ema`，每次访问重新posterior sample并乘0.18215，得到4×32×32 latent；FP32/允许TF32，AdamW lr1e-4、betas(.9,.999)、eps1e-8、wd0、无LR衰减/梯度裁剪，EMA0.9999，global batch256，400,000 updates，seed0，每5000步覆盖保存当前checkpoint。默认micro32、累积8，单进程；改变micro会改变随机数消费与求和顺序。没有缓存固定的一次posterior sample来冒充旧RDD配方。
 
-**RDD保留项**：原模型、1000步linear beta、fine→coarse `stage_lengths=[300,300,400]`、三个阶段各自取t/noise、`sum_stage_means`、joint effective-epsilon/learned-variance语义、optimizer/EMA数学超参数。采样以实际旧400K实验为锚，coarse→fine DDPM/jump `[90,80,80]`、fresh boundary、CFG1（另可报告旧CFG1.5）。旧`paired_experiments`模板中的DPM2/100-75-75不是这一锚点。原始证据是`multiscale_diffusion/2d/exp/imagenet256_unifiedXL300300400_400000_908080step_ddpm_cfg115.jsonl`。
+**RDD保留项**：原模型、1000步linear beta、fine→coarse `stage_lengths=[300,300,400]`、三个阶段各自取t/noise、`sum_stage_means`、joint effective-epsilon/learned-variance语义、optimizer/EMA数学超参数。采样以实际旧400K实验为锚，coarse→fine DDPM/jump `[90,80,80]`、fresh boundary、CFG1（另可报告旧CFG1.5）。旧`paired_experiments`模板中的DPM2/100-75-75不是这一锚点。原始证据是`multiscale_diffusion/2d/exp/imagenet256_unifiedXLtrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.jsonl`。
 
 **RDD执行边界**：历史启动是8 ranks×32，本入口是单进程32×累积8，reader也不同。因此算法/模型/有效batch不变，但不是历史8卡随机轨迹和浮点all-reduce的逐位重放。本轮没有改原RDD训练器、DiT或采样器源码。若需要重放历史进程拓扑，应使用保留的原训练器，不能把本入口称作原8卡CLI。
 
@@ -132,8 +132,8 @@
 
 |JSON文件|尺度／采样预算|与原版的有意差异|
 |---|---|---|
-|`rdd_ddpm_xl_legacy.json`|8/16/32；90+80+80 DDPM|保留旧RDD算法与网络；上述执行拓扑差异|
-|`ddpm_xl_fixed.json`|32；250 ancestral|普通DDPM基线，使用RDD的RoPE DiT和learned variance|
+|`rdd_ddpm_xl_legacy__train_r8-400_r16-300_r32-300__sample_r8-90_r16-80_r32-80.json`|8/16/32；90+80+80 DDPM|保留旧RDD算法与网络；上述执行拓扑差异|
+|`ddpm_xl_fixed__train_r32-1000__sample_r32-250.json`|32；250 ancestral|普通DDPM基线，使用RDD的RoPE DiT和learned variance|
 |`flow_xl_fixed.json`|32；250 Euler|普通线性velocity flow基线，同DiT|
 |`fdm_xl_5_cosine_assumption.json`|2/4/8/16/32；250按区间分配|ADM U-Net→DiT、pixel DS→latent DS；论文cosine打印公式端点不一致，本文件明确假设补π/2，不称原作者准确数字|
 |`fdm_xl_5_linear.json`|同上；每段50|使用论文允许且无歧义的linear划分；两份f-DM不是两个独立方法；epsilon/residual、VP rescaling、P2和随机边界保留|
@@ -160,7 +160,7 @@ main固定400K×256的**数据暴露预算**，不是已经找到各方法最优
 ```bash
 cd /scr/yuheng/bugswarm/rdd_workspace_20261005
 source unified_multires/activate_cpu.sh
-EXP=unified_multires/configs/comparison_imagenet256/main/rdd_ddpm_xl_legacy.json
+EXP=unified_multires/configs/comparison_imagenet256/main/rdd_ddpm_xl_legacy__train_r8-400_r16-300_r32-300__sample_r8-90_r16-80_r32-80.json
 
 # 仅检查配置，不加载数据或XL权重。
 "$UMDIFF_PYTHON" -m umdiff.experiment plan --config "$EXP"

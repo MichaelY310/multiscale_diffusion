@@ -1,0 +1,43 @@
+{
+  "origin": "User-supplied narrative, not raw remote source bundle or logs",
+  "attachment_sha256": "e9f6f5ee03839aec7a4ddb95845b5658f3af625b0790d68e6cdf5086ce370816",
+  "review_bundle_available_locally": false,
+  "local_arithmetic_checks": {
+    "batches": 3125,
+    "batches_by_rank": {
+      "0": 782,
+      "1": 781,
+      "2": 781,
+      "3": 781
+    },
+    "unique_global_indices": 50000,
+    "samples_per_class": 50,
+    "sampled_batch_ranks": {
+      "0": 0,
+      "25104": 1,
+      "37600": 2,
+      "49968": 3
+    }
+  },
+  "reported_full_50k_metric_absolute_differences": {
+    "FID": 4.769299998486076e-06,
+    "sFID": 3.5605600000820914e-05,
+    "IS": 1.5258699988862645e-05,
+    "Precision": 0.0,
+    "Recall": 0.0
+  },
+  "reported_real_checkpoint_sampler_checks": {
+    "images": 64,
+    "native_vs_unified_eager": "elementwise equal",
+    "compiled_regeneration_vs_saved_png": "pixelwise equal",
+    "eager_vs_compiled_uint8_MAE": [
+      0.013,
+      0.038
+    ],
+    "eager_vs_compiled_PSNR_db": [
+      61.09,
+      66.91
+    ]
+  },
+  "review_conclusion": "No evident execution error in the supplied procedure. Same-protocol 50K noise_filling control remains necessary to isolate the quality gap. No claim of independently inspecting remote code or logs."
+}

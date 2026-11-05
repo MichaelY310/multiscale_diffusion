@@ -31,6 +31,17 @@ of the newer multi-paper framework.
 
 ## Preserve experiment identity
 
+Use [the resolution-labelled registry](docs/RDD_EXPERIMENT_NAMES_ZH.md) for
+historical training/sampling allocations. Never interpret compact names such as
+300300400, 908080 or 808090 without the grid order. Canonical filenames spell out
+`train_r8-400_r16-300_r32-300` and `sample_r8-80_r16-80_r32-90`. Old config paths
+are compatibility symlinks, not extra experiments. Historical raw files and
+immutable HF revisions retain original names; do not globally replace digits.
+`docs/experiment_registry/hf_rename_plan.json` maps current HF names and hashes;
+the migration receipt records whether the plan was actually applied. Do not
+rerun old archive-upload scripts and recreate retired paths. Current download
+helpers resolve explicit legacy requests through the immutable old revision.
+
 Keep three versions distinct: (1) author's original repo, (2) unified native
 compatibility recipe, (3) controlled common-model transplant. A passing test
 of (2) does not certify (3) as the paper's best-result reproduction.
@@ -47,6 +58,11 @@ of (2) does not certify (3) as the paper's best-result reproduction.
   finest first; DDPM `stage_lengths` are finest first; current FM trainer and
   `fm_unified` JSONL `stage_lengths` are **coarsest first**. Sampling step lists
   are coarsest first. FM-XL v2 uses `[0,.3,.6,1]`; not every FM checkpoint does.
+- Legacy DDPM cumulative alpha is normalized **within each stage**, in both
+  training and sampling; global model timestep labels do not imply a single
+  unchanged global noise schedule. Its stage exits are nearly clean, unlike
+  FM's noisy `.3/.6` exits. Same fresh operator does not mean same boundary
+  distribution; see [the clock audit](docs/validation/20261104/FM_DDPM_FRESH_AUDIT_ZH.md).
 - Historical DDPM main sampling used coarse-to-fine `80/80/90`. The comparison
   config with `90/80/80` is another recipe. FM Euler `80/80/90` uses 252 actual
   NFE including boundary calls. FM `dpm2` is a legacy alias for midpoint RK2,

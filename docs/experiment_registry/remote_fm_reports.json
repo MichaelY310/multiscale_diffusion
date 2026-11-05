@@ -1,0 +1,30 @@
+{
+  "provenance": "User supplied results from another server; local files and 50K images were not independently fetched here. Do not merge these into the 116-row frozen historical ledger.",
+  "shared_configuration": {
+    "model": "rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400",
+    "checkpoint_step": 400000,
+    "weights": "ema",
+    "solver": "euler",
+    "sampling_by_latent_grid": {"8": 80, "16": 80, "32": 90},
+    "reported_nfe": 252,
+    "cfg": 1,
+    "samples": 50000,
+    "evaluation": "official ADM five metrics, as reported"
+  },
+  "runs": [
+    {
+      "name": "fm-xl-v2-400k-ema__euler__sample_r8-80_r16-80_r32-90__cfg1__fresh",
+      "boundary": "fresh",
+      "fid": 33.2233, "sfid": 17.3640, "inception_score": 68.7302,
+      "precision": 0.5373, "recall": 0.6002,
+      "reported_path": "/data/home/yuanyang/multiscale_diffusion/unified_multires/runs/fm_pf/fm_fresh_cfg1/evaluation/metrics.json"
+    },
+    {
+      "name": "fm-xl-v2-400k-ema__euler__sample_r8-80_r16-80_r32-90__cfg1__noise_filling",
+      "boundary": "noise_filling",
+      "fid": 14.5032, "sfid": 5.8224, "inception_score": 93.7591,
+      "precision": 0.6526, "recall": 0.6517,
+      "reported_path": "/data/home/yuanyang/multiscale_diffusion/unified_multires/runs/fm_pf/fm_noise_filling_cfg1/evaluation/metrics.json"
+    }
+  ]
+}

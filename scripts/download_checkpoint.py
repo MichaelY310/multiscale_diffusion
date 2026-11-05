@@ -4,6 +4,7 @@ import argparse
 from pathlib import Path
 
 from huggingface_hub import hf_hub_download
+from rdd_hf_paths import archive_revision
 
 
 def main() -> None:
@@ -15,7 +16,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--filename",
-        default="checkpoints/RDD-Unified-L/0400000.pt",
+        default="checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0400000.pt",
         help="Repository-relative checkpoint path",
     )
     parser.add_argument(
@@ -31,6 +32,7 @@ def main() -> None:
         repo_id=args.repo,
         repo_type="model",
         filename=args.filename,
+        revision=archive_revision(args.repo, args.filename),
         local_dir=output_dir,
     )
     print(path)

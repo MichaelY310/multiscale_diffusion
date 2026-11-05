@@ -1,0 +1,1457 @@
+[
+  {
+    "old_path": "unified_multires/configs/comparison_imagenet256/controlled/rdd_ddpm_xl_legacy.json",
+    "canonical_path": "unified_multires/configs/comparison_imagenet256/controlled/rdd_ddpm_xl_legacy__train_r8-400_r16-300_r32-300__sample_r8-90_r16-80_r32-80.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "ddpm",
+      "solver": "ddpm",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "ddpm_t",
+          "start": 999,
+          "end": 600,
+          "duration": 400
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "ddpm_t",
+          "start": 599,
+          "end": 300,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "ddpm_t",
+          "start": 299,
+          "end": 0,
+          "duration": 300
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 90,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 90
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        }
+      ],
+      "expected_native_nfe": 250,
+      "boundary_label": "fresh",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/comparison_imagenet256/main/ddpm_xl_fixed.json",
+    "canonical_path": "unified_multires/configs/comparison_imagenet256/main/ddpm_xl_fixed__train_r32-1000__sample_r32-250.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "ddpm",
+      "solver": "ancestral",
+      "training_stages": [
+        {
+          "latent_resolution": 32,
+          "clock": "ddpm_t",
+          "start": 999,
+          "end": 0,
+          "duration": 1000
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 32,
+          "steps": 250,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": null
+        }
+      ],
+      "expected_native_nfe": null,
+      "boundary_label": "fresh",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/comparison_imagenet256/main/rdd_ddpm_xl_legacy.json",
+    "canonical_path": "unified_multires/configs/comparison_imagenet256/main/rdd_ddpm_xl_legacy__train_r8-400_r16-300_r32-300__sample_r8-90_r16-80_r32-80.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "ddpm",
+      "solver": "ddpm",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "ddpm_t",
+          "start": 999,
+          "end": 600,
+          "duration": 400
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "ddpm_t",
+          "start": 599,
+          "end": 300,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "ddpm_t",
+          "start": 299,
+          "end": 0,
+          "duration": 300
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 90,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 90
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        }
+      ],
+      "expected_native_nfe": 250,
+      "boundary_label": "fresh",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/paired_experiments/rdd_unified_l_300_300_400.json",
+    "canonical_path": "unified_multires/configs/paired_experiments/rdd_unified_l__train_r8-400_r16-300_r32-300__sample_r8-100_r16-75_r32-75.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "ddpm",
+      "solver": "dpm2",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "ddpm_t",
+          "start": 999,
+          "end": 600,
+          "duration": 400
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "ddpm_t",
+          "start": 599,
+          "end": 300,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "ddpm_t",
+          "start": 299,
+          "end": 0,
+          "duration": 300
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 100,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 198
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 75,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 148
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 75,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 148
+        }
+      ],
+      "expected_native_nfe": 494,
+      "boundary_label": "fresh",
+      "cfg": 1.5
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/paired_experiments/rdd_unified_xl_300_300_400.json",
+    "canonical_path": "unified_multires/configs/paired_experiments/rdd_unified_xl__train_r8-400_r16-300_r32-300__sample_r8-100_r16-75_r32-75.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "ddpm",
+      "solver": "dpm2",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "ddpm_t",
+          "start": 999,
+          "end": 600,
+          "duration": 400
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "ddpm_t",
+          "start": 599,
+          "end": 300,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "ddpm_t",
+          "start": 299,
+          "end": 0,
+          "duration": 300
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 100,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 198
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 75,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 148
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 75,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 148
+        }
+      ],
+      "expected_native_nfe": 494,
+      "boundary_label": "fresh",
+      "cfg": 1.5
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/paper_recipes/rdd_unified_xl_300_300_400.json",
+    "canonical_path": "unified_multires/configs/paper_recipes/rdd_unified_xl__train_r8-400_r16-300_r32-300__sample_r8-100_r16-75_r32-75.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "ddpm",
+      "solver": "dpm2",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "ddpm_t",
+          "start": 999,
+          "end": 600,
+          "duration": 400
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "ddpm_t",
+          "start": 599,
+          "end": 300,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "ddpm_t",
+          "start": 299,
+          "end": 0,
+          "duration": 300
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 100,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 198
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 75,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 148
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 75,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 148
+        }
+      ],
+      "expected_native_nfe": 494,
+      "boundary_label": "fresh",
+      "cfg": 1.5
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_ddpm_multistage_xl_l_b_100_300_600_ddpm_cfg1p0_fresh.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_ddpm_multistage_xl_l_b_ddpm_cfg1p0_fresh__train_r8-600_r16-300_r32-100__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "ddpm",
+      "solver": "ddpm",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "ddpm_t",
+          "start": 999,
+          "end": 400,
+          "duration": 600
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "ddpm_t",
+          "start": 399,
+          "end": 100,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "ddpm_t",
+          "start": 99,
+          "end": 0,
+          "duration": 100
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 250,
+      "boundary_label": "fresh",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_ddpm_multistage_xl_l_b_100_300_600_ddpm_cfg1p5_fresh.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_ddpm_multistage_xl_l_b_ddpm_cfg1p5_fresh__train_r8-600_r16-300_r32-100__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "ddpm",
+      "solver": "ddpm",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "ddpm_t",
+          "start": 999,
+          "end": 400,
+          "duration": 600
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "ddpm_t",
+          "start": 399,
+          "end": 100,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "ddpm_t",
+          "start": 99,
+          "end": 0,
+          "duration": 100
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 250,
+      "boundary_label": "fresh",
+      "cfg": 1.5
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_ddpm_multistage_xl_l_b_300_300_400_ddpm_cfg1p0_fresh.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_ddpm_multistage_xl_l_b_ddpm_cfg1p0_fresh__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "ddpm",
+      "solver": "ddpm",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "ddpm_t",
+          "start": 999,
+          "end": 600,
+          "duration": 400
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "ddpm_t",
+          "start": 599,
+          "end": 300,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "ddpm_t",
+          "start": 299,
+          "end": 0,
+          "duration": 300
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 250,
+      "boundary_label": "fresh",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_ddpm_multistage_xl_l_b_300_300_400_ddpm_cfg1p5_fresh.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_ddpm_multistage_xl_l_b_ddpm_cfg1p5_fresh__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "ddpm",
+      "solver": "ddpm",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "ddpm_t",
+          "start": 999,
+          "end": 600,
+          "duration": 400
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "ddpm_t",
+          "start": 599,
+          "end": 300,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "ddpm_t",
+          "start": 299,
+          "end": 0,
+          "duration": 300
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 250,
+      "boundary_label": "fresh",
+      "cfg": 1.5
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_ddpm_xl_300_300_400_ddpm_cfg1p0_fresh.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_ddpm_xl_ddpm_cfg1p0_fresh__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "ddpm",
+      "solver": "ddpm",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "ddpm_t",
+          "start": 999,
+          "end": 600,
+          "duration": 400
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "ddpm_t",
+          "start": 599,
+          "end": 300,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "ddpm_t",
+          "start": 299,
+          "end": 0,
+          "duration": 300
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 250,
+      "boundary_label": "fresh",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_ddpm_xl_300_300_400_ddpm_cfg1p5_fresh.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_ddpm_xl_ddpm_cfg1p5_fresh__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "ddpm",
+      "solver": "ddpm",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "ddpm_t",
+          "start": 999,
+          "end": 600,
+          "duration": 400
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "ddpm_t",
+          "start": 599,
+          "end": 300,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "ddpm_t",
+          "start": 299,
+          "end": 0,
+          "duration": 300
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 80
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "respaced_timesteps",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 250,
+      "boundary_label": "fresh",
+      "cfg": 1.5
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_fm_l_corrected_300_300_400_euler_cfg1p0_fresh.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_fm_l_corrected_euler_cfg1p0_fresh__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "fm",
+      "solver": "euler",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "fm_noise_to_data",
+          "start": 0.0,
+          "end": 0.4,
+          "duration": 400
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "fm_noise_to_data",
+          "start": 0.4,
+          "end": 0.7,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "fm_noise_to_data",
+          "start": 0.7,
+          "end": 1.0,
+          "duration": 300
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "ode_updates",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 252,
+      "boundary_label": "fresh",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_fm_l_corrected_300_300_400_euler_cfg1p0_noise_filling.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_fm_l_corrected_euler_cfg1p0_noise_filling__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "fm",
+      "solver": "euler",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "fm_noise_to_data",
+          "start": 0.0,
+          "end": 0.4,
+          "duration": 400
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "fm_noise_to_data",
+          "start": 0.4,
+          "end": 0.7,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "fm_noise_to_data",
+          "start": 0.7,
+          "end": 1.0,
+          "duration": 300
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "ode_updates",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 252,
+      "boundary_label": "noise_filling",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_fm_l_corrected_400_300_300_euler_cfg1p0_fresh.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_fm_l_corrected_euler_cfg1p0_fresh__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "fm",
+      "solver": "euler",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "fm_noise_to_data",
+          "start": 0.0,
+          "end": 0.3,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "fm_noise_to_data",
+          "start": 0.3,
+          "end": 0.6,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "fm_noise_to_data",
+          "start": 0.6,
+          "end": 1.0,
+          "duration": 400
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "ode_updates",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 252,
+      "boundary_label": "fresh",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_fm_l_corrected_400_300_300_euler_cfg1p0_noise_filling.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_fm_l_corrected_euler_cfg1p0_noise_filling__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "fm",
+      "solver": "euler",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "fm_noise_to_data",
+          "start": 0.0,
+          "end": 0.3,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "fm_noise_to_data",
+          "start": 0.3,
+          "end": 0.6,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "fm_noise_to_data",
+          "start": 0.6,
+          "end": 1.0,
+          "duration": 400
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "ode_updates",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 252,
+      "boundary_label": "noise_filling",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_fm_multistage_xl_l_b_euler_cfg1p0_fresh.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_fm_multistage_xl_l_b_euler_cfg1p0_fresh__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "fm",
+      "solver": "euler",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "fm_noise_to_data",
+          "start": 0.0,
+          "end": 0.3,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "fm_noise_to_data",
+          "start": 0.3,
+          "end": 0.6,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "fm_noise_to_data",
+          "start": 0.6,
+          "end": 1.0,
+          "duration": 400
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "ode_updates",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 252,
+      "boundary_label": "fresh",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_fm_multistage_xl_l_b_euler_cfg1p0_noise_filling.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_fm_multistage_xl_l_b_euler_cfg1p0_noise_filling__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "fm",
+      "solver": "euler",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "fm_noise_to_data",
+          "start": 0.0,
+          "end": 0.3,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "fm_noise_to_data",
+          "start": 0.3,
+          "end": 0.6,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "fm_noise_to_data",
+          "start": 0.6,
+          "end": 1.0,
+          "duration": 400
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "ode_updates",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 252,
+      "boundary_label": "noise_filling",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p0_fresh.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p0_fresh__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "fm",
+      "solver": "euler",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "fm_noise_to_data",
+          "start": 0.0,
+          "end": 0.3,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "fm_noise_to_data",
+          "start": 0.3,
+          "end": 0.6,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "fm_noise_to_data",
+          "start": 0.6,
+          "end": 1.0,
+          "duration": 400
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "ode_updates",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 252,
+      "boundary_label": "fresh",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p0_noise_filling.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p0_noise_filling__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "fm",
+      "solver": "euler",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "fm_noise_to_data",
+          "start": 0.0,
+          "end": 0.3,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "fm_noise_to_data",
+          "start": 0.3,
+          "end": 0.6,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "fm_noise_to_data",
+          "start": 0.6,
+          "end": 1.0,
+          "duration": 400
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "ode_updates",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 252,
+      "boundary_label": "noise_filling",
+      "cfg": 1.0
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p5_fresh.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p5_fresh__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "fm",
+      "solver": "euler",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "fm_noise_to_data",
+          "start": 0.0,
+          "end": 0.3,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "fm_noise_to_data",
+          "start": 0.3,
+          "end": 0.6,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "fm_noise_to_data",
+          "start": 0.6,
+          "end": 1.0,
+          "duration": 400
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "ode_updates",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 252,
+      "boundary_label": "fresh",
+      "cfg": 1.5
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p5_noise_filling.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p5_noise_filling__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "fm",
+      "solver": "euler",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "fm_noise_to_data",
+          "start": 0.0,
+          "end": 0.3,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "fm_noise_to_data",
+          "start": 0.3,
+          "end": 0.6,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "fm_noise_to_data",
+          "start": 0.6,
+          "end": 1.0,
+          "duration": 400
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 80,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 90,
+          "unit": "ode_updates",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 252,
+      "boundary_label": "noise_filling",
+      "cfg": 1.5
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_midpoint_cfg1p5_fresh.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_midpoint_cfg1p5_fresh__train_r8-300_r16-300_r32-400__sample_r8-40_r16-40_r32-45.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "fm",
+      "solver": "midpoint",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "fm_noise_to_data",
+          "start": 0.0,
+          "end": 0.3,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "fm_noise_to_data",
+          "start": 0.3,
+          "end": 0.6,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "fm_noise_to_data",
+          "start": 0.6,
+          "end": 1.0,
+          "duration": 400
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 40,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 40,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 45,
+          "unit": "ode_updates",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 252,
+      "boundary_label": "fresh",
+      "cfg": 1.5
+    }
+  },
+  {
+    "old_path": "unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_midpoint_cfg1p5_noise_filling.json",
+    "canonical_path": "unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_midpoint_cfg1p5_noise_filling__train_r8-300_r16-300_r32-400__sample_r8-40_r16-40_r32-45.json",
+    "compatibility": "legacy symlink; identical numeric config",
+    "identity": {
+      "schema": "rdd_resolution_identity_v1",
+      "family": "fm",
+      "solver": "midpoint",
+      "training_stages": [
+        {
+          "latent_resolution": 8,
+          "clock": "fm_noise_to_data",
+          "start": 0.0,
+          "end": 0.3,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 16,
+          "clock": "fm_noise_to_data",
+          "start": 0.3,
+          "end": 0.6,
+          "duration": 300
+        },
+        {
+          "latent_resolution": 32,
+          "clock": "fm_noise_to_data",
+          "start": 0.6,
+          "end": 1.0,
+          "duration": 400
+        }
+      ],
+      "sampling_stages": [
+        {
+          "latent_resolution": 8,
+          "steps": 40,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 16,
+          "steps": 40,
+          "unit": "ode_updates",
+          "expected_native_nfe": 81
+        },
+        {
+          "latent_resolution": 32,
+          "steps": 45,
+          "unit": "ode_updates",
+          "expected_native_nfe": 90
+        }
+      ],
+      "expected_native_nfe": 252,
+      "boundary_label": "noise_filling",
+      "cfg": 1.5
+    }
+  },
+  {
+    "old_path": "2d/exp/continue_eval_unified_l_400300300_to_400k.sh",
+    "canonical_path": "2d/exp/continue_eval_unified_l_train_r8-300_r16-300_r32-400_to_400k.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/diagnose_teacher_unified_l_300300400_400k_ddpm250.jsonl",
+    "canonical_path": "2d/exp/diagnose_teacher_unified_l_train_r8-400_r16-300_r32-300_400k_ddpm250.jsonl",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/eval_ms100300600_400k_2gpu.sh",
+    "canonical_path": "2d/exp/eval_mstrain_r8-600_r16-300_r32-100_400k_2gpu.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/eval_ms100300600_8x8continued_600k_4gpu.sh",
+    "canonical_path": "2d/exp/eval_mstrain_r8-600_r16-300_r32-100_8x8continued_600k_4gpu.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/eval_unified_l_300300400_convergence_50k_250k_4gpu.sh",
+    "canonical_path": "2d/exp/eval_unified_l_train_r8-400_r16-300_r32-300_convergence_50k_250k_4gpu.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/eval_unified_l_300300400_convergence_50k_500k_4gpu.sh",
+    "canonical_path": "2d/exp/eval_unified_l_train_r8-400_r16-300_r32-300_convergence_50k_500k_4gpu.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/eval_unified_l_400300300_available_4gpu.sh",
+    "canonical_path": "2d/exp/eval_unified_l_train_r8-300_r16-300_r32-400_available_4gpu.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/imagenet256_multistage300300400_400000_908080step_ddpm_cfg115.jsonl",
+    "canonical_path": "2d/exp/imagenet256_multistagetrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.jsonl",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/imagenet256_multistage300300400_400000_908080step_ddpm_cfg115.sh",
+    "canonical_path": "2d/exp/imagenet256_multistagetrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/imagenet256_unifiedL300300400_400000_908080step_ddpm_cfg115.jsonl",
+    "canonical_path": "2d/exp/imagenet256_unifiedLtrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.jsonl",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/imagenet256_unifiedL300300400_400000_908080step_ddpm_cfg115.sh",
+    "canonical_path": "2d/exp/imagenet256_unifiedLtrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/imagenet256_unifiedXL300300400_400000_908080step_ddpm_cfg115.jsonl",
+    "canonical_path": "2d/exp/imagenet256_unifiedXLtrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.jsonl",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/imagenet256_unifiedXL300300400_400000_908080step_ddpm_cfg115.sh",
+    "canonical_path": "2d/exp/imagenet256_unifiedXLtrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/ms100300600_400k_cfg1.sh",
+    "canonical_path": "2d/exp/mstrain_r8-600_r16-300_r32-100_400k_cfg1.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/ms100300600_400k_cfg15.sh",
+    "canonical_path": "2d/exp/mstrain_r8-600_r16-300_r32-100_400k_cfg15.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/ms100300600_400k_noisefilling.jsonl",
+    "canonical_path": "2d/exp/mstrain_r8-600_r16-300_r32-100_400k_noisefilling.jsonl",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/ms100300600_400k_noisefilling.sh",
+    "canonical_path": "2d/exp/mstrain_r8-600_r16-300_r32-100_400k_noisefilling.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/run_unified_l_400300300_eval_after_8to32.sh",
+    "canonical_path": "2d/exp/run_unified_l_train_r8-300_r16-300_r32-400_eval_after_8to32.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/exp/train_ms100300600_continue_8x8_2gpu.sh",
+    "canonical_path": "2d/exp/train_mstrain_r8-600_r16-300_r32-100_continue_8x8_2gpu.sh",
+    "compatibility": "legacy symlink; identical source"
+  },
+  {
+    "old_path": "2d/train_RDD_FM_unified_XL_corrected_300_300_400.sh",
+    "canonical_path": "2d/train_RDD_FM_unified_XL_corrected_train_r8-400_r16-300_r32-300.sh",
+    "compatibility": "legacy symlink; identical source",
+    "hf_source_kept_as_archive": true
+  },
+  {
+    "old_path": "2d/train_RDD_FM_unified_XL_corrected_300_300_400_8gpu_sf7.sh",
+    "canonical_path": "2d/train_RDD_FM_unified_XL_corrected_train_r8-400_r16-300_r32-300_8gpu_sf7.sh",
+    "compatibility": "legacy symlink; identical source",
+    "hf_source_kept_as_archive": true
+  },
+  {
+    "old_path": "2d/train_RDD_imagenet256_100_300_600_original.sh",
+    "canonical_path": "2d/train_RDD_imagenet256_train_r8-600_r16-300_r32-100_original.sh",
+    "compatibility": "legacy symlink; identical source",
+    "hf_source_kept_as_archive": true
+  },
+  {
+    "old_path": "2d/train_RDD_imagenet256_300_300_400_original.sh",
+    "canonical_path": "2d/train_RDD_imagenet256_train_r8-400_r16-300_r32-300_original.sh",
+    "compatibility": "legacy symlink; identical source",
+    "hf_source_kept_as_archive": true
+  },
+  {
+    "old_path": "2d/train_RDD_unified_L_100_300_600_4gpu.sh",
+    "canonical_path": "2d/train_RDD_unified_L_train_r8-600_r16-300_r32-100_4gpu.sh",
+    "compatibility": "legacy symlink; identical source",
+    "hf_source_kept_as_archive": true
+  },
+  {
+    "old_path": "scripts/download_rdd_multistage_100_300_600_400k.sh",
+    "canonical_path": "scripts/download_rdd_multistage_train_r8-600_r16-300_r32-100_400k.sh",
+    "compatibility": "legacy symlink; identical source",
+    "hf_source_kept_as_archive": true
+  },
+  {
+    "old_path": "scripts/rdd3d/run_dynamic_sparse_fm_unified_xl_300300400_8gpu.sh",
+    "canonical_path": "scripts/rdd3d/run_dynamic_sparse_fm_unified_xl_train_r8cubed-400_r16cubed-300_r32cubed-300_8gpu.sh",
+    "compatibility": "legacy symlink; identical source",
+    "hf_source_kept_as_archive": true
+  }
+]

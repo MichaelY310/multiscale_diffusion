@@ -23,6 +23,13 @@ giving `[0,.3,.6,1]`. The current sampler's `model_type=fm_unified` follows
 this same FM order. Do not silently reverse clocks to match a filename.
 Sampler `num_steps` is coarse-to-fine for both.
 
+Prefer the resolution-labelled filenames listed in
+`../docs/experiment_registry/repository_aliases.json`. Old names are symlinks.
+The sampler now prints each latent grid's budget and saves
+`resolution_identity.json`; a conflicting saved identity is rejected. This
+metadata does not certify old PNGs that predate the sidecar. Full run identity
+(weights, seed, precision, etc.) still needs the normal experiment manifest.
+
 The legacy sampler defaults to eight ranks and large batches. Supply
 `--rank 0 --world-size 1` for single-device work; multi-rank launches must
 assign one visible GPU and an explicit rank to each process. Plain `torchrun`

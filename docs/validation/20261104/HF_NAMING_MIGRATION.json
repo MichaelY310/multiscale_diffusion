@@ -1,0 +1,1297 @@
+{
+  "repo_id": "yang335/search_agent_hl_to_i18n_transport",
+  "source_revision": "848d8a1eccaab8c1807ab792c4ec403dde25288d",
+  "renamed_revision": "f64e080c0ccc49af15a65c67aa8fd4ef0f983859",
+  "url": "https://huggingface.co/yang335/search_agent_hl_to_i18n_transport/commit/f64e080c0ccc49af15a65c67aa8fd4ef0f983859",
+  "checked": 257,
+  "all_passed": true,
+  "checks": [
+    {
+      "old_path": "checkpoints/DiT-XL-2/0050000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0100000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0150000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0200000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0250000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0300000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0350000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0400000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0450000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0450000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/DiT-XL-2/0500000.pt",
+      "new_path": "checkpoints/dit-ddpm-xl2__train_r32-1000/0500000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0300000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0350000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0400000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/checkpoints/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/log.txt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/log.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300/imagenet256-fm-unified/timing_log.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0300000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0350000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0400000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/checkpoints/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/log.txt",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/log.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400/imagenet256-fm-unified/timing_log.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0030000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0030000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0050000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0100000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0150000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0200000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0240000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0240000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0250000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0285000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0285000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0295000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0295000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0300000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/checkpoints/0350000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/checkpoints/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-FM-Unified-XL-v2/checkpoints/0370000.pt",
+      "new_path": "checkpoints/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400/checkpoints/0370000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/checkpoints_8x8/0450000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/checkpoints_8x8/0450000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/checkpoints_8x8/0500000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/checkpoints_8x8/0500000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/checkpoints_8x8/0550000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/checkpoints_8x8/0550000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/checkpoints_8x8/0600000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/checkpoints_8x8/0600000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/log.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600-8x8-continued-from400k/imagenet256-multiscale/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__r8-continued-from-400k/imagenet256-multiscale/timing_log.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0070000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0070000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0315000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0315000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0325000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0325000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0335000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0335000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_16x16/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_16x16/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0070000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0070000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0265000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0265000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0315000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0315000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0325000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0325000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0335000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0335000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_32x32/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_32x32/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0070000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0070000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0310000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0310000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0325000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0325000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0335000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0335000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-100-300-600/checkpoints_8x8/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100/checkpoints_8x8/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_16x16/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_16x16/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_32x32/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_32x32/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Multistage-300-300-400/checkpoints_8x8/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300/checkpoints_8x8/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified-preflight-20260815T030102Z/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified-preflight-20260815T030102Z/log.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified-preflight-20260815T030102Z/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified-preflight-20260815T030102Z/timing_log.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/checkpoints/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/log.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-100-300-600/imagenet256-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100/imagenet256-unified/timing_log.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/checkpoints/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/checkpoints/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/log.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-500-500/imagenet256-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r16-500_r32-500/imagenet256-unified/timing_log.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/checkpoints/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/checkpoints/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/log.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-2Stage-8to32-500-500/imagenet256-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-500_r32-500/imagenet256-unified/timing_log.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/checkpoints/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/checkpoints/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/log.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-400-300-300/imagenet256-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400/imagenet256-unified/timing_log.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified-preflight-20260815T030102Z/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified-preflight-20260815T030102Z/log.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified-preflight-20260815T030102Z/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified-preflight-20260815T030102Z/timing_log.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/checkpoints/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/checkpoints/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/log.txt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/log.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L-600-300-100/imagenet256-unified/timing_log.jsonl",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600/imagenet256-unified/timing_log.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0450000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0450000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0490000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0490000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0500000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0500000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-L/0535000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300/0535000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0050000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0050000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0100000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0100000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0150000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0150000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0200000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0200000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0250000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0250000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0300000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0300000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0350000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0350000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0400000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0400000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0450000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0450000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0500000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0500000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0550000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0550000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0600000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0600000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0650000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0650000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0700000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0700000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0750000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0750000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "checkpoints/RDD-Unified-XL/0765000.pt",
+      "new_path": "checkpoints/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300/0765000.pt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_50K.txt",
+      "new_path": "results/valid-0045/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-50000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_100K.txt",
+      "new_path": "results/valid-0046/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-100000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_150K.txt",
+      "new_path": "results/valid-0047/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-150000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_200K.txt",
+      "new_path": "results/valid-0048/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-200000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_250K.txt",
+      "new_path": "results/valid-0049/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-250000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_300K.txt",
+      "new_path": "results/valid-0050/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-300000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_350K.txt",
+      "new_path": "results/valid-0051/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-350000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_400K.txt",
+      "new_path": "results/valid-0052/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/rdd_500K.txt",
+      "new_path": "results/valid-0053/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-500000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/dit_50K.txt",
+      "new_path": "results/valid-0054/dit-ddpm-xl2__train_r32-1000__ckpt-50000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/dit_100K.txt",
+      "new_path": "results/valid-0055/dit-ddpm-xl2__train_r32-1000__ckpt-100000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/dit_150K.txt",
+      "new_path": "results/valid-0056/dit-ddpm-xl2__train_r32-1000__ckpt-150000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/dit_200K.txt",
+      "new_path": "results/valid-0057/dit-ddpm-xl2__train_r32-1000__ckpt-200000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/dit_250K.txt",
+      "new_path": "results/valid-0058/dit-ddpm-xl2__train_r32-1000__ckpt-250000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/dit_300K.txt",
+      "new_path": "results/valid-0059/dit-ddpm-xl2__train_r32-1000__ckpt-300000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/dit_350K.txt",
+      "new_path": "results/valid-0060/dit-ddpm-xl2__train_r32-1000__ckpt-350000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/dit400k_250step_ddpm_cfg0.txt",
+      "new_path": "results/valid-0061/dit-ddpm-xl2__train_r32-1000__ckpt-400000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/dit_450K.txt",
+      "new_path": "results/valid-0062/dit-ddpm-xl2__train_r32-1000__ckpt-450000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_exp04/dit_500K.txt",
+      "new_path": "results/valid-0063/dit-ddpm-xl2__train_r32-1000__ckpt-500000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/dit400k_250step_ddpm_cfg1.25.txt",
+      "new_path": "results/valid-0064/dit-ddpm-xl2__train_r32-1000__ckpt-400000__ddpm__sample_r32-250__cfg-1.25__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_dit500k/dit500k_250step_ddpm_cfg1.0.txt",
+      "new_path": "results/valid-0065/dit-ddpm-xl2__train_r32-1000__ckpt-500000__ddpm__sample_r32-250__cfg-1.0__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_dit500k/dit500k_250step_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0066/dit-ddpm-xl2__train_r32-1000__ckpt-500000__ddpm__sample_r32-250__cfg-1.5__not_applicable.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms300_400k_80_80_90_ddpm_cfg15_bilinear.txt",
+      "new_path": "results/valid-0067/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh__clean-bilinear.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms300_400k_80_80_90_dpm1_cfg15_bilinear.txt",
+      "new_path": "results/valid-0068/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm1__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh__clean-bilinear.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_120-120-160_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0069/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-160_r16-120_r32-120__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_130-60-60_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0070/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-60_r16-60_r32-130__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_150-50-50_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0071/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-50_r16-50_r32-150__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_151010_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0072/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-10_r16-10_r32-15__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_200-200-200_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0073/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-200_r16-200_r32-200__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_252020_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0074/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-20_r16-20_r32-25__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_40-30-30_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0075/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-30_r16-30_r32-40__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_454040_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0076/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-40_r16-40_r32-45__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_50-40-40_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0077/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-40_r16-40_r32-50__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_60-70-120_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0078/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-120_r16-70_r32-60__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_70-80-100_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0079/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-100_r16-80_r32-70__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/ms_400k_908080_ddpm_cfg1_bilinear.txt",
+      "new_path": "results/valid-0080/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh__clean-bilinear.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/multistage300300400_380k_908080_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0081/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/multistage300300400_380k_908080_ddpm_cfg1.txt",
+      "new_path": "results/valid-0082/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_130-60-60_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0083/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-60_r16-60_r32-130__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_150-50-50_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0084/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-50_r16-50_r32-150__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_151010_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0085/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-10_r16-10_r32-15__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_151010_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0086/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-10_r16-10_r32-15__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_252020_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0087/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-20_r16-20_r32-25__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_252020_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0088/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-20_r16-20_r32-25__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_454040_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0089/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-40_r16-40_r32-45__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_454040_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0090/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-40_r16-40_r32-45__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_60-70-120_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0091/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-120_r16-70_r32-60__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_70-80-100_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0092/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-100_r16-80_r32-70__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg1.5_split200300500.txt",
+      "new_path": "results/valid-0093/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh__infer_r8-500_r16-300_r32-200.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg1.5_split250250500.txt",
+      "new_path": "results/valid-0094/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh__infer_r8-500_r16-250_r32-250.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg1.5_split400300300.txt",
+      "new_path": "results/valid-0095/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh__infer_r8-300_r16-300_r32-400.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg1_bilinear.txt",
+      "new_path": "results/valid-0096/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh__clean-bilinear.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg2.0.txt",
+      "new_path": "results/valid-0097/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-2.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg2.5.txt",
+      "new_path": "results/valid-0098/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-2.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_ddpm_cfg4.0.txt",
+      "new_path": "results/valid-0099/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-4.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/uniXL_400k_908080_dpm2_cfg1.5.txt",
+      "new_path": "results/valid-0100/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__dpm2__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results_unified/unifiedXL300300400_400000_908080_ddpm_cfg1.5.txt",
+      "new_path": "results/valid-0101/rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results/ms100300600_400k_808090_ddpm_cfg1_noisefilling.txt",
+      "new_path": "results/valid-0108/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results/ms100300600_400k_808090_ddpm_cfg15_noisefilling.txt",
+      "new_path": "results/valid-0109/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__ckpt-400000__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results/ms100300600_8x8continued600k_16x32orig400k_808090_ddpm_cfg1_noisefilling.txt",
+      "new_path": "results/valid-0110/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__ckpt-mixed-400K-600K__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.0__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results/ms100300600_8x8continued600k_16x32orig400k_808090_ddpm_cfg15_noisefilling.txt",
+      "new_path": "results/valid-0111/rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100__ckpt-mixed-400K-600K__ddpm__sample_r8-80_r16-80_r32-90__cfg-1.5__fresh.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results/rdd_fm_unified_l_corrected_300300400_convergence/metrics/rddfm_unifiedL_corrected_300300400_ckpt000050k_808090_euler_cfg1_noisefilling.txt",
+      "new_path": "results/valid-0115/rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300__ckpt-50000__euler__sample_r8-80_r16-80_r32-90__cfg-1.0__noise_filling.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results/rdd_fm_unified_l_corrected_400300300_convergence/metrics/rddfm_unifiedL_corrected_400300300_ckpt000050k_808090_euler_cfg1_noisefilling.txt",
+      "new_path": "results/valid-0116/rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400__ckpt-50000__euler__sample_r8-80_r16-80_r32-90__cfg-1.0__noise_filling.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results/rddfm_unixl_v2_400k_808090_euler_cfg1_noisefilling.txt",
+      "new_path": "results/valid-0112/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400__ckpt-400000__euler__sample_r8-80_r16-80_r32-90__cfg-1.0__noise_filling.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results/rddfm_unixl_v2_400k_808090_euler_cfg15_noisefilling.txt",
+      "new_path": "results/valid-0113/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400__ckpt-400000__euler__sample_r8-80_r16-80_r32-90__cfg-1.5__noise_filling.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "eval_results/rddfm_unixl_v2_400k_404045_midpoint_cfg15_noisefilling.txt",
+      "new_path": "results/valid-0114/rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400__ckpt-400000__midpoint__sample_r8-40_r16-40_r32-45__cfg-1.5__noise_filling.txt",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "2d/exp/diagnose_teacher_unified_l_300300400_400k_ddpm250.jsonl",
+      "new_path": "source/legacy/2d/exp/diagnose_teacher_unified_l_train_r8-400_r16-300_r32-300_400k_ddpm250.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "2d/exp/imagenet256_multistage300300400_400000_908080step_ddpm_cfg115.jsonl",
+      "new_path": "source/legacy/2d/exp/imagenet256_multistagetrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "2d/exp/imagenet256_unifiedL300300400_400000_908080step_ddpm_cfg115.jsonl",
+      "new_path": "source/legacy/2d/exp/imagenet256_unifiedLtrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "2d/exp/imagenet256_unifiedXL300300400_400000_908080step_ddpm_cfg115.jsonl",
+      "new_path": "source/legacy/2d/exp/imagenet256_unifiedXLtrain_r8-400_r16-300_r32-300_400000_sample_r8-80_r16-80_r32-90_ddpm_cfg115.jsonl",
+      "content_identity_preserved": true
+    },
+    {
+      "old_path": "2d/exp/ms100300600_400k_noisefilling.jsonl",
+      "new_path": "source/legacy/2d/exp/mstrain_r8-600_r16-300_r32-100_400k_noisefilling.jsonl",
+      "content_identity_preserved": true
+    }
+  ],
+  "receipt_revision": "cf11718f53748f3d90bec7858f1516c5b427f3f6",
+  "registry_revision": "f47cbfc4c7dc9e76dffae2a27d7a918fb2254fa0"
+}

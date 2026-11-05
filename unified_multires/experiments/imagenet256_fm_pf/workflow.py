@@ -130,6 +130,10 @@ def ensure_fm_envelope(root):
         sidecar = read(dest.with_suffix('.pt.import.json'))
         if sidecar['source_sha256'] != read(HERE/'assets.lock.json')['fm']['files'][0]['sha256']:
             raise ValueError('Existing FM envelope belongs to a different source')
+        if sidecar.get('selected_weights') != 'ema':
+            raise ValueError('Existing FM envelope must contain the original EMA weights; raw model weights are a different experiment')
+        if sidecar.get('source_step') != 400000:
+            raise ValueError('Existing FM envelope must come from the selected 400K checkpoint')
         if sha256(dest) != sidecar['output_sha256']:
             raise ValueError('Existing FM envelope hash differs from its import record')
         return dest

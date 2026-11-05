@@ -1304,9 +1304,9 @@
     {
       "id": "rdd_unified_xl_300_300_400",
       "paper": "rdd",
-      "config": "rdd_unified_xl_300_300_400.json",
+      "config": "rdd_unified_xl__train_r8-400_r16-300_r32-300__sample_r8-100_r16-75_r32-75.json",
       "config_sha256": "395e022f9332ccae828294b74d9a11a3bc6055fd7c95c44f10a7f6daf0b30d89",
-      "template": "configs/paper_recipes/rdd_unified_xl_300_300_400.json",
+      "template": "configs/paper_recipes/rdd_unified_xl__train_r8-400_r16-300_r32-300__sample_r8-100_r16-75_r32-75.json",
       "fair_eligible": true,
       "paper_contract": {
         "dataset": "ImageNet 256x256 (selected released image profile)",
@@ -1496,9 +1496,9 @@
     {
       "id": "rdd_unified_l_300_300_400",
       "paper": "rdd",
-      "config": "rdd_unified_l_300_300_400.json",
+      "config": "rdd_unified_l__train_r8-400_r16-300_r32-300__sample_r8-100_r16-75_r32-75.json",
       "config_sha256": "762b84c0f8582ba6ed12a87383e9131462418fd2237e4b08c446467c6baa7b7c",
-      "template": "configs/paper_recipes/rdd_unified_xl_300_300_400.json",
+      "template": "configs/paper_recipes/rdd_unified_xl__train_r8-400_r16-300_r32-300__sample_r8-100_r16-75_r32-75.json",
       "fair_eligible": true,
       "paper_contract": {
         "dataset": "ImageNet 256x256 (selected released image profile)",

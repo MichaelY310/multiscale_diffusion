@@ -1,1 +1,1 @@
-{"model_type":"unified","stage_lengths":"300,300,400","resolutions":"32,16,8","model":"DiT-L/2","ckpt":"/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-Unified-L/0400000.pt","num_steps":"80,80,90","sampler":"ddpm","cfg_scale":1.5,"upsample_mode":"fresh","output_dir":"/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/diagnostics/rdd_dmd_checkpoint_previews/teacher_400k_ddpm250_cfg1.5"}
+diagnose_teacher_unified_l_train_r8-400_r16-300_r32-300_400k_ddpm250.jsonl

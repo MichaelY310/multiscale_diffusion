@@ -1,0 +1,486 @@
+[
+  {
+    "legacy_model": "Original DiT-XL/2",
+    "legacy_hf_group": "DiT-XL-2",
+    "canonical_model": "dit-ddpm-xl2__train_r32-1000",
+    "family": "ddpm",
+    "resolutions_fine_first": [
+      32
+    ],
+    "native_stage_lengths": [
+      1000
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 32,
+        "clock": "ddpm_t",
+        "start": 999,
+        "end": 0,
+        "duration": 1000
+      }
+    ],
+    "training_display": "32×32: 1000"
+  },
+  {
+    "legacy_model": "Unified XL 300/300/400",
+    "legacy_hf_group": "RDD-Unified-XL",
+    "canonical_model": "rdd-ddpm-shared-xl2__train_r8-400_r16-300_r32-300",
+    "family": "ddpm",
+    "resolutions_fine_first": [
+      32,
+      16,
+      8
+    ],
+    "native_stage_lengths": [
+      300,
+      300,
+      400
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 8,
+        "clock": "ddpm_t",
+        "start": 999,
+        "end": 600,
+        "duration": 400
+      },
+      {
+        "latent_resolution": 16,
+        "clock": "ddpm_t",
+        "start": 599,
+        "end": 300,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 32,
+        "clock": "ddpm_t",
+        "start": 299,
+        "end": 0,
+        "duration": 300
+      }
+    ],
+    "training_display": "8×8: 400 · 16×16: 300 · 32×32: 300"
+  },
+  {
+    "legacy_model": "Unified L 300/300/400",
+    "legacy_hf_group": "RDD-Unified-L",
+    "canonical_model": "rdd-ddpm-shared-l2__train_r8-400_r16-300_r32-300",
+    "family": "ddpm",
+    "resolutions_fine_first": [
+      32,
+      16,
+      8
+    ],
+    "native_stage_lengths": [
+      300,
+      300,
+      400
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 8,
+        "clock": "ddpm_t",
+        "start": 999,
+        "end": 600,
+        "duration": 400
+      },
+      {
+        "latent_resolution": 16,
+        "clock": "ddpm_t",
+        "start": 599,
+        "end": 300,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 32,
+        "clock": "ddpm_t",
+        "start": 299,
+        "end": 0,
+        "duration": 300
+      }
+    ],
+    "training_display": "8×8: 400 · 16×16: 300 · 32×32: 300"
+  },
+  {
+    "legacy_model": "Unified L 400/300/300",
+    "legacy_hf_group": "RDD-Unified-L-400-300-300",
+    "canonical_model": "rdd-ddpm-shared-l2__train_r8-300_r16-300_r32-400",
+    "family": "ddpm",
+    "resolutions_fine_first": [
+      32,
+      16,
+      8
+    ],
+    "native_stage_lengths": [
+      400,
+      300,
+      300
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 8,
+        "clock": "ddpm_t",
+        "start": 999,
+        "end": 700,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 16,
+        "clock": "ddpm_t",
+        "start": 699,
+        "end": 400,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 32,
+        "clock": "ddpm_t",
+        "start": 399,
+        "end": 0,
+        "duration": 400
+      }
+    ],
+    "training_display": "8×8: 300 · 16×16: 300 · 32×32: 400"
+  },
+  {
+    "legacy_model": "Unified L 100/300/600",
+    "legacy_hf_group": "RDD-Unified-L-100-300-600",
+    "canonical_model": "rdd-ddpm-shared-l2__train_r8-600_r16-300_r32-100",
+    "family": "ddpm",
+    "resolutions_fine_first": [
+      32,
+      16,
+      8
+    ],
+    "native_stage_lengths": [
+      100,
+      300,
+      600
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 8,
+        "clock": "ddpm_t",
+        "start": 999,
+        "end": 400,
+        "duration": 600
+      },
+      {
+        "latent_resolution": 16,
+        "clock": "ddpm_t",
+        "start": 399,
+        "end": 100,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 32,
+        "clock": "ddpm_t",
+        "start": 99,
+        "end": 0,
+        "duration": 100
+      }
+    ],
+    "training_display": "8×8: 600 · 16×16: 300 · 32×32: 100"
+  },
+  {
+    "legacy_model": "Unified L 600/300/100",
+    "legacy_hf_group": "RDD-Unified-L-600-300-100",
+    "canonical_model": "rdd-ddpm-shared-l2__train_r8-100_r16-300_r32-600",
+    "family": "ddpm",
+    "resolutions_fine_first": [
+      32,
+      16,
+      8
+    ],
+    "native_stage_lengths": [
+      600,
+      300,
+      100
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 8,
+        "clock": "ddpm_t",
+        "start": 999,
+        "end": 900,
+        "duration": 100
+      },
+      {
+        "latent_resolution": 16,
+        "clock": "ddpm_t",
+        "start": 899,
+        "end": 600,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 32,
+        "clock": "ddpm_t",
+        "start": 599,
+        "end": 0,
+        "duration": 600
+      }
+    ],
+    "training_display": "8×8: 100 · 16×16: 300 · 32×32: 600"
+  },
+  {
+    "legacy_model": "Unified L 16->32 500/500",
+    "legacy_hf_group": "RDD-Unified-L-2Stage-500-500",
+    "canonical_model": "rdd-ddpm-shared-l2__train_r16-500_r32-500",
+    "family": "ddpm",
+    "resolutions_fine_first": [
+      32,
+      16
+    ],
+    "native_stage_lengths": [
+      500,
+      500
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 16,
+        "clock": "ddpm_t",
+        "start": 999,
+        "end": 500,
+        "duration": 500
+      },
+      {
+        "latent_resolution": 32,
+        "clock": "ddpm_t",
+        "start": 499,
+        "end": 0,
+        "duration": 500
+      }
+    ],
+    "training_display": "16×16: 500 · 32×32: 500"
+  },
+  {
+    "legacy_model": "Unified L 8->32 500/500",
+    "legacy_hf_group": "RDD-Unified-L-2Stage-8to32-500-500",
+    "canonical_model": "rdd-ddpm-shared-l2__train_r8-500_r32-500",
+    "family": "ddpm",
+    "resolutions_fine_first": [
+      32,
+      8
+    ],
+    "native_stage_lengths": [
+      500,
+      500
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 8,
+        "clock": "ddpm_t",
+        "start": 999,
+        "end": 500,
+        "duration": 500
+      },
+      {
+        "latent_resolution": 32,
+        "clock": "ddpm_t",
+        "start": 499,
+        "end": 0,
+        "duration": 500
+      }
+    ],
+    "training_display": "8×8: 500 · 32×32: 500"
+  },
+  {
+    "legacy_model": "Multistage XL+L+B 300/300/400",
+    "legacy_hf_group": "RDD-Multistage-300-300-400",
+    "canonical_model": "rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-400_r16-300_r32-300",
+    "family": "ddpm",
+    "resolutions_fine_first": [
+      32,
+      16,
+      8
+    ],
+    "native_stage_lengths": [
+      300,
+      300,
+      400
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 8,
+        "clock": "ddpm_t",
+        "start": 999,
+        "end": 600,
+        "duration": 400
+      },
+      {
+        "latent_resolution": 16,
+        "clock": "ddpm_t",
+        "start": 599,
+        "end": 300,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 32,
+        "clock": "ddpm_t",
+        "start": 299,
+        "end": 0,
+        "duration": 300
+      }
+    ],
+    "training_display": "8×8: 400 · 16×16: 300 · 32×32: 300"
+  },
+  {
+    "legacy_model": "Multistage XL+L+B 100/300/600",
+    "legacy_hf_group": "RDD-Multistage-100-300-600",
+    "canonical_model": "rdd-ddpm-separate-r32-xl2-r16-l2-r8-b2__train_r8-600_r16-300_r32-100",
+    "family": "ddpm",
+    "resolutions_fine_first": [
+      32,
+      16,
+      8
+    ],
+    "native_stage_lengths": [
+      100,
+      300,
+      600
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 8,
+        "clock": "ddpm_t",
+        "start": 999,
+        "end": 400,
+        "duration": 600
+      },
+      {
+        "latent_resolution": 16,
+        "clock": "ddpm_t",
+        "start": 399,
+        "end": 100,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 32,
+        "clock": "ddpm_t",
+        "start": 99,
+        "end": 0,
+        "duration": 100
+      }
+    ],
+    "training_display": "8×8: 600 · 16×16: 300 · 32×32: 100"
+  },
+  {
+    "legacy_model": "FM Unified XL v2 legacy",
+    "legacy_hf_group": "RDD-FM-Unified-XL-v2",
+    "canonical_model": "rdd-fm-shared-xl2-v2__train_r8-300_r16-300_r32-400",
+    "family": "fm",
+    "resolutions_fine_first": [
+      32,
+      16,
+      8
+    ],
+    "native_stage_lengths": [
+      300,
+      300,
+      400
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 8,
+        "clock": "fm_noise_to_data",
+        "start": 0.0,
+        "end": 0.3,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 16,
+        "clock": "fm_noise_to_data",
+        "start": 0.3,
+        "end": 0.6,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 32,
+        "clock": "fm_noise_to_data",
+        "start": 0.6,
+        "end": 1.0,
+        "duration": 400
+      }
+    ],
+    "training_display": "8×8: 300 · 16×16: 300 · 32×32: 400"
+  },
+  {
+    "legacy_model": "FM Unified L corrected 300/300/400",
+    "legacy_hf_group": "RDD-FM-Unified-L-corrected-300-300-400",
+    "canonical_model": "rdd-fm-shared-l2-corrected__train_r8-400_r16-300_r32-300",
+    "family": "fm",
+    "resolutions_fine_first": [
+      32,
+      16,
+      8
+    ],
+    "native_stage_lengths": [
+      400,
+      300,
+      300
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 8,
+        "clock": "fm_noise_to_data",
+        "start": 0.0,
+        "end": 0.4,
+        "duration": 400
+      },
+      {
+        "latent_resolution": 16,
+        "clock": "fm_noise_to_data",
+        "start": 0.4,
+        "end": 0.7,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 32,
+        "clock": "fm_noise_to_data",
+        "start": 0.7,
+        "end": 1.0,
+        "duration": 300
+      }
+    ],
+    "training_display": "8×8: 400 · 16×16: 300 · 32×32: 300"
+  },
+  {
+    "legacy_model": "FM Unified L corrected 400/300/300",
+    "legacy_hf_group": "RDD-FM-Unified-L-corrected-400-300-300",
+    "canonical_model": "rdd-fm-shared-l2-corrected__train_r8-300_r16-300_r32-400",
+    "family": "fm",
+    "resolutions_fine_first": [
+      32,
+      16,
+      8
+    ],
+    "native_stage_lengths": [
+      300,
+      300,
+      400
+    ],
+    "training_stages": [
+      {
+        "latent_resolution": 8,
+        "clock": "fm_noise_to_data",
+        "start": 0.0,
+        "end": 0.3,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 16,
+        "clock": "fm_noise_to_data",
+        "start": 0.3,
+        "end": 0.6,
+        "duration": 300
+      },
+      {
+        "latent_resolution": 32,
+        "clock": "fm_noise_to_data",
+        "start": 0.6,
+        "end": 1.0,
+        "duration": 400
+      }
+    ],
+    "training_display": "8×8: 300 · 16×16: 300 · 32×32: 400"
+  }
+]

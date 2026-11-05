@@ -20,6 +20,7 @@ print(
     hf_hub_download(
         repo_id="yang335/search_agent_hl_to_i18n_transport",
         filename="checkpoints/RDD-Unified-XL/0400000.pt",
+        revision="848d8a1eccaab8c1807ab792c4ec403dde25288d",  # immutable legacy name
         local_dir=sys.argv[1],
     )
 )

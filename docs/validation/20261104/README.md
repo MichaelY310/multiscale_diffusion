@@ -19,6 +19,8 @@ reports; see the separate monorepo validation report for migration checks.
 | [IMPORT_MULTISTAGE.json](IMPORT_MULTISTAGE.json) | Independent DDPM import, square-string resolution and clock validation |
 | [BOUNDARY_INTERFACES.json](BOUNDARY_INTERFACES.json) | Standalone fresh/filling components and invalid endpoint guards |
 | [PUBLISH_VALIDATION.json](PUBLISH_VALIDATION.json) | Syntax, source-content and CPU core checks executed in this Git checkout |
+| [FM_DDPM_FRESH_AUDIT_ZH.md](FM_DDPM_FRESH_AUDIT_ZH.md) | Subsequent CPU boundary-algebra audit: same fresh operation, different actual DDPM/FM noise clocks; no new quality run |
+| [FM_CHECKPOINT_IDENTITY_AUDIT_ZH.md](FM_CHECKPOINT_IDENTITY_AUDIT_ZH.md) | Actual HF checkpoint metadata, historical XL-v2 identity, user-supplied remote EMA tensor audit, and current CPU sampler recheck; remote fresh/filling control reported; no local 50K rerun |
 
 Native backbone and per-stage solver code is reused; stage orchestration and
 training updates are compared separately. New trajectory tests use random
@@ -26,3 +28,11 @@ nonzero small networks with the actual latent grids and sampler budgets.
 Module activations and gradients are checked, not every internal ATen operation.
 There is no new 400K training run, 50K FID reproduction or full video-system
 certificate implied by these reports.
+
+Naming audit (November 4–5): [registry and guide](../../RDD_EXPERIMENT_NAMES_ZH.md),
+[CPU grid/NFE trace](SAMPLING_STEP_ORDER_CALLS.json),
+[archived original JSONL check](SAMPLING_STEP_ORDER_ARCHIVE.json),
+[configuration/alias checks](NAMING_VALIDATION.json),
+[website browser checks](NAMING_SITE_BROWSER.json), and
+[HF rename/hash receipt](HF_NAMING_MIGRATION.json).
+This cleanup does not rerun quality measurements or change training/sampling mathematics.

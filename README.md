@@ -20,6 +20,13 @@ configuration. The legacy entry points below remain available.
 Codex entry point. The [operator guide](docs/AGENT_GUIDE_ZH.md) covers legacy
 and unified training/sampling, assets, metrics, clock conventions and evidence.
 
+**Experiment names:** [the per-resolution registry](docs/RDD_EXPERIMENT_NAMES_ZH.md)
+separates training intervals, sampling budgets and NFE. Historical `908080`
+often means **8×8:80, 16×16:80, 32×32:90**. Use the explicit configuration
+table and canonical filenames; old filenames remain compatibility links.
+The [website table](https://rdd-math-reference.aa3101132006.chatgpt.site/naming.html)
+lists all 116 curated historical result rows and their source records.
+
 This repository contains the validated ImageNet-256 implementation and the
 experiments summarized below. All formal image metrics use the native
 ImageNet directory loader, 50,000 generated images, and ADM reference

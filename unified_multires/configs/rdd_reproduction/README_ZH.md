@@ -21,7 +21,7 @@ FM两种求解器都实际调用252次模型；midpoint不是DPM-Solver。fresh=
 ```bash
 source unified_multires/activate_cpu.sh
 "$UMDIFF_PYTHON" unified_multires/tools/import_legacy_rdd_checkpoint.py \
-  --config unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p5_noise_filling.json \
+  --config unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p5_noise_filling__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json \
   --checkpoint /your/local/0400000.pt --weights ema \
   --output /your/local/fm_xl_inference.pt
 
@@ -51,7 +51,7 @@ source unified_multires/activate_cpu.sh
 ```bash
 source unified_multires/activate_cpu.sh
 "$UMDIFF_PYTHON" unified_multires/tools/import_legacy_rdd_multistage.py \
-  --config unified_multires/configs/rdd_reproduction/rdd_ddpm_multistage_xl_l_b_300_300_400_ddpm_cfg1p5_fresh.json \
+  --config unified_multires/configs/rdd_reproduction/rdd_ddpm_multistage_xl_l_b_ddpm_cfg1p5_fresh__train_r8-400_r16-300_r32-300__sample_r8-80_r16-80_r32-90.json \
   --checkpoint 32=/your/local/checkpoints_32x32/0400000.pt \
   --checkpoint 16=/your/local/checkpoints_16x16/0400000.pt \
   --checkpoint 8=/your/local/checkpoints_8x8/0400000.pt \
@@ -68,6 +68,6 @@ source unified_multires/activate_cpu.sh
 
 对原100/300/600混合400K/600K实验，选同名100/300/600配置，并显式把 `8=.../0600000.pt`、16/32各400K填入；工具记录每份输入的SHA256和可得训练步，不猜测路径。只合并推理权重，不转换旧optimizer或恢复训练游标。上述导入工具与真实 `umdiff sample` CLI 已用随机小模型、完整3/3/3采样执行，并与原阶段循环逐元素一致；临时模型/采样张量已删除，见 `../../evidence/rdd_reproduction_20261104/ddpm_boundary/multistage_import/SUMMARY.json`。
 
-独立FM同样用此导入器，配置换为 `rdd_fm_multistage_xl_l_b_euler_cfg1p0_fresh.json` 或 `..._noise_filling.json`。导入器支持原checkpoint中的`resolution="32x32"`与`argparse.Namespace`；检查其中可得的clock/阶段区间信息。最新真实CLI对照为 `ddpm_boundary/multistage_import_v2/SUMMARY.json` 与 `fm_multistage/SUMMARY.json`。独立FM原逐阶段backward/step和unified一次总loss更新已逐参数核对一致；另8条完整采样轨迹覆盖两种边界、Euler/midpoint与CFG1/1.5。
+独立FM同样用此导入器，配置换为 `rdd_fm_multistage_xl_l_b_euler_cfg1p0_fresh__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json` 或 `..._noise_filling.json`。导入器支持原checkpoint中的`resolution="32x32"`与`argparse.Namespace`；检查其中可得的clock/阶段区间信息。最新真实CLI对照为 `ddpm_boundary/multistage_import_v2/SUMMARY.json` 与 `fm_multistage/SUMMARY.json`。独立FM原逐阶段backward/step和unified一次总loss更新已逐参数核对一致；另8条完整采样轨迹覆盖两种边界、Euler/midpoint与CFG1/1.5。
 
 总验收：[FINAL_SUMMARY_ZH.md](../../evidence/rdd_reproduction_20261104/FINAL_SUMMARY_ZH.md)。

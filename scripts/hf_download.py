@@ -11,6 +11,7 @@ Usage:
 import argparse
 import os
 from huggingface_hub import hf_hub_download
+from rdd_hf_paths import archive_revision
 
 
 def main():
@@ -27,6 +28,7 @@ def main():
     local_path = hf_hub_download(
         repo_id=args.repo,
         filename=args.file,
+        revision=archive_revision(args.repo, args.file),
         local_dir=out_dir,
     )
     print(f"Saved to: {local_path}")

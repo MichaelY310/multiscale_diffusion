@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "checks": [
+    "144 models, 4916 unique source records, all detail links, 473 model vs452 sample files, correct FM clock/step order",
+    "FM visible on dashboard and seven-model filtered page",
+    "model detail shows13 checkpoints and3 formal sampling runs, weights, stage steps and boundary",
+    "all116 formal pages, fresh/filling filters, reset, empty,252 excluded and751rawlog blocks",
+    "filtered JSON export",
+    "speed source filter and hardware/config detail",
+    "video pilot without HF weights and retained original video preview",
+    "canonical boundaries and scoped parity evidence page",
+    "mobile/tablet all main pages fit viewport",
+    "unchanged math page and navigation",
+    "naming page:116 rows, explicit-grid FM filter, remote reports and mobile fit"
+  ],
+  "model_count": 144,
+  "run_count": 4916,
+  "speed_sources": 471,
+  "local_links": 1719,
+  "console_errors": [],
+  "http_errors": [],
+  "index_sha256": "04f526046dae05ca176c90f1bcdf39055ce32edcd4f0f8dc6a150632cc56deb8"
+}

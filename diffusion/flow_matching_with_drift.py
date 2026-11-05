@@ -15,8 +15,8 @@ Mathematical formulation (per stage k with drift):
     where d = UP(DOWN(x_1)) - x_1 (low-pass residual)
 
   Key properties of f(t):
-    - f(s_k)     = s_k · 1 = s_k  (max drift at noise end)
-    - f(s_{k+1}) = s_{k+1} · 0 = 0  (no drift at data end → x_1 is clean)
+    - f(s_k)     = s_k (the signal is s_k·UP(DOWN(x_1)))
+    - f(s_{k+1}) = 0 (no drift; the state still has noise unless s_{k+1}=1)
     - f'(t) = (s_{k+1} - 2t) / L_k  (negative for t > s_{k+1}/2: drift shrinks)
 
   Velocity field target:
@@ -33,16 +33,20 @@ For coarsest stage (no drift, d=0): standard Flow Matching:
 
 Stage transition (at boundary s_{k+1}):
     1. ODE integration reaches t=s_{k+1}; at this point f(s_{k+1})=0
-    2. Use FM Tweedie: pred_x1 = x + (1-t)·v_θ (exact when drift=0 at boundary)
+    2. Recover pred_x1 with predict_x1_from_velocity. The coarsest stage uses
+       x+(1-t)·v_θ; drift stages also invert the projection correction because
+       f'(t) need not vanish when f(t)=0.
     3. Upsample pred_x1 to next resolution (nearest-neighbor)
     4. Add noise: x_{new} = s_{k+1}·UP(pred_x1) + (1-s_{k+1})·ε_new
     5. Continue ODE in next stage
 
 Comparison with DDPM version:
-    DDPM: κ(T)=(T-T_c)/(T_{c+1}-T_c), maximal at noisy end (large T), zero at clean end (T=0)
+    DDPM: κ(T)=(T-T_c)/(T_{c+1}-T_c), near one at the noisy end,
+          zero at this stage's exit T=T_c (not necessarily global T=0)
     FM:   τ_rev=(s_{k+1}-t)/L_k, maximal at noisy end (small t=s_k), zero at clean end (t=s_{k+1})
-    Both achieve: drift is strongest when the signal is most contaminated by noise,
-    and vanishes completely when the model outputs clean data.
+    Both remove resolution drift at stage exit. This does not equate their
+    noise clocks: legacy DDPM normalizes cumulative alpha per stage, while
+    this FM path retains the global coefficients t and 1-t.
 
 References:
   - SiT (ECCV 2024): Flow Matching with DiT backbone
@@ -124,16 +128,16 @@ class FlowMatchingWithDrift:
           - f(t) = t·(s_{k+1} - t)/L_k is the drift coefficient
 
         Key boundary conditions:
-          - At t = s_{k+1} (data end): f = 0, so x_t = x_1 (clean data, no drift) ✓
-          - At t = s_k (noise end): f = s_k·1 = s_k, so signal = x_1 + s_k·d
-            which biases toward UP(DOWN(x_1)) (low-pass), matching the coarser
-            stage's output.
+          - At t = s_{k+1}: f = 0, so x_t = t*x_1 + (1-t)*eps.
+            Only the final endpoint t=1 is clean.
+          - At t = s_k: f = s_k, so the signal is
+            s_k*(x_1+d) = s_k*UP(DOWN(x_1)).
 
         This mirrors the DDPM version where:
             x_t = √ᾱ_t·(x_0 + κ(t)·d) + √(1-ᾱ_t)·ε
-        with κ(T) = (T-T_c)/(T_{c+1}-T_c) ∈ [0,1), and κ=0 at the clean-data
-        end (T=0). In DDPM, drift is maximal at the noisy end and vanishes at
-        the clean end — our reversed τ achieves the same behavior in FM.
+        with κ(T) = (T-T_c)/(T_{c+1}-T_c) ∈ [0,1), and κ=0 at T=T_c.
+        The low-pass signal interpolation is analogous; the stage noise
+        schedules and their endpoint SNRs are not identical.
 
         Args:
             x_1: data [B, C, H, W]
@@ -152,8 +156,8 @@ class FlowMatchingWithDrift:
         x_t = t_expanded * x_1 + (1 - t_expanded) * noise
 
         # Add drift: f(t) = t·(s_{k+1} - t)/L_k
-        # At t=s_{k+1}: f=0 (no drift at data end) → x_t = x_1
-        # At t=s_k: f=s_k (max drift at noise end)
+        # At t=s_{k+1}: f=0, but x_t=t*x_1+(1-t)*noise remains noisy for t<1.
+        # At t=s_k: f=s_k, so the clean signal is fully low-pass.
         if d is not None:
             tau_rev = (self.s_k_plus_1 - t) / self.stage_length  # reversed τ ∈ (0, 1]
             tau_rev_expanded = tau_rev.view(-1, 1, 1, 1)

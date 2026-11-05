@@ -138,7 +138,7 @@ python -m umdiff train \
 ```bash
 export IMAGENET_TRAIN_DIR=/path/to/imagenet/train
 export SD_VAE_EMA_DIR=/path/to/sd-vae-ft-ema
-EXPERIMENT=unified_multires/configs/comparison_imagenet256/main/rdd_ddpm_xl_legacy.json
+EXPERIMENT=unified_multires/configs/comparison_imagenet256/main/rdd_ddpm_xl_legacy__train_r8-400_r16-300_r32-300__sample_r8-90_r16-80_r32-80.json
 
 # 只解析数学和预算，不加载完整模型，也不开始训练。
 python -m umdiff.experiment plan --config "$EXPERIMENT"
@@ -175,7 +175,7 @@ python -m umdiff decode \
 
 ```bash
 python unified_multires/tools/import_legacy_rdd_checkpoint.py \
-  --config unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p5_noise_filling.json \
+  --config unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p5_noise_filling__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json \
   --checkpoint /path/to/0400000.pt --weights ema \
   --output unified_multires/runs/imported_fm.pt
 

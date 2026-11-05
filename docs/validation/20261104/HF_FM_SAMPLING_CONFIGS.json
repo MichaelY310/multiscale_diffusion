@@ -1,0 +1,126 @@
+[
+  {
+    "path": "eval_results/configs/rddfm_unixl_v2_400k_main.jsonl",
+    "sha256": "201be575df5e6e86909e9e1528ae27ba5616846e20aee917a03a3b86f43211dd",
+    "bytes": 1268,
+    "records": [
+      {
+        "model_type": "fm_unified",
+        "stage_lengths": "300,300,400",
+        "resolutions": "32,16,8",
+        "model": "DiT-XL/2",
+        "ckpt": "/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+        "num_steps": "80,80,90",
+        "sampler": "euler",
+        "cfg_scale": 1.0,
+        "upsample_mode": "noise_filling",
+        "output_dir": "/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/samples/rddfm_unixl_v2_400k_808090_euler_cfg1_noisefilling"
+      },
+      {
+        "model_type": "fm_unified",
+        "stage_lengths": "300,300,400",
+        "resolutions": "32,16,8",
+        "model": "DiT-XL/2",
+        "ckpt": "/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+        "num_steps": "80,80,90",
+        "sampler": "euler",
+        "cfg_scale": 1.5,
+        "upsample_mode": "noise_filling",
+        "output_dir": "/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/samples/rddfm_unixl_v2_400k_808090_euler_cfg15_noisefilling"
+      },
+      {
+        "model_type": "fm_unified",
+        "stage_lengths": "300,300,400",
+        "resolutions": "32,16,8",
+        "model": "DiT-XL/2",
+        "ckpt": "/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-XL-v2/0400000.pt",
+        "num_steps": "40,40,45",
+        "sampler": "midpoint",
+        "cfg_scale": 1.5,
+        "upsample_mode": "noise_filling",
+        "output_dir": "/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/samples/rddfm_unixl_v2_400k_404045_midpoint_cfg15_noisefilling"
+      }
+    ],
+    "raw_text": "{\"model_type\":\"fm_unified\",\"stage_lengths\":\"300,300,400\",\"resolutions\":\"32,16,8\",\"model\":\"DiT-XL/2\",\"ckpt\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-XL-v2/0400000.pt\",\"num_steps\":\"80,80,90\",\"sampler\":\"euler\",\"cfg_scale\":1.0,\"upsample_mode\":\"noise_filling\",\"output_dir\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/samples/rddfm_unixl_v2_400k_808090_euler_cfg1_noisefilling\"}\n{\"model_type\":\"fm_unified\",\"stage_lengths\":\"300,300,400\",\"resolutions\":\"32,16,8\",\"model\":\"DiT-XL/2\",\"ckpt\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-XL-v2/0400000.pt\",\"num_steps\":\"80,80,90\",\"sampler\":\"euler\",\"cfg_scale\":1.5,\"upsample_mode\":\"noise_filling\",\"output_dir\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/samples/rddfm_unixl_v2_400k_808090_euler_cfg15_noisefilling\"}\n{\"model_type\":\"fm_unified\",\"stage_lengths\":\"300,300,400\",\"resolutions\":\"32,16,8\",\"model\":\"DiT-XL/2\",\"ckpt\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-XL-v2/0400000.pt\",\"num_steps\":\"40,40,45\",\"sampler\":\"midpoint\",\"cfg_scale\":1.5,\"upsample_mode\":\"noise_filling\",\"output_dir\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/samples/rddfm_unixl_v2_400k_404045_midpoint_cfg15_noisefilling\"}\n"
+  },
+  {
+    "path": "eval_results/rdd_fm_unified_l_corrected_300300400_convergence/rddfm_unifiedL_corrected_300300400_ckpt000050k_808090_euler_cfg1_noisefilling.jsonl",
+    "sha256": "d51328cf9fd4a29dede9b3af673e8d95225b74f8651d019b035370baf54e5516",
+    "bytes": 548,
+    "records": [
+      {
+        "model_type": "fm_unified",
+        "stage_lengths": "400,300,300",
+        "resolutions": "32,16,8",
+        "model": "DiT-L/2",
+        "ckpt": "/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0050000.pt",
+        "num_steps": "80,80,90",
+        "sampler": "euler",
+        "cfg_scale": 1.0,
+        "upsample_mode": "noise_filling",
+        "output_dir": "/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/rdd_fm_unified_l_corrected_300300400_convergence/samples/rddfm_unifiedL_corrected_300300400_ckpt000050k_808090_euler_cfg1_noisefilling"
+      }
+    ],
+    "raw_text": "{\"model_type\":\"fm_unified\",\"stage_lengths\":\"400,300,300\",\"resolutions\":\"32,16,8\",\"model\":\"DiT-L/2\",\"ckpt\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0050000.pt\",\"num_steps\":\"80,80,90\",\"sampler\":\"euler\",\"cfg_scale\":1.0,\"upsample_mode\":\"noise_filling\",\"output_dir\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/rdd_fm_unified_l_corrected_300300400_convergence/samples/rddfm_unifiedL_corrected_300300400_ckpt000050k_808090_euler_cfg1_noisefilling\"}\n"
+  },
+  {
+    "path": "eval_results/rdd_fm_unified_l_corrected_300300400_convergence/rddfm_unifiedL_corrected_300300400_ckpt000100k_808090_euler_cfg1_noisefilling.jsonl",
+    "sha256": "6e4715c8e701b41eca65baf2834ac4471c3ef3fb8f57d7fa6fdfdca662255e2f",
+    "bytes": 548,
+    "records": [
+      {
+        "model_type": "fm_unified",
+        "stage_lengths": "400,300,300",
+        "resolutions": "32,16,8",
+        "model": "DiT-L/2",
+        "ckpt": "/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0100000.pt",
+        "num_steps": "80,80,90",
+        "sampler": "euler",
+        "cfg_scale": 1.0,
+        "upsample_mode": "noise_filling",
+        "output_dir": "/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/rdd_fm_unified_l_corrected_300300400_convergence/samples/rddfm_unifiedL_corrected_300300400_ckpt000100k_808090_euler_cfg1_noisefilling"
+      }
+    ],
+    "raw_text": "{\"model_type\":\"fm_unified\",\"stage_lengths\":\"400,300,300\",\"resolutions\":\"32,16,8\",\"model\":\"DiT-L/2\",\"ckpt\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-L-corrected-300-300-400/imagenet256-fm-unified/checkpoints/0100000.pt\",\"num_steps\":\"80,80,90\",\"sampler\":\"euler\",\"cfg_scale\":1.0,\"upsample_mode\":\"noise_filling\",\"output_dir\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/rdd_fm_unified_l_corrected_300300400_convergence/samples/rddfm_unifiedL_corrected_300300400_ckpt000100k_808090_euler_cfg1_noisefilling\"}\n"
+  },
+  {
+    "path": "eval_results/rdd_fm_unified_l_corrected_400300300_convergence/rddfm_unifiedL_corrected_400300300_ckpt000050k_808090_euler_cfg1_noisefilling.jsonl",
+    "sha256": "ef7eacdc9b77f8304c38bd6264a145e2a5be5caf82ba5918d2b84a06bf0bdca5",
+    "bytes": 548,
+    "records": [
+      {
+        "model_type": "fm_unified",
+        "stage_lengths": "300,300,400",
+        "resolutions": "32,16,8",
+        "model": "DiT-L/2",
+        "ckpt": "/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0050000.pt",
+        "num_steps": "80,80,90",
+        "sampler": "euler",
+        "cfg_scale": 1.0,
+        "upsample_mode": "noise_filling",
+        "output_dir": "/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/rdd_fm_unified_l_corrected_400300300_convergence/samples/rddfm_unifiedL_corrected_400300300_ckpt000050k_808090_euler_cfg1_noisefilling"
+      }
+    ],
+    "raw_text": "{\"model_type\":\"fm_unified\",\"stage_lengths\":\"300,300,400\",\"resolutions\":\"32,16,8\",\"model\":\"DiT-L/2\",\"ckpt\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0050000.pt\",\"num_steps\":\"80,80,90\",\"sampler\":\"euler\",\"cfg_scale\":1.0,\"upsample_mode\":\"noise_filling\",\"output_dir\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/rdd_fm_unified_l_corrected_400300300_convergence/samples/rddfm_unifiedL_corrected_400300300_ckpt000050k_808090_euler_cfg1_noisefilling\"}\n"
+  },
+  {
+    "path": "eval_results/rdd_fm_unified_l_corrected_400300300_convergence/rddfm_unifiedL_corrected_400300300_ckpt000100k_808090_euler_cfg1_noisefilling.jsonl",
+    "sha256": "5515b1c8dffc4d1e1fd4f9a066ce0df62a2902e3a0aad233e9fb6f9575851059",
+    "bytes": 548,
+    "records": [
+      {
+        "model_type": "fm_unified",
+        "stage_lengths": "300,300,400",
+        "resolutions": "32,16,8",
+        "model": "DiT-L/2",
+        "ckpt": "/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0100000.pt",
+        "num_steps": "80,80,90",
+        "sampler": "euler",
+        "cfg_scale": 1.0,
+        "upsample_mode": "noise_filling",
+        "output_dir": "/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/rdd_fm_unified_l_corrected_400300300_convergence/samples/rddfm_unifiedL_corrected_400300300_ckpt000100k_808090_euler_cfg1_noisefilling"
+      }
+    ],
+    "raw_text": "{\"model_type\":\"fm_unified\",\"stage_lengths\":\"300,300,400\",\"resolutions\":\"32,16,8\",\"model\":\"DiT-L/2\",\"ckpt\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/checkpoints/RDD-FM-Unified-L-corrected-400-300-300/imagenet256-fm-unified/checkpoints/0100000.pt\",\"num_steps\":\"80,80,90\",\"sampler\":\"euler\",\"cfg_scale\":1.0,\"upsample_mode\":\"noise_filling\",\"output_dir\":\"/scr/yuheng/DevOpsBench/multiscale_diffusion/eval_results/rdd_fm_unified_l_corrected_400300300_convergence/samples/rddfm_unifiedL_corrected_400300300_ckpt000100k_808090_euler_cfg1_noisefilling\"}\n"
+  }
+]

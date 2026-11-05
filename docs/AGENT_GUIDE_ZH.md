@@ -113,7 +113,7 @@ corrected FM-L 不能只看标签猜时钟；查
 完整 ImageNet 比较可先只解析计划：
 
 ```bash
-EXPERIMENT=unified_multires/configs/comparison_imagenet256/main/rdd_ddpm_xl_legacy.json
+EXPERIMENT=unified_multires/configs/comparison_imagenet256/main/rdd_ddpm_xl_legacy__train_r8-400_r16-300_r32-300__sample_r8-90_r16-80_r32-80.json
 python -m umdiff.experiment plan --config "$EXPERIMENT"
 
 # 资产/设备已准备且任务要求正式训练时：
@@ -126,7 +126,7 @@ python -m umdiff.experiment train --config "$EXPERIMENT" \
 
 ```bash
 python unified_multires/tools/import_legacy_rdd_checkpoint.py \
-  --config unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p5_fresh.json \
+  --config unified_multires/configs/rdd_reproduction/rdd_fm_xl_v2_euler_cfg1p5_fresh__train_r8-300_r16-300_r32-400__sample_r8-80_r16-80_r32-90.json \
   --checkpoint /path/to/0400000.pt --weights ema \
   --output unified_multires/runs/fm_imported.pt
 
@@ -175,6 +175,10 @@ PF 完整 XL 真实数据预检是正式第 1 次更新，后续从它继续，�
 训练/采样仍是单卡；正式任务中途改变 batch、seed、模型或配置需新 run，不能混入旧输出。
 
 ## 6. 指标、验证与实验记录
+
+先查 [实验命名与逐网格配置](RDD_EXPERIMENT_NAMES_ZH.md)。正式结果、仅有配置的任务、
+训练时段、采样预算和 NFE 分开记录。新入口名明确标出网格，旧路径是兼容链接。
+HF 当前目录已采用新名称；锁定旧 revision 的下载仍然有效，不要把旧路径配上 `main`。
 
 正式 ImageNet 指标用 50K 生成图和 ADM 的 FID/sFID/IS/Precision/Recall。
 [EVALUATION_ZH.md](../unified_multires/experiments/imagenet256_fm_pf/EVALUATION_ZH.md)
